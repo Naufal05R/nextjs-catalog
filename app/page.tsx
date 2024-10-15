@@ -5,19 +5,19 @@ import Image from "@/components/Image";
 export default function Home() {
   return (
     <main className={cn(padding.x, "")}>
-      <section className="flex flex-nowrap items-center gap-0">
+      <section className="flex flex-nowrap items-center gap-px">
         <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 w-2/3" }} />
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 w-1/3" }} />
       </section>
 
-      <section className="mt-8">
-        <h4 className="text-2xl">Shop out collections</h4>
+      <section className="mt-16">
+        <h4 className="mb-4 text-2xl">Shop out collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
           {Array.from({ length: 3 }).map((_, collectionIndex) => (
-            <li key={collectionIndex} className="flex-1">
-              <picture className="grid grid-cols-3 grid-rows-2">
+            <li key={collectionIndex} className="flex-1 overflow-hidden rounded">
+              <picture className="grid grid-cols-3 grid-rows-2 gap-px">
                 {Array.from({ length: 3 }).map((_, pictureIndex) => (
                   <Image
                     key={pictureIndex}
