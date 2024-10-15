@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--playfair-display)"],
+        display: ["var(--font-playfair-display)"],
         body: ["var(--font-outfit)"],
       },
     },
@@ -26,7 +26,7 @@ const config: Config = {
           fontFamily: "var(--font-outfit)",
         },
         "h1, h2, h3": {
-          fontFamily: "var(--playfair-display)",
+          fontFamily: "var(--font-playfair-display)",
         },
       });
     }),
