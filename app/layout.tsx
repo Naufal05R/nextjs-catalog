@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { ChevronDown, Mail, Search, ShoppingBag } from "lucide-react";
 
 const playfair_display = Playfair_Display({
   variable: "--font-playfair-display",
@@ -35,11 +36,25 @@ export default function RootLayout({
             Experience Sparkles with Joy
           </p>
           <hgroup className="flex flex-row flex-wrap items-center justify-center px-4 sm:px-8 lg:px-16">
-            <div className="w-1/2 lg:w-1/3"></div>
-            <div className="w-1/2 lg:w-1/3"></div>
+            <div className="flex w-1/2 flex-row items-center justify-start lg:w-1/3">
+              <Mail className="mr-2.5 text-stone-500" />{" "}
+              <span className="text-xs font-light">Get on the list</span>
+            </div>
+
             <Link href="/" className="w-full lg:w-1/3">
               <h1 className="text-center text-3xl font-medium">App Title</h1>
             </Link>
+
+            <div className="flex w-1/2 flex-row items-center justify-end lg:w-1/3">
+              <button className="flex flex-row items-center">
+                English <ChevronDown />
+              </button>
+              <button className="flex flex-row items-center">
+                English <ChevronDown />
+              </button>
+              <Search />
+              <ShoppingBag />
+            </div>
           </hgroup>
         </header>
         {children}
