@@ -28,21 +28,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair_display.variable} ${outfit.variable} antialiased`}
+        className={`${playfair_display.variable} ${outfit.variable} bg-slate-50 antialiased`}
       >
         <header className="w-full">
           <p className="bg-slate-300 py-2 text-center text-xs font-normal">
             Embrace Timeless Beauty ✨ Your Adventure, Our Adornments 💍 Every
             Experience Sparkles with Joy
           </p>
-          <hgroup className="flex flex-row flex-wrap items-center justify-center px-4 sm:px-8 lg:px-16">
-            <div className="flex w-1/2 flex-row items-center justify-start lg:w-1/3">
+
+          <nav className="flex flex-row flex-wrap items-center justify-center gap-y-8 px-4 py-8 sm:px-8 lg:px-16 xl:px-32">
+            <Link
+              href="/"
+              className="flex w-1/2 flex-row items-center justify-start lg:w-1/3"
+            >
               <Mail className="mr-2.5 text-stone-500" />{" "}
               <span className="text-xs font-light">Get on the list</span>
-            </div>
+            </Link>
 
             <Link href="/" className="w-full lg:w-1/3">
-              <h1 className="text-center text-3xl font-medium">App Title</h1>
+              <h1 className="text-center text-3xl font-medium uppercase">
+                App Title
+              </h1>
             </Link>
 
             <div className="flex w-1/2 flex-row items-center justify-end lg:w-1/3">
@@ -55,7 +61,21 @@ export default function RootLayout({
               <Search />
               <ShoppingBag />
             </div>
-          </hgroup>
+
+            <ul className="flex w-full flex-row items-center justify-center">
+              {["Home", "Shop", "Guestbook", "About", "Blog", "Contact"].map(
+                (item, index) => (
+                  <Link
+                    key={index}
+                    className="px-4 py-2 font-light text-slate-600 hover:underline"
+                    href="/"
+                  >
+                    {item}
+                  </Link>
+                ),
+              )}
+            </ul>
+          </nav>
         </header>
         {children}
       </body>
