@@ -28,9 +28,14 @@ export default function RootLayout({
       <body
         className={`${playfair_display.variable} ${outfit.variable} antialiased`}
       >
-        <header className="w-full bg-slate-300 py-2 text-center text-xs font-normal">
-          Embrace Timeless Beauty ✨ Your Adventure, Our Adornments 💍 Every
-          Experience Sparkles with Joy
+        <header className="w-full">
+          <p className="bg-slate-300 py-2 text-center text-xs font-normal">
+            Embrace Timeless Beauty ✨ Your Adventure, Our Adornments 💍 Every
+            Experience Sparkles with Joy
+          </p>
+          <hgroup>
+            
+          </hgroup>
         </header>
         {children}
       </body>
