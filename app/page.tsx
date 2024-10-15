@@ -30,6 +30,9 @@ export default function Home() {
                   />
                 ))}
               </picture>
+
+              <figcaption className="mt-4 text-lg capitalize">collections</figcaption>
+              <p className="mt-1 text-sm uppercase text-slate-500">sales words</p>
             </li>
           ))}
         </ul>
