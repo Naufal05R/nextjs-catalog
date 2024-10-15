@@ -39,9 +39,9 @@ export default function RootLayout({
           <nav className="flex flex-row flex-wrap items-center justify-center gap-y-8 px-4 py-8 sm:px-8 lg:px-16 xl:px-32">
             <Link
               href="/"
-              className="flex w-1/2 flex-row items-center justify-start lg:w-1/3"
+              className="flex w-1/2 flex-row items-center justify-start text-slate-500 lg:w-1/3"
             >
-              <Mail className="mr-2.5 text-stone-500" />{" "}
+              <Mail className="mr-2.5" />{" "}
               <span className="text-xs font-light">Get on the list</span>
             </Link>
 
@@ -51,15 +51,19 @@ export default function RootLayout({
               </h1>
             </Link>
 
-            <div className="flex w-1/2 flex-row items-center justify-end lg:w-1/3">
-              <button className="flex flex-row items-center">
-                English <ChevronDown />
+            <div className="flex w-1/2 flex-row items-center justify-end text-slate-500 lg:w-1/3">
+              <button className="flex flex-row items-center px-4 py-2">
+                English <ChevronDown className="size-4" />
               </button>
-              <button className="flex flex-row items-center">
-                English <ChevronDown />
+              <button className="flex flex-row items-center px-4 py-2">
+                English <ChevronDown className="size-4" />
               </button>
-              <Search />
-              <ShoppingBag />
+              <button className="ml-8 grid place-items-center">
+                <Search className="size-7" />
+              </button>
+              <button className="ml-4 grid place-items-center">
+                <ShoppingBag className="size-7" />
+              </button>
             </div>
 
             <ul className="flex w-full flex-row items-center justify-center">
