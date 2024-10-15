@@ -37,6 +37,19 @@ export default function Home() {
           ))}
         </ul>
       </section>
+
+      <section className="mt-16 w-full bg-slate-200 p-8">
+        <blockquote className="text-center">
+          <h6 className="mb-4 text-lg">OUR PROMISE</h6>
+          <p className="mb-1 text-sm font-light">
+            We value the elegance of minimalist jewelry. That&apos;s why we stand by the phrase, &quot;Keep It
+            Effortless.&quot;
+          </p>{" "}
+          <p className="text-sm font-light">
+            We design premium-quality pieces at budget-friendly prices, perfect for everyday wear.
+          </p>
+        </blockquote>
+      </section>
     </main>
   );
 }
