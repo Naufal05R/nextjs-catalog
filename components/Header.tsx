@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { ChevronDown, Mail, Search, ShoppingBag } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { padding } from "@/lib/styles";
 
 const Header = () => {
   return (
@@ -10,7 +12,12 @@ const Header = () => {
         Experience Sparkles with Joy
       </p>
 
-      <nav className="flex flex-row flex-wrap items-center justify-center gap-y-8 px-4 py-8 sm:px-8 lg:px-16 xl:px-32">
+      <nav
+        className={cn(
+          padding.x,
+          "flex flex-row flex-wrap items-center justify-center gap-y-8 py-8",
+        )}
+      >
         <Link
           href="/"
           className="flex w-1/2 flex-row items-center justify-start text-slate-500 lg:w-1/3"
