@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const playfair_display = Playfair_Display({
   variable: "--font-playfair-display",
@@ -33,8 +34,12 @@ export default function RootLayout({
             Embrace Timeless Beauty ✨ Your Adventure, Our Adornments 💍 Every
             Experience Sparkles with Joy
           </p>
-          <hgroup>
-            
+          <hgroup className="flex flex-row flex-wrap items-center justify-center px-4 sm:px-8 lg:px-16">
+            <div className="w-1/2 lg:w-1/3"></div>
+            <div className="w-1/2 lg:w-1/3"></div>
+            <Link href="/" className="w-full lg:w-1/3">
+              <h1 className="text-center text-3xl font-medium">App Title</h1>
+            </Link>
           </hgroup>
         </header>
         {children}
