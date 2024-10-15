@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import Image from "@/components/Image";
-import { Star } from "lucide-react";
+import { ChevronRight, Star } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -99,6 +100,36 @@ export default function Home() {
           ))}
         </fieldset>
       </section>
+
+      <section className="mt-16">
+        <hgroup className="flex flex-row flex-nowrap justify-between">
+          <h4 className="mb-4 text-2xl">Featured collections</h4>
+
+          <Link href="/" className="flex flex-row items-center text-slate-500">
+            <span className="text-sm">See all</span> <ChevronRight className="size-5" />
+          </Link>
+        </hgroup>
+
+        <fieldset className="flex max-w-full flex-row items-center gap-4 overflow-scroll">
+          {Array.from({ length: 8 }).map((_, collectionIndex) => (
+            <article key={collectionIndex} className="min-w-[calc(25%-12px)]">
+              <Image
+                src={`/dummy_${(collectionIndex % 3) + 1}.jpg`}
+                alt={`dummy_${(collectionIndex % 3) + 1}`}
+                fill
+                classNames={{
+                  figure: "w-full aspect-square rounded overflow-hidden",
+                }}
+              />
+
+              <p className="mt-4 text-sm text-slate-400">Rp 19,99</p>
+              <p className="mt-0 text-sm text-slate-500">Example Product Title</p>
+            </article>
+          ))}
+        </fieldset>
+      </section>
     </main>
   );
 }
+
+// Example Product Title
