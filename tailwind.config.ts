@@ -21,7 +21,7 @@ const config: Config = {
     twAnimate,
     plugin(({ addBase }) => {
       addBase({
-        "*": {
+        ":root": {
           "@apply text-slate-800": {},
         },
         "html, body": {
