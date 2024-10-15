@@ -6,19 +6,33 @@ export default function Home() {
   return (
     <main className={cn(padding.x, "")}>
       <section className="flex flex-nowrap items-center gap-0">
-        <Image
-          src="/dummy_1.jpg"
-          alt="dummy_1"
-          fill
-          classNames={{ figure: "h-96 w-2/3" }}
-        />
+        <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 w-2/3" }} />
 
-        <Image
-          src="/dummy_2.jpg"
-          alt="dummy_2"
-          fill
-          classNames={{ figure: "h-96 w-1/3" }}
-        />
+        <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 w-1/3" }} />
+      </section>
+
+      <section className="mt-8">
+        <h4 className="text-2xl">Shop out collections</h4>
+
+        <ul className="flex flex-row flex-nowrap items-center gap-4">
+          {Array.from({ length: 3 }).map((_, collectionIndex) => (
+            <li key={collectionIndex} className="flex-1">
+              <picture className="grid grid-cols-3 grid-rows-2">
+                {Array.from({ length: 3 }).map((_, pictureIndex) => (
+                  <Image
+                    key={pictureIndex}
+                    src={`/dummy_${pictureIndex + 1}.jpg`}
+                    alt={`dummy_${pictureIndex + 1}`}
+                    fill
+                    classNames={{
+                      figure: cn(pictureIndex ? "row-span-1 col-span-1" : "row-span-2 col-span-2", "aspect-square"),
+                    }}
+                  />
+                ))}
+              </picture>
+            </li>
+          ))}
+        </ul>
       </section>
     </main>
   );
