@@ -21,6 +21,9 @@ const config: Config = {
     twAnimate,
     plugin(({ addBase }) => {
       addBase({
+        "*": {
+          "@apply text-slate-800": {},
+        },
         "html, body": {
           scrollBehavior: "smooth",
           fontFamily: "var(--font-outfit)",
