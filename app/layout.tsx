@@ -7,7 +7,7 @@ const playfair_display = Playfair_Display({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 const outfit = Outfit({
-  variable: "--font-geist-mono",
+  variable: "--font-outfit",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
