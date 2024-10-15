@@ -31,6 +31,9 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <footer className="py-24">
+
+        </footer>
       </body>
     </html>
   );
