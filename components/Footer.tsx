@@ -14,27 +14,64 @@ import {
   Venmo,
   Visa,
 } from "@/components/svg";
+import { Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className={cn(padding.x, "flex flex-row items-center justify-between py-24")}>
-      <blockquote className="text-sm text-slate-500">
-        <p>Copyright © {new Date().getFullYear()} LEGENDA PERMATA</p>
-        <Link href="https://naufalrabbani.com" target="_blank" rel="noopener noreferrer" className="hover:underline">
-          Developed by Naufal Rabbani
-        </Link>
-      </blockquote>
+    <>
+      <section className={cn(padding.x, "flex flex-row items-center justify-between py-16")}>
+        <form action="">
+          <h6 className="mb-2 text-lg">Get updates</h6>
+          <fieldset className="flex flex-row flex-nowrap rounded border border-slate-200 p-1">
+            <label htmlFor="" className="flex flex-1 origin-center flex-row items-center">
+              <Mail className="mx-2 text-slate-500" />
+              <input
+                placeholder="Your email"
+                type="text"
+                className="w-full appearance-none bg-transparent text-sm font-light placeholder:text-sm focus:outline-none focus:ring-0"
+              />
+            </label>
 
-      <ul className="flex flex-row items-center gap-2">
-        {[AmericanExpress, DinersClub, Discover, JCB, Maestro, Mastercard, PayPal, UnionPay, Venmo, Visa].map(
-          (Icon, index) => (
-            <li key={index}>
-              <Icon />
-            </li>
-          ),
-        )}
-      </ul>
-    </footer>
+            <button className="rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50">Subscribe</button>
+          </fieldset>
+        </form>
+
+        <ul className="grid grid-cols-6 gap-x-8 gap-y-4">
+          {[
+            "Search",
+            "Shipping",
+            "Return and Refund",
+            "Privacy Policy",
+            "Terms of Service",
+            "Contact Us",
+            "Do not sell my personal information",
+          ].map((link, linkIndex) => (
+            <Link href="/" key={linkIndex} className="col-span-3 text-sm hover:underline lg:col-span-2">
+              {link}
+            </Link>
+          ))}
+        </ul>
+      </section>
+
+      <footer className={cn(padding.x, "flex flex-row items-center justify-between py-24")}>
+        <blockquote className="text-sm text-slate-500">
+          <p>Copyright © {new Date().getFullYear()} LEGENDA PERMATA</p>
+          <Link href="https://naufalrabbani.com" target="_blank" rel="noopener noreferrer" className="hover:underline">
+            Developed by Naufal Rabbani
+          </Link>
+        </blockquote>
+
+        <ul className="flex flex-row items-center gap-2">
+          {[AmericanExpress, DinersClub, Discover, JCB, Maestro, Mastercard, PayPal, UnionPay, Venmo, Visa].map(
+            (Icon, index) => (
+              <li key={index}>
+                <Icon />
+              </li>
+            ),
+          )}
+        </ul>
+      </footer>
+    </>
   );
 };
 
