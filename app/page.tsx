@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import Image from "@/components/Image";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -128,8 +128,28 @@ export default function Home() {
           ))}
         </fieldset>
       </section>
+
+      <section className="mt-16 w-full bg-slate-200 p-8">
+        <h4 className="mb-4 text-lg">Join our mailing list</h4>
+        <p className="mb-2.5 text-sm font-light">
+          Get updates on exclusive offers, new arrivals, and discounts delivered straight to your inbox.
+        </p>
+
+        <form action="">
+          <fieldset className="flex flex-row flex-nowrap rounded border border-slate-400 p-2">
+            <label htmlFor="" className="flex flex-1 origin-center flex-row items-center">
+              <Mail className="mx-1 text-slate-800" />
+              <input
+                placeholder="Your email"
+                type="text"
+                className="w-full appearance-none bg-transparent text-sm font-light focus:outline-none focus:ring-0"
+              />
+            </label>
+
+            <button className="rounded-sm bg-slate-800 px-4 py-2 text-slate-50">Submit</button>
+          </fieldset>
+        </form>
+      </section>
     </main>
   );
 }
-
-// Example Product Title
