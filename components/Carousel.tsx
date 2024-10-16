@@ -139,7 +139,6 @@ const Carousel = () => {
       <fieldset className="max-w-full overflow-hidden no-scrollbar">
         <ul
           ref={containerRef}
-          // style={{ transform: `translateX(calc(calc(-25% - 4px) * ${count}))` }}
           className="relative z-20 flex max-w-full snap-start flex-row items-center gap-4 transition-transform duration-500"
           onMouseDown={(e) => {
             setIsDragging(true);
