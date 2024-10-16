@@ -52,6 +52,7 @@ const Carousel = () => {
       const currentX = e.pageX - inner.offsetLeft;
       const walk = currentX - startX;
 
+      inner.style.transitionDuration = "0ms";
       inner.style.transform = `translateX(${walk}px)`;
     };
 
@@ -61,10 +62,20 @@ const Carousel = () => {
       if (!isDragging || !inner) return;
 
       setIsDragging(false);
-      setStartX(0);
+
+      const currentX = e.pageX - inner.offsetLeft;
+      const walk = currentX - startX;
+      const slideWidth = inner.offsetWidth / 4;
+      const firstCondition = Math.abs(walk) > slideWidth / 2;
+      const totalMoves = Math.round(Math.abs(walk) / slideWidth);
 
       inner.style.transitionDuration = "500ms";
-      inner.style.transform = `translateX(${0}px)`;
+      inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
+
+      const gap = 16 / 4;
+      const totalGap = totalMoves * gap;
+
+      setStartX(totalMoves * slideWidth + totalGap);
     };
 
     document.addEventListener("mousemove", onMouseMoveHandler);
@@ -78,7 +89,6 @@ const Carousel = () => {
 
   return (
     <article className="relative w-full">
-      {count}
       <Controller
         direction="left"
         button={{
@@ -104,22 +114,35 @@ const Carousel = () => {
           className="relative z-20 flex max-w-full snap-start flex-row items-center gap-4 transition-transform duration-500"
           onMouseDown={(e) => {
             setIsDragging(true);
-            setStartX(e.pageX - e.currentTarget.offsetLeft);
+            setStartX(e.pageX + startX);
             e.currentTarget.style.cursor = "grabbing";
           }}
           onMouseMove={(e) => {
             if (!isDragging) return;
             e.preventDefault();
+
             const currentX = e.pageX - e.currentTarget.offsetLeft;
             const walk = currentX - startX;
+
             e.currentTarget.style.transitionDuration = "0ms";
             e.currentTarget.style.transform = `translateX(${walk}px)`;
           }}
           onMouseUp={(e) => {
             setIsDragging(false);
-            setStartX(0);
+
+            const currentX = e.pageX - e.currentTarget.offsetLeft;
+            const walk = currentX - startX;
+            const slideWidth = e.currentTarget.offsetWidth / 4;
+            const firstCondition = Math.abs(walk) > slideWidth / 2;
+            const totalMoves = Math.round(Math.abs(walk) / slideWidth);
+
             e.currentTarget.style.transitionDuration = "500ms";
-            e.currentTarget.style.transform = `translateX(${0}px)`;
+            e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
+
+            const gap = 16 / 4;
+            const totalGap = totalMoves * gap;
+
+            setStartX(totalMoves * slideWidth + totalGap);
           }}
         >
           {Array.from({ length }).map((_, collectionIndex) => (
