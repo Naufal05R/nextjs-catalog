@@ -3,6 +3,29 @@
 import React, { useState } from "react";
 import Image from "./Image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface ControllerProps {
+  direction: "left" | "right";
+  wrapper?: React.HTMLAttributes<HTMLDivElement>;
+  button?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
+
+const Controller = ({ direction, wrapper, button }: ControllerProps) => {
+  return (
+    <div
+      className={cn("absolute top-0 z-10 flex aspect-square min-w-[calc(25%-12px)] items-center", {
+        "-right-8 justify-end": direction === "right",
+        "-left-8 justify-start": direction === "left",
+      })}
+      {...wrapper}
+    >
+      <button className="size-fit rounded-full bg-transparent text-slate-500" {...button}>
+        {direction === "left" ? <ChevronLeft size={32} strokeWidth={1} /> : <ChevronRight size={32} strokeWidth={1} />}
+      </button>
+    </div>
+  );
+};
 
 const Carousel = () => {
   const [count, setCount] = useState(0);
@@ -11,33 +34,23 @@ const Carousel = () => {
 
   return (
     <article className="relative w-full">
-      <div className="absolute -left-8 top-0 z-10 flex aspect-square min-w-[calc(25%-12px)] items-center justify-start">
-        <button className="size-fit rounded-full bg-transparent text-slate-500">
-          <ChevronLeft
-            size={32}
-            strokeWidth={1}
-            onClick={() => {
-              setCount(count + 1);
-            }}
-          />
-        </button>
-      </div>
+      <Controller
+        direction="left"
+        button={{
+          onClick: () => setCount(count - 1),
+        }}
+      />
 
-      <div className="absolute -right-8 top-0 z-10 flex aspect-square min-w-[calc(25%-12px)] items-center justify-end">
-        <button className="size-fit rounded-full bg-transparent text-slate-500">
-          <ChevronRight
-            size={32}
-            strokeWidth={1}
-            onClick={() => {
-              setCount(count - 1);
-            }}
-          />
-        </button>
-      </div>
+      <Controller
+        direction="right"
+        button={{
+          onClick: () => setCount(count + 1),
+        }}
+      />
 
       <fieldset className="max-w-full overflow-scroll no-scrollbar">
         <ul
-          style={{ transform: `translateX(calc(calc(25% + 4px) * ${count}))` }}
+          style={{ transform: `translateX(calc(calc(-25% + 4px) * ${count}))` }}
           className="relative flex max-w-full flex-row items-center gap-4 transition-transform duration-500"
         >
           {Array.from({ length }).map((_, collectionIndex) => (
