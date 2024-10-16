@@ -96,7 +96,7 @@ const Carousel = () => {
         button={{
           onClick: () => {
             const inner = containerRef.current;
-            if (!inner || count === min) return;
+            if (!inner || count <= min) return;
 
             const slideWidth = inner.offsetWidth / 4;
             const currentIndex = count + 1;
@@ -109,8 +109,8 @@ const Carousel = () => {
             setCount(Math.max(min, count - 1));
             setStartX(currentIndex * slideWidth + totalGap);
           },
-          disabled: count === min,
-          hidden: count === min,
+          disabled: count <= min,
+          hidden: count <= min,
         }}
       />
 
@@ -119,7 +119,7 @@ const Carousel = () => {
         button={{
           onClick: () => {
             const inner = containerRef.current;
-            if (!inner || count === max) return;
+            if (!inner || count >= max) return;
 
             const slideWidth = inner.offsetWidth / 4;
             const currentIndex = count + 1;
@@ -132,8 +132,8 @@ const Carousel = () => {
             setCount(Math.min(max, count + 1));
             setStartX(currentIndex * slideWidth + totalGap);
           },
-          disabled: count === max,
-          hidden: count === max,
+          disabled: count >= max,
+          hidden: count >= max,
         }}
       />
 
