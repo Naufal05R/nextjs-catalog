@@ -186,10 +186,6 @@ const Carousel = () => {
                 }}
               />
 
-              {/* <div className="grid aspect-square w-full place-items-center overflow-hidden rounded text-8xl font-bold">
-                  {collectionIndex + 1}
-                </div> */}
-
               <p className="mt-4 select-none text-sm text-slate-400">Rp 19,99</p>
               <p className="mt-0 select-none text-sm text-slate-500">Example Product Title</p>
             </li>
