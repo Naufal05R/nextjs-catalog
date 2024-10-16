@@ -96,7 +96,7 @@ const Carousel = () => {
             if (!inner || count <= min) return;
 
             const slideWidth = inner.offsetWidth / 4;
-            const currentIndex = count + 1;
+            const currentIndex = count - 1;
             const gap = 16 / 4;
             const totalGap = currentIndex * gap;
 
