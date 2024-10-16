@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "./Image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,7 @@ const Controller = ({ direction, button }: ControllerProps) => {
     >
       <button
         {...button}
-        className={cn("size-fit rounded-full bg-transparent text-slate-500 disabled:opacity-50", button?.className)}
+        className={cn("h-full w-fit rounded-full bg-transparent text-slate-500 disabled:opacity-50", button?.className)}
       >
         {direction === "left" ? <ChevronLeft size={32} strokeWidth={1} /> : <ChevronRight size={32} strokeWidth={1} />}
       </button>
@@ -33,15 +33,52 @@ const Carousel = () => {
 
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
+
+  const containerRef = React.useRef<HTMLUListElement>(null);
 
   const length = 8;
 
   const min = 0;
   const max = length - 4;
 
+  useEffect(() => {
+    const onMouseMoveHandler = (e: MouseEvent) => {
+      const inner = containerRef.current;
+
+      if (!isDragging || !inner) return;
+
+      e.preventDefault();
+
+      const currentX = e.pageX - inner.offsetLeft;
+      const walk = currentX - startX;
+
+      inner.style.transform = `translateX(${walk}px)`;
+    };
+
+    const onMouseUpHandler = (e: MouseEvent) => {
+      const inner = containerRef.current;
+
+      if (!isDragging || !inner) return;
+
+      setIsDragging(false);
+      setStartX(0);
+
+      inner.style.transitionDuration = "500ms";
+      inner.style.transform = `translateX(${0}px)`;
+    };
+
+    document.addEventListener("mousemove", onMouseMoveHandler);
+    document.addEventListener("mouseup", onMouseUpHandler);
+
+    return () => {
+      document.removeEventListener("mousemove", onMouseMoveHandler);
+      document.removeEventListener("mouseup", onMouseUpHandler);
+    };
+  }, [isDragging, startX]);
+
   return (
     <article className="relative w-full">
+      {count}
       <Controller
         direction="left"
         button={{
@@ -62,31 +99,25 @@ const Carousel = () => {
 
       <fieldset className="max-w-full overflow-hidden no-scrollbar">
         <ul
+          ref={containerRef}
           style={{ transform: `translateX(calc(calc(-25% - 4px) * ${count}))` }}
           className="relative z-20 flex max-w-full snap-start flex-row items-center gap-4 transition-transform duration-500"
           onMouseDown={(e) => {
             setIsDragging(true);
             setStartX(e.pageX - e.currentTarget.offsetLeft);
-            e.currentTarget.style.transitionDuration = "0ms";
             e.currentTarget.style.cursor = "grabbing";
           }}
           onMouseMove={(e) => {
             if (!isDragging) return;
             e.preventDefault();
             const currentX = e.pageX - e.currentTarget.offsetLeft;
-            const walk = currentX - startX; // Calculate distance moved
+            const walk = currentX - startX;
             e.currentTarget.style.transitionDuration = "0ms";
             e.currentTarget.style.transform = `translateX(${walk}px)`;
           }}
           onMouseUp={(e) => {
             setIsDragging(false);
-            setCurrentX(0);
-            e.currentTarget.style.transitionDuration = "500ms";
-            e.currentTarget.style.transform = `translateX(${0}px)`;
-          }}
-          onMouseLeave={(e) => {
-            setIsDragging(false);
-            e.currentTarget.style.cursor = "grab";
+            setStartX(0);
             e.currentTarget.style.transitionDuration = "500ms";
             e.currentTarget.style.transform = `translateX(${0}px)`;
           }}
