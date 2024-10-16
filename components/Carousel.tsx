@@ -86,22 +86,6 @@ const Carousel = () => {
     };
   }, [isDragging, startX, count]);
 
-  const handleChangeSlide = () => {
-    const inner = containerRef.current;
-    if (!inner || count <= min) return;
-
-    const slideWidth = inner.offsetWidth / 4;
-    const currentIndex = count + 1;
-    const gap = 16 / 4;
-    const totalGap = currentIndex * gap;
-
-    inner.style.transitionDuration = "300ms";
-    inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
-
-    setCount(Math.max(min, count - 1));
-    setStartX(currentIndex * slideWidth + totalGap);
-  };
-
   return (
     <article className="relative w-full">
       <Controller
