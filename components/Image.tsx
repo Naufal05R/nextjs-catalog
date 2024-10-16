@@ -16,7 +16,7 @@ interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "class
 }
 
 const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) => {
-  const { figure, image } = classNames ?? {};
+  const { figure, image, fallback } = classNames ?? {};
 
   return (
     <figure className={cn("relative overflow-hidden", figure)}>
@@ -25,8 +25,15 @@ const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) =>
         draggable={false}
         className={cn("z-20 size-full object-cover object-center before:hidden", image)}
       />
-      <div className="relative z-10 grid size-full place-items-center overflow-hidden bg-slate-300">
-        <FallbackComponent className="absolute aspect-square max-h-full max-w-full text-slate-400" />
+      <div
+        className={cn(
+          "relative z-10 grid size-full place-items-center overflow-hidden bg-slate-300",
+          fallback?.wrapper,
+        )}
+      >
+        <FallbackComponent
+          className={cn("absolute aspect-square max-h-full max-w-full text-slate-400", fallback?.icon)}
+        />
       </div>
     </figure>
   );
