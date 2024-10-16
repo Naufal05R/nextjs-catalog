@@ -3,6 +3,7 @@ import { padding } from "@/lib/styles";
 import Image from "@/components/Image";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
+import Carousel from "@/components/Carousel";
 
 export default function Home() {
   return (
@@ -110,23 +111,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <fieldset className="flex max-w-full flex-row items-center gap-4 overflow-scroll no-scrollbar">
-          {Array.from({ length: 8 }).map((_, collectionIndex) => (
-            <article key={collectionIndex} className="min-w-[calc(25%-12px)]">
-              <Image
-                src={`/dummy_${(collectionIndex % 3) + 1}.jpg`}
-                alt={`dummy_${(collectionIndex % 3) + 1}`}
-                fill
-                classNames={{
-                  figure: "w-full aspect-square rounded overflow-hidden",
-                }}
-              />
-
-              <p className="mt-4 text-sm text-slate-400">Rp 19,99</p>
-              <p className="mt-0 text-sm text-slate-500">Example Product Title</p>
-            </article>
-          ))}
-        </fieldset>
+        <Carousel />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
