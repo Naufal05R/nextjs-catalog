@@ -8,6 +8,10 @@ interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "class
   classNames?: {
     figure?: string;
     image?: string;
+    fallback?: {
+      wrapper?: string;
+      icon?: string;
+    };
   };
 }
 
