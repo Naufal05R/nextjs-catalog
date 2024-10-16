@@ -31,10 +31,14 @@ const config: Config = {
         "h1, h2, h3": {
           fontFamily: "var(--font-playfair-display)",
         },
+        img: {
+          "user-drag": "none",
+          "-webkit-user-drag": "none",
+        },
       });
       addUtilities({
         ".no-scrollbar::-webkit-scrollbar": {
-          "display": 'hidden',
+          display: "hidden",
         },
         ".no-scrollbar": {
           "-ms-overflow-style": "none",
