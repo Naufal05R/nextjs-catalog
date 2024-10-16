@@ -90,7 +90,6 @@ const Carousel = () => {
 
   return (
     <article className="relative w-full">
-      {count}
       <Controller
         direction="left"
         button={{
