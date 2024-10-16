@@ -14,13 +14,20 @@ interface ControllerProps {
 const Controller = ({ direction, wrapper, button }: ControllerProps) => {
   return (
     <div
-      className={cn("absolute top-0 z-10 flex aspect-square min-w-[calc(25%-12px)] items-center", {
-        "-right-8 justify-end": direction === "right",
-        "-left-8 justify-start": direction === "left",
-      })}
       {...wrapper}
+      className={cn(
+        "absolute top-0 z-10 flex aspect-square min-w-[calc(25%-12px)] items-center",
+        {
+          "-right-8 justify-end": direction === "right",
+          "-left-8 justify-start": direction === "left",
+        },
+        wrapper?.className,
+      )}
     >
-      <button className="size-fit rounded-full bg-transparent text-slate-500" {...button}>
+      <button
+        {...button}
+        className={cn("size-fit rounded-full bg-transparent text-slate-500 disabled:opacity-50", button?.className)}
+      >
         {direction === "left" ? <ChevronLeft size={32} strokeWidth={1} /> : <ChevronRight size={32} strokeWidth={1} />}
       </button>
     </div>
@@ -32,25 +39,44 @@ const Carousel = () => {
 
   const length = 8;
 
+  const min = 0;
+  const max = length - 4;
+
   return (
     <article className="relative w-full">
       <Controller
         direction="left"
+        wrapper={{
+          hidden: count === min,
+          className: cn({
+            hidden: count === min,
+          }),
+        }}
         button={{
-          onClick: () => setCount(count - 1),
+          onClick: () => setCount(Math.max(min, count - 1)),
+          disabled: count === min,
+          hidden: count === min,
         }}
       />
 
       <Controller
         direction="right"
+        wrapper={{
+          hidden: count === max,
+          className: cn({
+            hidden: count === max,
+          }),
+        }}
         button={{
-          onClick: () => setCount(count + 1),
+          onClick: () => setCount(Math.min(max, count + 1)),
+          disabled: count === max,
+          hidden: count === max,
         }}
       />
 
       <fieldset className="max-w-full overflow-scroll no-scrollbar">
         <ul
-          style={{ transform: `translateX(calc(calc(-25% + 4px) * ${count}))` }}
+          style={{ transform: `translateX(calc(calc(-25% - 4px) * ${count}))` }}
           className="relative flex max-w-full flex-row items-center gap-4 transition-transform duration-500"
         >
           {Array.from({ length }).map((_, collectionIndex) => (
