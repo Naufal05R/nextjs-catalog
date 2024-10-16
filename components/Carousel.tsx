@@ -44,7 +44,6 @@ const Carousel = () => {
   useEffect(() => {
     const onMouseMoveHandler = (e: MouseEvent) => {
       const inner = containerRef.current;
-
       if (!isDragging || !inner) return;
 
       e.preventDefault();
@@ -58,7 +57,6 @@ const Carousel = () => {
 
     const onMouseUpHandler = (e: MouseEvent) => {
       const inner = containerRef.current;
-
       if (!isDragging || !inner) return;
 
       setIsDragging(false);
@@ -87,6 +85,22 @@ const Carousel = () => {
       document.removeEventListener("mouseup", onMouseUpHandler);
     };
   }, [isDragging, startX, count]);
+
+  const handleChangeSlide = () => {
+    const inner = containerRef.current;
+    if (!inner || count <= min) return;
+
+    const slideWidth = inner.offsetWidth / 4;
+    const currentIndex = count + 1;
+    const gap = 16 / 4;
+    const totalGap = currentIndex * gap;
+
+    inner.style.transitionDuration = "300ms";
+    inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
+
+    setCount(Math.max(min, count - 1));
+    setStartX(currentIndex * slideWidth + totalGap);
+  };
 
   return (
     <article className="relative w-full">
