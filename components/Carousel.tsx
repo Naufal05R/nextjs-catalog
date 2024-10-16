@@ -69,7 +69,7 @@ const Carousel = () => {
       const firstCondition = Math.abs(walk) > slideWidth / 2;
       const totalMoves = Math.round(Math.abs(walk) / slideWidth);
 
-      inner.style.transitionDuration = "500ms";
+      inner.style.transitionDuration = "300ms";
       inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
 
       const gap = 16 / 4;
@@ -136,7 +136,7 @@ const Carousel = () => {
             const firstCondition = Math.abs(walk) > slideWidth / 2;
             const totalMoves = Math.round(Math.abs(walk) / slideWidth);
 
-            e.currentTarget.style.transitionDuration = "500ms";
+            e.currentTarget.style.transitionDuration = "300ms";
             e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
 
             const gap = 16 / 4;
