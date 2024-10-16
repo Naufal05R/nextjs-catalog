@@ -67,15 +67,16 @@ const Carousel = () => {
       const walk = currentX - startX;
       const slideWidth = inner.offsetWidth / 4;
       const firstCondition = Math.abs(walk) > slideWidth / 2;
-      const totalMoves = Math.round(Math.abs(walk) / slideWidth);
+      const currentIndex = Math.round(Math.abs(walk) / slideWidth);
 
       inner.style.transitionDuration = "300ms";
-      inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
+      inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
 
       const gap = 16 / 4;
-      const totalGap = totalMoves * gap;
+      const totalGap = currentIndex * gap;
 
-      setStartX(totalMoves * slideWidth + totalGap);
+      setCount(firstCondition ? count + currentIndex : count);
+      setStartX(currentIndex * slideWidth + totalGap);
     };
 
     document.addEventListener("mousemove", onMouseMoveHandler);
@@ -85,14 +86,29 @@ const Carousel = () => {
       document.removeEventListener("mousemove", onMouseMoveHandler);
       document.removeEventListener("mouseup", onMouseUpHandler);
     };
-  }, [isDragging, startX]);
+  }, [isDragging, startX, count]);
 
   return (
     <article className="relative w-full">
+      {count}
       <Controller
         direction="left"
         button={{
-          onClick: () => setCount(Math.max(min, count - 1)),
+          onClick: () => {
+            const inner = containerRef.current;
+            if (!inner || count === min) return;
+
+            const slideWidth = inner.offsetWidth / 4;
+            const currentIndex = count + 1;
+            const gap = 16 / 4;
+            const totalGap = currentIndex * gap;
+
+            inner.style.transitionDuration = "300ms";
+            inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
+
+            setCount(Math.max(min, count - 1));
+            setStartX(currentIndex * slideWidth + totalGap);
+          },
           disabled: count === min,
           hidden: count === min,
         }}
@@ -101,7 +117,21 @@ const Carousel = () => {
       <Controller
         direction="right"
         button={{
-          onClick: () => setCount(Math.min(max, count + 1)),
+          onClick: () => {
+            const inner = containerRef.current;
+            if (!inner || count === max) return;
+
+            const slideWidth = inner.offsetWidth / 4;
+            const currentIndex = count + 1;
+            const gap = 16 / 4;
+            const totalGap = currentIndex * gap;
+
+            inner.style.transitionDuration = "300ms";
+            inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
+
+            setCount(Math.min(max, count + 1));
+            setStartX(currentIndex * slideWidth + totalGap);
+          },
           disabled: count === max,
           hidden: count === max,
         }}
@@ -110,7 +140,7 @@ const Carousel = () => {
       <fieldset className="max-w-full overflow-hidden no-scrollbar">
         <ul
           ref={containerRef}
-          style={{ transform: `translateX(calc(calc(-25% - 4px) * ${count}))` }}
+          // style={{ transform: `translateX(calc(calc(-25% - 4px) * ${count}))` }}
           className="relative z-20 flex max-w-full snap-start flex-row items-center gap-4 transition-transform duration-500"
           onMouseDown={(e) => {
             setIsDragging(true);
@@ -134,15 +164,16 @@ const Carousel = () => {
             const walk = currentX - startX;
             const slideWidth = e.currentTarget.offsetWidth / 4;
             const firstCondition = Math.abs(walk) > slideWidth / 2;
-            const totalMoves = Math.round(Math.abs(walk) / slideWidth);
+            const currentIndex = Math.round(Math.abs(walk) / slideWidth);
 
             e.currentTarget.style.transitionDuration = "300ms";
-            e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? totalMoves : 0}))`;
+            e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
 
             const gap = 16 / 4;
-            const totalGap = totalMoves * gap;
+            const totalGap = currentIndex * gap;
 
-            setStartX(totalMoves * slideWidth + totalGap);
+            setCount(currentIndex);
+            setStartX(currentIndex * slideWidth + totalGap);
           }}
         >
           {Array.from({ length }).map((_, collectionIndex) => (
