@@ -110,7 +110,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <fieldset className="flex max-w-full flex-row items-center gap-4 overflow-scroll">
+        <fieldset className="flex max-w-full flex-row items-center gap-4 overflow-scroll no-scrollbar">
           {Array.from({ length: 8 }).map((_, collectionIndex) => (
             <article key={collectionIndex} className="min-w-[calc(25%-12px)]">
               <Image
