@@ -19,7 +19,7 @@ const config: Config = {
   },
   plugins: [
     twAnimate,
-    plugin(({ addBase }) => {
+    plugin(({ addBase, addUtilities }) => {
       addBase({
         ":root": {
           "@apply text-slate-800": {},
@@ -30,6 +30,15 @@ const config: Config = {
         },
         "h1, h2, h3": {
           fontFamily: "var(--font-playfair-display)",
+        },
+      });
+      addUtilities({
+        ".no-scrollbar::-webkit-scrollbar": {
+          "display": 'hidden',
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
         },
       });
     }),
