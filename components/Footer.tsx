@@ -15,6 +15,8 @@ import {
   Visa,
 } from "@/components/svg";
 import { ChevronDown, Mail } from "lucide-react";
+import { currencies } from "@/constants";
+import { Dropdown } from "./Dropdown";
 
 const Footer = () => {
   return (
@@ -61,10 +63,25 @@ const Footer = () => {
           {Array.from({ length: 2 }).map((_, i) => (
             <article key={i} className="relative">
               <button className="relative flex flex-row items-center rounded border border-slate-200 py-2 pl-4 pr-8 text-slate-400">
-                English <ChevronDown size={16} className="absolute right-2.5" />
+                IDR Rp <ChevronDown size={16} className="absolute right-2.5" />
               </button>
+
+              <ul className="absolute top-12 z-10 max-h-36 w-full overflow-scroll rounded bg-white text-sm no-scrollbar">
+                {!!i &&
+                  currencies.map(({ key, symbol }, currencyIndex) => (
+                    <Link
+                      href="/"
+                      key={currencyIndex}
+                      className="-mt-px block border py-2 pl-4 pr-8 text-slate-400 hover:bg-slate-100"
+                    >
+                      {key} {symbol}
+                    </Link>
+                  ))}
+              </ul>
             </article>
           ))}
+
+          <Dropdown data={currencies} label={["key", "symbol"]} value={"key"} />
         </menu>
 
         <blockquote className="text-xs text-slate-500">
