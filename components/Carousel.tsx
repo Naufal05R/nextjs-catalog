@@ -36,10 +36,11 @@ const Carousel = () => {
 
   const containerRef = React.useRef<HTMLUListElement>(null);
 
-  const length = 8;
+  const length = 8 as const;
+  const display = 4 as const;
 
   const min = 0 as const;
-  const max = length - 4;
+  const max = 4 as const;
 
   useEffect(() => {
     const onMouseMoveHandler = (e: MouseEvent) => {
@@ -84,6 +85,10 @@ const Carousel = () => {
       document.removeEventListener("mouseup", onMouseUpHandler);
     };
   }, [isDragging, startX, count]);
+
+  const getRangeItems = (value: number) => {
+    return Math.min(Math.max(0, value), length - display);
+  };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
     setIsDragging(true);
