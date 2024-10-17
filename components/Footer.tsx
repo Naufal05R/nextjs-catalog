@@ -19,39 +19,41 @@ import { Mail } from "lucide-react";
 const Footer = () => {
   return (
     <>
-      <section className={cn(padding.x, "flex flex-row items-center justify-between py-16")}>
-        <form action="">
-          <h6 className="mb-2 text-lg">Get updates</h6>
-          <fieldset className="flex flex-row flex-nowrap rounded border border-slate-200 p-1">
-            <label htmlFor="footer_subscribe" className="flex flex-1 origin-center flex-row items-center">
-              <Mail className="mx-2 text-slate-500" />
-              <input
-                id="footer_subscribe"
-                placeholder="Your email"
-                type="text"
-                className="w-full appearance-none bg-transparent text-sm font-light placeholder:text-sm focus:outline-none focus:ring-0"
-              />
-            </label>
+      <section className={cn(padding.x, "py-16")}>
+        <div className="flex w-full flex-row items-center justify-between border-y py-12">
+          <form action="">
+            <h6 className="mb-2 text-lg">Get updates</h6>
+            <fieldset className="flex flex-row flex-nowrap rounded border border-slate-200 p-1">
+              <label htmlFor="footer_subscribe" className="flex flex-1 origin-center flex-row items-center">
+                <Mail className="mx-2 text-slate-500" />
+                <input
+                  id="footer_subscribe"
+                  placeholder="Your email"
+                  type="text"
+                  className="w-full appearance-none bg-transparent text-sm font-light placeholder:text-sm focus:outline-none focus:ring-0"
+                />
+              </label>
 
-            <button className="rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50">Subscribe</button>
-          </fieldset>
-        </form>
+              <button className="rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50">Subscribe</button>
+            </fieldset>
+          </form>
 
-        <ul className="grid grid-cols-6 gap-x-8 gap-y-4">
-          {[
-            "Search",
-            "Shipping",
-            "Return and Refund",
-            "Privacy Policy",
-            "Terms of Service",
-            "Contact Us",
-            "Do not sell my personal information",
-          ].map((link, linkIndex) => (
-            <Link href="/" key={linkIndex} className="col-span-3 text-sm hover:underline lg:col-span-2">
-              {link}
-            </Link>
-          ))}
-        </ul>
+          <ul className="grid grid-cols-6 gap-x-8 gap-y-4">
+            {[
+              "Search",
+              "Shipping",
+              "Return and Refund",
+              "Privacy Policy",
+              "Terms of Service",
+              "Contact Us",
+              "Do not sell my personal information",
+            ].map((link, linkIndex) => (
+              <Link href="/" key={linkIndex} className="col-span-3 text-sm hover:underline lg:col-span-2">
+                {link}
+              </Link>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <footer className={cn(padding.x, "flex flex-row items-center justify-between py-24")}>
