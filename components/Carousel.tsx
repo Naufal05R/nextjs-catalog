@@ -20,7 +20,10 @@ const Controller = ({ direction, button }: ControllerProps) => {
     >
       <button
         {...button}
-        className={cn("h-full w-fit rounded-full bg-transparent text-slate-500 disabled:opacity-50", button?.className)}
+        className={cn(
+          "h-full w-fit rounded-full bg-transparent text-slate-500 opacity-100 transition-opacity duration-300 disabled:opacity-0",
+          button?.className,
+        )}
       >
         {direction === "left" ? <ChevronLeft size={32} strokeWidth={1} /> : <ChevronRight size={32} strokeWidth={1} />}
       </button>
@@ -147,7 +150,7 @@ const Carousel = () => {
         button={{
           onClick: () => handleSlideChange(count - 1),
           disabled: count <= min,
-          hidden: count <= min,
+          // hidden: count <= min,
         }}
       />
 
@@ -156,7 +159,7 @@ const Carousel = () => {
         button={{
           onClick: () => handleSlideChange(count + 1),
           disabled: count >= length - display,
-          hidden: count >= length - display,
+          // hidden: count >= length - display,
         }}
       />
 
