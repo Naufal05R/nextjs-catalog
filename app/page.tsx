@@ -122,9 +122,10 @@ export default function Home() {
 
         <form action="">
           <fieldset className="flex flex-row flex-nowrap rounded border border-slate-400 p-2">
-            <label htmlFor="" className="flex flex-1 origin-center flex-row items-center">
+            <label htmlFor="landingpage_subscribe" className="flex flex-1 origin-center flex-row items-center">
               <Mail className="mx-1 text-slate-800" />
               <input
+                id="landingpage_subscribe"
                 placeholder="Your email"
                 type="text"
                 className="w-full appearance-none bg-transparent text-sm font-light focus:outline-none focus:ring-0"

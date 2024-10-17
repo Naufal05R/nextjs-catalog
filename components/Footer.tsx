@@ -23,9 +23,10 @@ const Footer = () => {
         <form action="">
           <h6 className="mb-2 text-lg">Get updates</h6>
           <fieldset className="flex flex-row flex-nowrap rounded border border-slate-200 p-1">
-            <label htmlFor="" className="flex flex-1 origin-center flex-row items-center">
+            <label htmlFor="footer_subscribe" className="flex flex-1 origin-center flex-row items-center">
               <Mail className="mx-2 text-slate-500" />
               <input
+                id="footer_subscribe"
                 placeholder="Your email"
                 type="text"
                 className="w-full appearance-none bg-transparent text-sm font-light placeholder:text-sm focus:outline-none focus:ring-0"
