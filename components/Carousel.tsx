@@ -38,9 +38,7 @@ const Carousel = () => {
 
   const length = 8 as const;
   const display = 4 as const;
-
   const min = 0 as const;
-  const max = 4 as const;
 
   useEffect(() => {
     const onMouseMoveHandler = (e: MouseEvent) => {
@@ -65,7 +63,7 @@ const Carousel = () => {
       const slideWidth = inner.offsetWidth / 4;
       const firstCondition = Math.abs(walk) > slideWidth / 2;
       const secondCondition = walk !== Math.abs(walk);
-      const currentIndex = secondCondition ? Math.min(Math.max(min, Math.round(Math.abs(walk) / slideWidth)), max) : 0;
+      const currentIndex = secondCondition ? getRangeItems(Math.round(Math.abs(walk) / slideWidth)) : 0;
 
       inner.style.transitionDuration = "300ms";
       inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition && secondCondition ? currentIndex : 0}))`;
@@ -113,7 +111,7 @@ const Carousel = () => {
     const slideWidth = e.currentTarget.offsetWidth / 4;
     const firstCondition = Math.abs(walk) > slideWidth / 2;
     const secondCondition = walk !== Math.abs(walk);
-    const currentIndex = secondCondition ? Math.min(Math.max(min, Math.round(Math.abs(walk) / slideWidth)), max) : 0;
+    const currentIndex = secondCondition ? getRangeItems(Math.round(Math.abs(walk) / slideWidth)) : 0;
 
     e.currentTarget.style.transitionDuration = "300ms";
     e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition && secondCondition ? currentIndex : 0}))`;
@@ -136,9 +134,11 @@ const Carousel = () => {
     inner.style.transitionDuration = "300ms";
     inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${updatedCount}))`;
 
-    setCount(Math.min(Math.max(min, updatedCount), max));
+    setCount(getRangeItems(updatedCount));
     setStartX(updatedCount * slideWidth + totalGap);
   };
+
+  if (!containerRef) return;
 
   return (
     <article className="relative w-full">
@@ -155,8 +155,8 @@ const Carousel = () => {
         direction="right"
         button={{
           onClick: () => handleSlideChange(count + 1),
-          disabled: count >= max,
-          hidden: count >= max,
+          disabled: count >= length - display,
+          hidden: count >= length - display,
         }}
       />
 
