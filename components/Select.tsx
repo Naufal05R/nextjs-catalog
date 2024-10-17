@@ -30,20 +30,13 @@ export function Select<T extends Array<{ [key: string]: unknown }>, V extends ke
       .trim();
 
   return (
-    <SelectRoot>
+    <SelectRoot defaultValue={typeof defaultValue === "string" ? defaultValue : undefined}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <Mapper
-            data={data}
-            render={(item) => (
-              <SelectItem defaultChecked={item[value] === defaultValue} value={`${item[value]}`}>
-                {printValue(item)}
-              </SelectItem>
-            )}
-          />
+          <Mapper data={data} render={(item) => <SelectItem value={`${item[value]}`}>{printValue(item)}</SelectItem>} />
         </SelectGroup>
       </SelectContent>
     </SelectRoot>
