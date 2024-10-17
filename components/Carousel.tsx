@@ -48,8 +48,7 @@ const Carousel = () => {
 
       e.preventDefault();
 
-      const currentX = e.pageX - inner.offsetLeft;
-      const walk = currentX - startX;
+      const walk = e.pageX - startX;
 
       inner.style.transitionDuration = "0ms";
       inner.style.transform = `translateX(${walk}px)`;
@@ -61,19 +60,19 @@ const Carousel = () => {
 
       setIsDragging(false);
 
-      const currentX = e.pageX - inner.offsetLeft;
-      const walk = currentX - startX;
+      const walk = e.pageX - startX;
       const slideWidth = inner.offsetWidth / 4;
       const firstCondition = Math.abs(walk) > slideWidth / 2;
-      const currentIndex = Math.round(Math.abs(walk) / slideWidth);
+      const secondCondition = walk !== Math.abs(walk);
+      const currentIndex = secondCondition ? Math.round(Math.abs(walk) / slideWidth) : 0;
 
       inner.style.transitionDuration = "300ms";
-      inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
+      inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition && secondCondition ? currentIndex : 0}))`;
 
       const gap = 16 / 4;
       const totalGap = currentIndex * gap;
 
-      setCount(firstCondition ? count + currentIndex : count);
+      setCount(currentIndex);
       setStartX(currentIndex * slideWidth + totalGap);
     };
 
@@ -96,8 +95,7 @@ const Carousel = () => {
     if (!isDragging) return;
     e.preventDefault();
 
-    const currentX = e.pageX - e.currentTarget.offsetLeft;
-    const walk = currentX - startX;
+    const walk = e.pageX - startX;
 
     e.currentTarget.style.transitionDuration = "0ms";
     e.currentTarget.style.transform = `translateX(${walk}px)`;
@@ -106,14 +104,14 @@ const Carousel = () => {
   const handleMouseUp = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
     setIsDragging(false);
 
-    const currentX = e.pageX - e.currentTarget.offsetLeft;
-    const walk = currentX - startX;
+    const walk = e.pageX - startX;
     const slideWidth = e.currentTarget.offsetWidth / 4;
     const firstCondition = Math.abs(walk) > slideWidth / 2;
-    const currentIndex = Math.round(Math.abs(walk) / slideWidth);
+    const secondCondition = walk !== Math.abs(walk);
+    const currentIndex = secondCondition ? Math.round(Math.abs(walk) / slideWidth) : 0;
 
     e.currentTarget.style.transitionDuration = "300ms";
-    e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
+    e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition && secondCondition ? currentIndex : 0}))`;
 
     const gap = 16 / 4;
     const totalGap = currentIndex * gap;
