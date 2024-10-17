@@ -38,7 +38,7 @@ const Carousel = () => {
 
   const length = 8;
 
-  const min = 0;
+  const min = 0 as const;
   const max = length - 4;
 
   useEffect(() => {
@@ -86,26 +86,27 @@ const Carousel = () => {
     };
   }, [isDragging, startX, count]);
 
+  const handleSlideChange = (updatedCount: typeof count) => {
+    const inner = containerRef.current;
+    if (!inner) return;
+
+    const slideWidth = inner.offsetWidth / 4;
+    const gap = 16 / 4;
+    const totalGap = updatedCount * gap;
+
+    inner.style.transitionDuration = "300ms";
+    inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${updatedCount}))`;
+
+    setCount(Math.min(Math.max(min, updatedCount), max));
+    setStartX(updatedCount * slideWidth + totalGap);
+  };
+
   return (
     <article className="relative w-full">
       <Controller
         direction="left"
         button={{
-          onClick: () => {
-            const inner = containerRef.current;
-            if (!inner || count <= min) return;
-
-            const slideWidth = inner.offsetWidth / 4;
-            const currentIndex = count - 1;
-            const gap = 16 / 4;
-            const totalGap = currentIndex * gap;
-
-            inner.style.transitionDuration = "300ms";
-            inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
-
-            setCount(Math.max(min, count - 1));
-            setStartX(currentIndex * slideWidth + totalGap);
-          },
+          onClick: () => handleSlideChange(count - 1),
           disabled: count <= min,
           hidden: count <= min,
         }}
@@ -114,21 +115,7 @@ const Carousel = () => {
       <Controller
         direction="right"
         button={{
-          onClick: () => {
-            const inner = containerRef.current;
-            if (!inner || count >= max) return;
-
-            const slideWidth = inner.offsetWidth / 4;
-            const currentIndex = count + 1;
-            const gap = 16 / 4;
-            const totalGap = currentIndex * gap;
-
-            inner.style.transitionDuration = "300ms";
-            inner.style.transform = `translateX(calc(calc(-25% - 4px) * ${currentIndex}))`;
-
-            setCount(Math.min(max, count + 1));
-            setStartX(currentIndex * slideWidth + totalGap);
-          },
+          onClick: () => handleSlideChange(count + 1),
           disabled: count >= max,
           hidden: count >= max,
         }}
