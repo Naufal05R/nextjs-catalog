@@ -14,12 +14,12 @@ import {
   Venmo,
   Visa,
 } from "@/components/svg";
-import { Mail } from "lucide-react";
+import { ChevronDown, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
     <>
-      <section className={cn(padding.x, "py-16")}>
+      <section className={cn(padding.x, "pb-4 pt-16")}>
         <div className="flex w-full flex-row items-center justify-between border-y py-12">
           <form action="">
             <h6 className="mb-2 text-lg">Get updates</h6>
@@ -56,8 +56,18 @@ const Footer = () => {
         </div>
       </section>
 
-      <footer className={cn(padding.x, "flex flex-row items-center justify-between py-24")}>
-        <blockquote className="text-sm text-slate-500">
+      <footer className={cn(padding.x, "flex flex-row flex-wrap items-center justify-between gap-y-24 pb-24 pt-8")}>
+        <menu className="flex w-full flex-row gap-4">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <article key={i} className="relative">
+              <button className="relative flex flex-row items-center rounded border border-slate-200 py-2 pl-4 pr-8 text-slate-400">
+                English <ChevronDown size={16} className="absolute right-2.5" />
+              </button>
+            </article>
+          ))}
+        </menu>
+
+        <blockquote className="text-xs text-slate-500">
           <p>Copyright © {new Date().getFullYear()} LEGENDA PERMATA</p>
           <Link href="https://naufalrabbani.com" target="_blank" rel="noopener noreferrer" className="hover:underline">
             Developed by Naufal Rabbani
