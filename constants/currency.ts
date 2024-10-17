@@ -1,4 +1,6 @@
-const currencies = [
+import { defineConst } from "@/lib/utils";
+
+const currencies = defineConst([
   { key: "AUD", symbol: "$" },
   { key: "BGN", symbol: "лв" },
   { key: "BRL", symbol: "R$" },
@@ -30,6 +32,6 @@ const currencies = [
   { key: "TRY", symbol: "₺" },
   { key: "USD", symbol: "$" },
   { key: "ZAR", symbol: "R" },
-];
+] as const);
 
 export default currencies;
