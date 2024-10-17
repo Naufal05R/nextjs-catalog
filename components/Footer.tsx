@@ -16,7 +16,7 @@ import {
 } from "@/components/svg";
 import { ChevronDown, Mail } from "lucide-react";
 import { currencies } from "@/constants";
-import { Dropdown } from "./Dropdown";
+import { Select } from "./Select";
 
 const Footer = () => {
   return (
@@ -81,7 +81,7 @@ const Footer = () => {
             </article>
           ))}
 
-          <Dropdown data={currencies} label={["key", "symbol"]} value={"key"} />
+          <Select data={currencies} label={["key", "symbol"]} value={"key"} defaultValue="IDR" />
         </menu>
 
         <blockquote className="text-xs text-slate-500">
