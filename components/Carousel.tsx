@@ -150,7 +150,6 @@ const Carousel = () => {
         button={{
           onClick: () => handleSlideChange(count - 1),
           disabled: count <= min,
-          // hidden: count <= min,
         }}
       />
 
@@ -159,7 +158,6 @@ const Carousel = () => {
         button={{
           onClick: () => handleSlideChange(count + 1),
           disabled: count >= length - display,
-          // hidden: count >= length - display,
         }}
       />
 
