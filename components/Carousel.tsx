@@ -86,6 +86,42 @@ const Carousel = () => {
     };
   }, [isDragging, startX, count]);
 
+  const handleMouseDown = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+    setIsDragging(true);
+    setStartX(e.pageX + startX);
+    e.currentTarget.style.cursor = "grabbing";
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const currentX = e.pageX - e.currentTarget.offsetLeft;
+    const walk = currentX - startX;
+
+    e.currentTarget.style.transitionDuration = "0ms";
+    e.currentTarget.style.transform = `translateX(${walk}px)`;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+    setIsDragging(false);
+
+    const currentX = e.pageX - e.currentTarget.offsetLeft;
+    const walk = currentX - startX;
+    const slideWidth = e.currentTarget.offsetWidth / 4;
+    const firstCondition = Math.abs(walk) > slideWidth / 2;
+    const currentIndex = Math.round(Math.abs(walk) / slideWidth);
+
+    e.currentTarget.style.transitionDuration = "300ms";
+    e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
+
+    const gap = 16 / 4;
+    const totalGap = currentIndex * gap;
+
+    setCount(currentIndex);
+    setStartX(currentIndex * slideWidth + totalGap);
+  };
+
   const handleSlideChange = (updatedCount: typeof count) => {
     const inner = containerRef.current;
     if (!inner) return;
@@ -125,39 +161,9 @@ const Carousel = () => {
         <ul
           ref={containerRef}
           className="relative z-20 flex max-w-full snap-start flex-row items-center gap-4 transition-transform duration-500"
-          onMouseDown={(e) => {
-            setIsDragging(true);
-            setStartX(e.pageX + startX);
-            e.currentTarget.style.cursor = "grabbing";
-          }}
-          onMouseMove={(e) => {
-            if (!isDragging) return;
-            e.preventDefault();
-
-            const currentX = e.pageX - e.currentTarget.offsetLeft;
-            const walk = currentX - startX;
-
-            e.currentTarget.style.transitionDuration = "0ms";
-            e.currentTarget.style.transform = `translateX(${walk}px)`;
-          }}
-          onMouseUp={(e) => {
-            setIsDragging(false);
-
-            const currentX = e.pageX - e.currentTarget.offsetLeft;
-            const walk = currentX - startX;
-            const slideWidth = e.currentTarget.offsetWidth / 4;
-            const firstCondition = Math.abs(walk) > slideWidth / 2;
-            const currentIndex = Math.round(Math.abs(walk) / slideWidth);
-
-            e.currentTarget.style.transitionDuration = "300ms";
-            e.currentTarget.style.transform = `translateX(calc(calc(-25% - 4px) * ${firstCondition ? currentIndex : 0}))`;
-
-            const gap = 16 / 4;
-            const totalGap = currentIndex * gap;
-
-            setCount(currentIndex);
-            setStartX(currentIndex * slideWidth + totalGap);
-          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
         >
           {Array.from({ length }).map((_, collectionIndex) => (
             <li key={collectionIndex} className="min-w-[calc(25%-12px)] select-none">
