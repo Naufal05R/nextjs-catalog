@@ -5,10 +5,10 @@ import { padding } from "@/lib/styles";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className={cn(padding.x, "")}>
+    <>
       <Header />
-      {children}
+      <main className={cn(padding.x, "")}>{children}</main>
       <Footer />
-    </main>
+    </>
   );
 }
