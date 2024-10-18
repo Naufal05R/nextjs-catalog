@@ -1,11 +1,7 @@
-import React from 'react'
-
-const CollectionsPage = () => {
+export default function CollectionsPage() {
   return (
     <div>
-      Collections Page
+      <h1>Collections Page</h1>
     </div>
-  )
+  );
 }
-
-export default CollectionsPage
