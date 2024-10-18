@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import "./globals.css";
 
 const playfair_display = Playfair_Display({
@@ -27,11 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${playfair_display.variable} ${outfit.variable} bg-slate-50 antialiased`}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <body className={`${playfair_display.variable} ${outfit.variable} bg-slate-50 antialiased`}>{children}</body>
     </html>
   );
 }
