@@ -17,7 +17,7 @@ import {
 import { Mail } from "lucide-react";
 import { currencies } from "@/constants";
 import { Select } from "./Select";
-import languages from "@/constants/language";
+import { languages } from "@/constants";
 
 const Footer = () => {
   return (
