@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { padding } from "@/lib/styles";
 import Image from "@/components/Image";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
@@ -7,7 +6,7 @@ import Carousel from "@/components/Carousel";
 
 export default function Home() {
   return (
-    <main className={cn(padding.x, "")}>
+    <>
       <section className="flex flex-nowrap items-center gap-px">
         <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 w-2/3" }} />
 
@@ -136,6 +135,6 @@ export default function Home() {
           </fieldset>
         </form>
       </section>
-    </main>
+    </>
   );
 }
