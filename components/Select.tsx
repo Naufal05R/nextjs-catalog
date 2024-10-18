@@ -16,6 +16,11 @@ interface SelectProps<T extends Array<{ [key: string]: unknown }>, V extends key
   value: V;
   label: Array<keyof T[number]>;
   defaultValue?: T[number][NoInfer<V>];
+  classNames?: {
+    trigger?: string;
+    content?: string;
+    item?: string;
+  };
 }
 
 export function Select<T extends Array<{ [key: string]: unknown }>, V extends keyof T[number]>({
