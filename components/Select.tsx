@@ -40,7 +40,7 @@ export function Select<T extends Array<{ [key: string]: unknown }>, V extends ke
   return (
     <SelectRoot defaultValue={typeof defaultValue === "string" ? defaultValue : undefined}>
       <SelectTrigger
-        className={(cn("w-fit text-slate-500 shadow-none focus:ring-0"), classNames?.trigger)}
+        className={cn("w-fit text-slate-500 shadow-none focus:ring-0", classNames?.trigger)}
         icon={<ChevronDown className="ml-2.5 size-4" />}
       >
         <SelectValue placeholder="Select an option" />
