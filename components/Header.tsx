@@ -54,6 +54,10 @@ const Header = () => {
           ))}
         </ul>
       </nav>
+
+      <div className={padding.x}>
+        <hr className="mx-0.5 -mb-px" />
+      </div>
     </header>
   );
 };
