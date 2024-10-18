@@ -5,12 +5,12 @@ import Link from "next/link";
 import Carousel from "@/components/Carousel";
 
 export default function Home() {
-  return (
+return (
     <>
       <section className="flex flex-nowrap items-center gap-px">
-        <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 w-2/3" }} />
+        <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 rounded w-2/3" }} />
 
-        <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 w-1/3" }} />
+        <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
       </section>
 
       <section className="mt-16">
