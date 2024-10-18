@@ -4,7 +4,7 @@ import { Mail, Search, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import { Select } from "./Select";
-import { languages } from "@/constants";
+import { languages, navigations } from "@/constants";
 import { currencies } from "@/constants";
 
 const Header = () => {
@@ -47,9 +47,9 @@ const Header = () => {
         </menu>
 
         <ul className="flex w-full flex-row items-center justify-center">
-          {["Home", "Shop", "Guestbook", "About", "Blog", "Contact"].map((item, index) => (
-            <Link key={index} className="px-4 py-2 font-light text-slate-600 hover:underline" href="/">
-              {item}
+          {navigations.map(({ label, href }, index) => (
+            <Link key={index} href={href} className="px-4 py-2 font-light text-slate-600 hover:underline">
+              {label}
             </Link>
           ))}
         </ul>
