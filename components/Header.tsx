@@ -4,7 +4,7 @@ import { Mail, Search, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import { Select } from "./Select";
-import languages from "@/constants/language";
+import { languages } from "@/constants";
 import { currencies } from "@/constants";
 
 const Header = () => {
