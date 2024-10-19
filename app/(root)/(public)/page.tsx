@@ -3,9 +3,10 @@ import Image from "@/components/Image";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
 import Carousel from "@/components/Carousel";
+import { Collection } from "@/components/svg";
 
 export default function Home() {
-return (
+  return (
     <>
       <section className="flex flex-nowrap items-center gap-px">
         <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 rounded w-2/3" }} />
@@ -29,6 +30,7 @@ return (
                     classNames={{
                       figure: cn(pictureIndex ? "row-span-1 col-span-1" : "row-span-2 col-span-2", "aspect-square"),
                     }}
+                    FallbackComponent={Collection}
                   />
                 ))}
               </picture>
