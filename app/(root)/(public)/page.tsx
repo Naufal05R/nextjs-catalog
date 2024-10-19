@@ -1,6 +1,6 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import Carousel from "@/components/Carousel";
+import Carousel from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections } from "@/constants";
