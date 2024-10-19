@@ -3,7 +3,7 @@ import React from "react";
 
 const AboutUsPage = () => {
   return (
-    <section className="mx-auto max-w-2xl pt-16">
+    <section className="mx-auto max-w-2xl pt-8">
       <h4 className="mb-4 text-3xl">About Us</h4>
 
       <Image
