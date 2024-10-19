@@ -15,7 +15,7 @@ export default function Home() {
       </section>
 
       <section className="mt-16">
-        <h4 className="mb-4 text-2xl">Shop out collections</h4>
+        <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
           {Array.from({ length: 3 }).map((_, collectionIndex) => (
