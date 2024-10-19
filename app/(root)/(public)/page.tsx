@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
 import Image from "@/components/Image";
-import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
 import Carousel from "@/components/Carousel";
 import Collection from "@/components/Collection";
+import { ChevronRight, Mail, Star } from "lucide-react";
+import { collections } from "@/constants";
 
 export default function Home() {
   return (
@@ -18,23 +18,7 @@ export default function Home() {
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
-          {[
-            {
-              title: "Ring",
-              description: "Collection of rings",
-              href: "/collections/ring",
-            },
-            {
-              title: "Necklace",
-              description: "Collection of necklaces",
-              href: "/collections/necklace",
-            },
-            {
-              title: "Bracelets",
-              description: "Collection of bracelets",
-              href: "/collections/bracelets",
-            },
-          ].map(({ title, description, href }, collectionIndex) => (
+          {collections.map(({ title, description, href }, collectionIndex) => (
             <Collection key={collectionIndex} title={title} description={description} href={href} />
           ))}
         </ul>
