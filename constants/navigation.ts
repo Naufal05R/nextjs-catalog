@@ -24,7 +24,7 @@ const navigations = defineConst([
   {
     key: "blog",
     label: "Blog",
-    href: "/",
+    href: "/blog",
   },
   {
     key: "contact",
