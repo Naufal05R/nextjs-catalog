@@ -29,7 +29,7 @@ const navigations = defineConst([
   {
     key: "contact",
     label: "Contact",
-    href: "/",
+    href: "/contact-us",
   },
 ] as const);
 
