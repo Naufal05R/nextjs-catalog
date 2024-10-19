@@ -28,7 +28,9 @@ export default function Home() {
                     alt={`dummy_${pictureIndex + 1}`}
                     fill
                     classNames={{
-                      figure: cn(pictureIndex ? "row-span-1 col-span-1" : "row-span-2 col-span-2", "aspect-square"),
+                      figure: cn("aspect-square row-span-2 col-span-2", {
+                        "row-span-1 col-span-1": pictureIndex,
+                      }),
                     }}
                     FallbackComponent={!pictureIndex ? Collection : undefined}
                   />
