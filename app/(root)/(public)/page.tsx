@@ -3,7 +3,7 @@ import Image from "@/components/Image";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import Link from "next/link";
 import Carousel from "@/components/Carousel";
-import { Collection } from "@/components/svg";
+import Collection from "@/components/Collection";
 
 export default function Home() {
   return (
@@ -18,28 +18,24 @@ export default function Home() {
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
-          {Array.from({ length: 3 }).map((_, collectionIndex) => (
-            <li key={collectionIndex} className="flex-1 overflow-hidden rounded">
-              <picture className="grid grid-cols-3 grid-rows-2 gap-px">
-                {Array.from({ length: 3 }).map((_, pictureIndex) => (
-                  <Image
-                    key={pictureIndex}
-                    src={`/dummy_${pictureIndex + 1}.jpg`}
-                    alt={`dummy_${pictureIndex + 1}`}
-                    fill
-                    classNames={{
-                      figure: cn("aspect-square row-span-2 col-span-2", {
-                        "row-span-1 col-span-1": pictureIndex,
-                      }),
-                    }}
-                    FallbackComponent={!pictureIndex ? Collection : undefined}
-                  />
-                ))}
-              </picture>
-
-              <figcaption className="mt-4 text-lg capitalize">collections</figcaption>
-              <p className="mt-1 text-sm uppercase text-slate-500">sales words</p>
-            </li>
+          {[
+            {
+              title: "Ring",
+              description: "Sales words",
+              href: "/collections/ring",
+            },
+            {
+              title: "Necklace",
+              description: "Sales words",
+              href: "/collections/necklace",
+            },
+            {
+              title: "Bracelets",
+              description: "Sales words",
+              href: "/collections/bracelets",
+            },
+          ].map(({ title, description, href }, collectionIndex) => (
+            <Collection key={collectionIndex} title={title} description={description} href={href} />
           ))}
         </ul>
       </section>
