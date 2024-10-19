@@ -1,5 +1,13 @@
 import { defineConst } from "@/lib/utils";
 
+export interface Products {
+  title: string;
+  slug: string;
+  price: number;
+  discount: number;
+  href: string;
+}
+
 const products = defineConst([
   {
     title: "Rose Petal Ring",
