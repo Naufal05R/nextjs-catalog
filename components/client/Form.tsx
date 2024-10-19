@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Form as FormRoot,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,22 +8,31 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { Textarea } from "../ui/textarea";
 
-const FormSchema = z.object({
-  username: z.string().min(2, {
+const GuestbookFormSchema = z.object({
+  name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
+  }),
+  origin: z.string().min(2, {
+    message: "Origin must be at least 5 characters.",
+  }),
+  message: z.string().min(2, {
+    message: "Message must be at least 50 characters.",
   }),
 });
 
-export function Form() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+export function GuestbookForm() {
+  const form = useForm<z.infer<typeof GuestbookFormSchema>>({
+    resolver: zodResolver(GuestbookFormSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      origin: "",
+      message: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof GuestbookFormSchema>) {
     console.log(data);
 
     toast({
@@ -45,22 +46,60 @@ export function Form() {
   }
   return (
     <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-6 text-right">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
+              <FormLabel htmlFor="name">
+                <FormControl>
+                  <Input id="name" className="rounded-none shadow-none" placeholder="Name" {...field} />
+                </FormControl>
+              </FormLabel>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <FormField
+          control={form.control}
+          name="origin"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="origin">
+                <FormControl>
+                  <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="message">
+                <FormControl>
+                  <Textarea
+                    cols={30}
+                    rows={10}
+                    id="message"
+                    className="rounded-none shadow-none"
+                    placeholder="Message"
+                    {...field}
+                  />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="ml-auto rounded-none">
+          Send
+        </Button>
       </form>
     </FormRoot>
   );
