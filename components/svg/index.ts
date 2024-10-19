@@ -1,6 +1,7 @@
 // Placeholder Preview
 export { default as Bag } from "./placeholders/Bag.svg";
 export { default as Shoe } from "./placeholders/Shoe.svg";
+export { default as Collection } from "./placeholders/Collection.svg";
 
 // Payment Methods
 export { default as AmericanExpress } from "./payments/AmericanExpress.svg";
