@@ -104,3 +104,98 @@ export function GuestbookForm() {
     </FormRoot>
   );
 }
+
+const ContactFormSchema = z.object({
+  name: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  origin: z.string().min(2, {
+    message: "Origin must be at least 5 characters.",
+  }),
+  message: z.string().min(2, {
+    message: "Message must be at least 50 characters.",
+  }),
+});
+
+export function ContactForm() {
+  const form = useForm<z.infer<typeof ContactFormSchema>>({
+    resolver: zodResolver(ContactFormSchema),
+    defaultValues: {
+      name: "",
+      origin: "",
+      message: "",
+    },
+  });
+
+  function onSubmit(data: z.infer<typeof ContactFormSchema>) {
+    console.log(data);
+
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
+  return (
+    <FormRoot {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-6 text-right">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="name">
+                <FormControl>
+                  <Input id="name" className="rounded-none shadow-none" placeholder="Name" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="origin"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="origin">
+                <FormControl>
+                  <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="message">
+                <FormControl>
+                  <Textarea
+                    cols={30}
+                    rows={10}
+                    id="message"
+                    className="rounded-none shadow-none"
+                    placeholder="Message"
+                    {...field}
+                  />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="ml-auto rounded-none">
+          Send
+        </Button>
+      </form>
+    </FormRoot>
+  );
+}
