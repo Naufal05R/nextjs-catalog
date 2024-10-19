@@ -30,7 +30,7 @@ export default function Home() {
                     classNames={{
                       figure: cn(pictureIndex ? "row-span-1 col-span-1" : "row-span-2 col-span-2", "aspect-square"),
                     }}
-                    FallbackComponent={Collection}
+                    FallbackComponent={!pictureIndex ? Collection : undefined}
                   />
                 ))}
               </picture>
