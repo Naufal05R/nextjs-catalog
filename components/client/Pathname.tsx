@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ChevronDown, Slash } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import {
   Breadcrumb,
@@ -26,20 +26,20 @@ export function Pathname() {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="text-xs text-rose-400">
         {!!breadcrumbs.length && (
           <>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              <BreadcrumbLink href="/" className="py-4 hover:text-rose-600">
+                Home
+              </BreadcrumbLink>
             </BreadcrumbItem>
             {breadcrumbs.map((breadcrumb, index) => (
               <React.Fragment key={index}>
-                <BreadcrumbSeparator>
-                  <Slash />
-                </BreadcrumbSeparator>
+                <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 capitalize">
+                    <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
                       {breadcrumb}
                       <ChevronDown className="size-4" />
                     </DropdownMenuTrigger>
