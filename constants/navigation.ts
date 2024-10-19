@@ -14,7 +14,7 @@ const navigations = defineConst([
   {
     key: "guestbook",
     label: "Guestbook",
-    href: "/",
+    href: "/guestbook",
   },
   {
     key: "about",
