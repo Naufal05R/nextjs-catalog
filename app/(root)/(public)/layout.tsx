@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import { Toaster } from "@/components/ui/toaster";
-import { Pathname } from "@/components/client/pathname";
+import { Pathname } from "@/components/client/Pathname";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
