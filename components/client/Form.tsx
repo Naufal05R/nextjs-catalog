@@ -11,13 +11,13 @@ import { toast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
 
 const GuestbookFormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  name: z.string().min(4, {
+    message: "Name must be at least 2 characters.",
   }),
-  origin: z.string().min(2, {
+  origin: z.string().min(5, {
     message: "Origin must be at least 5 characters.",
   }),
-  message: z.string().min(2, {
+  message: z.string().min(50, {
     message: "Message must be at least 50 characters.",
   }),
 });
@@ -46,7 +46,7 @@ export function GuestbookForm() {
   }
   return (
     <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-6 text-right">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-4 text-right">
         <FormField
           control={form.control}
           name="name"
@@ -106,12 +106,20 @@ export function GuestbookForm() {
 }
 
 const ContactFormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  name: z.string().min(4, {
+    message: "Name must be at least 4 characters.",
   }),
-  origin: z.string().min(2, {
-    message: "Origin must be at least 5 characters.",
-  }),
+  email: z
+    .string()
+    .min(1, {
+      message: "Email is required.",
+    })
+    .email("This is not a valid email."),
+  phone: z
+    .string()
+    .min(7, { message: "Not a valid phone number!" })
+    .max(15, { message: "Not a valid phone number!" })
+    .regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), "Not a valid phone number!"),
   message: z.string().min(2, {
     message: "Message must be at least 50 characters.",
   }),
@@ -122,7 +130,7 @@ export function ContactForm() {
     resolver: zodResolver(ContactFormSchema),
     defaultValues: {
       name: "",
-      origin: "",
+      email: "",
       message: "",
     },
   });
@@ -141,7 +149,7 @@ export function ContactForm() {
   }
   return (
     <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-6 text-right">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-4 text-right">
         <FormField
           control={form.control}
           name="name"
@@ -158,12 +166,26 @@ export function ContactForm() {
         />
         <FormField
           control={form.control}
-          name="origin"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="origin">
+              <FormLabel htmlFor="email">
                 <FormControl>
-                  <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" {...field} />
+                  <Input id="email" className="rounded-none shadow-none" placeholder="Email" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="phone">
+                <FormControl>
+                  <Input id="phone" className="rounded-none shadow-none" placeholder="Phone" {...field} />
                 </FormControl>
               </FormLabel>
               <FormMessage />
