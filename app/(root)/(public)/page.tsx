@@ -21,17 +21,17 @@ export default function Home() {
           {[
             {
               title: "Ring",
-              description: "Sales words",
+              description: "Collection of rings",
               href: "/collections/ring",
             },
             {
               title: "Necklace",
-              description: "Sales words",
+              description: "Collection of necklaces",
               href: "/collections/necklace",
             },
             {
               title: "Bracelets",
-              description: "Sales words",
+              description: "Collection of bracelets",
               href: "/collections/bracelets",
             },
           ].map(({ title, description, href }, collectionIndex) => (
