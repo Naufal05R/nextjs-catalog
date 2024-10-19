@@ -1,6 +1,4 @@
 import Collection from "@/components/Collection";
-import Image from "@/components/Image";
-import { cn } from "@/lib/utils";
 
 export default function CollectionsPage() {
   return (
