@@ -19,7 +19,7 @@ const navigations = defineConst([
   {
     key: "about",
     label: "About",
-    href: "/",
+    href: "/about-us",
   },
   {
     key: "blog",
