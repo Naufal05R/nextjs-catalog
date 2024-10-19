@@ -1,4 +1,4 @@
-import { Form } from "@/components/client/Form";
+import { GuestbookForm } from "@/components/client/Form";
 
 export default function GuestbookPage() {
   return (
@@ -6,7 +6,7 @@ export default function GuestbookPage() {
       <h4 className="mb-4 text-3xl">Guestbook</h4>
       <p>Welcome to our Guest Book! Share your shopping experience and provide valuable feedback here.</p>
 
-      <Form />
+      <GuestbookForm />
     </section>
   );
 }
