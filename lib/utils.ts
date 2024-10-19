@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function defineConst<T extends Array<{ [key: string]: unknown }>>(fields: T): T {
   return fields;
 }
+
+export function formatPrice(price: number): string {
+  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
