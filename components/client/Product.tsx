@@ -4,9 +4,7 @@ import Image from "../Image";
 import { Product as ProductType } from "@/constants/temporary/product";
 import { formatPrice } from "@/lib/utils";
 
-interface ProductProps extends ProductType {}
-
-const Product = ({ title, price, discount, href }: ProductProps) => {
+const Product = ({ title, price, discount, href }: ProductType) => {
   return (
     <Link href={href} className="group relative col-span-3">
       <Image
