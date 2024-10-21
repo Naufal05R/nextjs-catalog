@@ -9,7 +9,12 @@ export default function Home() {
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
-        <CarouselDemo data={collections} classNames={{ root: "min-h-full w-2/3" }} />
+        <CarouselDemo
+          data={collections}
+          opts={{ loop: true }}
+          plugins={["fade"]}
+          classNames={{ root: "min-h-full w-2/3" }}
+        />
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
       </section>
