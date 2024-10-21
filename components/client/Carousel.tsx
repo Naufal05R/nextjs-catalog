@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import Fade from "embla-carousel-fade";
-import { cn } from "@/lib/utils";
-import { Carousel as CarouselRoot, CarouselContent, CarouselItem, CarouselDot } from "@/components/ui/carousel";
 import Image from "../Image";
+import Fade from "embla-carousel-fade";
+import { EmblaPluginType, EmblaOptionsType } from "embla-carousel";
+import { Carousel as CarouselRoot, CarouselContent, CarouselItem, CarouselDot } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   data: T;
@@ -12,13 +13,23 @@ interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   classNames?: {
     root?: string;
   };
+  opts?: EmblaOptionsType;
+  plugins?: Array<"fade">;
 }
 
-export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({ data, el, classNames }: CarouselProps<T>) {
+export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
+  data,
+  el,
+  opts,
+  plugins: _plugins,
+  classNames,
+}: CarouselProps<T>) {
   const { root } = classNames ?? {};
 
+  const plugins = _plugins?.includes("fade") ? [Fade()] : [];
+
   return (
-    <CarouselRoot className={cn("w-full", root)} opts={{ loop: true }} plugins={[Fade({ active: true })]}>
+    <CarouselRoot className={cn("w-full", root)} opts={opts} plugins={plugins}>
       <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
         {data.map((_, index) => (
           <CarouselItem key={index}>
