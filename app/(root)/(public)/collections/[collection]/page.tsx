@@ -24,7 +24,7 @@ export default function CollectionPage({ params }: { params: { collection: strin
 
       <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 lg:grid-cols-12">
         {products.map((product, productIndex) => (
-          <Product {...product} key={productIndex} />
+          <Product {...product} key={productIndex} classNames={{ wrapper: "col-span-3" }} />
         ))}
       </ul>
     </section>
