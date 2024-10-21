@@ -26,10 +26,10 @@ const Product = ({ title, price, discount, href, classNames }: ProductProps) => 
       />
 
       <blockquote className="mt-4">
-        <h5 className="text-sm text-slate-800">{title}</h5>
-        <p className="text-sm text-slate-500">Rp {formatPrice(price)}</p>
+        <h5 className="select-none text-sm text-slate-800">{title}</h5>
+        <p className="select-none text-sm text-slate-500">Rp {formatPrice(price)}</p>
         {discount && (
-          <p className="absolute -left-2.5 -top-4 z-20 grid w-24 -rotate-12 place-items-center whitespace-nowrap text-nowrap rounded-full bg-rose-600 px-4 py-2 text-sm font-bold text-slate-50">
+          <p className="absolute -left-2.5 -top-4 z-20 grid w-24 -rotate-12 select-none place-items-center whitespace-nowrap text-nowrap rounded-full bg-rose-600 px-4 py-2 text-sm font-bold text-slate-50">
             {discount}% Off!
           </p>
         )}
