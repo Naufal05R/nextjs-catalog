@@ -1,15 +1,15 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import Carousel from "@/components/client/Carousel";
+import { CarouselDemo } from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
-import { collections } from "@/constants";
+import { collections, products } from "@/constants";
 
 export default function Home() {
   return (
     <>
-      <section className="flex flex-nowrap items-center gap-px">
-        <Image src="/dummy_1.jpg" alt="dummy_1" fill classNames={{ figure: "h-96 rounded w-2/3" }} />
+      <section className="flex flex-nowrap items-stretch gap-px">
+        <CarouselDemo data={collections} classNames={{ root: "min-h-full w-2/3" }} />
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
       </section>
@@ -94,7 +94,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <Carousel />
+        <CarouselDemo data={products} />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
