@@ -4,7 +4,7 @@ export interface Product {
   title: string;
   slug: string;
   price: number;
-  discount: number;
+  discount?: number;
   href: string;
 }
 
