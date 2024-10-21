@@ -24,6 +24,8 @@ type CarouselContextProps = {
   api: ReturnType<typeof useEmblaCarousel>[1];
   scrollPrev: () => void;
   scrollNext: () => void;
+  scrollTo: (index: number) => void;
+  selectedIndex: number;
   canScrollPrev: boolean;
   canScrollNext: boolean;
 } & CarouselProps;
@@ -49,6 +51,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       },
       plugins,
     );
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
@@ -57,6 +60,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
         return;
       }
 
+      setSelectedIndex(api.selectedScrollSnap());
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
     }, []);
@@ -68,6 +72,13 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
     const scrollNext = React.useCallback(() => {
       api?.scrollNext();
     }, [api]);
+
+    const scrollTo = React.useCallback(
+      (index: number) => {
+        api?.scrollTo(index);
+      },
+      [api],
+    );
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -113,6 +124,8 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
           orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
+          scrollTo,
+          selectedIndex,
           canScrollPrev,
           canScrollNext,
         }}
@@ -227,5 +240,34 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
   },
 );
 CarouselNext.displayName = "CarouselNext";
+
+interface CarouselDotProps extends React.ComponentProps<typeof Button> {
+  index: number;
+}
+
+export const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
+  ({ className, variant = null, size = "icon", index, ...props }, ref) => {
+    const { scrollTo, selectedIndex } = useCarousel();
+
+    return (
+      <Button
+        ref={ref}
+        variant={variant}
+        size={size}
+        className={cn(
+          "flex h-2.5 w-2.5 rounded-full border-2 border-slate-200",
+          {
+            "bg-slate-200": selectedIndex === index,
+            "bg-transparent": selectedIndex !== index,
+          },
+          className,
+        )}
+        onClick={() => scrollTo(index)}
+        {...props}
+      />
+    );
+  },
+);
+CarouselDot.displayName = "CarouselDot";
 
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
