@@ -14,14 +14,14 @@ const Product = ({ title, price, discount, href, classNames }: ProductProps) => 
   const { wrapper } = classNames ?? {};
 
   return (
-    <Link href={href} className={cn("group relative select-none", wrapper)}>
+    <Link href={href} draggable={false} className={cn("group relative select-none", wrapper)}>
       <Image
         src={`/dummy_1.jpg`}
         alt="dummy_image"
         fill
         sizes="25vw"
         classNames={{
-          figure: "w-full aspect-square rounded transition-all",
+          figure: "w-full aspect-square rounded overflow-hidden transition-all",
         }}
       />
 
