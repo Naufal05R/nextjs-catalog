@@ -3,18 +3,28 @@
 import React from "react";
 import Image from "../Image";
 import Fade from "embla-carousel-fade";
-import { EmblaPluginType, EmblaOptionsType } from "embla-carousel";
-import { Carousel as CarouselRoot, CarouselContent, CarouselItem, CarouselDot } from "@/components/ui/carousel";
+import { EmblaOptionsType } from "embla-carousel";
+import {
+  Carousel as CarouselRoot,
+  CarouselContent,
+  CarouselItem,
+  CarouselDot,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 
 interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   data: T;
   el?: React.JSX.Element;
+  opts?: EmblaOptionsType;
+  plugins?: Array<"fade">;
+  showDots?: boolean;
+  showControllers?: boolean;
+  slidesPerView?: number;
   classNames?: {
     root?: string;
   };
-  opts?: EmblaOptionsType;
-  plugins?: Array<"fade">;
 }
 
 export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
@@ -22,17 +32,20 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
   el,
   opts,
   plugins: _plugins,
+  slidesPerView: _slidesPerView,
   classNames,
+  showDots,
 }: CarouselProps<T>) {
   const { root } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
+  const slidesPerView = Math.abs(_slidesPerView ?? 0);
 
   return (
     <CarouselRoot className={cn("w-full", root)} opts={opts} plugins={plugins}>
       <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
         {data.map((_, index) => (
-          <CarouselItem key={index}>
+          <CarouselItem key={index} style={{ flexBasis: `calc(100% / ${slidesPerView || 1})` }}>
             <div className="h-full">
               {el ? (
                 el
@@ -48,12 +61,16 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
           </CarouselItem>
         ))}
       </CarouselContent>
+      <CarouselPrevious className="max-sm:hidden" />
+      <CarouselNext className="max-sm:hidden" />
 
-      <ul className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-x-2.5">
-        {data.map((_, index) => (
-          <CarouselDot key={index} index={index} />
-        ))}
-      </ul>
+      {showDots && (
+        <ul className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-x-2.5">
+          {data.slice(slidesPerView).map((_, index) => (
+            <CarouselDot key={index} index={index} />
+          ))}
+        </ul>
+      )}
     </CarouselRoot>
   );
 }
