@@ -34,7 +34,7 @@ const config: Config = {
         "h1, h2, h3": {
           fontFamily: "var(--font-playfair-display)",
         },
-        img: {
+        "img, a": {
           "user-drag": "none",
           "-webkit-user-drag": "none",
         },
