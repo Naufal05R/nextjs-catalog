@@ -13,6 +13,7 @@ export default function Home() {
           data={collections}
           opts={{ loop: true }}
           plugins={["fade"]}
+          showDots
           classNames={{ root: "min-h-full w-2/3" }}
         />
 
@@ -99,7 +100,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <CarouselDemo data={products} />
+        <CarouselDemo data={products} opts={{ align: "start" }} slidesPerView={4} />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
