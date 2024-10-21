@@ -1,20 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Fade from "embla-carousel-fade";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { products } from "@/constants";
-import Product from "./Product";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel as CarouselRoot,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  CarouselDot,
-} from "@/components/ui/carousel";
+import { Carousel as CarouselRoot, CarouselContent, CarouselItem, CarouselDot } from "@/components/ui/carousel";
 import Image from "../Image";
 
 interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
