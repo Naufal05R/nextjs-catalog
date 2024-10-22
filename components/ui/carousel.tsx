@@ -166,18 +166,79 @@ const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>((
 });
 CarouselContent.displayName = "CarouselContent";
 
-const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => {
+type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
+type SlidesPerView = { [key in ScreensSizes]?: AvailableSlidesPerView };
+
+interface CarouselItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
+  slidesPerView?: SlidesPerView;
+  classNames?: {
+    inner?: string;
+    outer?: string;
+  };
+}
+
+const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
+  ({ slidesPerView: _slidesPerView, classNames, ...props }, ref) => {
     const { orientation } = useCarousel();
+
+    const carouselItemRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+      const breakpoints: Array<{ name: ScreensSizes; query: string }> = [
+        { name: "2xl", query: "(min-width: 1536px)" },
+        { name: "xl", query: "(min-width: 1280px)" },
+        { name: "lg", query: "(min-width: 1024px)" },
+        { name: "md", query: "(min-width: 768px)" },
+        { name: "sm", query: "(min-width: 640px)" },
+        { name: "xs", query: "(min-width: 480px)" },
+      ] as const;
+
+      const mediaQueryLists = breakpoints.map(({ query }) => window.matchMedia(query));
+
+      const getBreakpoint = () => {
+        const activeBreakpoint = breakpoints.find((_, index) => mediaQueryLists[index].matches);
+        return activeBreakpoint!.name;
+      };
+
+      const updateBreakpoint = () => {
+        const currentBreakpoint = getBreakpoint();
+        const breakpoints: Array<ScreensSizes> = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
+
+        const slidesPerView: SlidesPerView = breakpoints.reduce((acc, breakpoint, index) => {
+          acc[breakpoint] = _slidesPerView?.[breakpoint] ?? acc[breakpoints[index - 1]] ?? 1;
+          return acc;
+        }, {} as SlidesPerView);
+
+        carouselItemRef.current?.setAttribute("style", `flex-basis: calc(100% / ${slidesPerView[currentBreakpoint]});`);
+      };
+
+      mediaQueryLists.forEach((mql) => {
+        mql.addEventListener("change", updateBreakpoint);
+      });
+
+      updateBreakpoint();
+
+      return () => {
+        mediaQueryLists.forEach((mql) => {
+          mql.removeEventListener("change", updateBreakpoint);
+        });
+      };
+    });
 
     return (
       <div
-        ref={ref}
+        ref={carouselItemRef}
         role="group"
         aria-roledescription="slide"
-        className={cn("min-w-0 shrink-0 grow-0 basis-full", orientation === "horizontal" ? "pl-4" : "pt-4", className)}
-        {...props}
-      />
+        className={cn(
+          "min-w-0 shrink-0 grow-0 basis-full",
+          orientation === "horizontal" ? "pl-4" : "pt-4",
+          classNames?.outer,
+        )}
+      >
+        <div ref={ref} className={cn("size-full", classNames?.inner)} {...props} />
+      </div>
     );
   },
 );
