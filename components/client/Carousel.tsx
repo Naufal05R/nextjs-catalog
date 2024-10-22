@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 
+type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
+
 interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   data: T;
   el?: React.JSX.Element;
@@ -21,7 +24,9 @@ interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   plugins?: Array<"fade">;
   showDots?: boolean;
   showControllers?: boolean;
-  slidesPerView?: number;
+  slidesPerView?: {
+    [key in ScreensSizes]?: AvailableSlidesPerView;
+  };
   classNames?: {
     root?: string;
   };
@@ -39,13 +44,12 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
   const { root } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
-  const slidesPerView = Math.abs(_slidesPerView ?? 0);
 
   return (
     <CarouselRoot className={cn("w-full", root)} opts={opts} plugins={plugins}>
       <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
         {data.map((_, index) => (
-          <CarouselItem key={index} style={{ flexBasis: `calc(100% / ${slidesPerView || 1})` }}>
+          <CarouselItem key={index} classNames={{ outer: cn() }} slidesPerView={_slidesPerView}>
             <div className="h-full">
               {el ? (
                 el
@@ -54,7 +58,7 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
                   src={`/dummy_${(index % 3) + 1}.jpg`}
                   alt="dummy_1"
                   fill
-                  classNames={{ figure: "h-96 rounded w-full", image: "select-none" }}
+                  classNames={{ figure: "h-96 rounded w-full" }}
                 />
               )}
             </div>
@@ -66,9 +70,10 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
 
       {showDots && (
         <ul className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-x-2.5">
-          {data.slice(slidesPerView).map((_, index) => (
-            <CarouselDot key={index} index={index} />
-          ))}
+          {data /* .slice(slidesPerView) */
+            .map((_, index) => (
+              <CarouselDot key={index} index={index} />
+            ))}
         </ul>
       )}
     </CarouselRoot>
