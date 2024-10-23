@@ -9,7 +9,7 @@ import {
   Carousel as CarouselRoot,
   CarouselContent,
   CarouselItem,
-  CarouselDot,
+  CarouselDots,
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
@@ -78,11 +78,7 @@ export function Carousel<T extends Dataset>({
         </>
       )}
 
-      {showDots && (
-        <ul className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-x-2.5">
-          <Mapper data={data} render={(_, i) => <CarouselDot index={i} />} />
-        </ul>
-      )}
+      {showDots && <CarouselDots data={data} />}
     </CarouselRoot>
   );
 }
