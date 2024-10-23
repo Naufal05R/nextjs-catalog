@@ -4,6 +4,8 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Mapper from "../Mapper";
+import { Dataset } from "@/types/data";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -306,7 +308,7 @@ interface CarouselDotProps extends React.ComponentProps<typeof Button> {
   index: number;
 }
 
-export const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
+const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
   ({ className, variant = null, size = "icon", index, ...props }, ref) => {
     const { scrollTo, selectedIndex } = useCarousel();
 
@@ -330,5 +332,28 @@ export const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>
   },
 );
 CarouselDot.displayName = "CarouselDot";
+
+interface CarouselDotsProps {
+  data: Dataset;
+  classNames?: {
+    wrapper?: string;
+    dots?: string;
+  };
+}
+
+export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
+  ({ data, classNames, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-x-2.5", classNames?.wrapper)}
+        {...props}
+      >
+        <Mapper data={data} render={(_, index) => <CarouselDot index={index} className={cn("", classNames?.dots)} />} />
+      </div>
+    );
+  },
+);
+CarouselDots.displayName = "CarouselDots";
 
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
