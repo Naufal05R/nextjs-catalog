@@ -1,4 +1,5 @@
 import Product from "@/components/client/Product";
+import Mapper from "@/components/Mapper";
 import { Select } from "@/components/Select";
 import { collections } from "@/constants";
 import products from "@/constants/temporary/product";
@@ -23,9 +24,7 @@ export default function CollectionPage({ params }: { params: { collection: strin
       />
 
       <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 lg:grid-cols-12">
-        {products.map((product, productIndex) => (
-          <Product {...product} key={productIndex} classNames={{ wrapper: "col-span-3" }} />
-        ))}
+        <Mapper data={products} render={(product) => <Product {...product} classNames={{ wrapper: "col-span-3" }} />} />
       </ul>
     </section>
   );
