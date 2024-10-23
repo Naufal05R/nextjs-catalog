@@ -18,6 +18,7 @@ import { Mail } from "lucide-react";
 import { currencies } from "@/constants";
 import { Select } from "./Select";
 import { languages } from "@/constants";
+import Mapper from "./Mapper";
 
 const Footer = () => {
   return (
@@ -42,19 +43,24 @@ const Footer = () => {
           </form>
 
           <ul className="grid grid-cols-6 gap-x-8 gap-y-4">
-            {[
-              "Search",
-              "Shipping",
-              "Return and Refund",
-              "Privacy Policy",
-              "Terms of Service",
-              "Contact Us",
-              "Do not sell my personal information",
-            ].map((link, linkIndex) => (
-              <Link href="/" key={linkIndex} className="col-span-3 text-sm hover:underline lg:col-span-2">
-                {link}
-              </Link>
-            ))}
+            <Mapper
+              data={
+                [
+                  "Search",
+                  "Shipping",
+                  "Return and Refund",
+                  "Privacy Policy",
+                  "Terms of Service",
+                  "Contact Us",
+                  "Do not sell my personal information",
+                ] as const
+              }
+              render={(link) => (
+                <Link href="/" className="col-span-3 text-sm hover:underline lg:col-span-2">
+                  {link}
+                </Link>
+              )}
+            />
           </ul>
         </div>
       </section>
