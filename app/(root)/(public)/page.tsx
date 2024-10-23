@@ -56,11 +56,14 @@ export default function Home() {
             render={({ name, citizen, comment, stars, createdAt }) => (
               <article className="flex-1">
                 <ul className="flex flex-row gap-1.5">
-                  {Array.from({ length: stars }).map((_, starIndex) => (
-                    <li key={starIndex}>
-                      <Star className="size-4 fill-amber-500 stroke-amber-500" />
-                    </li>
-                  ))}
+                  <Mapper
+                    data={Array.from({ length: stars })}
+                    render={() => (
+                      <li>
+                        <Star className="size-4 fill-amber-500 stroke-amber-500" />
+                      </li>
+                    )}
+                  />
                 </ul>
 
                 <p className="mt-4 text-sm text-slate-500">{comment}</p>
