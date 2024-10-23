@@ -11,8 +11,9 @@ import {
 import Mapper from "./Mapper";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Dataset } from "@/types/data";
 
-interface SelectProps<T extends Array<{ [key: string]: unknown }>, V extends keyof T[number]> {
+interface SelectProps<T extends Dataset, V extends keyof T[number]> {
   data: T;
   value: V;
   label: Array<keyof T[number]>;
@@ -25,7 +26,7 @@ interface SelectProps<T extends Array<{ [key: string]: unknown }>, V extends key
   };
 }
 
-export function Select<T extends Array<{ [key: string]: unknown }>, V extends keyof T[number]>({
+export function Select<T extends Dataset, V extends keyof T[number]>({
   data,
   value,
   label,
