@@ -1,6 +1,5 @@
+import { Dataset } from "@/types/data";
 import React, { Children } from "react";
-
-type Dataset = Array<{ [key: string]: unknown } | unknown>;
 
 interface MapperProps<T extends Dataset> {
   data: T;
