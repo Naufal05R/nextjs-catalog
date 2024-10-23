@@ -25,9 +25,12 @@ export default function Home() {
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
-          {collections.map(({ title, description, href }, collectionIndex) => (
-            <Collection key={collectionIndex} title={title} description={description} href={href} />
-          ))}
+          <Mapper
+            data={collections}
+            render={({ title, description, href }) => (
+              <Collection title={title} description={description} href={href} />
+            )}
+          />
         </ul>
       </section>
 
