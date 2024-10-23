@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import {
   Breadcrumb,
@@ -17,7 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
+import Mapper from "../Mapper";
 
 export function Pathname() {
   const pathname = usePathname();
@@ -34,24 +35,28 @@ export function Pathname() {
                 Home
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {breadcrumbs.map((breadcrumb, index) => (
-              <React.Fragment key={index}>
-                <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
-                      {breadcrumb}
-                      <ChevronDown className="size-4" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                      <DropdownMenuItem>Documentation</DropdownMenuItem>
-                      <DropdownMenuItem>Themes</DropdownMenuItem>
-                      <DropdownMenuItem>GitHub</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </BreadcrumbItem>
-              </React.Fragment>
-            ))}
+
+            <Mapper
+              data={breadcrumbs}
+              render={(breadcrumb) => (
+                <>
+                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                  <BreadcrumbItem>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
+                        {breadcrumb}
+                        <ChevronDown className="size-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start">
+                        <DropdownMenuItem>Documentation</DropdownMenuItem>
+                        <DropdownMenuItem>Themes</DropdownMenuItem>
+                        <DropdownMenuItem>GitHub</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </BreadcrumbItem>
+                </>
+              )}
+            />
           </>
         )}
       </BreadcrumbList>
