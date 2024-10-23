@@ -14,8 +14,8 @@ export default function Home() {
           data={collections}
           opts={{ loop: true }}
           plugins={["fade"]}
+          classNames={{ root: "min-h-full w-2/3", dotsContainer: "absolute bottom-5 left-1/2 -translate-x-1/2" }}
           showDots
-          classNames={{ root: "min-h-full w-2/3" }}
         />
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />

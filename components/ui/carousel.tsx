@@ -344,11 +344,7 @@ interface CarouselDotsProps {
 export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
   ({ data, classNames, ...props }, ref) => {
     return (
-      <div
-        ref={ref}
-        className={cn("absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-x-2.5", classNames?.wrapper)}
-        {...props}
-      >
+      <div ref={ref} className={cn("z-20 flex gap-x-2.5", classNames?.wrapper)} {...props}>
         <Mapper data={data} render={(_, index) => <CarouselDot index={index} className={cn("", classNames?.dots)} />} />
       </div>
     );
