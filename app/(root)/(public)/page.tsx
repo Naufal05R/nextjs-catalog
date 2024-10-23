@@ -14,7 +14,11 @@ export default function Home() {
           data={collections}
           opts={{ loop: true }}
           plugins={["fade"]}
-          classNames={{ root: "min-h-full w-2/3", dotsContainer: "absolute bottom-5 left-1/2 -translate-x-1/2" }}
+          classNames={{
+            root: "min-h-full w-2/3",
+            dotsContainer: "absolute left-1/2 w-fit -translate-x-1/2 bottom-8 z-20",
+            dots: "flex rounded-full border-2 border-slate-200 size-2.5 basis-2.5",
+          }}
           showDots
         />
 
