@@ -74,7 +74,7 @@ export function Carousel<T extends Array<{ [key: string]: unknown }>>({
       )}
 
       {showDots && (
-        <ul className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-x-2.5">
+        <ul className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-x-2.5">
           {data /* .slice(slidesPerView) */
             .map((_, index) => (
               <CarouselDot key={index} index={index} />
