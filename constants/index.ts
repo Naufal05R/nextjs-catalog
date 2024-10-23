@@ -2,6 +2,7 @@
 export { default as currencies } from "./permanent/currency";
 export { default as languages } from "./permanent/language";
 export { default as navigations } from "./permanent/navigation";
+export { default as footers } from "./permanent/footer";
 
 // temporary const
 export { default as collections } from "./temporary/collection";
