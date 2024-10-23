@@ -59,7 +59,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       },
       plugins,
     );
-    const [dotsRef, dotsApi] = useEmblaCarousel({ align: "start", containScroll: "keepSnaps", dragFree: true });
+    const [dotsRef, dotsApi] = useEmblaCarousel({ containScroll: "keepSnaps", dragFree: true });
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
@@ -333,8 +333,11 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
         ref={ref}
         variant={variant}
         size={size}
+        role="group"
+        aria-roledescription="slide"
         className={cn(
-          "flex h-2.5 w-2.5 rounded-full border-2 border-slate-200",
+          "min-w-0 shrink-0 grow-0 basis-1/6 self-center",
+          // "flex h-2.5 w-2.5 rounded-full border-2 border-slate-200"
           {
             "bg-slate-200": selectedIndex === index,
             "bg-transparent": selectedIndex !== index,
@@ -350,22 +353,30 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
 CarouselDot.displayName = "CarouselDot";
 
 interface CarouselDotsProps {
-  data: Dataset;
   classNames?: {
     wrapper?: string;
     dots?: string;
   };
 }
 
-export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
-  ({ data, classNames, ...props }, ref) => {
-    return (
-      <div ref={ref} className={cn("z-20 flex gap-x-2.5", classNames?.wrapper)} {...props}>
-        <Mapper data={data} render={(_, index) => <CarouselDot index={index} className={cn("", classNames?.dots)} />} />
+export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ classNames, ...props }, ref) => {
+  const { dotsRef, slides } = useCarousel();
+
+  return (
+    <div className="mx-auto mt-4 max-w-2xl overflow-hidden" ref={dotsRef}>
+      <div className="flex" ref={ref}>
+        <Mapper
+          data={slides}
+          render={(_, index) => (
+            <CarouselDot index={index} className="grid place-items-center border text-xl" {...props}>
+              {index}
+            </CarouselDot>
+          )}
+        />
       </div>
-    );
-  },
-);
+    </div>
+  );
+});
 CarouselDots.displayName = "CarouselDots";
 
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
