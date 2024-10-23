@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function defineConst<T extends Array<{ [key: string]: unknown }>>(fields: T): T {
+export function defineConst<T extends Array<{ [key: string]: unknown } | unknown>>(fields: T): T {
   return fields;
 }
 
