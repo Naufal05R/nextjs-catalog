@@ -14,11 +14,12 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import Mapper from "../Mapper";
+import { Dataset } from "@/types/data";
 
 type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
 
-interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
+interface CarouselProps<T extends Dataset> {
   data: T;
   el?: React.JSX.Element;
   opts?: EmblaOptionsType;
@@ -33,7 +34,7 @@ interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   };
 }
 
-export function Carousel<T extends Array<{ [key: string]: unknown }>>({
+export function Carousel<T extends Dataset>({
   data,
   el,
   opts,
