@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { Dataset } from "@/types/data";
 import { Button } from "./ui/button";
 
 import {
@@ -15,13 +16,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Mapper from "./Mapper";
 
-interface DropdownProps<T extends Array<{ [key: string]: unknown }>> {
+interface DropdownProps<T extends Dataset> {
   data: T;
   value: keyof T[number];
   label: Array<keyof T[number]>;
 }
 
-export function Dropdown<T extends Array<{ [key: string]: unknown }>>({ data, value, label }: DropdownProps<T>) {
+export function Dropdown<T extends Dataset>({ data, value, label }: DropdownProps<T>) {
   const [position, setPosition] = React.useState("bottom");
 
   const printValue = (object: T[number]) =>
