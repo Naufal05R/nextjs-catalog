@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CarouselDemo } from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
-import { collections, products } from "@/constants";
+import { collections, products, testimonials } from "@/constants";
 import Mapper from "@/components/Mapper";
 
 export default function Home() {
@@ -49,33 +49,7 @@ export default function Home() {
 
         <fieldset className="flex flex-row flex-nowrap items-center gap-8">
           <Mapper
-            data={
-              [
-                {
-                  stars: 5,
-                  name: "Emily Toronto",
-                  citizen: "Canada",
-                  createdAt: "2023-July-10",
-                  comment:
-                    "Exceptional quality and stunning design, ideal for any occasion. I'm absolutely in love! ✨👌🏻🤍",
-                },
-                {
-                  stars: 5,
-                  name: "Mia Calgary",
-                  citizen: "Canada",
-                  createdAt: "2023-October-02",
-                  comment: "Absolutely beautiful! Just as shown, arrived quickly, and they're so charming.",
-                },
-                {
-                  stars: 5,
-                  name: "Gabriella Olivia",
-                  citizen: "New York",
-                  createdAt: "2023-September-05",
-                  comment:
-                    "These earrings are fantastic! I needed secure backs for my second holes, and these are the perfect fit—they look adorable!",
-                },
-              ] as const
-            }
+            data={testimonials}
             render={({ name, citizen, comment, stars, createdAt }) => (
               <article className="flex-1">
                 <ul className="flex flex-row gap-1.5">
