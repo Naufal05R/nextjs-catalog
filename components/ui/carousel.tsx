@@ -1,11 +1,11 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Mapper from "../Mapper";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dataset } from "@/types/data";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -16,18 +16,23 @@ type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
-  setApi?: (api: CarouselApi) => void;
+  setCarouselApi?: (api: CarouselApi) => void;
+  setDotsApi?: (api: CarouselApi) => void;
+  slides: Dataset;
 };
 
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
-  api: ReturnType<typeof useEmblaCarousel>[1];
+  dotsRef: ReturnType<typeof useEmblaCarousel>[0];
+  carouselApi: ReturnType<typeof useEmblaCarousel>[1];
+  dotsApi: ReturnType<typeof useEmblaCarousel>[1];
   scrollPrev: () => void;
   scrollNext: () => void;
   scrollTo: (index: number) => void;
   selectedIndex: number;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  slides: Dataset;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -43,41 +48,48 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>(
-  ({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }, ref) => {
-    const [carouselRef, api] = useEmblaCarousel(
+  (
+    { orientation = "horizontal", opts, setCarouselApi, setDotsApi, plugins, className, slides, children, ...props },
+    ref,
+  ) => {
+    const [carouselRef, carouselApi] = useEmblaCarousel(
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
       },
       plugins,
     );
+    const [dotsRef, dotsApi] = useEmblaCarousel({ align: "start", containScroll: "keepSnaps", dragFree: true });
+
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
-      if (!api) {
-        return;
+    const onSelect = React.useCallback(() => {
+      if (carouselApi && dotsApi) {
+        setSelectedIndex(carouselApi.selectedScrollSnap());
+        setCanScrollPrev(carouselApi.canScrollPrev());
+        setCanScrollNext(carouselApi.canScrollNext());
+        dotsApi.scrollTo(carouselApi.selectedScrollSnap());
       }
-
-      setSelectedIndex(api.selectedScrollSnap());
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
-    }, []);
+    }, [carouselApi, dotsApi]);
 
     const scrollPrev = React.useCallback(() => {
-      api?.scrollPrev();
-    }, [api]);
+      carouselApi?.scrollPrev();
+    }, [carouselApi]);
 
     const scrollNext = React.useCallback(() => {
-      api?.scrollNext();
-    }, [api]);
+      carouselApi?.scrollNext();
+    }, [carouselApi]);
 
     const scrollTo = React.useCallback(
       (index: number) => {
-        api?.scrollTo(index);
+        if (carouselApi && dotsApi) {
+          carouselApi.scrollTo(index);
+          console.log(index);
+        }
       },
-      [api],
+      [carouselApi, dotsApi],
     );
 
     const handleKeyDown = React.useCallback(
@@ -94,32 +106,30 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
     );
 
     React.useEffect(() => {
-      if (!api || !setApi) {
-        return;
+      if (carouselApi && setCarouselApi) {
+        setCarouselApi(carouselApi);
       }
-
-      setApi(api);
-    }, [api, setApi]);
+    }, [carouselApi, setCarouselApi]);
 
     React.useEffect(() => {
-      if (!api) {
-        return;
+      if (carouselApi) {
+        onSelect();
+        carouselApi.on("reInit", onSelect);
+        carouselApi.on("select", onSelect);
+
+        return () => {
+          carouselApi?.off("select", onSelect);
+        };
       }
-
-      onSelect(api);
-      api.on("reInit", onSelect);
-      api.on("select", onSelect);
-
-      return () => {
-        api?.off("select", onSelect);
-      };
-    }, [api, onSelect]);
+    }, [carouselApi, , onSelect]);
 
     return (
       <CarouselContext.Provider
         value={{
           carouselRef,
-          api: api,
+          dotsRef,
+          carouselApi,
+          dotsApi,
           opts,
           orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
@@ -128,6 +138,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
           selectedIndex,
           canScrollPrev,
           canScrollNext,
+          slides,
         }}
       >
         <div
@@ -154,7 +165,7 @@ interface CarouselContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>
 }
 
 const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(({ classNames, ...props }, ref) => {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef, dotsRef, scrollTo, orientation, slides } = useCarousel();
 
   return (
     <div ref={carouselRef} className={cn("overflow-hidden", classNames?.outer)}>
@@ -187,45 +198,50 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
     const carouselItemRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-      const breakpoints: Array<{ name: ScreensSizes; query: string }> = [
-        { name: "2xl", query: "(min-width: 1536px)" },
-        { name: "xl", query: "(min-width: 1280px)" },
-        { name: "lg", query: "(min-width: 1024px)" },
-        { name: "md", query: "(min-width: 768px)" },
-        { name: "sm", query: "(min-width: 640px)" },
-        { name: "xs", query: "(min-width: 480px)" },
-      ] as const;
+      if (_slidesPerView) {
+        const breakpoints: Array<{ name: ScreensSizes; query: string }> = [
+          { name: "2xl", query: "(min-width: 1536px)" },
+          { name: "xl", query: "(min-width: 1280px)" },
+          { name: "lg", query: "(min-width: 1024px)" },
+          { name: "md", query: "(min-width: 768px)" },
+          { name: "sm", query: "(min-width: 640px)" },
+          { name: "xs", query: "(min-width: 480px)" },
+        ] as const;
 
-      const mediaQueryLists = breakpoints.map(({ query }) => window.matchMedia(query));
+        const mediaQueryLists = breakpoints.map(({ query }) => window.matchMedia(query));
 
-      const getBreakpoint = () => {
-        const activeBreakpoint = breakpoints.find((_, index) => mediaQueryLists[index].matches);
-        return activeBreakpoint!.name;
-      };
+        const getBreakpoint = () => {
+          const activeBreakpoint = breakpoints.find((_, index) => mediaQueryLists[index].matches);
+          return activeBreakpoint!.name;
+        };
 
-      const updateBreakpoint = () => {
-        const currentBreakpoint = getBreakpoint();
-        const breakpoints: Array<ScreensSizes> = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
+        const updateBreakpoint = () => {
+          const currentBreakpoint = getBreakpoint();
+          const breakpoints: Array<ScreensSizes> = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
 
-        const slidesPerView: SlidesPerView = breakpoints.reduce((acc, breakpoint, index) => {
-          acc[breakpoint] = _slidesPerView?.[breakpoint] ?? acc[breakpoints[index - 1]] ?? 1;
-          return acc;
-        }, {} as SlidesPerView);
+          const slidesPerView: SlidesPerView = breakpoints.reduce((acc, breakpoint, index) => {
+            acc[breakpoint] = _slidesPerView?.[breakpoint] ?? acc[breakpoints[index - 1]] ?? 1;
+            return acc;
+          }, {} as SlidesPerView);
 
-        carouselItemRef.current?.setAttribute("style", `flex-basis: calc(100% / ${slidesPerView[currentBreakpoint]});`);
-      };
+          carouselItemRef.current?.setAttribute(
+            "style",
+            `flex-basis: calc(100% / ${slidesPerView[currentBreakpoint]});`,
+          );
+        };
 
-      mediaQueryLists.forEach((mql) => {
-        mql.addEventListener("change", updateBreakpoint);
-      });
-
-      updateBreakpoint();
-
-      return () => {
         mediaQueryLists.forEach((mql) => {
-          mql.removeEventListener("change", updateBreakpoint);
+          mql.addEventListener("change", updateBreakpoint);
         });
-      };
+
+        updateBreakpoint();
+
+        return () => {
+          mediaQueryLists.forEach((mql) => {
+            mql.removeEventListener("change", updateBreakpoint);
+          });
+        };
+      }
     });
 
     return (
