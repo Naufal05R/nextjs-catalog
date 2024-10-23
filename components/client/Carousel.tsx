@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "../Image";
 import Fade from "embla-carousel-fade";
+import { cn } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel as CarouselRoot,
@@ -12,7 +13,6 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 
 type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
@@ -39,6 +39,7 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
   plugins: _plugins,
   slidesPerView: _slidesPerView,
   classNames,
+  showControllers,
   showDots,
 }: CarouselProps<T>) {
   const { root } = classNames ?? {};
@@ -65,8 +66,12 @@ export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="max-sm:hidden" />
-      <CarouselNext className="max-sm:hidden" />
+      {showControllers && (
+        <>
+          <CarouselPrevious className="max-sm:hidden" />
+          <CarouselNext className="max-sm:hidden" />
+        </>
+      )}
 
       {showDots && (
         <ul className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-x-2.5">
