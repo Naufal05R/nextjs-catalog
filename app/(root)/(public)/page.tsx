@@ -1,6 +1,6 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import { CarouselDemo } from "@/components/client/Carousel";
+import { Carousel } from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, products, testimonials } from "@/constants";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
-        <CarouselDemo
+        <Carousel
           data={collections}
           opts={{ loop: true }}
           plugins={["fade"]}
@@ -83,12 +83,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <CarouselDemo
-          data={products}
-          opts={{ align: "start" }}
-          slidesPerView={{ sm: 2, lg: 3, xl: 4 }}
-          showControllers
-        />
+        <Carousel data={products} opts={{ align: "start" }} slidesPerView={{ sm: 2, lg: 3, xl: 4 }} showControllers />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">

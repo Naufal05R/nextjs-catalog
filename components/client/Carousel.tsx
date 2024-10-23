@@ -32,7 +32,7 @@ interface CarouselProps<T extends Array<{ [key: string]: unknown }>> {
   };
 }
 
-export function CarouselDemo<T extends Array<{ [key: string]: unknown }>>({
+export function Carousel<T extends Array<{ [key: string]: unknown }>>({
   data,
   el,
   opts,
