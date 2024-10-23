@@ -83,7 +83,12 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <CarouselDemo data={products} opts={{ align: "start" }} slidesPerView={{ sm: 2, lg: 3, xl: 4 }} />
+        <CarouselDemo
+          data={products}
+          opts={{ align: "start" }}
+          slidesPerView={{ sm: 2, lg: 3, xl: 4 }}
+          showControllers
+        />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
