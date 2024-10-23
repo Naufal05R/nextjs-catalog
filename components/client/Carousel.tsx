@@ -31,6 +31,8 @@ interface CarouselProps<T extends Dataset> {
   };
   classNames?: {
     root?: string;
+    dotsContainer?: string;
+    dots?: string;
   };
 }
 
@@ -44,28 +46,24 @@ export function Carousel<T extends Dataset>({
   showControllers,
   showDots,
 }: CarouselProps<T>) {
-  const { root } = classNames ?? {};
+  const { root, dots, dotsContainer } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
 
   return (
-    <CarouselRoot className={cn("w-full", root)} opts={opts} plugins={plugins}>
+    <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
       <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
         <Mapper
           data={data}
           render={(_, i) => (
             <CarouselItem classNames={{ outer: cn() }} slidesPerView={_slidesPerView}>
               <div className="h-full">
-                {el ? (
-                  el
-                ) : (
-                  <Image
-                    src={`/dummy_${(i % 3) + 1}.jpg`}
-                    alt="dummy_1"
-                    fill
-                    classNames={{ figure: "h-96 rounded w-full" }}
-                  />
-                )}
+                <Image
+                  src={`/dummy_${(i % 3) + 1}.jpg`}
+                  classNames={{ figure: "h-96 rounded w-full" }}
+                  alt="dummy_1"
+                  fill
+                />
               </div>
             </CarouselItem>
           )}
@@ -78,7 +76,7 @@ export function Carousel<T extends Dataset>({
         </>
       )}
 
-      {showDots && <CarouselDots data={data} />}
+      {showDots && <CarouselDots el={el} classNames={{ wrapper: dotsContainer, dots }} />}
     </CarouselRoot>
   );
 }
