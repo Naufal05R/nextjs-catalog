@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import Mapper from "../Mapper";
 
 type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
@@ -49,22 +50,25 @@ export function Carousel<T extends Array<{ [key: string]: unknown }>>({
   return (
     <CarouselRoot className={cn("w-full", root)} opts={opts} plugins={plugins}>
       <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
-        {data.map((_, index) => (
-          <CarouselItem key={index} classNames={{ outer: cn() }} slidesPerView={_slidesPerView}>
-            <div className="h-full">
-              {el ? (
-                el
-              ) : (
-                <Image
-                  src={`/dummy_${(index % 3) + 1}.jpg`}
-                  alt="dummy_1"
-                  fill
-                  classNames={{ figure: "h-96 rounded w-full" }}
-                />
-              )}
-            </div>
-          </CarouselItem>
-        ))}
+        <Mapper
+          data={data}
+          render={(_, i) => (
+            <CarouselItem classNames={{ outer: cn() }} slidesPerView={_slidesPerView}>
+              <div className="h-full">
+                {el ? (
+                  el
+                ) : (
+                  <Image
+                    src={`/dummy_${(i % 3) + 1}.jpg`}
+                    alt="dummy_1"
+                    fill
+                    classNames={{ figure: "h-96 rounded w-full" }}
+                  />
+                )}
+              </div>
+            </CarouselItem>
+          )}
+        />
       </CarouselContent>
       {showControllers && (
         <>
@@ -75,10 +79,7 @@ export function Carousel<T extends Array<{ [key: string]: unknown }>>({
 
       {showDots && (
         <ul className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-x-2.5">
-          {data /* .slice(slidesPerView) */
-            .map((_, index) => (
-              <CarouselDot key={index} index={index} />
-            ))}
+          <Mapper data={data} render={(_, i) => <CarouselDot index={i} />} />
         </ul>
       )}
     </CarouselRoot>
