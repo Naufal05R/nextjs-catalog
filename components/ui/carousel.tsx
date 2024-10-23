@@ -48,10 +48,7 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>(
-  (
-    { orientation = "horizontal", opts, setCarouselApi, setDotsApi, plugins, className, slides, children, ...props },
-    ref,
-  ) => {
+  ({ orientation = "horizontal", opts, setCarouselApi, plugins, className, slides, children, ...props }, ref) => {
     const [carouselRef, carouselApi] = useEmblaCarousel(
       {
         ...opts,
@@ -165,7 +162,7 @@ interface CarouselContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>
 }
 
 const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(({ classNames, ...props }, ref) => {
-  const { carouselRef, dotsRef, scrollTo, orientation, slides } = useCarousel();
+  const { carouselRef, orientation } = useCarousel();
 
   return (
     <div ref={carouselRef} className={cn("overflow-hidden", classNames?.outer)}>
