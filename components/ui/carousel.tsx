@@ -336,8 +336,7 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
         role="group"
         aria-roledescription="slide"
         className={cn(
-          "min-w-0 shrink-0 grow-0 basis-1/6 self-center",
-          // "flex h-2.5 w-2.5 rounded-full border-2 border-slate-200"
+          "min-w-0 shrink-0 grow-0 basis-1/6",
           {
             "bg-slate-200": selectedIndex === index,
             "bg-transparent": selectedIndex !== index,
@@ -353,23 +352,24 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
 CarouselDot.displayName = "CarouselDot";
 
 interface CarouselDotsProps {
+  el?: React.JSX.Element;
   classNames?: {
     wrapper?: string;
     dots?: string;
   };
 }
 
-export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ classNames, ...props }, ref) => {
+export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ el, classNames, ...props }, ref) => {
   const { dotsRef, slides } = useCarousel();
 
   return (
-    <div className="mx-auto mt-4 max-w-2xl overflow-hidden" ref={dotsRef}>
-      <div className="flex" ref={ref}>
+    <div className={cn("mx-auto mt-4 w-full max-w-2xl overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
+      <div className="flex items-stretch gap-x-2" ref={ref}>
         <Mapper
           data={slides}
           render={(_, index) => (
-            <CarouselDot index={index} className="grid place-items-center border text-xl" {...props}>
-              {index}
+            <CarouselDot index={index} className={cn("size-fit border text-xl", classNames?.dots)} {...props}>
+              {el}
             </CarouselDot>
           )}
         />
