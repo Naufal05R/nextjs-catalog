@@ -5,6 +5,7 @@ import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, products, testimonials } from "@/constants";
 import Mapper from "@/components/Mapper";
+import { formatPrice } from "@/lib/utils";
 
 export default function Home() {
   return (
@@ -94,6 +95,24 @@ export default function Home() {
           data={products}
           opts={{ align: "start", breakpoints: {} }}
           responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}
+          slidesElement={
+            <Link href="/" draggable={false} className="select-none">
+              <Image
+                src={`/dummy_1.jpg`}
+                alt="dummy_image"
+                fill
+                sizes="25vw"
+                classNames={{
+                  figure: "w-full aspect-square rounded overflow-hidden transition-all",
+                }}
+              />
+
+              <blockquote className="mt-4">
+                <h5 className="select-none text-sm text-slate-800">Cincin Batu Air</h5>
+                <p className="select-none text-sm text-slate-500">Rp {formatPrice(1250000)}</p>
+              </blockquote>
+            </Link>
+          }
           showControllers
         />
       </section>
