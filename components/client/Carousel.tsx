@@ -15,9 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import Mapper from "../Mapper";
 import { Dataset } from "@/types/data";
-
-type ScreensSizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-type AvailableSlidesPerView = 1 | 2 | 3 | 4 | 5 | 6 | 12 | "1" | "2" | "3" | "4" | "5" | "6" | "12";
+import { ResponsiveArgs } from "@/types/carousel";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
@@ -26,9 +24,7 @@ interface CarouselProps<T extends Dataset> {
   plugins?: Array<"fade">;
   showDots?: boolean;
   showControllers?: boolean;
-  slidesPerView?: {
-    [key in ScreensSizes]?: AvailableSlidesPerView;
-  };
+  responsiveArgs?: ResponsiveArgs;
   classNames?: {
     root?: string;
     dotsContainer?: string;
@@ -41,7 +37,7 @@ export function Carousel<T extends Dataset>({
   el,
   opts,
   plugins: _plugins,
-  slidesPerView: _slidesPerView,
+  responsiveArgs,
   classNames,
   showControllers,
   showDots,
@@ -52,11 +48,11 @@ export function Carousel<T extends Dataset>({
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>
+      <CarouselContent classNames={{ outer: "", inner: "h-full" }}>
         <Mapper
           data={data}
           render={(_, i) => (
-            <CarouselItem classNames={{ outer: cn() }} slidesPerView={_slidesPerView}>
+            <CarouselItem classNames={{ outer: cn() }} responsiveArgs={responsiveArgs}>
               <div className="h-full">
                 <Image
                   src={`/dummy_${(i % 3) + 1}.jpg`}
