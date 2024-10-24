@@ -15,7 +15,7 @@ const page = ({ params }: { params: { collection: string; product: string } }) =
           data={products}
           plugins={["fade"]}
           showDots
-          el={
+          dotsElement={
             <Image
               src={"/dummy_1.jpg"}
               alt="dummy_1"
