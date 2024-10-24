@@ -90,7 +90,12 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <Carousel data={products} opts={{ align: "start" }} slidesPerView={{ sm: 2, lg: 3, xl: 4 }} showControllers />
+        <Carousel
+          data={products}
+          opts={{ align: "start", breakpoints: {} }}
+          responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}
+          showControllers
+        />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
