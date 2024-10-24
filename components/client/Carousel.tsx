@@ -19,7 +19,8 @@ import { ResponsiveArgs } from "@/types/carousel";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
-  el?: React.JSX.Element;
+  slidesElement?: React.JSX.Element;
+  dotsElement?: React.JSX.Element;
   opts?: EmblaOptionsType;
   plugins?: Array<"fade">;
   showDots?: boolean;
@@ -34,7 +35,8 @@ interface CarouselProps<T extends Dataset> {
 
 export function Carousel<T extends Dataset>({
   data,
-  el,
+  slidesElement,
+  dotsElement,
   opts,
   plugins: _plugins,
   responsiveArgs,
@@ -54,12 +56,14 @@ export function Carousel<T extends Dataset>({
           render={(_, i) => (
             <CarouselItem classNames={{ outer: cn() }} responsiveArgs={responsiveArgs}>
               <div className="h-full">
-                <Image
-                  src={`/dummy_${(i % 3) + 1}.jpg`}
-                  classNames={{ figure: "h-96 rounded w-full" }}
-                  alt="dummy_1"
-                  fill
-                />
+                {slidesElement ?? (
+                  <Image
+                    src={`/dummy_${(i % 3) + 1}.jpg`}
+                    classNames={{ figure: "h-96 rounded w-full" }}
+                    alt="dummy_1"
+                    fill
+                  />
+                )}
               </div>
             </CarouselItem>
           )}
@@ -72,7 +76,7 @@ export function Carousel<T extends Dataset>({
         </>
       )}
 
-      {showDots && <CarouselDots el={el} classNames={{ wrapper: dotsContainer, dots }} />}
+      {showDots && <CarouselDots el={dotsElement} classNames={{ wrapper: dotsContainer, dots }} />}
     </CarouselRoot>
   );
 }
