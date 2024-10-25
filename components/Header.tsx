@@ -8,7 +8,7 @@ import { languages, navigations } from "@/constants";
 import { currencies } from "@/constants";
 import Mapper from "./Mapper";
 
-const Header = () => {
+export const PublicHeader = () => {
   return (
     <header className="w-full">
       <p className="bg-slate-300 py-2 text-center text-xs font-normal">
@@ -65,5 +65,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;
