@@ -6,13 +6,20 @@ import Link from "next/link";
 import { Copy, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
-const page = ({ params }: { params: { collection: string; product: string } }) => {
-  const product = products.find((product) => product.slug === params.product);
+const page = async ({ params }: { params: { collection: string; product: string } }) => {
+  const product = await prisma.product.findUnique({ where: { slug: params.product } }); // products.find((product) => product.slug === params.product);
 
   const getRandomIntBetween1And3 = () => {
     return Math.floor(Math.random() * 3) + 1;
   };
+
+  if (!product) {
+    console.log(product);
+    notFound();
+  }
 
   return (
     <>
