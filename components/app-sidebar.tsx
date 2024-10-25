@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AudioWaveform, Boxes, Command, Frame, GalleryVerticalEnd, Map, Newspaper, PieChart } from "lucide-react";
+import { ArchiveX, AudioWaveform, Boxes, Command, GalleryVerticalEnd, Newspaper } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
@@ -9,7 +9,6 @@ import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 
-// This is sample data.
 const data = {
   user: {
     name: "shadcn",
@@ -61,19 +60,14 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "Products",
       url: "#",
-      icon: Frame,
+      icon: ArchiveX,
     },
     {
-      name: "Sales & Marketing",
+      name: "Blogs",
       url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      icon: ArchiveX,
     },
   ],
 };
