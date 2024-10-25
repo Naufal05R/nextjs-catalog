@@ -14,6 +14,10 @@ export function formatPrice(price: number): string {
   return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+export function capitalize(str: string, lower = false) {
+  return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
+}
+
 export function handlingError(error: unknown) {
   if (error instanceof Error) {
     console.error(error.message);
