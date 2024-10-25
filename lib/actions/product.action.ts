@@ -2,7 +2,7 @@
 
 import { ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError } from "../../../nextjs-catalog/lib/utils";
+import { handlingError } from "../utils";
 
 export const createProduct = async (formData: FormData) => {
   const raw = {
