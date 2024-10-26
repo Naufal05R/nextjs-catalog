@@ -40,7 +40,11 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "New Product",
+          title: "Shappire",
+          url: "#",
+        },
+        {
+          title: "Amethyst",
           url: "#",
         },
       ],
@@ -52,7 +56,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "New Blog",
+          title: "Permata Indah",
           url: "#",
         },
       ],
