@@ -15,6 +15,7 @@ export const createProductCollection = async (formData: FormData) => {
 
     try {
       const { title } = validated.data;
+      console.log(title);
       const newCollection = await prisma.collection.create({
         data: {
           title,
