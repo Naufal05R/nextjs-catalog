@@ -13,7 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Dialog } from "./server/Dialog";
+import { Dialog } from "./client/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { createProductCollection } from "@/lib/actions/product.action";
