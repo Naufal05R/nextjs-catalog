@@ -18,8 +18,8 @@ export function capitalize(str: string, lower = false) {
   return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
 }
 
-export function slugify(str: string) {
-  return str.toLowerCase().trim().replace(/\s+/g, "-");
+export function slugify<T extends string>(str: T): `${Lowercase<T>}` {
+  return str.toLowerCase().trim().replace(/\s+/g, "-") as `${Lowercase<T>}`;
 }
 
 export function handlingError(error: unknown) {
