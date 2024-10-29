@@ -4,7 +4,7 @@ import { CollectionSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { handlingError } from "../utils";
 
-export const createProductCollection = async (formData: FormData) => {
+export const createProductCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
   };
@@ -15,12 +15,13 @@ export const createProductCollection = async (formData: FormData) => {
 
     try {
       const { title } = validated.data;
-      console.log(title);
       const newCollection = await prisma.collection.create({
         data: {
           title,
         },
       });
+
+      return newCollection.title;
     } catch (error) {
       handlingError(error);
     }
