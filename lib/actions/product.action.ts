@@ -1,8 +1,32 @@
 "use server";
 
-import { ProductSchema } from "@/schema/product";
+import { CollectionSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { handlingError } from "../utils";
+
+export const createProductCollection = async (formData: FormData) => {
+  const raw = {
+    title: formData.get("title"),
+  };
+  const validated = CollectionSchema.safeParse(raw);
+
+  if (validated.success) {
+    console.log(validated);
+
+    try {
+      const { title } = validated.data;
+      const newCollection = await prisma.collection.create({
+        data: {
+          title,
+        },
+      });
+    } catch (error) {
+      handlingError(error);
+    }
+  } else {
+    handlingError(validated.error);
+  }
+};
 
 export const createProduct = async (formData: FormData) => {
   const raw = {
@@ -14,8 +38,6 @@ export const createProduct = async (formData: FormData) => {
   const validated = ProductSchema.safeParse(raw);
 
   if (validated.success) {
-    console.log(validated);
-
     try {
       const product = validated.data;
       const newProduct = await prisma.product.create({
@@ -27,10 +49,10 @@ export const createProduct = async (formData: FormData) => {
 
       // return newProduct;
     } catch (error) {
-      console.log(error);
+      handlingError(error);
     }
   } else {
-    console.log(validated.error);
+    handlingError(validated.error);
   }
 };
 

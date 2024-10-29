@@ -16,7 +16,7 @@ import {
 import { Dialog } from "./server/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { createProductCategory } from "@/lib/actions/product.action";
+import { createProductCollection } from "@/lib/actions/product.action";
 
 export function NavMain({
   items,
@@ -59,10 +59,10 @@ export function NavMain({
                   ))}
                   <SidebarMenuSubItem>
                     <Dialog
-                      actionHandler={createProductCategory}
+                      actionHandler={createProductCollection}
                       trigger={{ title: `New ${item.title}`, element: SidebarMenuSubButton }}
                       content={{
-                        title: `Create New ${item.title} Category`,
+                        title: `Create New ${item.title} Collection`,
                         element: (
                           <fieldset className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor={item.title} className="text-left">

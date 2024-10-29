@@ -1,7 +1,7 @@
 import { capitalize } from "@/lib/utils";
 import { z } from "zod";
 
-export const CategorySchema = z.object({
+export const CollectionSchema = z.object({
   title: z
     .string()
     .min(3, {
