@@ -4,6 +4,6 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type Replace<S extends string, T extends string, U extends string> = S extends `${infer Start}${T}${infer End}`
-  ? `${Start}${U}${End}`
+type Replace<S extends string, T extends string, U extends string> = S extends `${infer Start}${T}${infer Rest}`
+  ? `${Start}${U}${Replace<Rest, T, U>}`
   : S;
