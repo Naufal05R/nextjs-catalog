@@ -25,7 +25,7 @@ model Product {
   updatedAt   DateTime @updatedAt
 }
 
-model Category {
+model Collection {
   id    String @unique @default(cuid())
   title String @db.VarChar(32)
 }
