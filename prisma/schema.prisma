@@ -27,5 +27,6 @@ model Product {
 
 model Collection {
   id    String @unique @default(cuid())
-  title String @unique @db.VarChar(32)
+  title String @unique @db.VarChar(64)
+  url   String @unique @db.VarChar(64)
 }
