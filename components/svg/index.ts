@@ -14,3 +14,6 @@ export { default as PayPal } from "./payments/PayPal.svg";
 export { default as UnionPay } from "./payments/UnionPay.svg";
 export { default as Venmo } from "./payments/Venmo.svg";
 export { default as Visa } from "./payments/Visa.svg";
+
+// Social Media
+export { default as Whatsapp } from "./social/Whatsapp.svg";
