@@ -13,10 +13,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Dialog } from "./client/Dialog";
+import { CreateCollectionDialog } from "./client/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { createProductCollection } from "@/lib/actions/product.action";
 
 export function NavMain({
   items,
@@ -58,8 +57,7 @@ export function NavMain({
                     </SidebarMenuSubItem>
                   ))}
                   <SidebarMenuSubItem>
-                    <Dialog
-                      actionHandler={createProductCollection}
+                    <CreateCollectionDialog
                       trigger={{ title: `New ${item.title}`, element: SidebarMenuSubButton }}
                       content={{
                         title: `Create New ${item.title} Collection`,
