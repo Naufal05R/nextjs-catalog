@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog as DialogRoot,
@@ -8,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormHTMLAttributes } from "react";
+import { FormHTMLAttributes, useState } from "react";
 
 interface DialogProps {
   actionHandler: FormHTMLAttributes<HTMLFormElement>["action"];
@@ -24,6 +26,8 @@ interface DialogProps {
 }
 
 export function Dialog({ actionHandler, trigger, content }: DialogProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <DialogRoot>
       <DialogTrigger asChild>
