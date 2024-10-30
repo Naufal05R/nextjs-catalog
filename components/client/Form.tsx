@@ -192,3 +192,7 @@ export function ContactForm() {
     </FormRoot>
   );
 }
+
+export function CreateProductForm() {
+  
+}

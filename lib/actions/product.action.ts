@@ -1,6 +1,6 @@
 "use server";
 
-import { ProductSchema } from "@/schema/product";
+import { ProductFormSchema } from "@/schema/product";
 import { CollectionFormSchema } from "@/schema/collection";
 import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
@@ -39,7 +39,7 @@ export const createProduct = async (formData: FormData) => {
     price: formData.get("price"),
     discount: formData.get("discount"),
   };
-  const validated = ProductSchema.safeParse(raw);
+  const validated = ProductFormSchema.safeParse(raw);
 
   if (validated.success) {
     try {
