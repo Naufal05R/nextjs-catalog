@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 
 import { Pathname } from "@/components/client/Pathname";
 import { PublicHeader } from "@/components/Header";
-import { Toaster } from "@/components/ui/toaster";
 import { padding } from "@/lib/styles";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +14,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         <Pathname />
         {children}
       </main>
-      <Toaster />
       <Footer />
     </>
   );
