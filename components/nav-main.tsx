@@ -60,7 +60,7 @@ export function NavMain({
                     <CreateCollectionDialog
                       trigger={{ title: `New ${item.title}`, element: SidebarMenuSubButton }}
                       content={{
-                        title: `Create New ${item.title} Collection`,
+                        title: `Create New ${item.title}`,
                         element: (
                           <fieldset className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor={item.title} className="text-left">

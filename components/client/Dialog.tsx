@@ -65,7 +65,7 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
         if (!open) setTemporaryState("");
       }}
     >
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="hover:cursor-pointer">
         <trigger.element>{trigger.title}</trigger.element>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
