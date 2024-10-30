@@ -28,3 +28,13 @@ export const createCollection = async (prevState: string | undefined, formData: 
     handlingError(validated.error);
   }
 };
+
+export const getAllCollection = async () => {
+  try {
+    const allCollections = await prisma.collection.findMany();
+
+    return allCollections;
+  } catch (error) {
+    handlingError(error);
+  }
+};
