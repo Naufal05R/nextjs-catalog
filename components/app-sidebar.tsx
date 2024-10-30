@@ -90,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 isActive: true,
                 items: data.map(({ title, slug }) => ({
                   title: title,
-                  url: `dashboard/collections/${slug}`,
+                  url: `/dashboard/products/${slug}`,
                 })),
               },
               ...prevState.navMain.filter((item) => item.title !== "Products"),
