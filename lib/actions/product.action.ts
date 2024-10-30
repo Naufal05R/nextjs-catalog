@@ -19,7 +19,7 @@ export const createProductCollection = async (prevState: string | undefined, for
       const newCollection = await prisma.collection.create({
         data: {
           title,
-          url: slugify(title),
+          slug: slugify(title),
         },
       });
 
