@@ -1,4 +1,4 @@
-import { capitalize } from "@/lib/utils";
+import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
 
 export const CollectionSchema = z.object({
@@ -12,9 +12,15 @@ export const CollectionSchema = z.object({
       message: "Title must be less than 64 characters",
     })
     .transform((val) => capitalize(val)),
-  slug: z.string().min(3, {
-    message: "Url must be at least 3 characters",
-  }),
+  slug: z
+    .string()
+    .min(3, {
+      message: "Slug must be at least 3 characters",
+    })
+    .max(64, {
+      message: "Slug must be less than 64 characters",
+    })
+    .transform((val) => slugify(val)),
 });
 
 export const CollectionFormSchema = CollectionSchema.pick({
