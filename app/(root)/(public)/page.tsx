@@ -1,13 +1,17 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import { Carousel } from "@/components/client/Carousel";
+import { Carousel, CarouselFeatured } from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
-import { collections, products, testimonials } from "@/constants";
+import { collections, testimonials } from "@/constants";
 import Mapper from "@/components/Mapper";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
+import { getAllProduct } from "@/lib/actions/product.action";
+import { CarouselItem } from "@/components/ui/carousel";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProduct();
+
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
@@ -91,30 +95,7 @@ export default function Home() {
           </Link>
         </hgroup>
 
-        <Carousel
-          data={products}
-          opts={{ align: "start", breakpoints: {} }}
-          responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}
-          slidesElement={
-            <Link href="/" draggable={false} className="select-none">
-              <Image
-                src={`/dummy_1.jpg`}
-                alt="dummy_image"
-                fill
-                sizes="25vw"
-                classNames={{
-                  figure: "w-full aspect-square rounded overflow-hidden transition-all",
-                }}
-              />
-
-              <blockquote className="mt-4">
-                <h5 className="select-none text-sm text-slate-800">Cincin Batu Air</h5>
-                <p className="select-none text-sm text-slate-500">Rp {formatPrice(1250000)}</p>
-              </blockquote>
-            </Link>
-          }
-          showControllers
-        />
+        {products && <CarouselFeatured data={products} />}
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
