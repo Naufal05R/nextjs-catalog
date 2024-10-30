@@ -2,7 +2,7 @@ import { CollectionFormSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 
-export const createProductCollection = async (prevState: string | undefined, formData: FormData) => {
+export const createCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
   };

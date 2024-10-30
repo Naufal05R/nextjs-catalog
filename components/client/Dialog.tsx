@@ -12,10 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { createProductCollection } from "@/lib/actions/product.action";
 import { Boxes, CircleCheck } from "lucide-react";
 import { useSidebar } from "../ui/sidebar";
 import { slugify } from "@/lib/utils";
+import { createCollection } from "@/lib/actions/collection.action";
 
 interface DialogProps {
   trigger: {
@@ -30,7 +30,7 @@ interface DialogProps {
 }
 
 export function CreateCollectionDialog({ trigger, content }: DialogProps) {
-  const [collection, formAction, isLoading] = useFormState(createProductCollection, "");
+  const [collection, formAction, isLoading] = useFormState(createCollection, "");
   const [open, setOpen] = useState(false);
   const [temporaryState, setTemporaryState] = useState<typeof collection>("");
   const { setNavigations } = useSidebar();
