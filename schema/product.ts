@@ -1,14 +1,4 @@
-import { capitalize } from "@/lib/utils";
 import { z } from "zod";
-
-export const CollectionSchema = z.object({
-  title: z
-    .string()
-    .min(3, {
-      message: "Title must be at least 3 characters",
-    })
-    .transform((val) => capitalize(val)),
-});
 
 export const ProductSchema = z.object({
   title: z.string().min(5, {
