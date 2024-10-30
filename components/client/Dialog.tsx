@@ -13,7 +13,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { createProductCollection } from "@/lib/actions/product.action";
-import { CircleCheck } from "lucide-react";
+import { Boxes, CircleCheck } from "lucide-react";
+import { useSidebar } from "../ui/sidebar";
+import { slugify } from "@/lib/utils";
 
 interface DialogProps {
   trigger: {
@@ -31,10 +33,27 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
   const [collection, formAction, isLoading] = useFormState(createProductCollection, "");
   const [open, setOpen] = useState(false);
   const [temporaryState, setTemporaryState] = useState<typeof collection>("");
+  const { setNavigations } = useSidebar();
 
   useEffect(() => {
     if (collection) {
       setTemporaryState(collection);
+      setNavigations((prevState) => ({
+        ...prevState,
+        navMain: [
+          {
+            title: "Products",
+            url: `/dashboard/products`,
+            icon: Boxes,
+            isActive: true,
+            items: [
+              ...prevState.navMain[0].items,
+              { title: collection, url: `/dashboard/products/${slugify(collection)}` },
+            ],
+          },
+          ...prevState.navMain.filter((item) => item.title !== "Products"),
+        ],
+      }));
     }
   }, [collection]);
 
