@@ -2,7 +2,7 @@
 
 import { CollectionSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError } from "../utils";
+import { handlingError, slugify } from "../utils";
 
 export const createProductCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
@@ -18,6 +18,7 @@ export const createProductCollection = async (prevState: string | undefined, for
       const newCollection = await prisma.collection.create({
         data: {
           title,
+          url: slugify(title),
         },
       });
 
@@ -45,7 +46,7 @@ export const createProduct = async (formData: FormData) => {
       const newProduct = await prisma.product.create({
         data: {
           ...product,
-          slug: product.title.toLowerCase().trim().replace(/\s+/g, "-"),
+          slug: slugify(product.title),
         },
       });
 
