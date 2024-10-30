@@ -12,6 +12,7 @@ import { Textarea } from "../ui/textarea";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
+import { ProductFormSchema } from "@/schema/product";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -194,5 +195,93 @@ export function ContactForm() {
 }
 
 export function CreateProductForm() {
-  
+  const form = useForm<z.infer<typeof ProductFormSchema>>({
+    resolver: zodResolver(ProductFormSchema),
+  });
+
+  const onSubmit = (data: z.infer<typeof ProductFormSchema>) => {
+    console.log(data);
+
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  };
+
+  return (
+    <FormRoot {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 grid w-full grid-cols-12 gap-4 text-right">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem className="col-span-12">
+              <FormLabel htmlFor="title">
+                <FormControl>
+                  <Input id="title" className="rounded-none shadow-none" placeholder="Product Title" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem className="col-span-6">
+              <FormLabel htmlFor="price">
+                <FormControl>
+                  <Input id="price" className="rounded-none shadow-none" placeholder="Product Price" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="discount"
+          render={({ field }) => (
+            <FormItem className="col-span-6">
+              <FormLabel htmlFor="discount">
+                <FormControl>
+                  <Input id="discount" className="rounded-none shadow-none" placeholder="Product Discount" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="col-span-12">
+              <FormLabel htmlFor="description">
+                <FormControl>
+                  <Textarea
+                    id="description"
+                    className="rounded-none shadow-none"
+                    placeholder="Product Description"
+                    rows={10}
+                    {...field}
+                  />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="col-span-12 flex w-full rounded-none">
+          Save
+        </Button>
+      </form>
+    </FormRoot>
+  );
 }
