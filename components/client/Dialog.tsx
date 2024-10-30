@@ -55,7 +55,7 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
         ],
       }));
     }
-  }, [collection]);
+  }, [collection, setNavigations]);
 
   return (
     <DialogRoot
