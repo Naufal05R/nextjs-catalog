@@ -13,6 +13,7 @@ import { Textarea } from "../ui/textarea";
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
+import { createProduct } from "@/lib/actions/product.action";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -199,11 +200,13 @@ export function CreateProductForm() {
     resolver: zodResolver(ProductFormSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof ProductFormSchema>) => {
-    console.log(data);
+  const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
+    console.log(params);
+
+    const data = await createProduct(params);
 
     toast({
-      title: "You submitted the following values:",
+      title: "Product Created:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
