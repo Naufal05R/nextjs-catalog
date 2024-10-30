@@ -38,16 +38,7 @@ const data = {
       url: "#",
       icon: Boxes,
       isActive: true,
-      items: [
-        {
-          title: "Shappire",
-          url: "#",
-        },
-        {
-          title: "Amethyst",
-          url: "#",
-        },
-      ],
+      items: [],
     },
     {
       title: "Blogs",
@@ -77,17 +68,43 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [navigations, setNavigations] = React.useState(data);
+
+  React.useEffect(() => {
+    (async function () {
+      const response = await fetch("/api/list/collection");
+      const { data } = await response.json();
+
+      setNavigations({
+        ...navigations,
+        navMain: [
+          {
+            title: "Products",
+            url: "/dashboard/products",
+            icon: Boxes,
+            isActive: true,
+            items: data.map((category) => ({
+              title: category.title,
+              url: `dashboard/collections/${category.url}`,
+            })),
+          },
+          ...navigations.navMain.filter((item) => item.title !== "Products"),
+        ],
+      });
+    })();
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={navigations.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={navigations.navMain} />
+        <NavProjects projects={navigations.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={navigations.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
