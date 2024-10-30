@@ -1,6 +1,7 @@
 "use server";
 
-import { CollectionSchema, ProductSchema } from "@/schema/product";
+import { ProductSchema } from "@/schema/product";
+import { CollectionFormSchema } from "@/schema/collection";
 import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
 
@@ -8,7 +9,7 @@ export const createProductCollection = async (prevState: string | undefined, for
   const raw = {
     title: formData.get("title"),
   };
-  const validated = CollectionSchema.safeParse(raw);
+  const validated = CollectionFormSchema.safeParse(raw);
 
   if (validated.success) {
     console.log(validated);
