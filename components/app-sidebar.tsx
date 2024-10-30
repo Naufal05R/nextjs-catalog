@@ -8,6 +8,8 @@ import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
+import { CollectionsSchema } from "@/schema/collection";
+import { handlingError } from "@/lib/utils";
 
 const data = {
   user: {
@@ -72,25 +74,34 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   React.useEffect(() => {
     (async function () {
-      const response = await fetch("/api/list/collection");
-      const { data } = await response.json();
+      try {
+        const response = await fetch("/api/list/collection");
+        const { data: rawApiData } = await response.json();
+        const { success, error, data } = CollectionsSchema.safeParse(rawApiData);
 
-      setNavigations({
-        ...navigations,
-        navMain: [
-          {
-            title: "Products",
-            url: "/dashboard/products",
-            icon: Boxes,
-            isActive: true,
-            items: data.map((category) => ({
-              title: category.title,
-              url: `dashboard/collections/${category.url}`,
-            })),
-          },
-          ...navigations.navMain.filter((item) => item.title !== "Products"),
-        ],
-      });
+        if (success) {
+          setNavigations({
+            ...navigations,
+            navMain: [
+              {
+                title: "Products",
+                url: "/dashboard/products",
+                icon: Boxes,
+                isActive: true,
+                items: data.map(({ title, slug }) => ({
+                  title: title,
+                  url: `dashboard/collections/${slug}`,
+                })),
+              },
+              ...navigations.navMain.filter((item) => item.title !== "Products"),
+            ],
+          });
+        } else {
+          handlingError(error);
+        }
+      } catch (error) {
+        handlingError(error);
+      }
     })();
   }, []);
 
