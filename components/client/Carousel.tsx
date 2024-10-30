@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "../Image";
 import Fade from "embla-carousel-fade";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel as CarouselRoot,
@@ -16,10 +16,12 @@ import {
 import Mapper from "../Mapper";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
+import Link from "next/link";
+import { Product } from "@prisma/client";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
-  slidesElement?: React.JSX.Element;
+  slides: React.JSX.Element;
   dotsElement?: React.JSX.Element;
   opts?: EmblaOptionsType;
   plugins?: Array<"fade">;
@@ -33,42 +35,24 @@ interface CarouselProps<T extends Dataset> {
   };
 }
 
-export function Carousel<T extends Dataset>({
+export const Carousel = <T extends Dataset>({
   data,
-  slidesElement,
+  slides,
   dotsElement,
   opts,
   plugins: _plugins,
-  responsiveArgs,
+
   classNames,
   showControllers,
   showDots,
-}: CarouselProps<T>) {
+}: CarouselProps<T>) => {
   const { root, dots, dotsContainer } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent classNames={{ outer: "", inner: "h-full" }}>
-        <Mapper
-          data={data}
-          render={(_, i) => (
-            <CarouselItem classNames={{ outer: cn() }} responsiveArgs={responsiveArgs}>
-              <div className="h-full">
-                {slidesElement ?? (
-                  <Image
-                    src={`/dummy_${(i % 3) + 1}.jpg`}
-                    classNames={{ figure: "h-96 rounded w-full" }}
-                    alt="dummy_1"
-                    fill
-                  />
-                )}
-              </div>
-            </CarouselItem>
-          )}
-        />
-      </CarouselContent>
+      <CarouselContent classNames={{ outer: "", inner: "h-full" }}>{slides}</CarouselContent>
       {showControllers && (
         <>
           <CarouselPrevious className="max-sm:hidden" />
@@ -79,4 +63,44 @@ export function Carousel<T extends Dataset>({
       {showDots && <CarouselDots el={dotsElement} classNames={{ wrapper: dotsContainer, dots }} />}
     </CarouselRoot>
   );
-}
+};
+
+export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
+  return (
+    <Carousel
+      data={data}
+      opts={{ align: "start", breakpoints: {} }}
+      showControllers
+      slides={
+        <Mapper
+          data={data}
+          render={({ title, price, slug }) => (
+            <CarouselItem
+              classNames={{ outer: cn() }}
+              responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}
+            >
+              <div className="h-full">
+                <Link href={`/products/${slug}`} draggable={false} className="select-none">
+                  <Image
+                    src={`/dummy_1.jpg`}
+                    alt="dummy_image"
+                    fill
+                    sizes="25vw"
+                    classNames={{
+                      figure: "w-full aspect-square rounded overflow-hidden transition-all",
+                    }}
+                  />
+
+                  <blockquote className="mt-4">
+                    <h5 className="select-none text-sm text-slate-800">{title}</h5>
+                    <p className="select-none text-sm text-slate-500">Rp {formatPrice(price)}</p>
+                  </blockquote>
+                </Link>
+              </div>
+            </CarouselItem>
+          )}
+        />
+      }
+    />
+  );
+};
