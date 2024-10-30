@@ -40,7 +40,7 @@ const initialNavigations = {
   ],
   navMain: [
     {
-      title: "Products",
+      title: "Collections",
       url: "#",
       icon: Boxes,
       isActive: true,
@@ -158,7 +158,7 @@ const SidebarProvider = React.forwardRef<
             ...prevState,
             navMain: [
               {
-                title: "Products",
+                title: "Collections",
                 url: "/dashboard/products",
                 icon: Boxes,
                 isActive: true,
@@ -167,7 +167,7 @@ const SidebarProvider = React.forwardRef<
                   url: `/dashboard/products/${slug}`,
                 })),
               },
-              ...prevState.navMain.filter((item) => item.title !== "Products"),
+              ...prevState.navMain.filter((item) => item.title !== "Collections"),
             ],
           }));
         } else {

@@ -42,7 +42,7 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
         ...prevState,
         navMain: [
           {
-            title: "Products",
+            title: "Collections",
             url: `/dashboard/products`,
             icon: Boxes,
             isActive: true,
@@ -51,7 +51,7 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
               { title: collection, url: `/dashboard/products/${slugify(collection)}` },
             ],
           },
-          ...prevState.navMain.filter((item) => item.title !== "Products"),
+          ...prevState.navMain.filter((item) => item.title !== "Collections"),
         ],
       }));
     }
