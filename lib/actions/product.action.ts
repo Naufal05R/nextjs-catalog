@@ -4,6 +4,7 @@ import { ProductFormSchema } from "@/schema/product";
 import { CollectionFormSchema } from "@/schema/collection";
 import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
+import { z } from "zod";
 
 export const createProductCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
@@ -32,13 +33,7 @@ export const createProductCollection = async (prevState: string | undefined, for
   }
 };
 
-export const createProduct = async (formData: FormData) => {
-  const raw = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-    price: formData.get("price"),
-    discount: formData.get("discount"),
-  };
+export const createProduct = async (raw: z.infer<typeof ProductFormSchema>) => {
   const validated = ProductFormSchema.safeParse(raw);
 
   if (validated.success) {
@@ -51,7 +46,7 @@ export const createProduct = async (formData: FormData) => {
         },
       });
 
-      // return newProduct;
+      return newProduct;
     } catch (error) {
       handlingError(error);
     }
