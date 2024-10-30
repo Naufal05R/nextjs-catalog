@@ -80,8 +80,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         const { success, error, data } = CollectionsSchema.safeParse(rawApiData);
 
         if (success) {
-          setNavigations({
-            ...navigations,
+          setNavigations((prevState) => ({
+            ...prevState,
             navMain: [
               {
                 title: "Products",
@@ -93,9 +93,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   url: `dashboard/collections/${slug}`,
                 })),
               },
-              ...navigations.navMain.filter((item) => item.title !== "Products"),
+              ...prevState.navMain.filter((item) => item.title !== "Products"),
             ],
-          });
+          }));
         } else {
           handlingError(error);
         }
