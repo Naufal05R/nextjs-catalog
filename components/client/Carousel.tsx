@@ -30,6 +30,7 @@ interface CarouselProps<T extends Dataset> {
   responsiveArgs?: ResponsiveArgs;
   classNames?: {
     root?: string;
+    dotsWrapper?: string;
     dotsContainer?: string;
     dots?: string;
   };
@@ -46,13 +47,13 @@ export const Carousel = <T extends Dataset>({
   showControllers,
   showDots,
 }: CarouselProps<T>) => {
-  const { root, dots, dotsContainer } = classNames ?? {};
+  const { root, dots, dotsContainer, dotsWrapper } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>{slides}</CarouselContent>
+      <CarouselContent>{slides}</CarouselContent>
       {showControllers && (
         <>
           <CarouselPrevious className="max-sm:hidden" />
@@ -60,7 +61,9 @@ export const Carousel = <T extends Dataset>({
         </>
       )}
 
-      {showDots && <CarouselDots el={dotsElement} classNames={{ wrapper: dotsContainer, dots }} />}
+      {showDots && (
+        <CarouselDots el={dotsElement} classNames={{ wrapper: dotsWrapper, container: dotsContainer, dots }} />
+      )}
     </CarouselRoot>
   );
 };
@@ -69,11 +72,10 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
   return (
     <Carousel
       data={data}
-      opts={{ align: "start", breakpoints: {} }}
-      showControllers
+      opts={{ align: "start", loop: true }}
       plugins={["fade"]}
       showDots
-      classNames={{ dots: "text-2xl" }}
+      classNames={{ dotsWrapper: "-mt-8", dotsContainer: "justify-center", dots: "basis-3 border-2" }}
       slides={
         <Mapper
           data={data}
@@ -86,7 +88,7 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
                   fill
                   sizes="25vw"
                   classNames={{
-                    figure: "size-full rounded overflow-hidden transition-all",
+                    figure: "h-96 w-full rounded overflow-hidden transition-all",
                   }}
                 />
               </Link>
@@ -129,6 +131,48 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
           )}
         />
       }
+    />
+  );
+};
+
+export const CarouselDetail = ({
+  data,
+  classNames,
+}: {
+  data: Product;
+  classNames?: Pick<CarouselProps<Dataset>, "classNames">["classNames"];
+}) => {
+  return (
+    <Carousel
+      data={[data, data, data, data, data]}
+      plugins={["fade"]}
+      showDots
+      slides={
+        <Mapper
+          data={[data, data, data, data, data]}
+          render={(_, i) => (
+            <CarouselItem>
+              <Image
+                src={`/dummy_${(i % 3) + 1}.jpg`}
+                alt={`dummy_${(i % 3) + 1}`}
+                fill
+                sizes="50vw"
+                classNames={{ figure: "aspect-square rounded w-full" }}
+              />
+            </CarouselItem>
+          )}
+        />
+      }
+      dotsElement={
+        <Image
+          src={"/dummy_1.jpg"}
+          alt="dummy_1"
+          fill
+          sizes="10vw"
+          classNames={{ figure: "aspect-square rounded w-full" }}
+        />
+      }
+      classNames={classNames}
     />
   );
 };
