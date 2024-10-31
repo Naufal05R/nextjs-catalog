@@ -8,8 +8,8 @@ export const ProductSchema = z.object({
     .min(3, {
       message: "Title must be at least 3 characters",
     })
-    .max(64, {
-      message: "Title must be less than 64 characters",
+    .max(63, {
+      message: "Title must be less than 63 characters",
     })
     .transform((val) => capitalize(val)),
   slug: z
@@ -17,8 +17,8 @@ export const ProductSchema = z.object({
     .min(3, {
       message: "Slug must be at least 3 characters",
     })
-    .max(64, {
-      message: "Slug must be less than 64 characters",
+    .max(63, {
+      message: "Slug must be less than 63 characters",
     })
     .transform((val) => slugify(val)),
   description: z.string().min(50, {
