@@ -1,3 +1,5 @@
+"use server";
+
 import { CollectionFormSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
