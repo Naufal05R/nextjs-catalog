@@ -195,15 +195,13 @@ export function ContactForm() {
   );
 }
 
-export function CreateProductForm() {
+export function CreateProductForm({ collection }: { collection: string }) {
   const form = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
   });
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    console.log(params);
-
-    const data = await createProduct(params);
+    const data = await createProduct({ params, collection });
 
     toast({
       title: "Product Created:",
@@ -234,9 +232,23 @@ export function CreateProductForm() {
         />
         <FormField
           control={form.control}
+          name="state"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="state">
+                <FormControl>
+                  <Input id="state" className="rounded-none shadow-none" placeholder="Product Origin" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="price"
           render={({ field }) => (
-            <FormItem className="col-span-6">
+            <FormItem className="col-span-4">
               <FormLabel htmlFor="price">
                 <FormControl>
                   <Input id="price" className="rounded-none shadow-none" placeholder="Product Price" {...field} />
@@ -250,7 +262,7 @@ export function CreateProductForm() {
           control={form.control}
           name="discount"
           render={({ field }) => (
-            <FormItem className="col-span-6">
+            <FormItem className="col-span-4">
               <FormLabel htmlFor="discount">
                 <FormControl>
                   <Input id="discount" className="rounded-none shadow-none" placeholder="Product Discount" {...field} />
