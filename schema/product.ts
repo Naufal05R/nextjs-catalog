@@ -21,9 +21,6 @@ export const ProductSchema = z.object({
       message: "Slug must be less than 63 characters",
     })
     .transform((val) => slugify(val)),
-  description: z.string().min(50, {
-    message: "Description must be at least 50 characters",
-  }),
   state: z
     .string()
     .min(3, {
@@ -31,6 +28,14 @@ export const ProductSchema = z.object({
     })
     .max(63, {
       message: "Original State must be less than 63 characters",
+    }),
+  color: z
+    .string()
+    .min(3, {
+      message: "Color must be described at least 3 characters",
+    })
+    .max(63, {
+      message: "Color must be described less than 63 characters",
     }),
   width: z.preprocess(
     (val) => Number(val),
@@ -60,14 +65,6 @@ export const ProductSchema = z.object({
       .multipleOf(0.01)
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
-  color: z
-    .string()
-    .min(3, {
-      message: "Color must be described at least 3 characters",
-    })
-    .max(63, {
-      message: "Color must be described less than 63 characters",
-    }),
   price: z.preprocess((val) => Number(val), z.number().min(1, { message: "Price must be in positive number" })),
   discount: z
     .preprocess(
@@ -78,6 +75,9 @@ export const ProductSchema = z.object({
         .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
     )
     .optional(),
+  description: z.string().min(50, {
+    message: "Description must be at least 50 characters",
+  }),
   isReady: z.boolean().default(true),
   collectionId: z.string().cuid(),
   createdAt: z.date().default(() => new Date()),
@@ -86,13 +86,13 @@ export const ProductSchema = z.object({
 
 export const ProductFormSchema = ProductSchema.pick({
   title: true,
-  description: true,
-  price: true,
-  discount: true,
   state: true,
+  color: true,
   width: true,
   height: true,
   length: true,
   weight: true,
-  color: true,
+  price: true,
+  discount: true,
+  description: true,
 });
