@@ -284,7 +284,7 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
         role="group"
         aria-roledescription="slide"
         className={cn(
-          "min-w-0 shrink-0 grow-0 basis-1/6",
+          "min-w-0 shrink-0 grow-0",
           {
             "bg-slate-200": selectedIndex === index,
             "bg-transparent": selectedIndex !== index,
@@ -312,11 +312,11 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
 
   return (
     <div className={cn("mx-auto mt-4 w-full max-w-2xl overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
-      <div className="flex items-stretch gap-x-2" ref={ref}>
+      <div className="flex items-stretch justify-center gap-x-2" ref={ref}>
         <Mapper
           data={slides}
           render={(_, index) => (
-            <CarouselDot index={index} className={cn("size-fit border text-xl", classNames?.dots)} {...props}>
+            <CarouselDot index={index} className={cn("h-4 basis-4 border text-xl", classNames?.dots)} {...props}>
               {el}
             </CarouselDot>
           )}
