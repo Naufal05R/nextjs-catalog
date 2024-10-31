@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { PrivateHeader } from "@/components/Header";
+import { PrivateHeader } from "@/components/server/Header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {
