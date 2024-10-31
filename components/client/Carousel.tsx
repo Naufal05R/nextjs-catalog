@@ -17,7 +17,7 @@ import Mapper from "../Mapper";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
 import Link from "next/link";
-import { Product } from "@prisma/client";
+import { Collection, Product } from "@prisma/client";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
@@ -52,7 +52,7 @@ export const Carousel = <T extends Dataset>({
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent classNames={{ outer: "", inner: "h-full" }}>{slides}</CarouselContent>
+      <CarouselContent classNames={{ outer: "h-full", inner: "h-full" }}>{slides}</CarouselContent>
       {showControllers && (
         <>
           <CarouselPrevious className="max-sm:hidden" />
@@ -62,6 +62,39 @@ export const Carousel = <T extends Dataset>({
 
       {showDots && <CarouselDots el={dotsElement} classNames={{ wrapper: dotsContainer, dots }} />}
     </CarouselRoot>
+  );
+};
+
+export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
+  return (
+    <Carousel
+      data={data}
+      opts={{ align: "start", breakpoints: {} }}
+      showControllers
+      plugins={["fade"]}
+      showDots
+      classNames={{ dots: "text-2xl" }}
+      slides={
+        <Mapper
+          data={data}
+          render={({ slug }, i) => (
+            <CarouselItem>
+              <Link href={`/collections/${slug}`} draggable={false} className="select-none">
+                <Image
+                  src={`/dummy_${(i % 3) + 1}.jpg`}
+                  alt="dummy_image"
+                  fill
+                  sizes="25vw"
+                  classNames={{
+                    figure: "size-full rounded overflow-hidden transition-all",
+                  }}
+                />
+              </Link>
+            </CarouselItem>
+          )}
+        />
+      }
+    />
   );
 };
 
@@ -75,28 +108,23 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
         <Mapper
           data={data}
           render={({ title, price, slug }) => (
-            <CarouselItem
-              classNames={{ outer: cn() }}
-              responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}
-            >
-              <div className="h-full">
-                <Link href={`/products/${slug}`} draggable={false} className="select-none">
-                  <Image
-                    src={`/dummy_1.jpg`}
-                    alt="dummy_image"
-                    fill
-                    sizes="25vw"
-                    classNames={{
-                      figure: "w-full aspect-square rounded overflow-hidden transition-all",
-                    }}
-                  />
+            <CarouselItem responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
+              <Link href={`/products/${slug}`} draggable={false} className="select-none">
+                <Image
+                  src={`/dummy_1.jpg`}
+                  alt="dummy_image"
+                  fill
+                  sizes="25vw"
+                  classNames={{
+                    figure: "w-full aspect-square rounded overflow-hidden transition-all",
+                  }}
+                />
 
-                  <blockquote className="mt-4">
-                    <h5 className="select-none text-sm text-slate-800">{title}</h5>
-                    <p className="select-none text-sm text-slate-500">Rp {formatPrice(price)}</p>
-                  </blockquote>
-                </Link>
-              </div>
+                <blockquote className="mt-4">
+                  <h5 className="select-none text-sm text-slate-800">{title}</h5>
+                  <p className="select-none text-sm text-slate-500">Rp {formatPrice(price)}</p>
+                </blockquote>
+              </Link>
             </CarouselItem>
           )}
         />
