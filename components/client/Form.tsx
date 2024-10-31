@@ -14,6 +14,8 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 import { createProduct } from "@/lib/actions/product.action";
+import { GripVertical, Image, Pencil, Trash } from "lucide-react";
+import { Label } from "../ui/label";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -359,8 +361,8 @@ export function CreateProductForm({ collection }: { collection: string }) {
           />
         </fieldset>
 
-        <fieldset className="col-span-12">
-          <h6 className="col-span-2 mb-1 text-lg font-medium">Product Description</h6>
+        <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
+          <h6 className="-order-2 mb-1 text-lg font-medium">Product Description</h6>
           <FormField
             control={form.control}
             name="description"
@@ -381,7 +383,53 @@ export function CreateProductForm({ collection }: { collection: string }) {
               </FormItem>
             )}
           />
+          <h6 className="-order-1 mb-1 text-lg font-medium">Product Image</h6>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  htmlFor="image"
+                  className="flex aspect-video w-full items-center justify-center border-4 border-dashed"
+                >
+                  <Image className="size-2/3 text-gray-200" strokeWidth={0.35} />
+                  <FormControl>
+                    <Input id="image" type="file" className="hidden" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </fieldset>
+
+        <ul className="col-span-12 flex flex-col gap-y-2.5">
+          <h6 className="-order-1 mb-1 text-lg font-medium">Uploaded Images</h6>
+
+          <li className="flex w-full items-center gap-x-2 rounded-md border p-2.5">
+            <Button variant={"ghost"} className="aspect-square">
+              <GripVertical className="text-slate-400" />
+            </Button>
+
+            <Label htmlFor="image-title-1" className="flex-1 text-slate-400">
+              <Input
+                id="image-title-1"
+                className="rounded-none border-none shadow-none focus-visible:ring-0"
+                defaultValue="cincin-batu-akik-bulan-purnama"
+              />
+            </Label>
+
+            <div className="flex items-center gap-x-2">
+              <Button variant={"ghost"} className="aspect-square">
+                <Pencil className="text-slate-400" />
+              </Button>
+              <Button variant={"ghost"} className="aspect-square">
+                <Trash className="text-slate-400" />
+              </Button>
+            </div>
+          </li>
+        </ul>
 
         <Button type="submit" className="col-span-12 flex w-full rounded-none">
           Save
