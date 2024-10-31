@@ -1,6 +1,5 @@
 import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
-import { CollectionSchema } from "./collection";
 
 export const ProductSchema = z.object({
   id: z.string().cuid(),
