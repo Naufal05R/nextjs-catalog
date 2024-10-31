@@ -1,5 +1,6 @@
 import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
+import { CollectionSchema } from "./collection";
 
 export const ProductSchema = z.object({
   id: z.string().cuid(),
@@ -24,6 +25,14 @@ export const ProductSchema = z.object({
   description: z.string().min(50, {
     message: "Description must be at least 50 characters",
   }),
+  state: z
+    .string()
+    .min(3, {
+      message: "Original State must be at least 3 characters",
+    })
+    .max(63, {
+      message: "Original State must be less than 63 characters",
+    }),
   price: z.preprocess((val) => Number(val), z.number().min(1, { message: "Price must be in positive number" })),
   discount: z
     .preprocess(
@@ -35,6 +44,7 @@ export const ProductSchema = z.object({
     )
     .optional(),
   isSold: z.boolean().default(false),
+  collectionId: z.string().cuid(),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
 });
