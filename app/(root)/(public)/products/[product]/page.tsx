@@ -1,14 +1,12 @@
 import React from "react";
-import Image from "@/components/Image";
-import { Carousel, CarouselDetail } from "@/components/client/Carousel";
-import { products } from "@/constants";
-import Link from "next/link";
+import { CarouselDetail } from "@/components/client/Carousel";
 import { Copy, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
+import Link from "next/link";
 
 const page = async ({ params }: { params: { collection: string; product: string } }) => {
   const product = await prisma.product.findUnique({ where: { slug: params.product } });
