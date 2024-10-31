@@ -4,6 +4,8 @@ import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const getAllProduct = async () => {
   try {
@@ -40,6 +42,7 @@ export const createProduct = async ({
 
   if (validated.success) {
     const { data: product } = validated;
+    let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
       const newProduct = await prisma.$transaction(async (_prisma) => {
@@ -60,9 +63,13 @@ export const createProduct = async ({
         return _newProduct;
       });
 
+      pathname = `/dashboard/products/${collection}`;
+      revalidatePath(`/dashboard/products/${collection}`);
       return newProduct;
     } catch (error) {
       handlingError(error);
+    } finally {
+      redirect(pathname);
     }
   } else {
     handlingError(validated.error);
