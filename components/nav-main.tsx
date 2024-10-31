@@ -16,6 +16,7 @@ import {
 import { CreateCollectionDialog } from "./client/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 export function NavMain({
   items,
@@ -62,12 +63,20 @@ export function NavMain({
                       content={{
                         title: `Create New ${item.title}`,
                         element: (
-                          <fieldset className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor={item.title} className="text-left">
-                              Title
-                            </Label>
-                            <Input id={item.title} name="title" className="col-span-3" />
-                          </fieldset>
+                          <>
+                            <fieldset className="grid grid-cols-4 items-center gap-4">
+                              <Label htmlFor={item.title} className="text-left">
+                                Title
+                              </Label>
+                              <Input id={item.title} name="title" className="col-span-3" />
+                            </fieldset>
+                            <fieldset className="grid grid-cols-4 items-start gap-4">
+                              <Label htmlFor="description" className="py-[11px] text-left">
+                                Description
+                              </Label>
+                              <Textarea rows={3} id="description" name="description" className="col-span-3" />
+                            </fieldset>
+                          </>
                         ),
                       }}
                     />
