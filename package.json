@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "generate:local": "dotenv -e .env.local -- npx prisma generate",
-    "migrate:local": "dotenv -e .env.local -- npx prisma migrate dev",
-    "studio:local": "dotenv -e .env.local -- npx prisma studio"
+    "local:generate": "dotenv -e .env.local -- npx prisma generate",
+    "local:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
+    "local:migrate:reset": "dotenv -e .env.local -- npx prisma migrate reset",
+    "local:studio": "dotenv -e .env.local -- npx prisma studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
