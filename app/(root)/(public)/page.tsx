@@ -9,7 +9,7 @@ import { getAllCollection } from "@/lib/actions/collection.action";
 import Collection from "@/components/server/Collection";
 
 export default async function Home() {
-  const products = await getAllProduct();
+  const allProducts = await getAllProduct();
   const allCollections = await getAllCollection();
 
   return (
@@ -25,9 +25,9 @@ export default async function Home() {
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
           <Mapper
-            data={collections}
-            render={({ title, description, href }) => (
-              <Collection title={title} description={description} href={href} />
+            data={allCollections!.slice(0, 3) ?? collections}
+            render={({ title, description, slug }) => (
+              <Collection title={title} description={description ?? ""} href={`/collections/${slug}`} />
             )}
           />
         </ul>
@@ -85,7 +85,7 @@ export default async function Home() {
           </Link>
         </hgroup>
 
-        {products && <CarouselFeatured data={products} />}
+        {allProducts && <CarouselFeatured data={allProducts} />}
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
