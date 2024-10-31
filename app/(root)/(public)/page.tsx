@@ -23,11 +23,16 @@ export default async function Home() {
       <section className="mt-16">
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
-        <ul className="flex flex-row flex-nowrap items-center gap-4">
+        <ul className="grid grid-cols-12 items-center gap-4">
           <Mapper
             data={allCollections!.slice(0, 3) ?? collections}
             render={({ title, description, slug }) => (
-              <Collection title={title} description={description ?? ""} href={`/collections/${slug}`} />
+              <Collection
+                title={title}
+                description={description ?? ""}
+                href={`/collections/${slug}`}
+                classNames={{ wrapper: "col-span-4" }}
+              />
             )}
           />
         </ul>
