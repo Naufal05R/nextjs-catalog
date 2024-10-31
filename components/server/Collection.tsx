@@ -9,12 +9,18 @@ interface CollectionProps {
   title: string;
   description: string;
   href: string;
+  classNames?: {
+    wrapper?: string;
+    picture?: string;
+    title?: string;
+    description?: string;
+  };
 }
 
-const Collection = ({ title, description, href }: CollectionProps) => {
+const Collection = ({ title, description, href, classNames }: CollectionProps) => {
   return (
-    <Link href={href} className="flex-1 overflow-hidden rounded">
-      <picture className="grid grid-cols-3 grid-rows-2 gap-px">
+    <Link href={href} className={cn("flex-1 overflow-hidden rounded", classNames?.wrapper)}>
+      <picture className={cn("grid grid-cols-3 grid-rows-2 gap-px", classNames?.picture)}>
         <Mapper
           data={Array.from({ length: 3 })}
           render={(_, pictureIndex) => (
