@@ -246,6 +246,76 @@ export function CreateProductForm({ collection }: { collection: string }) {
         />
         <FormField
           control={form.control}
+          name="color"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="color">
+                <FormControl>
+                  <Input id="color" className="rounded-none shadow-none" placeholder="Product Color" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="width"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="width">
+                <FormControl>
+                  <Input id="width" className="rounded-none shadow-none" placeholder="Product Width" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="height"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="height">
+                <FormControl>
+                  <Input id="height" className="rounded-none shadow-none" placeholder="Product Height" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="length"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="length">
+                <FormControl>
+                  <Input id="length" className="rounded-none shadow-none" placeholder="Product Length" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="weight"
+          render={({ field }) => (
+            <FormItem className="col-span-4">
+              <FormLabel htmlFor="weight">
+                <FormControl>
+                  <Input id="weight" className="rounded-none shadow-none" placeholder="Product Weight" {...field} />
+                </FormControl>
+              </FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="price"
           render={({ field }) => (
             <FormItem className="col-span-4">
