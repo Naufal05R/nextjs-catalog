@@ -42,7 +42,7 @@ export const ProductSchema = z.object({
         .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
     )
     .optional(),
-  isSold: z.boolean().default(false),
+  isReady: z.boolean().default(true),
   collectionId: z.string().cuid(),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
