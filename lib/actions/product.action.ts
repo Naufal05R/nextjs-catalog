@@ -1,9 +1,33 @@
 "use server";
 
-import { ProductFormSchema } from "@/schema/product";
+import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
 import { z } from "zod";
+
+export const getAllProduct = async () => {
+  try {
+    const allProducts = await prisma.product.findMany();
+
+    return allProducts;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getProducts = async (identifier: string, field: keyof z.infer<typeof ProductSchema>) => {
+  try {
+    const product = await prisma.product.findMany({
+      where: {
+        [field]: identifier,
+      },
+    });
+
+    return product;
+  } catch (error) {
+    handlingError(error);
+  }
+};
 
 export const createProduct = async ({
   params,
@@ -42,15 +66,5 @@ export const createProduct = async ({
     }
   } else {
     handlingError(validated.error);
-  }
-};
-
-export const getAllProduct = async () => {
-  try {
-    const allProducts = await prisma.product.findMany();
-
-    return allProducts;
-  } catch (error) {
-    handlingError(error);
   }
 };
