@@ -36,7 +36,7 @@ interface CarouselProps<T extends Dataset> {
   };
 }
 
-export const Carousel = <T extends Dataset>({
+const Carousel = <T extends Dataset>({
   data,
   slides,
   dotsElement,
