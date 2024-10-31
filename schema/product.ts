@@ -60,6 +60,14 @@ export const ProductSchema = z.object({
       .multipleOf(0.01)
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
+  color: z
+    .string()
+    .min(3, {
+      message: "Color must be described at least 3 characters",
+    })
+    .max(63, {
+      message: "Color must be described less than 63 characters",
+    }),
   price: z.preprocess((val) => Number(val), z.number().min(1, { message: "Price must be in positive number" })),
   discount: z
     .preprocess(
@@ -86,4 +94,5 @@ export const ProductFormSchema = ProductSchema.pick({
   height: true,
   length: true,
   weight: true,
+  color: true,
 });
