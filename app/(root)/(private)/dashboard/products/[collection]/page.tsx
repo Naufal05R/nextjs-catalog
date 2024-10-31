@@ -85,12 +85,15 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
           />
 
           <Card className="col-span-12 grid h-full place-items-center overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
-            <CardContent>
+            <Link
+              href={`/dashboard/products/${params.collection}/add`}
+              className="flex size-full flex-col items-center justify-center"
+            >
               <PlusCircle className="mx-auto" size={64} />
               <CardTitle className="mt-4 line-clamp-1 whitespace-nowrap text-xl font-semibold">
                 Create new <span className="capitalize">{params.collection}</span>
               </CardTitle>
-            </CardContent>
+            </Link>
           </Card>
         </ul>
       ) : (
