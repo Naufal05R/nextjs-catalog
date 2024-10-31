@@ -1,8 +1,8 @@
 import React from "react";
-import Footer from "@/components/Footer";
+import Footer from "@/components//server/Footer";
 
 import { Pathname } from "@/components/client/Pathname";
-import { PublicHeader } from "@/components/Header";
+import { PublicHeader } from "@/components/server/Header";
 import { padding } from "@/lib/styles";
 import { cn } from "@/lib/utils";
 
