@@ -33,6 +33,7 @@ export const CollectionSchema = z.object({
 
 export const CollectionFormSchema = CollectionSchema.pick({
   title: true,
+  description: true,
 });
 
 export const CollectionsSchema = z.array(CollectionSchema);
