@@ -32,6 +32,34 @@ export const ProductSchema = z.object({
     .max(63, {
       message: "Original State must be less than 63 characters",
     }),
+  width: z.preprocess(
+    (val) => Number(val),
+    z
+      .number()
+      .multipleOf(0.01)
+      .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
+  ),
+  height: z.preprocess(
+    (val) => Number(val),
+    z
+      .number()
+      .multipleOf(0.01)
+      .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
+  ),
+  length: z.preprocess(
+    (val) => Number(val),
+    z
+      .number()
+      .multipleOf(0.01)
+      .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
+  ),
+  weight: z.preprocess(
+    (val) => Number(val),
+    z
+      .number()
+      .multipleOf(0.01)
+      .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
+  ),
   price: z.preprocess((val) => Number(val), z.number().min(1, { message: "Price must be in positive number" })),
   discount: z
     .preprocess(
