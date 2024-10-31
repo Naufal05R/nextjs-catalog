@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "@/components/Image";
-import { Carousel } from "@/components/client/Carousel";
+import { Carousel, CarouselDetail } from "@/components/client/Carousel";
 import { products } from "@/constants";
 import Link from "next/link";
 import { Copy, Minus, Plus } from "lucide-react";
@@ -11,11 +11,7 @@ import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
 
 const page = async ({ params }: { params: { collection: string; product: string } }) => {
-  const product = await prisma.product.findUnique({ where: { slug: params.product } }); // products.find((product) => product.slug === params.product);
-
-  const getRandomIntBetween1And3 = () => {
-    return Math.floor(Math.random() * 3) + 1;
-  };
+  const product = await prisma.product.findUnique({ where: { slug: params.product } });
 
   if (!product) {
     console.log(product);
@@ -25,30 +21,7 @@ const page = async ({ params }: { params: { collection: string; product: string 
   return (
     <>
       <section className="grid grid-cols-12 gap-x-8 pt-8">
-        <Carousel
-          data={products}
-          plugins={["fade"]}
-          showDots
-          slidesElement={
-            <Image
-              src={`/dummy_${getRandomIntBetween1And3()}.jpg`}
-              alt="dummy_1"
-              fill
-              sizes="50vw"
-              classNames={{ figure: "aspect-square rounded w-full" }}
-            />
-          }
-          dotsElement={
-            <Image
-              src={"/dummy_1.jpg"}
-              alt="dummy_1"
-              fill
-              sizes="10vw"
-              classNames={{ figure: "aspect-square rounded w-full" }}
-            />
-          }
-          classNames={{ root: "col-span-6", dotsContainer: "max-w-full" }}
-        />
+        <CarouselDetail data={product} classNames={{ root: "col-span-6", dots: "basis-1/6" }} />
 
         <article className="col-span-6">
           <h4 className="mb-8 text-3xl font-medium uppercase">{product?.title}</h4>
