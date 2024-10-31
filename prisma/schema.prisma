@@ -19,8 +19,13 @@ model Product {
   slug         String     @unique @default(cuid()) @db.VarChar(64)
   description  String
   state        String     @db.VarChar(64)
+  width        Float      @db.Real()
+  height       Float      @db.Real()
+  length       Float      @db.Real()
+  weight       Float      @db.Real()
+  color        String     @db.VarChar(64)
   price        Int
-  discount     Float?
+  discount     Float?     @db.Real()
   isReady      Boolean    @default(true)
   collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id])
