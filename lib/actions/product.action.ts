@@ -5,17 +5,35 @@ import { prisma } from "../prisma";
 import { handlingError, slugify } from "../utils";
 import { z } from "zod";
 
-export const createProduct = async (raw: z.infer<typeof ProductFormSchema>) => {
-  const validated = ProductFormSchema.safeParse(raw);
+export const createProduct = async ({
+  params,
+  collection,
+}: {
+  params: z.infer<typeof ProductFormSchema>;
+  collection: string;
+}) => {
+  const validated = ProductFormSchema.safeParse(params);
 
   if (validated.success) {
+    const { data: product } = validated;
+
     try {
-      const product = validated.data;
-      const newProduct = await prisma.product.create({
-        data: {
-          ...product,
-          slug: slugify(product.title),
-        },
+      const newProduct = await prisma.$transaction(async (_prisma) => {
+        const _collection = await _prisma.collection.findFirst({
+          where: {
+            slug: collection,
+          },
+        });
+
+        const _newProduct = await _prisma.product.create({
+          data: {
+            ...product,
+            slug: slugify(product.title),
+            collectionId: _collection!.id,
+          },
+        });
+
+        return _newProduct;
       });
 
       return newProduct;
