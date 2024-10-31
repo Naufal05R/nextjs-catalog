@@ -215,153 +215,173 @@ export function CreateProductForm({ collection }: { collection: string }) {
 
   return (
     <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 grid w-full grid-cols-12 gap-4 text-right">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem className="col-span-12">
-              <FormLabel htmlFor="title">
-                <FormControl>
-                  <Input id="title" className="rounded-none shadow-none" placeholder="Product Title" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="state"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="state">
-                <FormControl>
-                  <Input id="state" className="rounded-none shadow-none" placeholder="Product Origin" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="color"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="color">
-                <FormControl>
-                  <Input id="color" className="rounded-none shadow-none" placeholder="Product Color" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="width"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="width">
-                <FormControl>
-                  <Input id="width" className="rounded-none shadow-none" placeholder="Product Width" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="height"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="height">
-                <FormControl>
-                  <Input id="height" className="rounded-none shadow-none" placeholder="Product Height" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="length"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="length">
-                <FormControl>
-                  <Input id="length" className="rounded-none shadow-none" placeholder="Product Length" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="weight"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="weight">
-                <FormControl>
-                  <Input id="weight" className="rounded-none shadow-none" placeholder="Product Weight" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="price">
-                <FormControl>
-                  <Input id="price" className="rounded-none shadow-none" placeholder="Product Price" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="discount"
-          render={({ field }) => (
-            <FormItem className="col-span-4">
-              <FormLabel htmlFor="discount">
-                <FormControl>
-                  <Input id="discount" className="rounded-none shadow-none" placeholder="Product Discount" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem className="col-span-12">
-              <FormLabel htmlFor="description">
-                <FormControl>
-                  <Textarea
-                    id="description"
-                    className="rounded-none shadow-none"
-                    placeholder="Product Description"
-                    rows={10}
-                    {...field}
-                  />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 grid w-full grid-cols-12 gap-4">
+        <fieldset className="col-span-12">
+          <h6 className="mb-1 text-lg font-medium">Product Title</h6>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="title">
+                  <FormControl>
+                    <Input id="title" className="rounded-none shadow-none" placeholder="Title" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
+
+        <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
+          <h6 className="col-span-2 mb-1 text-lg font-medium">Product Detail</h6>
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="state">
+                  <FormControl>
+                    <Input id="state" className="rounded-none shadow-none" placeholder="Origin" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="color"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="color">
+                  <FormControl>
+                    <Input id="color" className="rounded-none shadow-none" placeholder="Color" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
+
+        <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
+          <h6 className="-order-2 col-span-3 mb-1 text-lg font-medium">Product Size</h6>
+          <FormField
+            control={form.control}
+            name="width"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="width">
+                  <FormControl>
+                    <Input id="width" className="rounded-none shadow-none" placeholder="Width" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="height"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="height">
+                  <FormControl>
+                    <Input id="height" className="rounded-none shadow-none" placeholder="Height" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="length"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="length">
+                  <FormControl>
+                    <Input id="length" className="rounded-none shadow-none" placeholder="Length" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
+          <FormField
+            control={form.control}
+            name="weight"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="weight">
+                  <FormControl>
+                    <Input id="weight" className="rounded-none shadow-none" placeholder="Weight" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
+
+        <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
+          <h6 className="col-span-2 mb-1 text-lg font-medium">Product Rate</h6>
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="price">
+                  <FormControl>
+                    <Input id="price" className="rounded-none shadow-none" placeholder="Price" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="discount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="discount">
+                  <FormControl>
+                    <Input id="discount" className="rounded-none shadow-none" placeholder="Discount" {...field} />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
+
+        <fieldset className="col-span-12">
+          <h6 className="col-span-2 mb-1 text-lg font-medium">Product Description</h6>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="description">
+                  <FormControl>
+                    <Textarea
+                      id="description"
+                      className="rounded-none shadow-none"
+                      placeholder="Description"
+                      rows={10}
+                      {...field}
+                    />
+                  </FormControl>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
 
         <Button type="submit" className="col-span-12 flex w-full rounded-none">
           Save
