@@ -3,8 +3,11 @@ import Mapper from "@/components/Mapper";
 import { Select } from "@/components/Select";
 import { collections } from "@/constants";
 import products from "@/constants/temporary/product";
+import { getAllProduct } from "@/lib/actions/product.action";
 
-export default function CollectionPage({ params }: { params: { collection: string } }) {
+export default async function CollectionPage({ params }: { params: { collection: string } }) {
+  const allProducts = await getAllProduct();
+
   return (
     <section className="pt-8">
       <h4 className="mb-4 text-3xl capitalize">{params.collection}</h4>
@@ -24,7 +27,12 @@ export default function CollectionPage({ params }: { params: { collection: strin
       />
 
       <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 lg:grid-cols-12">
-        <Mapper data={products} render={(product) => <Product {...product} classNames={{ wrapper: "col-span-3" }} />} />
+        {!!allProducts?.length && (
+          <Mapper
+            data={allProducts}
+            render={(product) => <Product {...product} collection={params.collection} classNames={{ wrapper: "col-span-3" }} />}
+          />
+        )}
       </ul>
     </section>
   );
