@@ -14,18 +14,18 @@ datasource db {
 }
 
 model Product {
-  id           String      @unique @default(cuid())
-  title        String      @db.VarChar(64)
-  slug         String      @unique @default(cuid()) @db.VarChar(64)
+  id           String     @unique @default(cuid())
+  title        String     @db.VarChar(64)
+  slug         String     @unique @default(cuid()) @db.VarChar(64)
   description  String
-  state        String      @db.VarChar(64)
+  state        String     @db.VarChar(64)
   price        Int
   discount     Float?
-  isSold       Boolean     @default(false)
-  collectionId String?
-  collection   Collection? @relation(fields: [collectionId], references: [id])
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  isSold       Boolean    @default(false)
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Collection {
