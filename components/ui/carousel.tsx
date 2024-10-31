@@ -273,7 +273,7 @@ interface CarouselDotProps extends React.ComponentProps<typeof Button> {
 }
 
 const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
-  ({ className, variant = null, size = "icon", index, ...props }, ref) => {
+  ({ className, variant = null, size = null, index, ...props }, ref) => {
     const { scrollTo, selectedIndex } = useCarousel();
 
     return (
@@ -303,6 +303,7 @@ interface CarouselDotsProps {
   el?: React.JSX.Element;
   classNames?: {
     wrapper?: string;
+    container?: string;
     dots?: string;
   };
 }
@@ -311,12 +312,12 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
   const { dotsRef, slides } = useCarousel();
 
   return (
-    <div className={cn("mx-auto mt-4 w-full max-w-2xl overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
-      <div className="flex items-stretch justify-center gap-x-2" ref={ref}>
+    <div className={cn("mt-4 w-full overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
+      <div className={cn("flex items-stretch gap-x-2", classNames?.container)} ref={ref}>
         <Mapper
           data={slides}
           render={(_, index) => (
-            <CarouselDot index={index} className={cn("h-4 basis-4 border text-xl", classNames?.dots)} {...props}>
+            <CarouselDot index={index} className={cn("basis-9 aspect-square border text-xl", classNames?.dots)} {...props}>
               {el}
             </CarouselDot>
           )}
