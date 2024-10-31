@@ -2,19 +2,20 @@ import Image from "@/components/Image";
 import Link from "next/link";
 import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import { ChevronRight, Mail, Star } from "lucide-react";
-import { testimonials } from "@/constants";
+import { collections, testimonials } from "@/constants";
 import Mapper from "@/components/Mapper";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { getAllCollection } from "@/lib/actions/collection.action";
+import Collection from "@/components/server/Collection";
 
 export default async function Home() {
   const products = await getAllProduct();
-  const collections = await getAllCollection();
+  const allCollections = await getAllCollection();
 
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
-        {collections && <CarouselThumbnail data={collections} />}
+        {allCollections && <CarouselThumbnail data={allCollections} />}
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
       </section>
@@ -23,12 +24,12 @@ export default async function Home() {
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
-          {/* <Mapper
+          <Mapper
             data={collections}
             render={({ title, description, href }) => (
               <Collection title={title} description={description} href={href} />
             )}
-          /> */}
+          />
         </ul>
       </section>
 
