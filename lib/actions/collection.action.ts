@@ -1,8 +1,33 @@
 "use server";
 
-import { CollectionFormSchema } from "@/schema/collection";
+import { CollectionFormSchema, CollectionSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
+import { z } from "zod";
+
+export const getCollection = async (identifier: string, field: keyof z.infer<typeof CollectionSchema>) => {
+  try {
+    const collection = await prisma.collection.findFirst({
+      where: {
+        [field]: identifier,
+      },
+    });
+
+    return collection;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getAllCollection = async () => {
+  try {
+    const allCollections = await prisma.collection.findMany();
+
+    return allCollections;
+  } catch (error) {
+    handlingError(error);
+  }
+};
 
 export const createCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
@@ -30,15 +55,5 @@ export const createCollection = async (prevState: string | undefined, formData: 
     }
   } else {
     handlingError(validated.error);
-  }
-};
-
-export const getAllCollection = async () => {
-  try {
-    const allCollections = await prisma.collection.findMany();
-
-    return allCollections;
-  } catch (error) {
-    handlingError(error);
   }
 };
