@@ -21,7 +21,7 @@ model Product {
   state        String     @db.VarChar(64)
   price        Int
   discount     Float?
-  isSold       Boolean    @default(false)
+  isReady      Boolean    @default(true)
   collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id])
   createdAt    DateTime   @default(now())
