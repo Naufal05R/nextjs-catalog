@@ -1,4 +1,4 @@
-import Collection from "@/components/Collection";
+import Collection from "@/components/server/Collection";
 import Mapper from "@/components/Mapper";
 import { collections } from "@/constants";
 
