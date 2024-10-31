@@ -26,7 +26,8 @@ model Product {
 }
 
 model Collection {
-  id    String @unique @default(cuid())
-  title String @unique @db.VarChar(64)
-  slug  String @unique @db.VarChar(64)
+  id          String @unique @default(cuid())
+  title       String @unique @db.VarChar(64)
+  slug        String @unique @db.VarChar(64)
+  description String @db.VarChar(256)
 }
