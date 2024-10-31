@@ -1,31 +1,21 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import { Carousel, CarouselFeatured } from "@/components/client/Carousel";
+import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import Collection from "@/components/Collection";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, testimonials } from "@/constants";
 import Mapper from "@/components/Mapper";
-import { cn, formatPrice } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
-import { CarouselItem } from "@/components/ui/carousel";
+import { getAllCollection } from "@/lib/actions/collection.action";
 
 export default async function Home() {
   const products = await getAllProduct();
+  const collections = await getAllCollection();
 
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
-        <Carousel
-          data={collections}
-          opts={{ loop: true }}
-          plugins={["fade"]}
-          classNames={{
-            root: "min-h-full w-2/3",
-            dotsContainer: "absolute left-1/2 w-fit -translate-x-1/2 bottom-8 z-20",
-            dots: "flex rounded-full border-2 border-slate-200 size-2.5 basis-2.5",
-          }}
-          showDots
-        />
+        {collections && <CarouselThumbnail data={collections} />}
 
         <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
       </section>
@@ -34,12 +24,12 @@ export default async function Home() {
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
         <ul className="flex flex-row flex-nowrap items-center gap-4">
-          <Mapper
+          {/* <Mapper
             data={collections}
             render={({ title, description, href }) => (
               <Collection title={title} description={description} href={href} />
             )}
-          />
+          /> */}
         </ul>
       </section>
 
