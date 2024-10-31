@@ -408,7 +408,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
           <h6 className="-order-1 mb-1 text-lg font-medium">Uploaded Images</h6>
 
           <li className="flex w-full items-center gap-x-2 rounded-md border p-2.5">
-            <Button variant={"ghost"} className="aspect-square">
+            <Button type="button" variant="ghost" className="aspect-square">
               <GripVertical className="text-slate-400" />
             </Button>
 
@@ -421,10 +421,10 @@ export function CreateProductForm({ collection }: { collection: string }) {
             </Label>
 
             <div className="flex items-center gap-x-2">
-              <Button variant={"ghost"} className="aspect-square">
+              <Button type="button" variant="ghost" className="aspect-square">
                 <Pencil className="text-slate-400" />
               </Button>
-              <Button variant={"ghost"} className="aspect-square">
+              <Button type="button" variant="ghost" className="aspect-square">
                 <Trash className="text-slate-400" />
               </Button>
             </div>
