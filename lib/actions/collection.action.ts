@@ -5,6 +5,7 @@ import { prisma } from "../prisma";
 export const createCollection = async (prevState: string | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
+    description: formData.get("description"),
   };
   const validated = CollectionFormSchema.safeParse(raw);
 
@@ -12,11 +13,12 @@ export const createCollection = async (prevState: string | undefined, formData: 
     console.log(validated);
 
     try {
-      const { title } = validated.data;
+      const { title, description } = validated.data;
       const newCollection = await prisma.collection.create({
         data: {
           title,
           slug: slugify(title),
+          description,
         },
       });
 
