@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
-import Image from "../Image";
+import Link from "next/link";
 import Fade from "embla-carousel-fade";
+import Image from "@/components/Image";
+import Mapper from "@/components/server/Mapper";
 import { cn, formatPrice } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
 import {
@@ -13,10 +15,8 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import Mapper from "../Mapper";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
-import Link from "next/link";
 import { Collection, Product } from "@prisma/client";
 
 interface CarouselProps<T extends Dataset> {
