@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Mapper from "./Mapper";
+import Mapper from "./server/Mapper";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dataset } from "@/types/data";
