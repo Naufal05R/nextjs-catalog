@@ -6,7 +6,7 @@ import { padding } from "@/lib/styles";
 import { Select } from "../Select";
 import { languages, navigations } from "@/constants";
 import { currencies } from "@/constants";
-import Mapper from "../Mapper";
+import Mapper from "./Mapper";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "../ui/separator";
 import {
