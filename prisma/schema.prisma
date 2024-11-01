@@ -14,29 +14,72 @@ datasource db {
 }
 
 model Product {
-  id           String     @unique @default(cuid())
-  title        String     @db.VarChar(64)
-  slug         String     @unique @default(cuid()) @db.VarChar(64)
-  description  String
-  state        String     @db.VarChar(64)
-  width        Float      @db.Real()
-  height       Float      @db.Real()
-  length       Float      @db.Real()
-  weight       Float      @db.Real()
-  color        String     @db.VarChar(64)
-  price        Int
-  discount     Float?     @db.Real()
-  isReady      Boolean    @default(true)
-  collectionId String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id              String         @id @default(cuid())
+  title           String         @unique @db.VarChar(64)
+  slug            String         @unique @db.VarChar(64)
+  state           String         @db.VarChar(64)
+  width           Float          @db.Real
+  height          Float          @db.Real
+  length          Float          @db.Real
+  weight          Float          @db.Real
+  color           String         @db.VarChar(64)
+  price           Int            @db.Integer
+  discount        Float?         @db.Real
+  description     String         @db.Text
+  isReady         Boolean        @default(true)
+  collectionId    String
+  collection      Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcollectionId String?
+  subcollection   Subcollection? @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  gallery         Gallery?
 }
 
 model Collection {
-  id          String    @unique @default(cuid())
+  id             String          @id @default(cuid())
+  title          String          @unique @db.VarChar(16)
+  slug           String          @unique @db.VarChar(16)
+  description    String          @db.VarChar(32)
+  products       Product[]
+  subcollections Subcollection[]
+}
+
+model Subcollection {
+  id           String     @id @default(cuid())
+  title        String     @unique @db.VarChar(16)
+  slug         String     @unique @db.VarChar(16)
+  description  String     @db.VarChar(32)
+  products     Product[]
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String    @id @default(cuid())
   title       String    @unique @db.VarChar(16)
   slug        String    @unique @db.VarChar(16)
   description String    @db.VarChar(32)
   products    Product[]
+}
+
+model Image {
+  id        String  @id @default(cuid())
+  title     String  @unique @db.VarChar(16)
+  slug      String  @unique @db.VarChar(16)
+  name      String  @unique @db.VarChar(20)
+  order     Int     @db.SmallInt
+  galleryId String
+  gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+}
+
+model Gallery {
+  id        String  @id @default(cuid())
+  title     String  @unique @db.VarChar(16)
+  slug      String  @unique @db.VarChar(16)
+  images    Image[]
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
