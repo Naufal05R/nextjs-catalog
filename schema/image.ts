@@ -1,5 +1,9 @@
-import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
+import { capitalize, slugify } from "@/lib/utils";
+
+const MAX_FILE_SIZE = 1024 * 1024 * 5;
+const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
 export const ImageSchema = z.object({
   id: z.string().cuid(),
@@ -31,10 +35,17 @@ export const ImageSchema = z.object({
     })
     .transform((val) => slugify(val)),
   order: z.preprocess((val) => Number(val), z.number().int().min(0).max(999)),
+  image: z
+    .custom<File>()
+    .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
+    .refine((file) => file && ACCEPTED_IMAGE_MIME_TYPES.includes(file.type), {
+      message: `Only "${ACCEPTED_IMAGE_TYPES.join('", "')}" formats are supported.`,
+    }),
   galleryId: z.string().cuid(),
 });
 
 export const ImageFormSchema = ImageSchema.pick({
   title: true,
   order: true,
+  image: true,
 });
