@@ -1,5 +1,5 @@
 import Image from "@/components/Image";
-import Mapper from "@/components/Mapper";
+import Mapper from "@/components/server/Mapper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
