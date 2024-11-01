@@ -80,6 +80,8 @@ export const ProductSchema = z.object({
   }),
   isReady: z.boolean().default(true),
   collectionId: z.string().cuid(),
+  subcollectionId: z.string().cuid(),
+  categoryId: z.string().cuid(),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
 });
