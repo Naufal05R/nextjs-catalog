@@ -25,3 +25,8 @@ export const GallerySchema = z.object({
   images: z.array(ImageSchema.required()),
   productId: z.string().cuid(),
 });
+
+export const GalleryFormSchema = GallerySchema.pick({
+  title: true,
+  images: true,
+});
