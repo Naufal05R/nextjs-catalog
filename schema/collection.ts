@@ -1,6 +1,7 @@
 import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
 import { ProductSchema } from "./product";
+import { SubcollectionSchema } from "./subcollection";
 
 export const CollectionSchema = z.object({
   id: z.string().cuid(),
@@ -28,9 +29,10 @@ export const CollectionSchema = z.object({
       message: "Description must be at least 7 characters",
     })
     .max(31, {
-      message: "Title must be less than 31 characters",
+      message: "Description must be less than 31 characters",
     }),
   products: z.array(ProductSchema.required()).optional(),
+  subcollections: z.array(SubcollectionSchema.required()).optional(),
 });
 
 export const CollectionFormSchema = CollectionSchema.pick({
