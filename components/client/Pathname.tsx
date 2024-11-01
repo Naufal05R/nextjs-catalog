@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import Mapper from "../Mapper";
+import Mapper from "../server/Mapper";
 
 export function Pathname() {
   const pathname = usePathname();
