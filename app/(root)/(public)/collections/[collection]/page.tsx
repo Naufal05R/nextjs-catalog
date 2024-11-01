@@ -2,7 +2,6 @@ import Product from "@/components/client/Product";
 import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/Select";
 import { collections } from "@/constants";
-import products from "@/constants/temporary/product";
 import { getAllProduct } from "@/lib/actions/product.action";
 
 export default async function CollectionPage({ params }: { params: { collection: string } }) {
