@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, testimonials } from "@/constants";
-import Mapper from "@/components/Mapper";
+import Mapper from "@/components/server/Mapper";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { getAllCollection } from "@/lib/actions/collection.action";
 import Collection from "@/components/server/Collection";
