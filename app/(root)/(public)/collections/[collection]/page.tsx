@@ -1,5 +1,5 @@
 import Product from "@/components/client/Product";
-import Mapper from "@/components/Mapper";
+import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/Select";
 import { collections } from "@/constants";
 import products from "@/constants/temporary/product";
@@ -30,7 +30,9 @@ export default async function CollectionPage({ params }: { params: { collection:
         {!!allProducts?.length && (
           <Mapper
             data={allProducts}
-            render={(product) => <Product {...product} collection={params.collection} classNames={{ wrapper: "col-span-3" }} />}
+            render={(product) => (
+              <Product {...product} collection={params.collection} classNames={{ wrapper: "col-span-3" }} />
+            )}
           />
         )}
       </ul>
