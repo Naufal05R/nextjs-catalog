@@ -1,5 +1,5 @@
 import Image from "@/components/Image";
-import Mapper from "@/components/Mapper";
+import Mapper from "@/components/server/Mapper";
 import React from "react";
 
 const BlogPage = () => {
