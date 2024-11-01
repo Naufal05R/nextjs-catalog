@@ -36,7 +36,7 @@ export const ImageSchema = z.object({
     .transform((val) => slugify(val)),
   order: z.preprocess((val) => Number(val), z.number().int().min(0).max(999)),
   image: z
-    .custom<File>()
+    .instanceof(File)
     .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
     .refine((file) => file && ACCEPTED_IMAGE_MIME_TYPES.includes(file.type), {
       message: `Only "${ACCEPTED_IMAGE_TYPES.join('", "')}" formats are supported.`,
