@@ -3,7 +3,7 @@ import React from "react";
 import Image from "../Image";
 import { cn } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
-import Mapper from "../Mapper";
+import Mapper from "./Mapper";
 
 interface CollectionProps {
   title: string;
