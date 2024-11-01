@@ -1,5 +1,5 @@
 import Collection from "@/components/server/Collection";
-import Mapper from "@/components/Mapper";
+import Mapper from "@/components/server/Mapper";
 import { collections } from "@/constants";
 import { getAllCollection } from "@/lib/actions/collection.action";
 
