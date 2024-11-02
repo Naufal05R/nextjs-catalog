@@ -1,7 +1,7 @@
 import React from "react";
 import NextImage from "next/image";
 import { cn } from "@/lib/utils";
-import { Bag } from "./svg";
+import { Bag } from "../svg";
 
 interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "className"> {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
