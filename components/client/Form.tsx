@@ -431,8 +431,9 @@ export function CreateProductForm({ collection }: { collection: string }) {
                       <Label htmlFor={`images.${imageIndex}.title`} className="flex-1">
                         <Input
                           id={`images.${imageIndex}.title`}
-                          className="rounded-none border-none shadow-none focus-visible:ring-0"
+                          className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
                           value={images.find((_, index) => index === imageIndex)?.title ?? ""}
+                          readOnly={!image}
                           onChange={(e) => {
                             setImages((prevState) => {
                               return prevState.map((image, index) => {
