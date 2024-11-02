@@ -20,7 +20,7 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 
-import { ACCEPTED_IMAGE_MIME_TYPES, ImageFormSchema } from "@/schema/image";
+import { ACCEPTED_MEDIA_MIME_TYPES, ImageFormSchema } from "@/schema/image";
 import { Dialog } from "../server/Dialog";
 
 export function GuestbookForm() {
@@ -504,7 +504,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                 id={`images.${imageIndex}.image`}
                                 className="hidden"
                                 type="file"
-                                accept={ACCEPTED_IMAGE_MIME_TYPES.join(",")}
+                                accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
