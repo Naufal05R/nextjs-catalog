@@ -1,4 +1,4 @@
-import Media from "@/components/server/Image";
+import Media from "@/components/server/Media";
 import Mapper from "@/components/server/Mapper";
 import React from "react";
 

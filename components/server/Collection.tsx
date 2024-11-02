@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Media from "./Image";
+import Media from "./Media";
 import { cn } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 import Mapper from "./Mapper";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Media from "../server/Image";
+import Media from "../server/Media";
 import { cn, formatPrice } from "@/lib/utils";
 import { Product as ProductType } from "@prisma/client";
 

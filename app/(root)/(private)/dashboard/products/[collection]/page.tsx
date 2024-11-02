@@ -1,4 +1,4 @@
-import Media from "@/components/server/Image";
+import Media from "@/components/server/Media";
 import Mapper from "@/components/server/Mapper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

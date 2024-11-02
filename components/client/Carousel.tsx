@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
-import Media from "@/components/server/Image";
+import Media from "@/components/server/Media";
 import Mapper from "@/components/server/Mapper";
 import { cn, formatPrice } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";

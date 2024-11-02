@@ -1,4 +1,4 @@
-import Media from "@/components/server/Image";
+import Media from "@/components/server/Media";
 import Link from "next/link";
 import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import { ChevronRight, Mail, Star } from "lucide-react";
