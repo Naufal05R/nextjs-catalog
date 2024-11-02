@@ -12,7 +12,7 @@ const ACCEPTED_VIDEO_TYPES = ["mp4", "mpeg", "avi", "wmv"];
 export const ACCEPTED_MEDIA_MIME_TYPES = ACCEPTED_IMAGE_MIME_TYPES.concat(ACCEPTED_VIDEO_MIME_TYPES);
 export const ACCEPTED_MEDIA_TYPES = ACCEPTED_IMAGE_TYPES.concat(ACCEPTED_VIDEO_TYPES);
 
-export const ImageSchema = z.object({
+export const MediaSchema = z.object({
   id: z.string().cuid(),
   title: z
     .string()
@@ -42,7 +42,7 @@ export const ImageSchema = z.object({
     })
     .transform((val) => slugify(val)),
   order: z.preprocess((val) => Number(val), z.number().int().min(0).max(999)),
-  image: z
+  media: z
     .instanceof(File)
     .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
     .refine((file) => file && ACCEPTED_MEDIA_MIME_TYPES.includes(file.type), {
@@ -51,8 +51,8 @@ export const ImageSchema = z.object({
   galleryId: z.string().cuid(),
 });
 
-export const ImageFormSchema = ImageSchema.pick({
+export const MediaFormSchema = MediaSchema.pick({
   title: true,
   order: true,
-  image: true,
+  media: true,
 });
