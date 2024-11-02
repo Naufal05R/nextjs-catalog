@@ -42,16 +42,16 @@ model Collection {
   id             String          @id @default(cuid())
   title          String          @unique @db.VarChar(16)
   slug           String          @unique @db.VarChar(16)
-  description    String          @db.VarChar(32)
+  description    String          @db.VarChar(64)
   products       Product[]
   subcollections Subcollection[]
 }
 
 model Subcollection {
   id           String     @id @default(cuid())
-  title        String     @unique @db.VarChar(16)
-  slug         String     @unique @db.VarChar(16)
-  description  String     @db.VarChar(32)
+  title        String     @unique @db.VarChar(32)
+  slug         String     @unique @db.VarChar(32)
+  description  String     @db.VarChar(64)
   products     Product[]
   collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
@@ -61,15 +61,15 @@ model Category {
   id          String    @id @default(cuid())
   title       String    @unique @db.VarChar(16)
   slug        String    @unique @db.VarChar(16)
-  description String    @db.VarChar(32)
+  description String    @db.VarChar(64)
   products    Product[]
 }
 
 model Image {
   id        String  @id @default(cuid())
-  title     String  @unique @db.VarChar(16)
-  slug      String  @unique @db.VarChar(16)
-  name      String  @unique @db.VarChar(20)
+  title     String  @unique @db.VarChar(128)
+  slug      String  @unique @db.VarChar(128)
+  name      String  @unique @db.VarChar(132)
   order     Int     @db.SmallInt
   galleryId String
   gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
