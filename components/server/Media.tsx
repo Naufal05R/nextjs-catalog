@@ -3,7 +3,7 @@ import NextImage from "next/image";
 import { cn } from "@/lib/utils";
 import { Bag } from "../svg";
 
-interface ComponentProps {
+interface ComponentBaseProps {
   type: string;
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
   classNames?: {
@@ -16,12 +16,12 @@ interface ComponentProps {
   };
 }
 
-interface StrictComponentProps extends ComponentPropsBase {
+interface StrictComponentProps extends ComponentBaseProps {
   strict: true;
   type: "image/" | "video/";
 }
 
-interface FlexibleComponentProps extends ComponentPropsBase {
+interface FlexibleComponentProps extends ComponentBaseProps {
   strict?: false;
   type: string;
 }
@@ -31,7 +31,7 @@ type VideoProps = Omit<
   React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
   "className"
 >;
-type MediaProps = ComponentProps & (ImageProps | VideoProps);
+type MediaProps = ComponentBaseProps & (ImageProps | VideoProps);
 
 const Media = ({ FallbackComponent = Bag, classNames, ...props }: MediaProps) => {
   const { figure, media, fallback } = classNames ?? {};
