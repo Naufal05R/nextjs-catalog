@@ -28,8 +28,8 @@ export const CollectionSchema = z.object({
     .min(7, {
       message: "Description must be at least 7 characters",
     })
-    .max(31, {
-      message: "Description must be less than 31 characters",
+    .max(63, {
+      message: "Description must be less than 63 characters",
     }),
   products: z.array(ProductSchema.required()).optional(),
   subcollections: z.array(SubcollectionSchema.required()).optional(),
