@@ -1,7 +1,7 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 
-import Mapper from "../Mapper";
+import Mapper from "../server/Mapper";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dataset } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -317,7 +317,11 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
         <Mapper
           data={slides}
           render={(_, index) => (
-            <CarouselDot index={index} className={cn("basis-9 aspect-square border text-xl", classNames?.dots)} {...props}>
+            <CarouselDot
+              index={index}
+              className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}
+              {...props}
+            >
               {el}
             </CarouselDot>
           )}
