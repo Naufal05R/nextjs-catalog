@@ -12,8 +12,8 @@ export const ImageSchema = z.object({
     .min(3, {
       message: "Title must be at least 3 characters",
     })
-    .max(15, {
-      message: "Title must be less than 15 characters",
+    .max(127, {
+      message: "Title must be less than 127 characters",
     })
     .transform((val) => capitalize(val)),
   slug: z
@@ -21,8 +21,8 @@ export const ImageSchema = z.object({
     .min(3, {
       message: "Slug must be at least 3 characters",
     })
-    .max(15, {
-      message: "Slug must be less than 15 characters",
+    .max(127, {
+      message: "Slug must be less than 127 characters",
     })
     .transform((val) => slugify(val)),
   name: z
@@ -30,8 +30,8 @@ export const ImageSchema = z.object({
     .min(7, {
       message: "Slug must be at least 7 characters",
     })
-    .max(19, {
-      message: "Slug must be less than 19 characters",
+    .max(131, {
+      message: "Slug must be less than 131 characters",
     })
     .transform((val) => slugify(val)),
   order: z.preprocess((val) => Number(val), z.number().int().min(0).max(999)),
