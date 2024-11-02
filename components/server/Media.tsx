@@ -16,6 +16,16 @@ interface ComponentProps {
   };
 }
 
+interface StrictComponentProps extends ComponentPropsBase {
+  strict: true;
+  type: "image/" | "video/";
+}
+
+interface FlexibleComponentProps extends ComponentPropsBase {
+  strict?: false;
+  type: string;
+}
+
 type ImageProps = Omit<React.ComponentProps<typeof NextImage>, "className">;
 type VideoProps = Omit<
   React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
