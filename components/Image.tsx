@@ -15,7 +15,7 @@ interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "class
   };
 }
 
-const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) => {
+const Media = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) => {
   const { figure, image, fallback } = classNames ?? {};
 
   return (
@@ -39,4 +39,4 @@ const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) =>
   );
 };
 
-export default Image;
+export default Media;
