@@ -24,7 +24,7 @@ type VideoProps = Omit<
 type MediaProps = ComponentProps & (ImageProps | VideoProps);
 
 const Media = ({ FallbackComponent = Bag, classNames, ...props }: MediaProps) => {
-  const { figure, media: image, fallback } = classNames ?? {};
+  const { figure, media, fallback } = classNames ?? {};
   const { type, src } = props;
 
   return (
@@ -33,11 +33,11 @@ const Media = ({ FallbackComponent = Bag, classNames, ...props }: MediaProps) =>
         <NextImage
           {...(props as ImageProps)}
           draggable={false}
-          className={cn("z-20 size-full object-cover object-center before:hidden", image)}
+          className={cn("z-20 size-full object-cover object-center before:hidden", media)}
         />
       )}
       {type.startsWith("video/") && (
-        <video {...(props as VideoProps)} className={cn("z-20 size-full object-cover object-center", image)} />
+        <video {...(props as VideoProps)} className={cn("z-20 size-full object-cover object-center", media)} />
       )}
       <div
         className={cn(
