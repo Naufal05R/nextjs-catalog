@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Image from "../Image";
+import Media from "../Image";
 import { cn, formatPrice } from "@/lib/utils";
 import { Product as ProductType } from "@prisma/client";
 
@@ -20,7 +20,7 @@ const Product = ({ title, slug, price, discount, collection, classNames }: Produ
       draggable={false}
       className={cn("group relative select-none", wrapper)}
     >
-      <Image
+      <Media
         src={`/dummy_1.jpg`}
         alt="dummy_image"
         fill

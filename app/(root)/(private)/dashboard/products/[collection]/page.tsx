@@ -1,4 +1,4 @@
-import Image from "@/components/Image";
+import Media from "@/components/Image";
 import Mapper from "@/components/server/Mapper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
               isReady && (
                 <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
                   <CardHeader>
-                    <Image
+                    <Media
                       src={`/dummy_${(i % 3) + 1}.jpg`}
                       alt="dummy_image"
                       fill

@@ -1,4 +1,4 @@
-import Image from "@/components/Image";
+import Media from "@/components/Image";
 import React from "react";
 
 const AboutUsPage = () => {
@@ -6,7 +6,7 @@ const AboutUsPage = () => {
     <section className="mx-auto max-w-2xl pt-8">
       <h4 className="mb-4 text-3xl">About Us</h4>
 
-      <Image
+      <Media
         src="/thumbnail/about-thumbnail.jpg"
         alt="about-thumbnail"
         fill

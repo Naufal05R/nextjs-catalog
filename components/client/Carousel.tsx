@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
-import Image from "@/components/Image";
+import Media from "@/components/Image";
 import Mapper from "@/components/server/Mapper";
 import { cn, formatPrice } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
@@ -82,7 +82,7 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
           render={({ slug }, i) => (
             <CarouselItem>
               <Link href={`/collections/${slug}`} draggable={false} className="select-none">
-                <Image
+                <Media
                   src={`/dummy_${(i % 3) + 1}.jpg`}
                   alt="dummy_image"
                   fill
@@ -112,7 +112,7 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
           render={({ title, price, slug }) => (
             <CarouselItem responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
               <Link href={`/products/${slug}`} draggable={false} className="select-none">
-                <Image
+                <Media
                   src={`/dummy_1.jpg`}
                   alt="dummy_image"
                   fill
@@ -152,7 +152,7 @@ export const CarouselDetail = ({
           data={[data, data, data, data, data]}
           render={(_, i) => (
             <CarouselItem>
-              <Image
+              <Media
                 src={`/dummy_${(i % 3) + 1}.jpg`}
                 alt={`dummy_${(i % 3) + 1}`}
                 fill
@@ -164,7 +164,7 @@ export const CarouselDetail = ({
         />
       }
       dotsElement={
-        <Image
+        <Media
           src={"/dummy_1.jpg"}
           alt="dummy_1"
           fill
