@@ -20,7 +20,7 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 
-import { ACCEPTED_MEDIA_MIME_TYPES, ImageFormSchema } from "@/schema/image";
+import { ACCEPTED_MEDIA_MIME_TYPES, MediaFormSchema } from "@/schema/media";
 import { Dialog } from "../server/Dialog";
 
 export function GuestbookForm() {
@@ -206,7 +206,7 @@ export function ContactForm() {
 export function CreateProductForm({ collection }: { collection: string }) {
   const [files, setFiles] = useState<
     Required<
-      Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof ImageFormSchema.safeParse>["data"]>>
+      Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof MediaFormSchema.safeParse>["data"]>>
     >
   >([]);
 
@@ -416,24 +416,24 @@ export function CreateProductForm({ collection }: { collection: string }) {
               {!!files && (
                 <Mapper
                   data={files}
-                  render={({ image }, imageIndex) => {
-                    const _image = files.find((_, index) => index === imageIndex);
+                  render={({ media }, mediaIndex) => {
+                    const _media = files.find((_, index) => index === mediaIndex);
 
                     const reader = new FileReader();
                     reader.addEventListener("load", () => {
                       setFiles((prevState) => {
-                        return prevState.map((image, index) => {
-                          if (index === imageIndex) {
+                        return prevState.map((state, index) => {
+                          if (index === mediaIndex) {
                             return {
-                              ...image,
+                              ...state,
                               preview: reader.result as string,
                             };
                           }
-                          return image;
+                          return state;
                         });
                       });
                     });
-                    if (image) reader.readAsDataURL(image);
+                    if (media) reader.readAsDataURL(media);
 
                     return (
                       <li className="flex w-full items-center gap-x-2 border p-2.5">
@@ -442,30 +442,30 @@ export function CreateProductForm({ collection }: { collection: string }) {
                         </Button>
 
                         <Dialog
-                          header={{ title: _image?.title ?? "", description: "Click the image to view in fullscreen" }}
+                          header={{ title: _media?.title ?? "", description: "Click the image to view in fullscreen" }}
                           element={{
                             trigger: (
                               <Button
                                 type="button"
                                 size="icon"
                                 variant="ghost"
-                                onClick={() => console.log(_image)}
-                                disabled={!image}
+                                onClick={() => console.log(_media)}
+                                disabled={!media}
                               >
-                                {image ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
+                                {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
                               </Button>
                             ),
                             body:
-                              image && _image?.preview && typeof _image.preview === "string" ? (
+                              media && _media?.preview && typeof _media.preview === "string" ? (
                                 <Media
-                                  src={_image.preview}
-                                  alt={_image?.title ?? ""}
-                                  type={image.type}
+                                  src={_media.preview}
+                                  alt={_media?.title ?? ""}
+                                  type={media.type}
                                   {...{
-                                    fill: image.type.startsWith("image/"),
-                                    sizes: image.type.startsWith("image/") ? "(min-width: 768px) 50vw, 100vw" : "100vw",
-                                    controls: image.type.startsWith("video/"),
-                                    autoPlay: image.type.startsWith("video/"),
+                                    fill: media.type.startsWith("image/"),
+                                    sizes: media.type.startsWith("image/") ? "(min-width: 768px) 50vw, 100vw" : "100vw",
+                                    controls: media.type.startsWith("video/"),
+                                    autoPlay: media.type.startsWith("video/"),
                                   }}
                                   classNames={{
                                     figure: "w-full aspect-video rounded hover:cursor-pointer",
@@ -481,22 +481,22 @@ export function CreateProductForm({ collection }: { collection: string }) {
                           }}
                         />
 
-                        <Label htmlFor={`images.${imageIndex}.title`} className="flex-1">
+                        <Label htmlFor={`images.${mediaIndex}.title`} className="flex-1">
                           <Input
-                            id={`images.${imageIndex}.title`}
+                            id={`images.${mediaIndex}.title`}
                             className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                            value={_image?.title ?? ""}
-                            readOnly={!image}
+                            value={_media?.title ?? ""}
+                            readOnly={!media}
                             onChange={(e) => {
                               setFiles((prevState) => {
-                                return prevState.map((image, index) => {
-                                  if (index === imageIndex) {
+                                return prevState.map((state, index) => {
+                                  if (index === mediaIndex) {
                                     return {
-                                      ...image,
+                                      ...state,
                                       title: e.target.value,
                                     };
                                   }
-                                  return image;
+                                  return state;
                                 });
                               });
                             }}
@@ -505,9 +505,9 @@ export function CreateProductForm({ collection }: { collection: string }) {
 
                         <div className="flex items-center gap-x-2">
                           <Button asChild type="button" size="icon" variant="ghost">
-                            <Label htmlFor={`images.${imageIndex}.image`} className="size-9 hover:cursor-pointer">
+                            <Label htmlFor={`images.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
                               <Input
-                                id={`images.${imageIndex}.image`}
+                                id={`images.${mediaIndex}.image`}
                                 className="hidden"
                                 type="file"
                                 accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
@@ -515,15 +515,15 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                   const file = e.target.files?.[0];
                                   if (file) {
                                     setFiles((prevState) => {
-                                      return prevState.map((image, index) => {
-                                        if (index === imageIndex) {
+                                      return prevState.map((state, index) => {
+                                        if (index === mediaIndex) {
                                           return {
-                                            ...image,
+                                            ...state,
                                             title: file.name,
-                                            image: file,
+                                            media: file,
                                           };
                                         }
-                                        return image;
+                                        return state;
                                       });
                                     });
                                   }
@@ -538,7 +538,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                             size="icon"
                             variant="ghost"
                             onClick={() =>
-                              setFiles((prevState) => prevState.filter((_, index) => index !== imageIndex))
+                              setFiles((prevState) => prevState.filter((_, index) => index !== mediaIndex))
                             }
                           >
                             <Trash2 className="text-slate-400" />
