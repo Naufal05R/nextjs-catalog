@@ -65,7 +65,7 @@ model Category {
   products    Product[]
 }
 
-model Image {
+model Media {
   id        String  @id @default(cuid())
   title     String  @unique @db.VarChar(128)
   slug      String  @unique @db.VarChar(128)
@@ -79,7 +79,7 @@ model Gallery {
   id        String  @id @default(cuid())
   title     String  @unique @db.VarChar(16)
   slug      String  @unique @db.VarChar(16)
-  images    Image[]
+  medias    Media[]
   productId String  @unique
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
