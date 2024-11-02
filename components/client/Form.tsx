@@ -493,17 +493,15 @@ export function CreateProductForm({ collection }: { collection: string }) {
                 />
               )}
 
-              <li className="flex w-full items-center gap-x-2 border p-2.5">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full"
-                  onClick={() => setImages((prevState) => [...prevState, { order: prevState.length }])}
-                  onClickCapture={() => console.log(images)}
-                >
-                  <Plus className="text-slate-400" />
-                </Button>
-              </li>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full rounded-none py-7 shadow-none"
+                onClick={() => setImages((prevState) => [...prevState, { order: prevState.length }])}
+                onClickCapture={() => console.log(images)}
+              >
+                <Plus className="text-slate-400" />
+              </Button>
             </ul>
           </fieldset>
 
