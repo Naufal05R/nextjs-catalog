@@ -1,4 +1,4 @@
-import Media from "@/components/Image";
+import Media from "@/components/server/Image";
 import React from "react";
 
 const AboutUsPage = () => {
