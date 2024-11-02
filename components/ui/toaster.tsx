@@ -2,7 +2,7 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
-import Mapper from "../Mapper";
+import Mapper from "../server/Mapper";
 
 export function Toaster() {
   const { toasts } = useToast();
