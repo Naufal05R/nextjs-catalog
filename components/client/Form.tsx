@@ -204,12 +204,11 @@ export function ContactForm() {
 }
 
 export function CreateProductForm({ collection }: { collection: string }) {
-  const [images, setImages] = useState<
+  const [files, setFiles] = useState<
     Required<
       Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof ImageFormSchema.safeParse>["data"]>>
     >
   >([]);
-  // const [preview, setPreview] = useState();
 
   const productForm = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
@@ -228,7 +227,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
   });
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    console.log(images);
+    console.log(files);
     // const data = await createProduct({ params, collection });
     // toast({
     //   title: "Product Created:",
@@ -414,15 +413,15 @@ export function CreateProductForm({ collection }: { collection: string }) {
           <fieldset className="col-span-12">
             <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
             <ul className="flex flex-col gap-y-2.5">
-              {!!images && (
+              {!!files && (
                 <Mapper
-                  data={images}
+                  data={files}
                   render={({ image }, imageIndex) => {
-                    const _image = images.find((_, index) => index === imageIndex);
+                    const _image = files.find((_, index) => index === imageIndex);
 
                     const reader = new FileReader();
                     reader.addEventListener("load", () => {
-                      setImages((prevState) => {
+                      setFiles((prevState) => {
                         return prevState.map((image, index) => {
                           if (index === imageIndex) {
                             return {
@@ -489,7 +488,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                             value={_image?.title ?? ""}
                             readOnly={!image}
                             onChange={(e) => {
-                              setImages((prevState) => {
+                              setFiles((prevState) => {
                                 return prevState.map((image, index) => {
                                   if (index === imageIndex) {
                                     return {
@@ -515,7 +514,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    setImages((prevState) => {
+                                    setFiles((prevState) => {
                                       return prevState.map((image, index) => {
                                         if (index === imageIndex) {
                                           return {
@@ -539,7 +538,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                             size="icon"
                             variant="ghost"
                             onClick={() =>
-                              setImages((prevState) => prevState.filter((_, index) => index !== imageIndex))
+                              setFiles((prevState) => prevState.filter((_, index) => index !== imageIndex))
                             }
                           >
                             <Trash2 className="text-slate-400" />
@@ -555,8 +554,8 @@ export function CreateProductForm({ collection }: { collection: string }) {
                 type="button"
                 variant="outline"
                 className="w-full rounded-none py-7 shadow-none"
-                onClick={() => setImages((prevState) => [...prevState, { order: prevState.length }])}
-                onClickCapture={() => console.log(images)}
+                onClick={() => setFiles((prevState) => [...prevState, { order: prevState.length }])}
+                onClickCapture={() => console.log(files)}
               >
                 <Plus className="text-slate-400" />
               </Button>
