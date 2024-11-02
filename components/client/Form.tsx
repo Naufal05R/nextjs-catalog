@@ -464,7 +464,11 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                   alt={_image?.title ?? ""}
                                   fill
                                   sizes="20vw"
-                                  classNames={{ figure: "w-full aspect-video" }}
+                                  classNames={{
+                                    figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                    image: "object-contain",
+                                  }}
+                                  onClick={(e) => (e.target as HTMLElement).requestFullscreen()}
                                 />
                               ) : (
                                 <></>
