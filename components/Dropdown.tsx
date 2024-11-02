@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Mapper from "./Mapper";
+import Mapper from "./server/Mapper";
 
 interface DropdownProps<T extends Dataset> {
   data: T;
