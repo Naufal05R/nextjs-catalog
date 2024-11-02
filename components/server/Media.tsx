@@ -4,10 +4,18 @@ import { cn } from "@/lib/utils";
 import { Bag } from "../svg";
 
 interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "className"> {
+  type: `image${string}`;
+}
+interface VideoProps
+  extends Omit<React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>, "className"> {
+  type: `video${string}`;
+}
+
+interface ComponentProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
   classNames?: {
     figure?: string;
-    image?: string;
+    media?: string;
     fallback?: {
       wrapper?: string;
       icon?: string;
@@ -15,16 +23,25 @@ interface ImageProps extends Omit<React.ComponentProps<typeof NextImage>, "class
   };
 }
 
-const Media = ({ FallbackComponent = Bag, classNames, ...props }: ImageProps) => {
-  const { figure, image, fallback } = classNames ?? {};
+type MediaProps<T extends string> = ComponentProps &
+  (T extends `image${string}` ? ImageProps : T extends `video${string}` ? VideoProps : never);
+
+const Media = <T extends string>({ FallbackComponent = Bag, classNames, ...props }: MediaProps<T>) => {
+  const { figure, media: image, fallback } = classNames ?? {};
+  const { type, src } = props;
 
   return (
     <figure className={cn("relative overflow-hidden", figure)}>
-      <NextImage
-        {...props}
-        draggable={false}
-        className={cn("z-20 size-full object-cover object-center before:hidden", image)}
-      />
+      {type.startsWith("image") && src && (
+        <NextImage
+          {...(props as unknown as ImageProps)}
+          draggable={false}
+          className={cn("z-20 size-full object-cover object-center before:hidden", image)}
+        />
+      )}
+      {type.startsWith("video") && (
+        <video {...(props as VideoProps)} className={cn("z-20 size-full object-cover object-center", image)} />
+      )}
       <div
         className={cn(
           "relative z-10 grid size-full place-items-center overflow-hidden bg-slate-300",
