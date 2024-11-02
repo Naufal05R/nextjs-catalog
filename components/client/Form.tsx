@@ -21,6 +21,8 @@ import { ProductFormSchema } from "@/schema/product";
 
 import { ACCEPTED_IMAGE_MIME_TYPES, ImageFormSchema } from "@/schema/image";
 import { cn } from "@/lib/utils";
+import { Dialog } from "../server/Dialog";
+import Image from "../Image";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -203,9 +205,12 @@ export function ContactForm() {
 }
 
 export function CreateProductForm({ collection }: { collection: string }) {
-  const [images, setImages] = useState<Required<Array<Partial<ReturnType<typeof ImageFormSchema.safeParse>["data"]>>>>(
-    [],
-  );
+  const [images, setImages] = useState<
+    Required<
+      Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof ImageFormSchema.safeParse>["data"]>>
+    >
+  >([]);
+  // const [preview, setPreview] = useState();
 
   const productForm = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
@@ -413,84 +418,126 @@ export function CreateProductForm({ collection }: { collection: string }) {
               {!!images && (
                 <Mapper
                   data={images}
-                  render={({ image }, imageIndex) => (
-                    <li className="flex w-full items-center gap-x-2 border p-2.5">
-                      <Button type="button" size="icon" variant="ghost">
-                        <GripVertical className="text-slate-400" />
-                      </Button>
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="ghost"
-                        className={cn({ "opacity-50": true })}
-                        onClick={() => console.log(images.find((_, index) => index === imageIndex))}
-                      >
-                        {image ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
-                      </Button>
+                  render={({ image }, imageIndex) => {
+                    const _image = images.find((_, index) => index === imageIndex);
 
-                      <Label htmlFor={`images.${imageIndex}.title`} className="flex-1">
-                        <Input
-                          id={`images.${imageIndex}.title`}
-                          className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                          value={images.find((_, index) => index === imageIndex)?.title ?? ""}
-                          readOnly={!image}
-                          onChange={(e) => {
-                            setImages((prevState) => {
-                              return prevState.map((image, index) => {
-                                if (index === imageIndex) {
-                                  return {
-                                    ...image,
-                                    title: e.target.value,
-                                  };
-                                }
-                                return image;
-                              });
-                            });
+                    const reader = new FileReader();
+                    reader.addEventListener("load", () => {
+                      setImages((prevState) => {
+                        return prevState.map((image, index) => {
+                          if (index === imageIndex) {
+                            return {
+                              ...image,
+                              preview: reader.result as string,
+                            };
+                          }
+                          return image;
+                        });
+                      });
+                    });
+                    if (image) reader.readAsDataURL(image);
+
+                    return (
+                      <li className="flex w-full items-center gap-x-2 border p-2.5">
+                        <Button type="button" size="icon" variant="ghost">
+                          <GripVertical className="text-slate-400" />
+                        </Button>
+
+                        <Dialog
+                          header={{ title: _image?.title ?? "", description: "Click the image to view in fullscreen" }}
+                          element={{
+                            trigger: (
+                              <Button
+                                type="button"
+                                size="icon"
+                                variant="ghost"
+                                onClick={() => console.log(_image)}
+                                disabled={!image}
+                              >
+                                {image ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
+                              </Button>
+                            ),
+                            body:
+                              _image?.preview && typeof _image.preview === "string" ? (
+                                <Image
+                                  src={_image.preview}
+                                  alt={_image?.title ?? ""}
+                                  fill
+                                  sizes="20vw"
+                                  classNames={{ figure: "w-full aspect-video" }}
+                                />
+                              ) : (
+                                <></>
+                              ),
                           }}
                         />
-                      </Label>
 
-                      <div className="flex items-center gap-x-2">
-                        <Button asChild type="button" size="icon" variant="ghost">
-                          <Label htmlFor={`images.${imageIndex}.image`} className="size-9 hover:cursor-pointer">
-                            <Input
-                              id={`images.${imageIndex}.image`}
-                              className="hidden"
-                              type="file"
-                              accept={ACCEPTED_IMAGE_MIME_TYPES.join(",")}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  setImages((prevState) => {
-                                    return prevState.map((image, index) => {
-                                      if (index === imageIndex) {
-                                        return {
-                                          ...image,
-                                          title: file.name,
-                                          image: file,
-                                        };
-                                      }
-                                      return image;
+                        <Label htmlFor={`images.${imageIndex}.title`} className="flex-1">
+                          <Input
+                            id={`images.${imageIndex}.title`}
+                            className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                            value={_image?.title ?? ""}
+                            readOnly={!image}
+                            onChange={(e) => {
+                              setImages((prevState) => {
+                                return prevState.map((image, index) => {
+                                  if (index === imageIndex) {
+                                    return {
+                                      ...image,
+                                      title: e.target.value,
+                                    };
+                                  }
+                                  return image;
+                                });
+                              });
+                            }}
+                          />
+                        </Label>
+
+                        <div className="flex items-center gap-x-2">
+                          <Button asChild type="button" size="icon" variant="ghost">
+                            <Label htmlFor={`images.${imageIndex}.image`} className="size-9 hover:cursor-pointer">
+                              <Input
+                                id={`images.${imageIndex}.image`}
+                                className="hidden"
+                                type="file"
+                                accept={ACCEPTED_IMAGE_MIME_TYPES.join(",")}
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    setImages((prevState) => {
+                                      return prevState.map((image, index) => {
+                                        if (index === imageIndex) {
+                                          return {
+                                            ...image,
+                                            title: file.name,
+                                            image: file,
+                                          };
+                                        }
+                                        return image;
+                                      });
                                     });
-                                  });
-                                }
-                              }}
-                            />
-                            <ImageUp className="text-slate-400" />
-                          </Label>
-                        </Button>
+                                  }
+                                }}
+                              />
+                              <ImageUp className="text-slate-400" />
+                            </Label>
+                          </Button>
 
-                        <Button
-                          type="button"
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => setImages((prevState) => prevState.filter((_, index) => index !== imageIndex))}
-                        >
-                          <Trash className="text-slate-400" />
-                        </Button>
-                      </div>
-                    </li>
-                  )}
+                          <Button
+                            type="button"
+                            size="icon"
+                            variant="ghost"
+                            onClick={() =>
+                              setImages((prevState) => prevState.filter((_, index) => index !== imageIndex))
+                            }
+                          >
+                            <Trash className="text-slate-400" />
+                          </Button>
+                        </div>
+                      </li>
+                    );
+                  }}
                 />
               )}
 
