@@ -457,17 +457,24 @@ export function CreateProductForm({ collection }: { collection: string }) {
                               </Button>
                             ),
                             body:
-                              _image?.preview && typeof _image.preview === "string" ? (
+                              image && _image?.preview && typeof _image.preview === "string" ? (
                                 <Media
                                   src={_image.preview}
                                   alt={_image?.title ?? ""}
-                                  fill
-                                  sizes="20vw"
+                                  type={image.type}
+                                  {...{
+                                    fill: image.type.startsWith("image/"),
+                                    sizes: image.type.startsWith("image/") ? "(min-width: 768px) 50vw, 100vw" : "100vw",
+                                    controls: image.type.startsWith("video/"),
+                                    autoPlay: image.type.startsWith("video/"),
+                                  }}
                                   classNames={{
                                     figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                    image: "object-contain",
+                                    media: "object-contain",
                                   }}
-                                  onClick={(e) => (e.target as HTMLElement).requestFullscreen()}
+                                  onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                    (e.target as HTMLElement).requestFullscreen()
+                                  }
                                 />
                               ) : (
                                 <></>
