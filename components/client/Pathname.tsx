@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Mapper from "@/components/server/Mapper";
 
 import { usePathname } from "next/navigation";
 
@@ -18,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import Mapper from "../server/Mapper";
 
 export function Pathname() {
   const pathname = usePathname();
