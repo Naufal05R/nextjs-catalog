@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ImageSchema } from "./image";
+import { MediaSchema } from "./media";
 import { capitalize, slugify } from "@/lib/utils";
 
 export const GallerySchema = z.object({
@@ -22,11 +22,11 @@ export const GallerySchema = z.object({
       message: "Slug must be less than 15 characters",
     })
     .transform((val) => slugify(val)),
-  images: z.array(ImageSchema.required()),
+  medias: z.array(MediaSchema.required()),
   productId: z.string().cuid(),
 });
 
 export const GalleryFormSchema = GallerySchema.pick({
   title: true,
-  images: true,
+  medias: true,
 });
