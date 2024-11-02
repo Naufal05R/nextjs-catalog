@@ -12,17 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
+import Image from "../Image";
 import Mapper from "@/components/server/Mapper";
-import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash } from "lucide-react";
+import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 
 import { ACCEPTED_IMAGE_MIME_TYPES, ImageFormSchema } from "@/schema/image";
-import { cn } from "@/lib/utils";
 import { Dialog } from "../server/Dialog";
-import Image from "../Image";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -536,7 +535,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                               setImages((prevState) => prevState.filter((_, index) => index !== imageIndex))
                             }
                           >
-                            <Trash className="text-slate-400" />
+                            <Trash2 className="text-slate-400" />
                           </Button>
                         </div>
                       </li>
