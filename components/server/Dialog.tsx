@@ -29,10 +29,10 @@ export function Dialog({ header, element, footer = false }: DialogProps) {
       <DialogTrigger asChild>{element.trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{header.title}</DialogTitle>
+          <DialogTitle className="break-all font-body">{header.title}</DialogTitle>
           <DialogDescription>{header.description}</DialogDescription>
         </DialogHeader>
-        
+
         {element.body}
 
         {footer && (
