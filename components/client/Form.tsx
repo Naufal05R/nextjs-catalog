@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -13,15 +13,13 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
 import Mapper from "@/components/server/Mapper";
-import { Eye, EyeClosed, EyeOff, GripVertical, ImagePlus, ImageUp, Pencil, Plus, Trash, Upload } from "lucide-react";
+import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 
-import { createProduct } from "@/lib/actions/product.action";
 import { ACCEPTED_IMAGE_MIME_TYPES, ImageFormSchema } from "@/schema/image";
-import { GalleryFormSchema } from "@/schema/gallery";
 import { cn } from "@/lib/utils";
 
 export function GuestbookForm() {
