@@ -27,7 +27,7 @@ import { Dataset } from "@/types/data";
 
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { Check, ChevronsUpDown, LayoutList, PlusCircle } from "lucide-react";
-import { CreateCategoryDialog, CreateCollectionDialog } from "./Dialog";
+import { CreateCategoryDialog } from "./Dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -132,6 +132,8 @@ const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMe
     );
   },
 );
+
+ComboboxDropdownMenu.displayName = "ComboboxDropdownMenu";
 
 interface ComboboxDropdownCategoryProps<T extends Dataset> extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   data: T;

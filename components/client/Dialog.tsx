@@ -1,6 +1,6 @@
 "use client";
 
-import React, { DetailedHTMLProps, HTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -165,3 +165,5 @@ export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof Dia
     );
   },
 );
+
+CreateCategoryDialog.displayName = "CreateCategoryDialog";
