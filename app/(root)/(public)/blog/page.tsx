@@ -1,6 +1,6 @@
-import Media from "@/components/server/Media";
-import Mapper from "@/components/server/Mapper";
 import React from "react";
+import Mapper from "@/components/server/Mapper";
+import { Image } from "@/components/server/Media";
 
 const BlogPage = () => {
   return (
@@ -13,9 +13,10 @@ const BlogPage = () => {
           render={() => (
             <li className="group col-span-4">
               <article className="w-full overflow-hidden rounded bg-inherit group-hover:cursor-pointer">
-                <Media
+                <Image
                   src={`/dummy_1.jpg`}
                   alt={`dummy_1`}
+                  mimeType="image/jpg"
                   fill
                   sizes="25vw"
                   classNames={{
