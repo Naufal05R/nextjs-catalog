@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Media from "./Media";
+import { Image } from "./Media";
 import { cn } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 import Mapper from "./Mapper";
@@ -24,10 +24,11 @@ const Collection = ({ title, description, href, classNames }: CollectionProps) =
         <Mapper
           data={Array.from({ length: 3 })}
           render={(_, pictureIndex) => (
-            <Media
+            <Image
               key={pictureIndex}
               src={`/dummy_${pictureIndex + 1}.jpg`}
               alt={`dummy_${pictureIndex + 1}`}
+              mimeType="image/jpg"
               fill
               classNames={{
                 figure: cn("aspect-square row-span-2 col-span-2", {
