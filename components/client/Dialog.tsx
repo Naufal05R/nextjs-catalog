@@ -19,10 +19,6 @@ import { createCollection } from "@/lib/actions/collection.action";
 import { createCategory } from "@/lib/actions/category.action";
 
 interface DialogProps {
-  trigger: {
-    title: string;
-    element: React.ElementType;
-  };
   content: {
     title: string;
     description?: string;
@@ -30,7 +26,14 @@ interface DialogProps {
   };
 }
 
-export function CreateCollectionDialog({ trigger, content }: DialogProps) {
+interface CreateCollectionDialogProps extends DialogProps {
+  trigger: {
+    title: string;
+    element: React.ElementType;
+  };
+}
+
+export function CreateCollectionDialog({ trigger, content }: CreateCollectionDialogProps) {
   const [open, setOpen] = useState(false);
   const [collection, formAction, isLoading] = useFormState(createCollection, "");
   const [temporaryState, setTemporaryState] = useState<typeof collection>("");
@@ -102,7 +105,7 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
   );
 }
 
-interface CreateCategoryDialog extends Omit<DialogProps, "trigger"> {
+interface CreateCategoryDialog extends DialogProps {
   trigger: React.ReactNode;
 }
 
