@@ -253,7 +253,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   });
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    console.log(files);
+    console.log(params, files);
     // const data = await createProduct({ params, collection });
     // toast({
     //   title: "Product Created:",
@@ -302,8 +302,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "justify-between rounded-none shadow-none",
-                            !field.value && "text-muted-foreground",
+                            "justify-between rounded-none px-2.5 shadow-none",
+                            !field.value && "text-slate-500",
                           )}
                         >
                           {field.value
