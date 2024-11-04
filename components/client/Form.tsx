@@ -448,13 +448,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                           }}
                           element={{
                             trigger: (
-                              <Button
-                                type="button"
-                                size="icon"
-                                variant="ghost"
-                                onClick={() => console.log(currentFile)}
-                                disabled={!media}
-                              >
+                              <Button type="button" size="icon" variant="ghost" disabled={!media}>
                                 {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
                               </Button>
                             ),
@@ -571,7 +565,6 @@ export function CreateProductForm({ collection }: { collection: string }) {
                 variant="outline"
                 className="w-full rounded-none py-7 shadow-none"
                 onClick={() => setFiles((prevState) => [...prevState, { order: prevState.length }])}
-                onClickCapture={() => console.log(files)}
               >
                 <Plus className="text-slate-400" />
               </Button>
