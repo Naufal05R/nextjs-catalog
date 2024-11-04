@@ -68,13 +68,24 @@ export function NavMain({
                               <Label htmlFor={item.title} className="text-left">
                                 Title
                               </Label>
-                              <Input id={item.title} name="title" className="col-span-3" />
+                              <Input
+                                id={item.title}
+                                name="title"
+                                className="col-span-3"
+                                form="create-collection-form"
+                              />
                             </fieldset>
                             <fieldset className="grid grid-cols-4 items-start gap-4">
                               <Label htmlFor="description" className="py-[11px] text-left">
                                 Description
                               </Label>
-                              <Textarea rows={3} id="description" name="description" className="col-span-3" />
+                              <Textarea
+                                rows={3}
+                                id="description"
+                                name="description"
+                                className="col-span-3"
+                                form="create-collection-form"
+                              />
                             </fieldset>
                           </>
                         ),
