@@ -12,7 +12,6 @@ const page = async ({ params }: { params: { collection: string; product: string 
   const product = await prisma.product.findUnique({ where: { slug: params.product } });
 
   if (!product) {
-    console.log(product);
     notFound();
   }
 
