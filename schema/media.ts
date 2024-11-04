@@ -3,11 +3,11 @@ import { capitalize, slugify } from "@/lib/utils";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 
-const ACCEPTED_IMAGE_MIME_EXTS = ["image/jpeg", "image/jpg", "image/png", "image/webp"] as const;
-const ACCEPTED_VIDEO_MIME_EXTS = ["video/mp4", "video/mpeg", "video/avi", "video/wmv"] as const;
+export const ACCEPTED_IMAGE_MIME_EXTS = ["image/jpeg", "image/jpg", "image/png", "image/webp"] as const;
+export const ACCEPTED_VIDEO_MIME_EXTS = ["video/mp4", "video/mpeg", "video/avi", "video/wmv"] as const;
 
-const ACCEPTED_IMAGE_EXTS = ["jpeg", "jpg", "png", "webp"] as const;
-const ACCEPTED_VIDEO_EXTS = ["mp4", "mpeg", "avi", "wmv"] as const;
+export const ACCEPTED_IMAGE_EXTS = ["jpeg", "jpg", "png", "webp"] as const;
+export const ACCEPTED_VIDEO_EXTS = ["mp4", "mpeg", "avi", "wmv"] as const;
 
 export const ACCEPTED_MEDIA_MIME_TYPES = [...ACCEPTED_IMAGE_MIME_EXTS, ...ACCEPTED_VIDEO_MIME_EXTS];
 export const ACCEPTED_MEDIA_TYPES = [...ACCEPTED_IMAGE_EXTS, ...ACCEPTED_VIDEO_EXTS];
