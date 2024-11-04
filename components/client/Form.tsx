@@ -47,6 +47,7 @@ import {
   DropdownMenuSubTrigger,
 } from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
+import { ComboboxDropdownCategory } from "./Combobox";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -294,79 +295,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               name="categoryId"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <FormControl>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "justify-between rounded-none px-2.5 shadow-none",
-                            !field.value && "text-slate-500",
-                          )}
-                        >
-                          {field.value
-                            ? categories.find((category) => category.id === field.value)?.title
-                            : "Select Category"}
-                          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className="w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0"
-                      align="start"
-                    >
-                      <DropdownMenuGroup className="p-1">
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>
-                            <LayoutList className="mr-2 size-4" />
-                            Select Category
-                          </DropdownMenuSubTrigger>
-                          <DropdownMenuSubContent>
-                            <Command>
-                              <CommandInput placeholder="Search language..." />
-                              <CommandList>
-                                <CommandEmpty>No language found.</CommandEmpty>
-                                <CommandGroup>
-                                  {!!categories.length && (
-                                    <Mapper
-                                      data={categories}
-                                      render={({ title, id }) => (
-                                        <CommandItem
-                                          value={title}
-                                          onSelect={() => {
-                                            productForm.setValue("categoryId", id);
-                                          }}
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              id === field.value ? "opacity-100" : "opacity-0",
-                                            )}
-                                          />
-                                          {title}
-                                        </CommandItem>
-                                      )}
-                                    />
-                                  )}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </DropdownMenuSubContent>
-                        </DropdownMenuSub>
-                      </DropdownMenuGroup>
-
-                      <Separator />
-
-                      <DropdownMenuGroup className="p-1">
-                        <DropdownMenuItem onClick={() => console.log("clicked")}>
-                          <PlusCircle className="mr-2 size-4" />
-                          Create Category
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <ComboboxDropdownCategory data={categories} field={field} form={productForm} />
                   <FormMessage />
                 </FormItem>
               )}
