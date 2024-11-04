@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { Dataset } from "@/types/data";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Mapper from "./server/Mapper";
+import Mapper from "../server/Mapper";
 
 interface DropdownProps<T extends Dataset> {
   data: T;
