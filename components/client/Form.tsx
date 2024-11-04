@@ -14,18 +14,7 @@ import { toast } from "@/hooks/use-toast";
 
 import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "../server/Media";
-import {
-  Check,
-  ChevronsUpDown,
-  Eye,
-  EyeOff,
-  GripVertical,
-  ImageUp,
-  LayoutList,
-  Plus,
-  PlusCircle,
-  Trash2,
-} from "lucide-react";
+import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
@@ -34,21 +23,7 @@ import { ProductFormSchema } from "@/schema/product";
 import { ACCEPTED_MEDIA_MIME_TYPES, MediaFormSchema } from "@/schema/media";
 import { Dialog } from "../server/Dialog";
 import { Category } from "@prisma/client";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
-import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuTrigger,
-  DropdownMenuSubTrigger,
-} from "../ui/dropdown-menu";
-import { Separator } from "../ui/separator";
 import { ComboboxDropdownCategory } from "./Combobox";
-import { CreateCategoryDialog } from "./Dialog";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
