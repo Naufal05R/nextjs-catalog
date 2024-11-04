@@ -129,7 +129,7 @@ export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof Dia
           if (!open) setTemporaryState("");
         }}
       >
-        <DialogTrigger asChild className="hover:cursor-pointer">
+        <DialogTrigger asChild className="hover:cursor-pointer" ref={ref}>
           {trigger}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
