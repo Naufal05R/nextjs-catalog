@@ -54,6 +54,6 @@ export const createCollection = async (prevState: string | undefined, formData: 
       handlingError(error);
     }
   } else {
-    handlingError(validated.error);
+    console.error(validated.error);
   }
 };
