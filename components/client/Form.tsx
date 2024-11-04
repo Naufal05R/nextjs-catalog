@@ -230,7 +230,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   });
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    console.log(params, files);
+    console.table({ params });
+    console.table({ files });
     // const data = await createProduct({ params, collection });
     // toast({
     //   title: "Product Created:",
@@ -342,11 +343,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="width">
                     <FormControl>
                       <Input
+                        {...field}
                         id="width"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Width"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
@@ -362,11 +364,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="height">
                     <FormControl>
                       <Input
+                        {...field}
                         id="height"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Height"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
@@ -382,11 +385,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="length">
                     <FormControl>
                       <Input
+                        {...field}
                         id="length"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Length"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
@@ -403,11 +407,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="weight">
                     <FormControl>
                       <Input
+                        {...field}
                         id="weight"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Weight"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
@@ -427,11 +432,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="price">
                     <FormControl>
                       <Input
+                        {...field}
                         id="price"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Price"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
@@ -447,11 +453,12 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   <FormLabel htmlFor="discount">
                     <FormControl>
                       <Input
+                        {...field}
                         id="discount"
                         form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Discount"
-                        {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                   </FormLabel>
