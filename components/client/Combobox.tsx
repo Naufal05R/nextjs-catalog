@@ -1,6 +1,10 @@
 "use client";
 
-import * as React from "react";
+import React from "react";
+import Mapper from "@/components/server/Mapper";
+
+import { z } from "zod";
+import { cn } from "@/lib/utils";
 
 import {
   DropdownMenu,
@@ -12,8 +16,17 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Separator } from "@/components/ui/separator";
+import { FormControl } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 
-import { Separator } from "../ui/separator";
+import { ProductFormSchema } from "@/schema/product";
+import { Category } from "@prisma/client";
+import { Dataset } from "@/types/data";
+
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
+import { Check, ChevronsUpDown, LayoutList, PlusCircle } from "lucide-react";
 
 interface ComboboxDropdownMenuProps {
   element: {
@@ -30,36 +43,56 @@ interface ComboboxDropdownMenuProps {
             content: React.JSX.Element;
           }
       );
-      separator?: React.JSX.Element;
+      separator?: boolean;
       group?: boolean;
     }[];
   };
+  classNames?: {
+    menu?: {
+      trigger?: string;
+      content?: string;
+      group?: string;
+      sub?: {
+        trigger?: string;
+        content?: string;
+      };
+    };
+    separator?: string;
+    item?: string;
+  };
 }
 
-export function ComboboxDropdownMenu({ element }: ComboboxDropdownMenuProps) {
+const ComboboxDropdownMenu = ({ element, classNames }: ComboboxDropdownMenuProps) => {
   const [open, setOpen] = React.useState(false);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>{element.trigger}</DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0"
+        className={cn(
+          "w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0",
+          classNames?.menu?.content,
+        )}
         align="start"
       >
         {element.content.map(({ group, separator, element }) => {
-          const Group = (children: React.ReactNode, Element: React.ElementType) => <Element>{children}</Element>;
+          const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
+            <Element className={classNames?.menu?.group}>{children}</Element>
+          );
           const SubItem = () =>
             element.type === "menuSub" ? (
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>{element.trigger}</DropdownMenuSubTrigger>
-                {element.content}
+                <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
+                  {element.trigger}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+                  {element.content}
+                </DropdownMenuSubContent>
               </DropdownMenuSub>
             ) : undefined;
           const Item = () =>
             element.type === "menuItem" ? (
-              <DropdownMenuItem>
-                <DropdownMenuSubContent>{element.content}</DropdownMenuSubContent>
-              </DropdownMenuItem>
+              <DropdownMenuItem className={classNames?.item}>{element.content}</DropdownMenuItem>
             ) : undefined;
 
           const Switcher = () => {
@@ -76,11 +109,101 @@ export function ComboboxDropdownMenu({ element }: ComboboxDropdownMenuProps) {
           return (
             <>
               {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
-              {separator && <Separator />}
+              {separator && <Separator className={classNames?.separator} />}
             </>
           );
         })}
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+interface ComboboxDropdownCategoryProps<T extends Dataset> {
+  data: T;
+  field: ControllerRenderProps<z.infer<typeof ProductFormSchema>, keyof z.infer<typeof ProductFormSchema>>;
+  form: UseFormReturn<z.infer<typeof ProductFormSchema>>;
 }
+
+export const ComboboxDropdownCategory = <T extends Array<Category>>({
+  data,
+  field,
+  form,
+}: ComboboxDropdownCategoryProps<T>) => {
+  return (
+    <ComboboxDropdownMenu
+      element={{
+        trigger: (
+          <FormControl>
+            <Button
+              type="button"
+              variant="outline"
+              role="combobox"
+              className={cn("justify-between rounded-none px-2.5 shadow-none", !field.value && "text-slate-500")}
+            >
+              {field.value ? data.find((category) => category.id === field.value)?.title : "Select Category"}
+              <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+            </Button>
+          </FormControl>
+        ),
+        content: [
+          {
+            group: true,
+            separator: true,
+            element: {
+              type: "menuSub",
+              trigger: (
+                <>
+                  <LayoutList className="mr-2 size-4" />
+                  Select Category
+                </>
+              ),
+              content: (
+                <Command>
+                  <CommandInput placeholder="Search language..." />
+                  <CommandList>
+                    <CommandEmpty>No language found.</CommandEmpty>
+                    <CommandGroup>
+                      {!!data.length && (
+                        <Mapper
+                          data={data}
+                          render={({ title, id }) => (
+                            <CommandItem
+                              value={title}
+                              onSelect={() => {
+                                form.setValue("categoryId", id);
+                              }}
+                            >
+                              <Check className={cn("mr-2 size-4", id === field.value ? "opacity-100" : "opacity-0")} />
+                              {title}
+                            </CommandItem>
+                          )}
+                        />
+                      )}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              ),
+            },
+          },
+          {
+            group: true,
+            element: {
+              type: "menuItem",
+              content: (
+                <>
+                  <PlusCircle className="mr-2 size-4" />
+                  Create Category
+                </>
+              ),
+            },
+          },
+        ],
+      }}
+      classNames={{
+        menu: {
+          group: "p-1",
+        },
+      }}
+    />
+  );
+};
