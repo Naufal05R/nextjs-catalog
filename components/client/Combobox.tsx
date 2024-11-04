@@ -1,74 +1,85 @@
 "use client";
 
 import * as React from "react";
-import { CirclePlus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const list = ["feature", "bug", "enhancement", "documentation", "design", "question", "maintenance"];
+import { Separator } from "../ui/separator";
 
 interface ComboboxDropdownMenuProps {
-  label: string;
   element: {
     trigger: React.JSX.Element;
+    content: {
+      element: {} & (
+        | {
+            type: "menuItem";
+            content: React.JSX.Element;
+          }
+        | {
+            type: "menuSub";
+            trigger: React.JSX.Element;
+            content: React.JSX.Element;
+          }
+      );
+      separator?: React.JSX.Element;
+      group?: boolean;
+    }[];
   };
 }
 
-export function ComboboxDropdownMenu({ label, element }: ComboboxDropdownMenuProps) {
-  const [selected, setSelected] = React.useState<string>();
+export function ComboboxDropdownMenu({ element }: ComboboxDropdownMenuProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
-          {selected ?? `Select ${label}`}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px] text-slate-500">
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>{element.trigger}</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent className="p-0">
-              <Command>
-                <CommandInput placeholder="Filter label..." autoFocus={true} />
-                <CommandList>
-                  <CommandEmpty>No {label} found.</CommandEmpty>
-                  <CommandGroup>
-                    {list.map((item) => (
-                      <CommandItem
-                        key={item}
-                        value={item}
-                        onSelect={(value) => {
-                          setSelected(value);
-                          setOpen(false);
-                        }}
-                      >
-                        {item}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="justify-center">
-            <CirclePlus />
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+      <DropdownMenuTrigger asChild>{element.trigger}</DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0"
+        align="start"
+      >
+        {element.content.map(({ group, separator, element }) => {
+          const Group = (children: React.ReactNode, Element: React.ElementType) => <Element>{children}</Element>;
+          const SubItem = () =>
+            element.type === "menuSub" ? (
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>{element.trigger}</DropdownMenuSubTrigger>
+                {element.content}
+              </DropdownMenuSub>
+            ) : undefined;
+          const Item = () =>
+            element.type === "menuItem" ? (
+              <DropdownMenuItem>
+                <DropdownMenuSubContent>{element.content}</DropdownMenuSubContent>
+              </DropdownMenuItem>
+            ) : undefined;
+
+          const Switcher = () => {
+            switch (element.type) {
+              case "menuItem":
+                return Item();
+              case "menuSub":
+                return SubItem();
+              default:
+                break;
+            }
+          };
+
+          return (
+            <>
+              {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
+              {separator && <Separator />}
+            </>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );
