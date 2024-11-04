@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
-import Media from "../server/Media";
+import { Image, Video } from "../server/Media";
 import Mapper from "@/components/server/Mapper";
 import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
@@ -417,7 +417,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                 <Mapper
                   data={files}
                   render={({ media }, mediaIndex) => {
-                    const _media = files.find((_, index) => index === mediaIndex);
+                    const currentFile = files.find((_, index) => index === mediaIndex);
 
                     const reader = new FileReader();
                     reader.addEventListener("load", () => {
@@ -442,39 +442,55 @@ export function CreateProductForm({ collection }: { collection: string }) {
                         </Button>
 
                         <Dialog
-                          header={{ title: _media?.title ?? "", description: "Click the image to view in fullscreen" }}
+                          header={{
+                            title: currentFile?.title ?? "",
+                            description: "Click the image to view in fullscreen",
+                          }}
                           element={{
                             trigger: (
                               <Button
                                 type="button"
                                 size="icon"
                                 variant="ghost"
-                                onClick={() => console.log(_media)}
+                                onClick={() => console.log(currentFile)}
                                 disabled={!media}
                               >
                                 {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
                               </Button>
                             ),
                             body:
-                              media && _media?.preview && typeof _media.preview === "string" ? (
-                                <Media
-                                  src={_media.preview}
-                                  alt={_media?.title ?? ""}
-                                  type={media.type}
-                                  {...{
-                                    fill: media.type.startsWith("image/"),
-                                    sizes: media.type.startsWith("image/") ? "(min-width: 768px) 50vw, 100vw" : "100vw",
-                                    controls: media.type.startsWith("video/"),
-                                    autoPlay: media.type.startsWith("video/"),
-                                  }}
-                                  classNames={{
-                                    figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                    media: "object-contain",
-                                  }}
-                                  onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                    (e.target as HTMLElement).requestFullscreen()
-                                  }
-                                />
+                              media && currentFile?.preview && typeof currentFile.preview === "string" ? (
+                                media.type.startsWith("image/") ? (
+                                  <Image
+                                    src={currentFile.preview}
+                                    alt={currentFile?.title ?? ""}
+                                    mimeType={media.type}
+                                    fill
+                                    sizes="(min-width: 768px) 50vw, 100vw"
+                                    classNames={{
+                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                      image: "object-contain",
+                                    }}
+                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                      (e.target as HTMLElement).requestFullscreen()
+                                    }
+                                  />
+                                ) : media.type.startsWith("video/") ? (
+                                  <Video
+                                    controls
+                                    autoPlay
+                                    mimeType={media.type}
+                                    classNames={{
+                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                      video: "object-contain",
+                                    }}
+                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                      (e.target as HTMLElement).requestFullscreen()
+                                    }
+                                  />
+                                ) : (
+                                  <></>
+                                )
                               ) : (
                                 <></>
                               ),
@@ -485,7 +501,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
                           <Input
                             id={`images.${mediaIndex}.title`}
                             className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                            value={_media?.title ?? ""}
+                            value={currentFile?.title ?? ""}
                             readOnly={!media}
                             onChange={(e) => {
                               setFiles((prevState) => {
