@@ -5,11 +5,13 @@ import "./globals.css";
 const playfair_display = Playfair_Display({
   variable: "--font-playfair-display",
   weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
   subsets: ["latin"],
 });
 const outfit = Outfit({
   variable: "--font-outfit",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
   subsets: ["latin"],
 });
 
