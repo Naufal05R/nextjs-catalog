@@ -27,6 +27,10 @@ import { Dataset } from "@/types/data";
 
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { Check, ChevronsUpDown, LayoutList, PlusCircle } from "lucide-react";
+import { CreateCategoryDialog, CreateCollectionDialog } from "./Dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 interface ComboboxDropdownMenuProps {
   element: {
@@ -75,44 +79,51 @@ const ComboboxDropdownMenu = ({ element, classNames }: ComboboxDropdownMenuProps
         )}
         align="start"
       >
-        {element.content.map(({ group, separator, element }) => {
-          const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
-            <Element className={classNames?.menu?.group}>{children}</Element>
-          );
-          const SubItem = () =>
-            element.type === "menuSub" ? (
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
-                  {element.trigger}
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+        <Mapper
+          data={element.content}
+          render={({ group, separator, element }) => {
+            const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
+              <Element className={classNames?.menu?.group}>{children}</Element>
+            );
+
+            const SubItem = () =>
+              element.type === "menuSub" ? (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
+                    {element.trigger}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+                    {element.content}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              ) : undefined;
+
+            const Item = () =>
+              element.type === "menuItem" ? (
+                <DropdownMenuItem className={classNames?.item} onSelect={(e) => e.preventDefault()} asChild>
                   {element.content}
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            ) : undefined;
-          const Item = () =>
-            element.type === "menuItem" ? (
-              <DropdownMenuItem className={classNames?.item}>{element.content}</DropdownMenuItem>
-            ) : undefined;
+                </DropdownMenuItem>
+              ) : undefined;
 
-          const Switcher = () => {
-            switch (element.type) {
-              case "menuItem":
-                return Item();
-              case "menuSub":
-                return SubItem();
-              default:
-                break;
-            }
-          };
+            const Switcher = () => {
+              switch (element.type) {
+                case "menuItem":
+                  return Item();
+                case "menuSub":
+                  return SubItem();
+                default:
+                  break;
+              }
+            };
 
-          return (
-            <>
-              {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
-              {separator && <Separator className={classNames?.separator} />}
-            </>
-          );
-        })}
+            return (
+              <>
+                {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
+                {separator && <Separator className={classNames?.separator} />}
+              </>
+            );
+          }}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -190,10 +201,43 @@ export const ComboboxDropdownCategory = <T extends Array<Category>>({
             element: {
               type: "menuItem",
               content: (
-                <>
-                  <PlusCircle className="mr-2 size-4" />
-                  Create Category
-                </>
+                <CreateCategoryDialog
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start gap-2 rounded-none px-2 text-sm font-normal"
+                    >
+                      <PlusCircle className="mr-2" />
+                      Create Category
+                    </Button>
+                  }
+                  content={{
+                    title: `Create New Category`,
+                    element: (
+                      <>
+                        <fieldset className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="title" className="text-left">
+                            Title
+                          </Label>
+                          <Input id="title" name="title" className="col-span-3" form="create-category-form" />
+                        </fieldset>
+                        <fieldset className="grid grid-cols-4 items-start gap-4">
+                          <Label htmlFor="description" className="py-[11px] text-left">
+                            Description
+                          </Label>
+                          <Textarea
+                            rows={3}
+                            id="description"
+                            name="description"
+                            className="col-span-3"
+                            form="create-category-form"
+                          />
+                        </fieldset>
+                      </>
+                    ),
+                  }}
+                />
               ),
             },
           },
