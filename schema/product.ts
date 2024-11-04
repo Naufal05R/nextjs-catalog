@@ -97,4 +97,5 @@ export const ProductFormSchema = ProductSchema.pick({
   price: true,
   discount: true,
   description: true,
+  categoryId: true,
 });
