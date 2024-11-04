@@ -1,4 +1,4 @@
-import Media from "@/components/server/Media";
+import { Image } from "@/components/server/Media";
 import React from "react";
 
 const AboutUsPage = () => {
@@ -6,9 +6,10 @@ const AboutUsPage = () => {
     <section className="mx-auto max-w-2xl pt-8">
       <h4 className="mb-4 text-3xl">About Us</h4>
 
-      <Media
+      <Image
         src="/thumbnail/about-thumbnail.jpg"
         alt="about-thumbnail"
+        mimeType="image/jpg"
         fill
         sizes="50vw"
         classNames={{
