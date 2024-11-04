@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
-import { Image, Video } from "../server/Media";
 import Mapper from "@/components/server/Mapper";
+import { Image, Video } from "../server/Media";
 import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
@@ -458,7 +458,6 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                   <Image
                                     src={currentFile.preview}
                                     alt={currentFile?.title ?? ""}
-                                    mimeType={media.type}
                                     fill
                                     sizes="(min-width: 768px) 50vw, 100vw"
                                     classNames={{
@@ -473,7 +472,6 @@ export function CreateProductForm({ collection }: { collection: string }) {
                                   <Video
                                     controls
                                     autoPlay
-                                    mimeType={media.type}
                                     classNames={{
                                       figure: "w-full aspect-video rounded hover:cursor-pointer",
                                       video: "object-contain",

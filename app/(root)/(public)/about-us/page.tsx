@@ -9,7 +9,6 @@ const AboutUsPage = () => {
       <Image
         src="/thumbnail/about-thumbnail.jpg"
         alt="about-thumbnail"
-        mimeType="image/jpg"
         fill
         sizes="50vw"
         classNames={{

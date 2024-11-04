@@ -30,7 +30,6 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
                     <Image
                       src={`/dummy_${(i % 3) + 1}.jpg`}
                       alt="dummy_image"
-                      mimeType="image/jpg"
                       fill
                       sizes="25vw"
                       classNames={{ figure: "w-full aspect-video rounded-md" }}

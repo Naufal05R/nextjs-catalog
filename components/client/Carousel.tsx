@@ -85,7 +85,6 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
                 <Image
                   src={`/dummy_${(i % 3) + 1}.jpg`}
                   alt="dummy_image"
-                  mimeType="image/jpg"
                   fill
                   sizes="25vw"
                   classNames={{
@@ -116,7 +115,6 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
                 <Image
                   src={`/dummy_1.jpg`}
                   alt="dummy_image"
-                  mimeType="image/jpg"
                   fill
                   sizes="25vw"
                   classNames={{
@@ -157,7 +155,6 @@ export const CarouselDetail = ({
               <Image
                 src={`/dummy_${(i % 3) + 1}.jpg`}
                 alt={`dummy_${(i % 3) + 1}`}
-                mimeType="image/jpg"
                 fill
                 sizes="50vw"
                 classNames={{ figure: "aspect-square rounded w-full" }}
@@ -170,7 +167,6 @@ export const CarouselDetail = ({
         <Image
           src={"/dummy_1.jpg"}
           alt="dummy_1"
-          mimeType="image/jpg"
           fill
           sizes="10vw"
           classNames={{ figure: "aspect-square rounded w-full" }}

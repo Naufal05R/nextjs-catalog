@@ -21,7 +21,6 @@ export default async function Home() {
           src="/dummy_2.jpg"
           alt="dummy_2"
           fill
-          mimeType="image/jpg"
           classNames={{ figure: "h-96 rounded w-1/3" }}
         />
       </section>

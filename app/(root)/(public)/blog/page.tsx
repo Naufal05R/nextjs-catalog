@@ -16,7 +16,6 @@ const BlogPage = () => {
                 <Image
                   src={`/dummy_1.jpg`}
                   alt={`dummy_1`}
-                  mimeType="image/jpg"
                   fill
                   sizes="25vw"
                   classNames={{

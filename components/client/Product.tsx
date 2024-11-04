@@ -23,7 +23,6 @@ const Product = ({ title, slug, price, discount, collection, classNames }: Produ
       <Image
         src={`/dummy_1.jpg`}
         alt="dummy_image"
-        mimeType="image/jpg"
         fill
         sizes="25vw"
         classNames={{

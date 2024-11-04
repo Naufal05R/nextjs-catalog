@@ -28,7 +28,6 @@ const Collection = ({ title, description, href, classNames }: CollectionProps) =
               key={pictureIndex}
               src={`/dummy_${pictureIndex + 1}.jpg`}
               alt={`dummy_${pictureIndex + 1}`}
-              mimeType="image/jpg"
               fill
               classNames={{
                 figure: cn("aspect-square row-span-2 col-span-2", {
