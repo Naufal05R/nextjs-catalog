@@ -1,7 +1,7 @@
 "use server";
 
-import { CategorySchema } from "@/schema/category";
-import { handlingError } from "../utils";
+import { CategoryFormSchema, CategorySchema } from "@/schema/category";
+import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
 
@@ -26,5 +26,34 @@ export const getAllCategory = async () => {
     return allCategories;
   } catch (error) {
     handlingError(error);
+  }
+};
+
+export const createCategory = async (prevState: string | undefined, formData: FormData) => {
+  const raw = {
+    title: formData.get("title"),
+    description: formData.get("description"),
+  };
+  const validated = CategoryFormSchema.safeParse(raw);
+
+  if (validated.success) {
+    console.log(validated);
+
+    try {
+      const { title, description } = validated.data;
+      const newCategory = await prisma.category.create({
+        data: {
+          title,
+          slug: slugify(title),
+          description,
+        },
+      });
+
+      return newCategory.title;
+    } catch (error) {
+      handlingError(error);
+    }
+  } else {
+    handlingError(validated.error);
   }
 };
