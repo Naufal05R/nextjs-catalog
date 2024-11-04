@@ -1,6 +1,6 @@
 import Product from "@/components/client/Product";
 import Mapper from "@/components/server/Mapper";
-import { Select } from "@/components/Select";
+import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
 import { getAllProduct } from "@/lib/actions/product.action";
 

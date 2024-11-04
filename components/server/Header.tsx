@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Mail, Search, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
-import { Select } from "../Select";
+import { Select } from "./Select";
 import { languages, navigations } from "@/constants";
 import { currencies } from "@/constants";
 import Mapper from "./Mapper";

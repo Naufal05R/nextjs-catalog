@@ -16,7 +16,7 @@ import {
 } from "@/components/svg";
 import { Mail } from "lucide-react";
 import { currencies, footers } from "@/constants";
-import { Select } from "../Select";
+import { Select } from "./Select";
 import { languages } from "@/constants";
 import Mapper from "./Mapper";
 
