@@ -1,12 +1,12 @@
-import Media from "@/components/server/Media";
 import Link from "next/link";
+import Mapper from "@/components/server/Mapper";
+import Collection from "@/components/server/Collection";
+import { Image } from "@/components/server/Media";
 import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, testimonials } from "@/constants";
-import Mapper from "@/components/server/Mapper";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { getAllCollection } from "@/lib/actions/collection.action";
-import Collection from "@/components/server/Collection";
 
 export default async function Home() {
   const allProducts = await getAllProduct();
@@ -17,7 +17,13 @@ export default async function Home() {
       <section className="flex flex-nowrap items-stretch gap-px">
         {allCollections && <CarouselThumbnail data={allCollections} />}
 
-        <Media src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
+        <Image
+          src="/dummy_2.jpg"
+          alt="dummy_2"
+          fill
+          mimeType="image/jpg"
+          classNames={{ figure: "h-96 rounded w-1/3" }}
+        />
       </section>
 
       <section className="mt-16">
