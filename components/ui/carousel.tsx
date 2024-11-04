@@ -84,7 +84,6 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       (index: number) => {
         if (carouselApi && dotsApi) {
           carouselApi.scrollTo(index);
-          console.log(index);
         }
       },
       [carouselApi, dotsApi],
