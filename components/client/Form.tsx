@@ -14,7 +14,18 @@ import { toast } from "@/hooks/use-toast";
 
 import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "../server/Media";
-import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
+  GripVertical,
+  ImageUp,
+  LayoutList,
+  Plus,
+  PlusCircle,
+  Trash2,
+} from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
@@ -22,6 +33,20 @@ import { ProductFormSchema } from "@/schema/product";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, MediaFormSchema } from "@/schema/media";
 import { Dialog } from "../server/Dialog";
+import { Category } from "@prisma/client";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
+import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuTrigger,
+  DropdownMenuSubTrigger,
+} from "../ui/dropdown-menu";
+import { Separator } from "../ui/separator";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -203,7 +228,7 @@ export function ContactForm() {
   );
 }
 
-export function CreateProductForm({ collection }: { collection: string }) {
+export function CreateProductForm({ collection, categories }: { collection: string; categories: Array<Category> }) {
   const [files, setFiles] = useState<
     Required<
       Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof MediaFormSchema.safeParse>["data"]>>
@@ -223,6 +248,7 @@ export function CreateProductForm({ collection }: { collection: string }) {
       price: 0,
       discount: 0,
       description: "",
+      categoryId: "",
     },
   });
 
@@ -261,8 +287,90 @@ export function CreateProductForm({ collection }: { collection: string }) {
             />
           </fieldset>
 
-          <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
-            <h6 className="col-span-2 mb-1 text-lg font-medium">Product Detail</h6>
+          <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
+            <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
+            <FormField
+              control={productForm.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <FormControl>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between rounded-none shadow-none",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value
+                            ? categories.find((category) => category.id === field.value)?.title
+                            : "Select Category"}
+                          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0"
+                      align="start"
+                    >
+                      <DropdownMenuGroup className="p-1">
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <LayoutList className="mr-2 size-4" />
+                            Select Category
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuSubContent>
+                            <Command>
+                              <CommandInput placeholder="Search language..." />
+                              <CommandList>
+                                <CommandEmpty>No language found.</CommandEmpty>
+                                <CommandGroup>
+                                  {!!categories.length && (
+                                    <Mapper
+                                      data={categories}
+                                      render={({ title, id }) => (
+                                        <CommandItem
+                                          value={title}
+                                          onSelect={() => {
+                                            productForm.setValue("categoryId", id);
+                                          }}
+                                        >
+                                          <Check
+                                            className={cn(
+                                              "mr-2 h-4 w-4",
+                                              id === field.value ? "opacity-100" : "opacity-0",
+                                            )}
+                                          />
+                                          {title}
+                                        </CommandItem>
+                                      )}
+                                    />
+                                  )}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+                      </DropdownMenuGroup>
+
+                      <Separator />
+
+                      <DropdownMenuGroup className="p-1">
+                        <DropdownMenuItem onClick={() => console.log("clicked")}>
+                          <PlusCircle className="mr-2 size-4" />
+                          Create Category
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={productForm.control}
               name="state"
