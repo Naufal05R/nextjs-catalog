@@ -1,5 +1,6 @@
-import Media from "@/components/server/Media";
+import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
+import { Image } from "@/components/server/Media";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,6 @@ import { getCollection } from "@/lib/actions/collection.action";
 import { getProducts } from "@/lib/actions/product.action";
 import { cn, formatPrice } from "@/lib/utils";
 import { Archive, Grid2x2Plus, Pencil } from "lucide-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function ProductsByCollectionPage({ params }: { params: { collection: string } }) {
@@ -27,9 +27,10 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
               isReady && (
                 <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
                   <CardHeader>
-                    <Media
+                    <Image
                       src={`/dummy_${(i % 3) + 1}.jpg`}
                       alt="dummy_image"
+                      mimeType="image/jpg"
                       fill
                       sizes="25vw"
                       classNames={{ figure: "w-full aspect-video rounded-md" }}
