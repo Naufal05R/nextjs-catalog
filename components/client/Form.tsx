@@ -48,6 +48,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
 import { ComboboxDropdownCategory } from "./Combobox";
+import { CreateCategoryDialog } from "./Dialog";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -269,7 +270,9 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   return (
     <>
       <FormRoot {...productForm}>
-        <form onSubmit={productForm.handleSubmit(onSubmit)} className="mt-8 grid w-full grid-cols-12 gap-4">
+        <form id="create-product-form" onSubmit={productForm.handleSubmit(onSubmit)} />
+
+        <article className="mt-8 grid w-full grid-cols-12 gap-4">
           <fieldset className="col-span-12">
             <h6 className="mb-1 text-lg font-medium">Product Title</h6>
             <FormField
@@ -279,7 +282,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="title">
                     <FormControl>
-                      <Input id="title" className="rounded-none shadow-none" placeholder="Title" {...field} />
+                      <Input
+                        id="title"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Title"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -293,12 +302,18 @@ export function CreateProductForm({ collection, categories }: { collection: stri
             <FormField
               control={productForm.control}
               name="categoryId"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <ComboboxDropdownCategory data={categories} field={field} form={productForm} />
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex flex-col">
+                    <ComboboxDropdownCategory
+                      data={categories}
+                      field={field}
+                      form={{ ...productForm, form: "create-product-form" }}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <FormField
               control={productForm.control}
@@ -307,7 +322,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="state">
                     <FormControl>
-                      <Input id="state" className="rounded-none shadow-none" placeholder="Origin" {...field} />
+                      <Input
+                        id="state"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Origin"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -321,7 +342,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="color">
                     <FormControl>
-                      <Input id="color" className="rounded-none shadow-none" placeholder="Color" {...field} />
+                      <Input
+                        id="color"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Color"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -339,7 +366,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="width">
                     <FormControl>
-                      <Input id="width" className="rounded-none shadow-none" placeholder="Width" {...field} />
+                      <Input
+                        id="width"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Width"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -353,7 +386,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="height">
                     <FormControl>
-                      <Input id="height" className="rounded-none shadow-none" placeholder="Height" {...field} />
+                      <Input
+                        id="height"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Height"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -367,7 +406,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="length">
                     <FormControl>
-                      <Input id="length" className="rounded-none shadow-none" placeholder="Length" {...field} />
+                      <Input
+                        id="length"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Length"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -382,7 +427,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="weight">
                     <FormControl>
-                      <Input id="weight" className="rounded-none shadow-none" placeholder="Weight" {...field} />
+                      <Input
+                        id="weight"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Weight"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -400,7 +451,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="price">
                     <FormControl>
-                      <Input id="price" className="rounded-none shadow-none" placeholder="Price" {...field} />
+                      <Input
+                        id="price"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Price"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -414,7 +471,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <FormItem>
                   <FormLabel htmlFor="discount">
                     <FormControl>
-                      <Input id="discount" className="rounded-none shadow-none" placeholder="Discount" {...field} />
+                      <Input
+                        id="discount"
+                        form="create-product-form"
+                        className="rounded-none shadow-none"
+                        placeholder="Discount"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                   <FormMessage />
@@ -434,6 +497,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                     <FormControl>
                       <Textarea
                         id="description"
+                        form="create-product-form"
                         className="rounded-none shadow-none"
                         placeholder="Description"
                         rows={10}
@@ -529,6 +593,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                         <Label htmlFor={`images.${mediaIndex}.title`} className="flex-1">
                           <Input
                             id={`images.${mediaIndex}.title`}
+                            form="create-product-form"
                             className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
                             value={currentFile?.title ?? ""}
                             readOnly={!media}
@@ -553,6 +618,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                             <Label htmlFor={`images.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
                               <Input
                                 id={`images.${mediaIndex}.image`}
+                                form="create-product-form"
                                 className="hidden"
                                 type="file"
                                 accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
@@ -606,10 +672,10 @@ export function CreateProductForm({ collection, categories }: { collection: stri
             </ul>
           </fieldset>
 
-          <Button type="submit" className="col-span-12 flex w-full rounded-none">
+          <Button type="submit" className="col-span-12 flex w-full rounded-none" form="create-product-form">
             Save
           </Button>
-        </form>
+        </article>
       </FormRoot>
     </>
   );
