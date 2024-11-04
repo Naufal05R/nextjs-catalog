@@ -2,7 +2,6 @@ import React from "react";
 import NextImage from "next/image";
 import { cn } from "@/lib/utils";
 import { Bag } from "../svg";
-import { ACCEPTED_IMAGE_MIME_EXTS, ACCEPTED_VIDEO_MIME_EXTS } from "@/schema/media";
 
 interface ComponentBaseProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -16,19 +15,13 @@ interface ComponentBaseProps {
   };
 }
 
-interface ImageComponentProps<T extends (typeof ACCEPTED_IMAGE_MIME_EXTS)[number]>
-  extends ImageProps,
-    Pick<ComponentBaseProps, "FallbackComponent"> {
-  mimeType: T | (string & {});
+interface ImageComponentProps extends ImageProps, Pick<ComponentBaseProps, "FallbackComponent"> {
   classNames?: ComponentBaseProps["classNames"] & {
     image?: string;
   };
 }
 
-interface VideoComponentProps<T extends (typeof ACCEPTED_VIDEO_MIME_EXTS)[number]>
-  extends VideoProps,
-    Pick<ComponentBaseProps, "FallbackComponent"> {
-  mimeType: T | (string & {});
+interface VideoComponentProps extends VideoProps, Pick<ComponentBaseProps, "FallbackComponent"> {
   classNames?: ComponentBaseProps["classNames"] & {
     video?: string;
   };
@@ -60,11 +53,7 @@ const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseP
   );
 };
 
-export const Image = <T extends (typeof ACCEPTED_IMAGE_MIME_EXTS)[number]>({
-  FallbackComponent = Bag,
-  classNames,
-  ...props
-}: ImageComponentProps<T>) => {
+export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageComponentProps) => {
   const { figure, image, fallback } = classNames ?? {};
 
   return (
@@ -78,11 +67,7 @@ export const Image = <T extends (typeof ACCEPTED_IMAGE_MIME_EXTS)[number]>({
   );
 };
 
-export const Video = <T extends (typeof ACCEPTED_VIDEO_MIME_EXTS)[number]>({
-  FallbackComponent = Bag,
-  classNames,
-  ...props
-}: VideoComponentProps<T>) => {
+export const Video = ({ FallbackComponent = Bag, classNames, ...props }: VideoComponentProps) => {
   const { figure, video, fallback } = classNames ?? {};
 
   return (
