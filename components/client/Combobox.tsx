@@ -32,7 +32,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-interface ComboboxDropdownMenuProps {
+interface ComboboxDropdownMenuProps extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   element: {
     trigger: React.JSX.Element;
     content: {
@@ -66,82 +66,86 @@ interface ComboboxDropdownMenuProps {
   };
 }
 
-const ComboboxDropdownMenu = ({ element, classNames }: ComboboxDropdownMenuProps) => {
-  const [open, setOpen] = React.useState(false);
+const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMenu>, ComboboxDropdownMenuProps>(
+  ({ element, classNames }, ref) => {
+    const [open, setOpen] = React.useState(false);
 
-  return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>{element.trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        className={cn(
-          "w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0",
-          classNames?.menu?.content,
-        )}
-        align="start"
-      >
-        <Mapper
-          data={element.content}
-          render={({ group, separator, element }) => {
-            const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
-              <Element className={classNames?.menu?.group}>{children}</Element>
-            );
+    return (
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild ref={ref}>
+          {element.trigger}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className={cn(
+            "w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0",
+            classNames?.menu?.content,
+          )}
+          align="start"
+        >
+          <Mapper
+            data={element.content}
+            render={({ group, separator, element }) => {
+              const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
+                <Element className={classNames?.menu?.group}>{children}</Element>
+              );
 
-            const SubItem = () =>
-              element.type === "menuSub" ? (
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
-                    {element.trigger}
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+              const SubItem = () =>
+                element.type === "menuSub" ? (
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
+                      {element.trigger}
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+                      {element.content}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                ) : undefined;
+
+              const Item = () =>
+                element.type === "menuItem" ? (
+                  <DropdownMenuItem className={classNames?.item} onSelect={(e) => e.preventDefault()} asChild>
                     {element.content}
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-              ) : undefined;
+                  </DropdownMenuItem>
+                ) : undefined;
 
-            const Item = () =>
-              element.type === "menuItem" ? (
-                <DropdownMenuItem className={classNames?.item} onSelect={(e) => e.preventDefault()} asChild>
-                  {element.content}
-                </DropdownMenuItem>
-              ) : undefined;
+              const Switcher = () => {
+                switch (element.type) {
+                  case "menuItem":
+                    return Item();
+                  case "menuSub":
+                    return SubItem();
+                  default:
+                    break;
+                }
+              };
 
-            const Switcher = () => {
-              switch (element.type) {
-                case "menuItem":
-                  return Item();
-                case "menuSub":
-                  return SubItem();
-                default:
-                  break;
-              }
-            };
+              return (
+                <>
+                  {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
+                  {separator && <Separator className={classNames?.separator} />}
+                </>
+              );
+            }}
+          />
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  },
+);
 
-            return (
-              <>
-                {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
-                {separator && <Separator className={classNames?.separator} />}
-              </>
-            );
-          }}
-        />
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-interface ComboboxDropdownCategoryProps<T extends Dataset> {
+interface ComboboxDropdownCategoryProps<T extends Dataset> extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   data: T;
   field: ControllerRenderProps<z.infer<typeof ProductFormSchema>, keyof z.infer<typeof ProductFormSchema>>;
-  form: UseFormReturn<z.infer<typeof ProductFormSchema>>;
+  form: { form: string } & UseFormReturn<z.infer<typeof ProductFormSchema>>;
 }
 
-export const ComboboxDropdownCategory = <T extends Array<Category>>({
-  data,
-  field,
-  form,
-}: ComboboxDropdownCategoryProps<T>) => {
+export const ComboboxDropdownCategory = React.forwardRef<
+  React.ElementRef<typeof DropdownMenu>,
+  ComboboxDropdownCategoryProps<Array<Category>>
+>(({ data, field, form }, ref) => {
   return (
     <ComboboxDropdownMenu
+      ref={ref}
       element={{
         trigger: (
           <FormControl>
@@ -149,6 +153,7 @@ export const ComboboxDropdownCategory = <T extends Array<Category>>({
               type="button"
               variant="outline"
               role="combobox"
+              form={form.form}
               className={cn("justify-between rounded-none px-2.5 shadow-none", !field.value && "text-slate-500")}
             >
               {field.value ? data.find((category) => category.id === field.value)?.title : "Select Category"}
@@ -250,4 +255,6 @@ export const ComboboxDropdownCategory = <T extends Array<Category>>({
       }}
     />
   );
-};
+});
+
+ComboboxDropdownCategory.displayName = "ComboboxDropdownCategory";
