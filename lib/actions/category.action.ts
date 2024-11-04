@@ -4,6 +4,7 @@ import { CategoryFormSchema, CategorySchema } from "@/schema/category";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 export const getCategory = async (identifier: string, field: keyof z.infer<typeof CategorySchema>) => {
   try {
@@ -49,6 +50,7 @@ export const createCategory = async (prevState: string | undefined, formData: Fo
         },
       });
 
+      revalidatePath("/dashboard/");
       return newCategory.title;
     } catch (error) {
       handlingError(error);
