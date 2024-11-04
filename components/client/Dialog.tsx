@@ -1,6 +1,6 @@
 "use client";
 
-import { DetailedHTMLProps, HTMLAttributes, useEffect, useState } from "react";
+import React, { DetailedHTMLProps, HTMLAttributes, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,61 +105,63 @@ export function CreateCollectionDialog({ trigger, content }: CreateCollectionDia
   );
 }
 
-interface CreateCategoryDialog extends DialogProps {
+interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof DialogRoot>, DialogProps {
   trigger: React.ReactNode;
 }
 
-export const CreateCategoryDialog = ({ trigger, content }: CreateCategoryDialog) => {
-  const [open, setOpen] = useState(false);
-  const [category, formAction, isLoading] = useFormState(createCategory, "");
-  const [temporaryState, setTemporaryState] = useState<typeof category>("");
+export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof DialogRoot>, CreateCategoryDialog>(
+  ({ trigger, content }) => {
+    const [open, setOpen] = useState(false);
+    const [category, formAction, isLoading] = useFormState(createCategory, "");
+    const [temporaryState, setTemporaryState] = useState<typeof category>("");
 
-  useEffect(() => {
-    if (category) {
-      setTemporaryState(category);
-    }
-  }, [category]);
+    useEffect(() => {
+      if (category) {
+        setTemporaryState(category);
+      }
+    }, [category]);
 
-  return (
-    <DialogRoot
-      open={open}
-      onOpenChange={() => {
-        setOpen(!open);
-        if (!open) setTemporaryState("");
-      }}
-    >
-      <DialogTrigger asChild className="hover:cursor-pointer">
-        {trigger}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
-        <form id="create-category-form" action={formAction} />
-        {temporaryState ? (
-          ""
-        ) : (
-          <DialogHeader>
-            <DialogTitle className="font-body">{content.title}</DialogTitle>
-            <DialogDescription>{content.description}</DialogDescription>
-          </DialogHeader>
-        )}
-        {temporaryState ? (
-          <div className="flex flex-col items-center justify-center gap-8">
-            <CircleCheck size={64} className="text-blue-600" />
-            <h4 className="text-center text-2xl font-semibold text-blue-600">
-              Successfully created new <br /> category called{" "}
-              <span className="bg-blue-600 px-2 text-white">{temporaryState}</span>{" "}
-            </h4>
-          </div>
-        ) : (
-          content.element
-        )}
-        {!temporaryState && (
-          <DialogFooter>
-            <Button disabled={isLoading} type="submit" form="create-category-form">
-              Save
-            </Button>
-          </DialogFooter>
-        )}
-      </DialogContent>
-    </DialogRoot>
-  );
-};
+    return (
+      <DialogRoot
+        open={open}
+        onOpenChange={() => {
+          setOpen(!open);
+          if (!open) setTemporaryState("");
+        }}
+      >
+        <DialogTrigger asChild className="hover:cursor-pointer">
+          {trigger}
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
+          <form id="create-category-form" action={formAction} />
+          {temporaryState ? (
+            ""
+          ) : (
+            <DialogHeader>
+              <DialogTitle className="font-body">{content.title}</DialogTitle>
+              <DialogDescription>{content.description}</DialogDescription>
+            </DialogHeader>
+          )}
+          {temporaryState ? (
+            <div className="flex flex-col items-center justify-center gap-8">
+              <CircleCheck size={64} className="text-blue-600" />
+              <h4 className="text-center text-2xl font-semibold text-blue-600">
+                Successfully created new <br /> category called{" "}
+                <span className="bg-blue-600 px-2 text-white">{temporaryState}</span>{" "}
+              </h4>
+            </div>
+          ) : (
+            content.element
+          )}
+          {!temporaryState && (
+            <DialogFooter>
+              <Button disabled={isLoading} type="submit" form="create-category-form">
+                Save
+              </Button>
+            </DialogFooter>
+          )}
+        </DialogContent>
+      </DialogRoot>
+    );
+  },
+);
