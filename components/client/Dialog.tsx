@@ -70,34 +70,33 @@ export function CreateCollectionDialog({ trigger, content }: DialogProps) {
         <trigger.element>{trigger.title}</trigger.element>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
-        <form action={formAction} className="grid gap-4 py-4">
-          {temporaryState ? (
-            ""
-          ) : (
-            <DialogHeader>
-              <DialogTitle className="font-body">{content.title}</DialogTitle>
-              <DialogDescription>{content.description}</DialogDescription>
-            </DialogHeader>
-          )}
-          {temporaryState ? (
-            <div className="flex flex-col items-center justify-center gap-8">
-              <CircleCheck size={64} className="text-blue-600" />
-              <h4 className="text-center text-2xl font-semibold text-blue-600">
-                Successfully created new collection called{" "}
-                <span className="bg-blue-600 px-2 text-white">{temporaryState}</span>{" "}
-              </h4>
-            </div>
-          ) : (
-            content.element
-          )}
-          {!temporaryState && (
-            <DialogFooter>
-              <Button disabled={isLoading} type="submit">
-                Save
-              </Button>
-            </DialogFooter>
-          )}
-        </form>
+        <form id="create-collection-form" action={formAction} />
+        {temporaryState ? (
+          ""
+        ) : (
+          <DialogHeader>
+            <DialogTitle className="font-body">{content.title}</DialogTitle>
+            <DialogDescription>{content.description}</DialogDescription>
+          </DialogHeader>
+        )}
+        {temporaryState ? (
+          <div className="flex flex-col items-center justify-center gap-8">
+            <CircleCheck size={64} className="text-blue-600" />
+            <h4 className="text-center text-2xl font-semibold text-blue-600">
+              Successfully created new collection called{" "}
+              <span className="bg-blue-600 px-2 text-white">{temporaryState}</span>{" "}
+            </h4>
+          </div>
+        ) : (
+          content.element
+        )}
+        {!temporaryState && (
+          <DialogFooter>
+            <Button disabled={isLoading} type="submit" form="create-collection-form">
+              Save
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </DialogRoot>
   );
