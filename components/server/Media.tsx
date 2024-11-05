@@ -58,11 +58,13 @@ export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageCo
 
   return (
     <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
-      <NextImage
-        {...props}
-        draggable={false}
-        className={cn("z-20 size-full object-cover object-center before:hidden", image)}
-      />
+      {props.src && (
+        <NextImage
+          {...props}
+          draggable={false}
+          className={cn("z-20 size-full object-cover object-center before:hidden", image)}
+        />
+      )}
     </Media>
   );
 };
