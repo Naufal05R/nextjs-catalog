@@ -44,7 +44,40 @@ export const createProduct = async ({
   }>;
   collection: string;
 }) => {
+  const _files = files
+    .sort((a, b) => a.order! - b.order!)
+    .map(({ title, order, preview }) => {
+      if (typeof title === "string" && typeof order === "number" && typeof preview !== "undefined")
+        return {
+          title,
+          order,
+          preview,
+        };
+    })
+    .filter((item) => item !== undefined);
+
+  console.log(_files);
+
   const validated = ProductFormSchema.safeParse(params);
+
+  const imageBuffer = Buffer.from(arrayBuffer);
+
+  const uniqueId = generateId("image");
+  const fileName = `${uniqueId}.${getExtension(file.name)}`;
+
+  const objectParams: Parameters<typeof createObject>[0] = {
+    bucketName: "nextjs-gallery",
+    objectName: fileName,
+    objectStream: imageBuffer,
+    objectMetaData: {
+      name,
+      category,
+      gallery,
+      tags,
+    },
+  };
+
+  const result = await createObject(objectParams);
 
   if (validated.success) {
     const { data: product } = validated;
@@ -59,17 +92,6 @@ export const createProduct = async ({
         });
 
         if (!_collection) throw new Error("Collection not found");
-
-        const _files = files
-          .sort((a, b) => a.order! - b.order!)
-          .map(({ title, order }) => {
-            if (typeof title === "string" && typeof order === "number")
-              return {
-                title,
-                order,
-              };
-          })
-          .filter((item) => item !== undefined);
 
         const _newProduct = await _prisma.product.create({
           data: {
