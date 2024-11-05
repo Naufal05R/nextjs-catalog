@@ -24,6 +24,7 @@ import { ACCEPTED_MEDIA_MIME_TYPES, MediaFormSchema } from "@/schema/media";
 import { Dialog } from "../server/Dialog";
 import { Category } from "@prisma/client";
 import { ComboboxDropdownCategory } from "./Combobox";
+import { createProduct } from "@/lib/actions/product.action";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -207,9 +208,7 @@ export function ContactForm() {
 
 export function CreateProductForm({ collection, categories }: { collection: string; categories: Array<Category> }) {
   const [files, setFiles] = useState<
-    Required<
-      Array<Partial<{ preview: string | ArrayBuffer | null } & ReturnType<typeof MediaFormSchema.safeParse>["data"]>>
-    >
+    Required<Array<Partial<{ preview: string | ArrayBuffer | null } & z.infer<typeof MediaFormSchema>>>>
   >([]);
 
   const productForm = useForm<z.infer<typeof ProductFormSchema>>({
@@ -230,17 +229,21 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   });
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    console.table({ params });
-    console.table({ files });
-    // const data = await createProduct({ params, collection });
-    // toast({
-    //   title: "Product Created:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    const _files = files.map(({ title, preview, order }) => ({ title, preview, order }));
+    console.table({ params, _files });
+    const data = await createProduct({
+      params,
+      files: _files,
+      collection,
+    });
+    toast({
+      title: "Product Created:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
   };
 
   return (
@@ -572,9 +575,10 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                           }}
                         />
 
-                        <Label htmlFor={`images.${mediaIndex}.title`} className="flex-1">
+                        <Label htmlFor={`medias.${mediaIndex}.title`} className="flex-1">
                           <Input
-                            id={`images.${mediaIndex}.title`}
+                            id={`medias.${mediaIndex}.title`}
+                            name="media.title"
                             form="create-product-form"
                             className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
                             value={currentFile?.title ?? ""}
@@ -597,9 +601,10 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 
                         <div className="flex items-center gap-x-2">
                           <Button asChild type="button" size="icon" variant="ghost">
-                            <Label htmlFor={`images.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
+                            <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
                               <Input
-                                id={`images.${mediaIndex}.image`}
+                                id={`medias.${mediaIndex}.image`}
+                                name="media.image"
                                 form="create-product-form"
                                 className="hidden"
                                 type="file"
