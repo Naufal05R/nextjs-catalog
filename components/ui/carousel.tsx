@@ -282,7 +282,7 @@ export const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>
         role="group"
         aria-roledescription="slide"
         className={cn(
-          "min-w-0 shrink-0 grow-0",
+          "min-w-0 shrink-0 grow-0 [&_svg]:size-auto",
           {
             "bg-slate-200": selectedIndex === index,
             "bg-transparent": selectedIndex !== index,
