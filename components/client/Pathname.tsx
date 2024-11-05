@@ -1,9 +1,12 @@
 "use client";
 
-import React from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
 import Mapper from "@/components/server/Mapper";
 
-import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 
 import {
   Breadcrumb,
@@ -18,9 +21,61 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
 
-export function Pathname() {
+import { getAllCollection } from "@/lib/actions/collection.action";
+import { readSlug } from "@/lib/utils";
+
+const Route = ({ title, href }: { title: string; href: string }) => {
+  const [collections, setCollections] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    return () => {
+      (async () => {
+        const allCollections = await getAllCollection();
+
+        if (allCollections) {
+          for (const { slug } of allCollections) {
+            setCollections((prev) => [...prev, slug]);
+          }
+        }
+      })();
+    };
+  }, []);
+
+  switch (title) {
+    case "collections":
+      return (
+        <BreadcrumbItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
+              {title}
+              <ChevronDown className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <Mapper
+                data={collections}
+                render={(collection) => (
+                  <Link href={`/${title}/${collection}`}>
+                    <DropdownMenuItem>{collection}</DropdownMenuItem>
+                  </Link>
+                )}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </BreadcrumbItem>
+      );
+    default:
+      return (
+        <BreadcrumbItem>
+          <BreadcrumbLink href={href} className="py-4 capitalize hover:text-rose-600">
+            {readSlug(title)}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      );
+  }
+};
+
+export const Pathname = () => {
   const pathname = usePathname();
 
   const breadcrumbs = pathname.split("/").filter((path) => path !== "");
@@ -38,28 +93,20 @@ export function Pathname() {
 
             <Mapper
               data={breadcrumbs}
-              render={(breadcrumb) => (
-                <>
-                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                  <BreadcrumbItem>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
-                        {breadcrumb}
-                        <ChevronDown className="size-4" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start">
-                        <DropdownMenuItem>Documentation</DropdownMenuItem>
-                        <DropdownMenuItem>Themes</DropdownMenuItem>
-                        <DropdownMenuItem>GitHub</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </BreadcrumbItem>
-                </>
-              )}
+              render={(breadcrumb, index) => {
+                const href = `/${breadcrumbs.slice(0, index + 1).join("/")}`;
+
+                return (
+                  <>
+                    <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                    <Route title={breadcrumb} href={href} />
+                  </>
+                );
+              }}
             />
           </>
         )}
       </BreadcrumbList>
     </Breadcrumb>
   );
-}
+};
