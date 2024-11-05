@@ -2,14 +2,14 @@ import * as Minio from "minio";
 import internal from "stream";
 import { handlingError } from "./utils";
 
-const END_POINT: string = process.env.MINIO_END_POINT || "";
+const SERVER_HOST: string = process.env.MINIO_SERVER_HOST || "";
 const SERVER_PORT: number = parseInt(process.env.MINIO_SERVER_PORT || "");
 const SECURE_URL: boolean = process.env.MINIO_SECURE_URL === "true";
 const ACCESS_KEY: string = process.env.MINIO_ACCESS_KEY || "";
 const SECRET_KEY: string = process.env.MINIO_SECRET_KEY || "";
 
 const minioClient = new Minio.Client({
-  endPoint: END_POINT,
+  endPoint: SERVER_HOST,
   port: SERVER_PORT,
   useSSL: SECURE_URL,
   accessKey: ACCESS_KEY,
