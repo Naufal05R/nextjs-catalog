@@ -6,6 +6,7 @@ import { handlingError, padValue, slugify } from "../utils";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createObject } from "../service";
 
 export const getAllProduct = async () => {
   try {
@@ -44,7 +45,7 @@ export const createProduct = async ({
   }>;
   collection: string;
 }) => {
-  const _files = files
+  const __files = files
     .sort((a, b) => a.order! - b.order!)
     .map(({ title, order, preview }) => {
       if (typeof title === "string" && typeof order === "number" && typeof preview !== "undefined")
@@ -56,28 +57,31 @@ export const createProduct = async ({
     })
     .filter((item) => item !== undefined);
 
+  for (const { title, order, preview } of __files) {
+    const imageBuffer = Buffer.from(preview as ArrayBuffer);
+    const fileName = `${padValue(order)}_${slugify(title)}`;
+    const objectParams: Parameters<typeof createObject>[0] = {
+      bucketName: "nextjs-catalog",
+      objectName: `${slugify(collection)}/${fileName}`,
+      objectStream: imageBuffer,
+      objectMetaData: {
+        title,
+        order,
+      },
+    };
+
+    await createObject(objectParams);
+  }
+
+  const _files = __files.map(({ title, order }) => {
+    const fileName = `${padValue(order)}_${slugify(title)}`;
+
+    return { title, slug: slugify(title), order, name: fileName };
+  });
+
   console.log(_files);
 
   const validated = ProductFormSchema.safeParse(params);
-
-  const imageBuffer = Buffer.from(arrayBuffer);
-
-  const uniqueId = generateId("image");
-  const fileName = `${uniqueId}.${getExtension(file.name)}`;
-
-  const objectParams: Parameters<typeof createObject>[0] = {
-    bucketName: "nextjs-gallery",
-    objectName: fileName,
-    objectStream: imageBuffer,
-    objectMetaData: {
-      name,
-      category,
-      gallery,
-      tags,
-    },
-  };
-
-  const result = await createObject(objectParams);
 
   if (validated.success) {
     const { data: product } = validated;
@@ -110,13 +114,10 @@ export const createProduct = async ({
         });
 
         await _prisma.media.createMany({
-          data: _files.map(({ title, order }) => {
+          data: _files.map((file) => {
             return {
               galleryId: _gallery.id,
-              title,
-              slug: slugify(title),
-              order,
-              name: `${padValue(order)}_${slugify(title)}`,
+              ...file,
             };
           }),
         });
