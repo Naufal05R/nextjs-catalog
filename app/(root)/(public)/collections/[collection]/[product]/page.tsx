@@ -9,7 +9,10 @@ import { Whatsapp } from "@/components/svg";
 import Link from "next/link";
 
 const page = async ({ params }: { params: { collection: string; product: string } }) => {
-  const product = await prisma.product.findUnique({ where: { slug: params.product } });
+  const product = await prisma.product.findUnique({
+    where: { slug: params.product },
+    include: { gallery: { include: { medias: true } } },
+  });
 
   if (!product) {
     notFound();
@@ -18,7 +21,14 @@ const page = async ({ params }: { params: { collection: string; product: string 
   return (
     <>
       <section className="grid grid-cols-12 gap-x-8 pt-8">
-        <CarouselDetail data={product} classNames={{ root: "col-span-6", dots: "basis-1/6" }} />
+        {product.gallery?.medias && (
+          <CarouselDetail
+            data={product.gallery.medias}
+            product={params.product}
+            collection={params.collection}
+            classNames={{ root: "col-span-6", dots: "basis-1/6" }}
+          />
+        )}
 
         <article className="col-span-6">
           <h4 className="mb-8 text-3xl font-medium uppercase">{product?.title}</h4>
