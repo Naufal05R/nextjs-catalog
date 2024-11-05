@@ -636,7 +636,11 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                             size="icon"
                             variant="ghost"
                             onClick={() =>
-                              setFiles((prevState) => prevState.filter((_, index) => index !== mediaIndex))
+                              setFiles((prevState) =>
+                                prevState
+                                  .filter((_, index) => index !== mediaIndex)
+                                  .map((state, index) => ({ ...state, order: index })),
+                              )
                             }
                           >
                             <Trash2 className="text-slate-400" />
