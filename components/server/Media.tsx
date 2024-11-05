@@ -74,7 +74,7 @@ export const Video = ({ FallbackComponent = Bag, classNames, ...props }: VideoCo
 
   return (
     <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
-      <video {...props} className={cn("z-20 size-full object-cover object-center", video)} />
+      {props.src && <video {...props} className={cn("z-20 size-full object-cover object-center", video)} />}
     </Media>
   );
 };
