@@ -68,7 +68,8 @@ const DetailProductPage = async ({ params }: { params: { collection: string; pro
           <menu className="mt-8 flex flex-wrap justify-center gap-4">
             <Button variant={"secondary"} asChild className="flex-1 px-0 shadow-none">
               <Link
-                href="https://api.whatsapp.com/send?phone=628999812808&text=Permisi%2C%20apakah%20produk%20Pink%20Sapphire%20Ceylon%20tersedia%20%F0%9F%91%8B%F0%9F%98%80"
+                target="_blank"
+                href={`https://api.whatsapp.com/send?phone=628999812808&text=Permisi%2C%20apakah%20produk%20${product.title.replace(" ", "%20")}%20tersedia%20%F0%9F%91%8B%F0%9F%98%80`}
                 className="flex items-center gap-0 divide-x"
               >
                 <li className="px-4 py-2 text-slate-600">Question?</li>
@@ -102,7 +103,7 @@ const DetailProductPage = async ({ params }: { params: { collection: string; pro
           </menu>
 
           <p className="mt-8 text-sm text-slate-600">
-            {product.color} {product.state.split("s").shift()} <br />
+            {product.title} <br />
             <br /> Ukuran : {product.width} x {product.height} x {product.length} mm {"(estm)"}
             <br /> Berat : {product.weight} crt
             <br /> Origin : {product.state}
