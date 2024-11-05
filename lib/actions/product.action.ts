@@ -2,7 +2,7 @@
 
 import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError, slugify } from "../utils";
+import { handlingError, padValue, slugify } from "../utils";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -33,9 +33,15 @@ export const getProducts = async (identifier: string, field: keyof z.infer<typeo
 
 export const createProduct = async ({
   params,
+  files,
   collection,
 }: {
   params: z.infer<typeof ProductFormSchema>;
+  files: Array<{
+    title?: string;
+    preview?: string | ArrayBuffer | null;
+    order?: number;
+  }>;
   collection: string;
 }) => {
   const validated = ProductFormSchema.safeParse(params);
@@ -54,12 +60,43 @@ export const createProduct = async ({
 
         if (!_collection) throw new Error("Collection not found");
 
+        const _files = files
+          .sort((a, b) => a.order! - b.order!)
+          .map(({ title, order }) => {
+            if (typeof title === "string" && typeof order === "number")
+              return {
+                title,
+                order,
+              };
+          })
+          .filter((item) => item !== undefined);
+
         const _newProduct = await _prisma.product.create({
           data: {
             ...product,
             slug: slugify(product.title),
-            collectionId: _collection!.id,
+            collectionId: _collection.id,
           },
+        });
+
+        const _gallery = await _prisma.gallery.create({
+          data: {
+            title: product.title,
+            slug: slugify(product.title),
+            productId: _newProduct.id,
+          },
+        });
+
+        await _prisma.media.createMany({
+          data: _files.map(({ title, order }) => {
+            return {
+              galleryId: _gallery.id,
+              title,
+              slug: slugify(title),
+              order,
+              name: `${padValue(order)}_${slugify(title)}`,
+            };
+          }),
         });
 
         return _newProduct;
