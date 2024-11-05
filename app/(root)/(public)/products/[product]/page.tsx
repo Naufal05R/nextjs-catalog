@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+
 import { CarouselDetail } from "@/components/client/Carousel";
 import { Copy, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
-import Link from "next/link";
 
 const DetailProductPage = async ({ params }: { params: { product: string } }) => {
   const product = await prisma.product.findUnique({
