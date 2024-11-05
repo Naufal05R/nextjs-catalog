@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
+import { formatPrice } from "@/lib/utils";
 
 const DetailProductPage = async ({ params }: { params: { product: string } }) => {
   const product = await prisma.product.findUnique({
@@ -39,25 +40,27 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
               <p className="line-clamp-1">Original State</p>
             </dt>
             <dd className="overflow-hidden border-b py-4 text-base font-normal text-slate-500">
-              <p className="line-clamp-1">Ceylon Srilangka</p>
+              <p className="line-clamp-1">{product.state}</p>
             </dd>
             <dt className="overflow-hidden whitespace-nowrap border-b py-4 text-lg font-medium">
               <p className="line-clamp-1">Size</p>
             </dt>
             <dd className="overflow-hidden border-b py-4 text-base font-normal text-slate-500">
-              <p className="line-clamp-1">9.3 x 8.3 x 5.1 mm {"(estm)"}</p>
+              <p className="line-clamp-1">
+                {product.width} x {product.height} x {product.length} mm {"(estm)"}
+              </p>
             </dd>
             <dt className="overflow-hidden whitespace-nowrap border-b py-4 text-lg font-medium">
               <p className="line-clamp-1">Weight</p>
             </dt>
             <dd className="overflow-hidden border-b py-4 text-base font-normal text-slate-500">
-              <p className="line-clamp-1">3.6 crt</p>
+              <p className="line-clamp-1">{product.weight} crt</p>
             </dd>
             <dt className="overflow-hidden whitespace-nowrap border-b py-4 text-lg font-medium">
               <p className="line-clamp-1">Color</p>
             </dt>
             <dd className="overflow-hidden border-b py-4 text-base font-normal text-slate-500">
-              <p className="line-clamp-1">Purple pinkish red, transparent SI, cutting</p>
+              <p className="line-clamp-1">{product.color}</p>
             </dd>
           </dl>
 
@@ -103,14 +106,14 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
           </menu>
 
           <p className="mt-8 text-sm text-slate-600">
-            Pink Sapphire Ceylon <br />
-            <br /> Ukuran : 9.3 x 8.3 x 5.1 mm (estm)
-            <br /> Berat : 3.6 crt
-            <br /> Origin : Ceylon Srilangka
-            <br /> Warna : Purple pinkish red, transparent SI, cutting <br />
-            <br /> Ini bisa masuk pink sapphire tetapu warnanya cukup tua sehingga bisa masuk juga menjadi ruby Batunya
-            crystal, lumayan bersih, lusternya bagus. <br />
-            <br /> Harga Rp 3.500.000,-
+            {product.color} {product.state.split("s").shift()} <br />
+            <br /> Ukuran : {product.width} x {product.height} x {product.length} mm {"(estm)"}
+            <br /> Berat : {product.weight} crt
+            <br /> Origin : {product.state}
+            <br /> Warna : {product.color} <br />
+            <br /> {product.description} <br />
+            <br /> Harga Rp {formatPrice(product.price)},-
+            <br />
           </p>
         </article>
       </section>
