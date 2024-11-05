@@ -102,7 +102,42 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
   );
 };
 
-export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
+export const CarouselFeatured = ({
+  data,
+}: {
+  data: Array<
+    Product & {
+      collection: {
+        slug: string;
+      };
+      gallery: {
+        medias: {
+          name: string;
+        }[];
+      } | null;
+    }
+  >;
+}) => {
+  const [sources, setSources] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    return () => {
+      (async () => {
+        for (const { slug, gallery, collection } of data) {
+          if (gallery) {
+            const { medias } = gallery;
+
+            const src = await getImageSrc({ product: slug, collection: collection.slug, name: medias[0].name });
+
+            if (src) {
+              setSources((prev) => [...prev, src]);
+            }
+          }
+        }
+      })();
+    };
+  }, [data]);
+
   return (
     <Carousel
       data={data}
@@ -111,12 +146,12 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
       slides={
         <Mapper
           data={data}
-          render={({ title, price, slug }) => (
+          render={({ title, price, slug }, index) => (
             <CarouselItem responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
               <Link href={`/products/${slug}`} draggable={false} className="select-none">
                 <Image
-                  src={`/dummy_1.jpg`}
-                  alt="dummy_image"
+                  src={sources[index] || "/"}
+                  alt={slug}
                   fill
                   sizes="25vw"
                   classNames={{
