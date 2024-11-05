@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
 import Mapper from "@/components/server/Mapper";
@@ -14,10 +14,12 @@ import {
   CarouselDots,
   CarouselPrevious,
   CarouselNext,
+  CarouselDot,
 } from "@/components/ui/carousel";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
-import { Collection, Product } from "@prisma/client";
+import { Collection, Media, Product } from "@prisma/client";
+import { getImageSrc } from "@/lib/actions/image.action";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
@@ -62,7 +64,7 @@ const Carousel = <T extends Dataset>({
       )}
 
       {showDots && (
-        <CarouselDots el={dotsElement} classNames={{ wrapper: dotsWrapper, container: dotsContainer, dots }} />
+        <CarouselDots dots={dotsElement} classNames={{ wrapper: dotsWrapper, container: dotsContainer, dots }} />
       )}
     </CarouselRoot>
   );
@@ -137,24 +139,44 @@ export const CarouselFeatured = ({ data }: { data: Array<Product> }) => {
 
 export const CarouselDetail = ({
   data,
+  product,
+  collection,
   classNames,
 }: {
-  data: Product;
+  data: Array<Media>;
+  product: string;
+  collection: string;
   classNames?: Pick<CarouselProps<Dataset>, "classNames">["classNames"];
 }) => {
+  const [sources, setSources] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    return () => {
+      (async () => {
+        for (const { name } of data) {
+          const src = await getImageSrc({ product, collection, name });
+
+          if (src) {
+            setSources((prev) => [...prev, src]);
+          }
+        }
+      })();
+    };
+  }, [data, collection, product]);
+
   return (
     <Carousel
-      data={[data, data, data, data, data]}
+      data={sources}
       plugins={["fade"]}
       showDots
       slides={
         <Mapper
-          data={[data, data, data, data, data]}
-          render={(_, i) => (
+          data={sources}
+          render={(src, i) => (
             <CarouselItem>
               <Image
-                src={`/dummy_${(i % 3) + 1}.jpg`}
-                alt={`dummy_${(i % 3) + 1}`}
+                src={src}
+                alt={`product_${i}`}
                 fill
                 sizes="50vw"
                 classNames={{ figure: "aspect-square rounded w-full" }}
@@ -164,12 +186,19 @@ export const CarouselDetail = ({
         />
       }
       dotsElement={
-        <Image
-          src={"/dummy_1.jpg"}
-          alt="dummy_1"
-          fill
-          sizes="10vw"
-          classNames={{ figure: "aspect-square rounded w-full" }}
+        <Mapper
+          data={sources}
+          render={(src, index) => (
+            <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
+              <Image
+                src={src}
+                alt={`product_${index}`}
+                fill
+                sizes="10vw"
+                classNames={{ figure: "aspect-square rounded w-full" }}
+              />
+            </CarouselDot>
+          )}
         />
       }
       classNames={classNames}
