@@ -1,9 +1,10 @@
 import React from "react";
 import { Archive, Pencil } from "lucide-react";
-import { Image as ImageComponent } from "@/components/server/Media";
-import { cn, formatPrice } from "@/lib/utils";
+
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn, formatPrice } from "@/lib/utils";
+import { Image } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
@@ -30,7 +31,7 @@ export const DashbaordProductCard = async ({
     return (
       <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
         <CardHeader>
-          <ImageComponent
+          <Image
             src={src}
             unoptimized
             alt="dummy_image"
