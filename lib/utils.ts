@@ -15,12 +15,15 @@ export function defineConst<T extends Dataset>(fields: T): T {
 }
 
 export function formatPrice(price: number) {
-  const formatted = price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return formatted;
+  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export function capitalize(str: string, lower = false) {
   return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
+}
+
+export function readSlug(str: string) {
+  return capitalize(str.replace(/-/g, " ").trim());
 }
 
 export function slugify(str: string) {
