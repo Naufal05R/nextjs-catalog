@@ -24,6 +24,21 @@ export const getProducts = async (identifier: string, field: keyof z.infer<typeo
       where: {
         [field]: identifier,
       },
+      include: {
+        gallery: {
+          select: {
+            medias: {
+              take: 1,
+              where: {
+                order: 0,
+              },
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return product;
@@ -45,42 +60,6 @@ export const createProduct = async ({
   }>;
   collection: string;
 }) => {
-  const __files = files
-    .sort((a, b) => a.order! - b.order!)
-    .map(({ title, order, preview }) => {
-      if (typeof title === "string" && typeof order === "number" && typeof preview !== "undefined")
-        return {
-          title,
-          order,
-          preview,
-        };
-    })
-    .filter((item) => item !== undefined);
-
-  for (const { title, order, preview } of __files) {
-    const imageBuffer = Buffer.from(preview as ArrayBuffer);
-    const fileName = `${padValue(order)}_${slugify(title)}`;
-    const objectParams: Parameters<typeof createObject>[0] = {
-      bucketName: "nextjs-catalog",
-      objectName: `${slugify(collection)}/${fileName}`,
-      objectStream: imageBuffer,
-      objectMetaData: {
-        title,
-        order,
-      },
-    };
-
-    await createObject(objectParams);
-  }
-
-  const _files = __files.map(({ title, order }) => {
-    const fileName = `${padValue(order)}_${slugify(title)}`;
-
-    return { title, slug: slugify(title), order, name: fileName };
-  });
-
-  console.log(_files);
-
   const validated = ProductFormSchema.safeParse(params);
 
   if (validated.success) {
@@ -88,6 +67,40 @@ export const createProduct = async ({
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
+      const __files = files
+        .sort((a, b) => a.order! - b.order!)
+        .map(({ title, order, preview }) => {
+          if (typeof title === "string" && typeof order === "number" && typeof preview !== "undefined")
+            return {
+              title,
+              order,
+              preview,
+            };
+        })
+        .filter((item) => item !== undefined);
+
+      for (const { title, order, preview } of __files) {
+        const imageBuffer = Buffer.from(preview as ArrayBuffer);
+        const fileName = `${padValue(order)}_${slugify(title)}`;
+        const objectParams: Parameters<typeof createObject>[0] = {
+          bucketName: "nextjs-catalog",
+          objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
+          objectStream: imageBuffer,
+          objectMetaData: {
+            title,
+            order,
+          },
+        };
+
+        await createObject(objectParams);
+      }
+
+      const _files = __files.map(({ title, order }) => {
+        const fileName = `${padValue(order)}_${slugify(title)}`;
+
+        return { title, slug: slugify(title), order, name: fileName };
+      });
+
       const newProduct = await prisma.$transaction(async (_prisma) => {
         const _collection = await _prisma.collection.findFirst({
           where: {
