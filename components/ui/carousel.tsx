@@ -1,12 +1,11 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 
-import Mapper from "../server/Mapper";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Dataset } from "@/types/data";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { ResponsiveArgs } from "@/types/carousel";
+import { Button } from "@/components/ui/button";
+import { Dataset } from "@/types/data";
+import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -271,7 +270,7 @@ interface CarouselDotProps extends React.ComponentProps<typeof Button> {
   index: number;
 }
 
-const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
+export const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
   ({ className, variant = null, size = null, index, ...props }, ref) => {
     const { scrollTo, selectedIndex } = useCarousel();
 
@@ -299,7 +298,7 @@ const CarouselDot = React.forwardRef<HTMLButtonElement, CarouselDotProps>(
 CarouselDot.displayName = "CarouselDot";
 
 interface CarouselDotsProps {
-  el?: React.JSX.Element;
+  dots?: React.JSX.Element;
   classNames?: {
     wrapper?: string;
     container?: string;
@@ -307,24 +306,13 @@ interface CarouselDotsProps {
   };
 }
 
-export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ el, classNames, ...props }, ref) => {
-  const { dotsRef, slides } = useCarousel();
+export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ dots, classNames }, ref) => {
+  const { dotsRef } = useCarousel();
 
   return (
     <div className={cn("mt-4 w-full overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
       <div className={cn("flex items-stretch gap-x-2", classNames?.container)} ref={ref}>
-        <Mapper
-          data={slides}
-          render={(_, index) => (
-            <CarouselDot
-              index={index}
-              className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}
-              {...props}
-            >
-              {el}
-            </CarouselDot>
-          )}
-        />
+        {dots}
       </div>
     </div>
   );
