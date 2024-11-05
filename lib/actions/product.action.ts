@@ -8,9 +8,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createObject } from "../service";
 
-export const getAllProduct = async () => {
+export const getAllProduct = async (identifier?: string, field?: keyof z.infer<typeof ProductSchema>) => {
   try {
     const allProducts = await prisma.product.findMany({
+      where: identifier && field && { [field]: identifier },
       include: {
         collection: {
           select: {
