@@ -1,15 +1,12 @@
 import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
-import { Image as ImageComponent } from "@/components/server/Media";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCollection } from "@/lib/actions/collection.action";
 import { getProducts } from "@/lib/actions/product.action";
-import { cn, formatPrice } from "@/lib/utils";
-import { Archive, Grid2x2Plus, Pencil } from "lucide-react";
+import { Grid2x2Plus } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getImageSrc } from "@/lib/actions/image.action";
 import { DashbaordProductCard } from "@/components/server/Product";
 
 export default async function ProductsByCollectionPage({ params }: { params: { collection: string } }) {
