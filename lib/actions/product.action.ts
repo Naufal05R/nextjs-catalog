@@ -54,20 +54,11 @@ export const createProduct = async ({
 
         if (!_collection) throw new Error("Collection not found");
 
-        const _category = await _prisma.category.findFirst({
-          where: {
-            id: product.categoryId,
-          },
-        });
-
-        if (!_category) throw new Error("Category not found");
-
         const _newProduct = await _prisma.product.create({
           data: {
             ...product,
             slug: slugify(product.title),
             collectionId: _collection!.id,
-            categoryId: _category!.id,
           },
         });
 
