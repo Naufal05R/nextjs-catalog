@@ -6,6 +6,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function padValue(value: number) {
+  return String(value).padStart(3, "0");
+}
+
 export function defineConst<T extends Dataset>(fields: T): T {
   return fields;
 }
