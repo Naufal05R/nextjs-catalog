@@ -2,13 +2,14 @@ import React from "react";
 import Link from "next/link";
 
 import { CarouselDetail } from "@/components/client/Carousel";
-import { Copy, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
 import { formatPrice } from "@/lib/utils";
+import { CopyButton } from "@/components/client/Button";
 
 const DetailProductPage = async ({ params }: { params: { product: string } }) => {
   const product = await prisma.product.findUnique({
@@ -77,12 +78,7 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
               </Link>
             </Button>
 
-            <Button
-              variant={"secondary"}
-              className="flex max-h-full flex-1 items-center gap-2 text-slate-600 shadow-none"
-            >
-              Share Link <Copy size={20} strokeWidth={1.75} />
-            </Button>
+            <CopyButton title="Share Link" />
 
             <fieldset className="flex basis-5/6 items-center gap-2 overflow-visible">
               <Button variant={"secondary"} className="text-slate-600 shadow-none">
