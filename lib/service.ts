@@ -1,5 +1,6 @@
 import * as Minio from "minio";
 import internal from "stream";
+import { handlingError } from "./utils";
 
 const END_POINT: string = process.env.MINIO_END_POINT || "";
 const SERVER_PORT: number = parseInt(process.env.MINIO_SERVER_PORT || "");
@@ -43,7 +44,7 @@ export const createObject = async ({
 
     return result;
   } catch (error) {
-    console.error("Error creating object: ", error);
+    handlingError(error);
   }
 };
 
@@ -63,7 +64,7 @@ export const getObject = async ({
 
     return result;
   } catch (error) {
-    console.error("Error getting object: ", error);
+    handlingError(error);
   }
 };
 
@@ -76,7 +77,7 @@ export const streamObjects = ({ bucketName, includeMetadata }: { bucketName: str
     console.log("V2", data);
   });
 
-  stream.on("error", function (err) {
-    console.log(err);
+  stream.on("error", function (error) {
+    handlingError(error);
   });
 };
