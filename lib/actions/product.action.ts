@@ -10,7 +10,25 @@ import { createObject } from "../service";
 
 export const getAllProduct = async () => {
   try {
-    const allProducts = await prisma.product.findMany();
+    const allProducts = await prisma.product.findMany({
+      include: {
+        collection: {
+          select: {
+            slug: true,
+          },
+        },
+        gallery: {
+          select: {
+            medias: {
+              take: 1,
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
     return allProducts;
   } catch (error) {
