@@ -1,7 +1,6 @@
 import React from "react";
 import { Archive, Pencil } from "lucide-react";
 
-
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, formatPrice } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
@@ -17,6 +16,7 @@ interface DashbaordProductCardProps extends Product {
 
 export const DashbaordProductCard = async ({
   title,
+  slug,
   price,
   state,
   discount,
@@ -25,7 +25,7 @@ export const DashbaordProductCard = async ({
   collection,
   thumbnail,
 }: DashbaordProductCardProps) => {
-  const src = await getImageSrc({ collection, name: thumbnail });
+  const src = await getImageSrc({ collection, product: slug, name: thumbnail });
 
   if (isReady && src)
     return (
