@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
 import Link from "next/link";
 
-const page = async ({ params }: { params: { product: string } }) => {
+const DetailProductPage = async ({ params }: { params: { product: string } }) => {
   const product = await prisma.product.findUnique({
     where: { slug: params.product },
     include: { collection: { select: { slug: true } }, gallery: { include: { medias: true } } },
@@ -119,4 +119,4 @@ const page = async ({ params }: { params: { product: string } }) => {
   );
 };
 
-export default page;
+export default DetailProductPage;
