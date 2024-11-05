@@ -230,7 +230,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 
   const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
     const _files = files.map(({ title, preview, order }) => ({ title, preview, order }));
-    console.table({ params, _files });
+
     const data = await createProduct({
       params,
       files: _files,
