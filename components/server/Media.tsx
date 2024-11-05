@@ -5,7 +5,7 @@ import { Bag } from "../svg";
 
 interface ComponentBaseProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   classNames?: {
     figure?: string;
     fallback?: {
@@ -33,7 +33,7 @@ type VideoProps = Omit<
   "className"
 >;
 
-const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
+export const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
   const { figure, fallback } = classNames ?? {};
 
   return (
