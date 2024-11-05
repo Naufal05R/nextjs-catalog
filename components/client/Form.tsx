@@ -524,7 +524,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                     return (
                       <li className="flex w-full items-center gap-x-2 border p-2.5">
                         <Button type="button" size="icon" variant="ghost">
-                          <GripVertical className="text-slate-400" />
+                          {/* <GripVertical className="text-slate-400" /> */}
+                          {currentFile?.order}
                         </Button>
 
                         <Dialog
