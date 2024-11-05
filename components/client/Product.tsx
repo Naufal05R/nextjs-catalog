@@ -3,16 +3,20 @@ import React from "react";
 import { Image } from "../server/Media";
 import { cn, formatPrice } from "@/lib/utils";
 import { Product as ProductType } from "@prisma/client";
+import { getImageSrc } from "@/lib/actions/image.action";
 
 interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "discount"> {
+  thumbnail: string;
   collection: string;
   classNames?: {
     wrapper?: string;
   };
 }
 
-const Product = ({ title, slug, price, discount, collection, classNames }: ProductProps) => {
+const Product = async ({ title, slug, price, discount, collection, thumbnail, classNames }: ProductProps) => {
   const { wrapper } = classNames ?? {};
+
+  const src = await getImageSrc({ collection, product: slug, name: thumbnail });
 
   return (
     <Link
@@ -21,8 +25,8 @@ const Product = ({ title, slug, price, discount, collection, classNames }: Produ
       className={cn("group relative select-none", wrapper)}
     >
       <Image
-        src={`/dummy_1.jpg`}
-        alt="dummy_image"
+        src={src || "/"}
+        alt={title}
         fill
         sizes="25vw"
         classNames={{
