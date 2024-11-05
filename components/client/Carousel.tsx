@@ -166,17 +166,17 @@ export const CarouselDetail = ({
 
   return (
     <Carousel
-      data={sources}
+      data={data}
       plugins={["fade"]}
       showDots
       slides={
         <Mapper
-          data={sources}
-          render={(src, i) => (
+          data={data}
+          render={({ title }, index) => (
             <CarouselItem>
               <Image
-                src={src}
-                alt={`product_${i}`}
+                src={sources[index]}
+                alt={title}
                 fill
                 sizes="50vw"
                 classNames={{ figure: "aspect-square rounded w-full" }}
@@ -187,12 +187,12 @@ export const CarouselDetail = ({
       }
       dotsElement={
         <Mapper
-          data={sources}
-          render={(src, index) => (
+          data={data}
+          render={({ title }, index) => (
             <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
               <Image
-                src={src}
-                alt={`product_${index}`}
+                src={sources[index]}
+                alt={title}
                 fill
                 sizes="10vw"
                 classNames={{ figure: "aspect-square rounded w-full" }}
