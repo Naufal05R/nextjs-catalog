@@ -38,7 +38,8 @@ import { Dialog } from "../server/Dialog";
 import { Category } from "@prisma/client";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { createProduct } from "@/lib/actions/product.action";
-import { cn } from "@/lib/utils";
+import { cn, getFileDetails, getFileMimeTypes } from "@/lib/utils";
+import { Badge } from "../ui/badge";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -564,9 +565,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 <>
                   <Mapper
                     data={files}
-                    render={({ media }, mediaIndex) => {
-                      const currentFile = files.find((_, index) => index === mediaIndex);
-
+                    render={({ title, order, media, preview }, mediaIndex) => {
                       const reader = new FileReader();
                       reader.addEventListener("load", () => {
                         setFiles((prevState) => {
@@ -588,16 +587,19 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                         }
                       });
 
+                      const { fileName, fileExt } = getFileDetails(title);
+                      const { fileType } = getFileMimeTypes(media?.type ?? "");
+
                       return (
                         <li className="flex w-full items-center gap-x-2 border p-2.5">
                           <Button type="button" size="icon" variant="ghost">
                             {/* <GripVertical className="text-slate-400" /> */}
-                            {currentFile?.order}
+                            {order}
                           </Button>
 
                           <Dialog
                             header={{
-                              title: currentFile?.title ?? "",
+                              title: title ?? "",
                               description: "Click the image to view in fullscreen",
                             }}
                             element={{
@@ -607,11 +609,11 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                 </Button>
                               ),
                               body:
-                                media && currentFile?.preview && typeof currentFile.preview === "string" ? (
+                                media && preview && typeof preview === "string" ? (
                                   media.type.startsWith("image/") ? (
                                     <Image
-                                      src={currentFile.preview}
-                                      alt={currentFile?.title ?? ""}
+                                      src={preview}
+                                      alt={title ?? ""}
                                       fill
                                       sizes="(min-width: 768px) 50vw, 100vw"
                                       classNames={{
@@ -624,6 +626,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                     />
                                   ) : media.type.startsWith("video/") ? (
                                     <Video
+                                      src={preview}
                                       controls
                                       autoPlay
                                       classNames={{
@@ -643,13 +646,13 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                             }}
                           />
 
-                          <Label htmlFor={`medias.${mediaIndex}.title`} className="flex-1">
+                          <Label htmlFor={`medias.${mediaIndex}.title`} className="flex flex-1 items-center gap-2">
                             <Input
                               id={`medias.${mediaIndex}.title`}
                               name="media.title"
                               form="create-product-form"
-                              className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                              value={currentFile?.title ?? ""}
+                              className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                              value={fileName}
                               readOnly={!media}
                               onChange={(e) => {
                                 setFiles((prevState) => {
@@ -657,7 +660,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                     if (index === mediaIndex) {
                                       return {
                                         ...state,
-                                        title: e.target.value,
+                                        title: `${e.target.value}.${fileExt}`,
                                       };
                                     }
                                     return state;
@@ -665,6 +668,18 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                 });
                               }}
                             />
+
+                            {fileType && (
+                              <Badge variant="secondary" className="text-slate-400">
+                                {fileType}
+                              </Badge>
+                            )}
+
+                            {fileExt && (
+                              <Badge variant="secondary" className="text-slate-400">
+                                {fileExt}
+                              </Badge>
+                            )}
                           </Label>
 
                           <div className="flex items-center gap-x-2">
