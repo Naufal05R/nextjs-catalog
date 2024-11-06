@@ -278,7 +278,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
     }
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
     onDrop,
     accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
   });
@@ -296,9 +296,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               </h5>
               <br />
               <ul>
-                {errors.map(({ message }) => (
-                  <li>{message}</li>
-                ))}
+                <Mapper data={Array.from(errors)} render={({ message }) => <li>{message}</li>} />
               </ul>
             </blockquote>,
             { duration: 10000 },
@@ -562,198 +560,196 @@ export function CreateProductForm({ collection, categories }: { collection: stri
             <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
             {!!files.length ? (
               <ul className="flex flex-col gap-y-2.5">
-                <>
-                  <Mapper
-                    data={files}
-                    render={({ title, order, media, preview }, mediaIndex) => {
-                      const reader = new FileReader();
-                      reader.addEventListener("load", () => {
-                        setFiles((prevState) => {
-                          return prevState.map((state, index) => {
-                            if (index === mediaIndex) {
-                              return {
-                                ...state,
-                                preview: reader.result,
-                              };
-                            }
-                            return state;
-                          });
+                <Mapper
+                  data={files}
+                  render={({ title, order, media, preview }, mediaIndex) => {
+                    const reader = new FileReader();
+                    reader.addEventListener("load", () => {
+                      setFiles((prevState) => {
+                        return prevState.map((state, index) => {
+                          if (index === mediaIndex) {
+                            return {
+                              ...state,
+                              preview: reader.result,
+                            };
+                          }
+                          return state;
                         });
-
-                        if (media) {
-                          return reader.removeEventListener("load", () => {
-                            reader.readAsDataURL(media);
-                          });
-                        }
                       });
 
-                      const { fileName, fileExt } = getFileDetails(title);
-                      const { fileType } = getFileMimeTypes(media?.type ?? "");
+                      if (media) {
+                        return reader.removeEventListener("load", () => {
+                          reader.readAsDataURL(media);
+                        });
+                      }
+                    });
 
-                      return (
-                        <li className="flex w-full items-center gap-x-2 border p-2.5">
-                          <Button type="button" size="icon" variant="ghost">
-                            {/* <GripVertical className="text-slate-400" /> */}
-                            {order}
-                          </Button>
+                    const { fileName, fileExt } = getFileDetails(title);
+                    const { fileType } = getFileMimeTypes(media?.type ?? "");
 
-                          <Dialog
-                            header={{
-                              title: title ?? "",
-                              description: "Click the image to view in fullscreen",
-                            }}
-                            element={{
-                              trigger: (
-                                <Button type="button" size="icon" variant="ghost" disabled={!media}>
-                                  {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
-                                </Button>
-                              ),
-                              body:
-                                media && preview && typeof preview === "string" ? (
-                                  media.type.startsWith("image/") ? (
-                                    <Image
-                                      src={preview}
-                                      alt={title ?? ""}
-                                      fill
-                                      sizes="(min-width: 768px) 50vw, 100vw"
-                                      classNames={{
-                                        figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                        image: "object-contain",
-                                      }}
-                                      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                        (e.target as HTMLElement).requestFullscreen()
-                                      }
-                                    />
-                                  ) : media.type.startsWith("video/") ? (
-                                    <Video
-                                      src={preview}
-                                      controls
-                                      autoPlay
-                                      classNames={{
-                                        figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                        video: "object-contain",
-                                      }}
-                                      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                        (e.target as HTMLElement).requestFullscreen()
-                                      }
-                                    />
-                                  ) : (
-                                    <></>
-                                  )
+                    return (
+                      <li className="flex w-full items-center gap-x-2 border p-2.5">
+                        <Button type="button" size="icon" variant="ghost">
+                          {/* <GripVertical className="text-slate-400" /> */}
+                          {order}
+                        </Button>
+
+                        <Dialog
+                          header={{
+                            title: title ?? "",
+                            description: "Click the image to view in fullscreen",
+                          }}
+                          element={{
+                            trigger: (
+                              <Button type="button" size="icon" variant="ghost" disabled={!media}>
+                                {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
+                              </Button>
+                            ),
+                            body:
+                              media && preview && typeof preview === "string" ? (
+                                media.type.startsWith("image/") ? (
+                                  <Image
+                                    src={preview}
+                                    alt={title ?? ""}
+                                    fill
+                                    sizes="(min-width: 768px) 50vw, 100vw"
+                                    classNames={{
+                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                      image: "object-contain",
+                                    }}
+                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                      (e.target as HTMLElement).requestFullscreen()
+                                    }
+                                  />
+                                ) : media.type.startsWith("video/") ? (
+                                  <Video
+                                    src={preview}
+                                    controls
+                                    autoPlay
+                                    classNames={{
+                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                      video: "object-contain",
+                                    }}
+                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                      (e.target as HTMLElement).requestFullscreen()
+                                    }
+                                  />
                                 ) : (
                                   <></>
-                                ),
+                                )
+                              ) : (
+                                <></>
+                              ),
+                          }}
+                        />
+
+                        <Label htmlFor={`medias.${mediaIndex}.title`} className="flex flex-1 items-center gap-2">
+                          <Input
+                            id={`medias.${mediaIndex}.title`}
+                            name="media.title"
+                            form="create-product-form"
+                            className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                            value={fileName}
+                            readOnly={!media}
+                            onChange={(e) => {
+                              setFiles((prevState) => {
+                                return prevState.map((state, index) => {
+                                  if (index === mediaIndex) {
+                                    return {
+                                      ...state,
+                                      title: `${e.target.value}.${fileExt}`,
+                                    };
+                                  }
+                                  return state;
+                                });
+                              });
                             }}
                           />
 
-                          <Label htmlFor={`medias.${mediaIndex}.title`} className="flex flex-1 items-center gap-2">
-                            <Input
-                              id={`medias.${mediaIndex}.title`}
-                              name="media.title"
-                              form="create-product-form"
-                              className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                              value={fileName}
-                              readOnly={!media}
-                              onChange={(e) => {
-                                setFiles((prevState) => {
-                                  return prevState.map((state, index) => {
-                                    if (index === mediaIndex) {
-                                      return {
-                                        ...state,
-                                        title: `${e.target.value}.${fileExt}`,
-                                      };
-                                    }
-                                    return state;
-                                  });
-                                });
-                              }}
-                            />
+                          {fileType && (
+                            <Badge variant="secondary" className="text-slate-400">
+                              {fileType}
+                            </Badge>
+                          )}
 
-                            {fileType && (
-                              <Badge variant="secondary" className="text-slate-400">
-                                {fileType}
-                              </Badge>
-                            )}
+                          {fileExt && (
+                            <Badge variant="secondary" className="text-slate-400">
+                              {fileExt}
+                            </Badge>
+                          )}
+                        </Label>
 
-                            {fileExt && (
-                              <Badge variant="secondary" className="text-slate-400">
-                                {fileExt}
-                              </Badge>
-                            )}
-                          </Label>
-
-                          <div className="flex items-center gap-x-2">
-                            <Button asChild type="button" size="icon" variant="ghost">
-                              <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
-                                <Input
-                                  id={`medias.${mediaIndex}.image`}
-                                  name="media.image"
-                                  form="create-product-form"
-                                  className="hidden"
-                                  type="file"
-                                  accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      if (Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
-                                        setFiles((prevState) => {
-                                          return prevState.map((state, index) => {
-                                            if (index === mediaIndex) {
-                                              return {
-                                                ...state,
-                                                title: file.name,
-                                                media: file,
-                                              };
-                                            }
-                                            return state;
-                                          });
+                        <div className="flex items-center gap-x-2">
+                          <Button asChild type="button" size="icon" variant="ghost">
+                            <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
+                              <Input
+                                id={`medias.${mediaIndex}.image`}
+                                name="media.image"
+                                form="create-product-form"
+                                className="hidden"
+                                type="file"
+                                accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    if (Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
+                                      setFiles((prevState) => {
+                                        return prevState.map((state, index) => {
+                                          if (index === mediaIndex) {
+                                            return {
+                                              ...state,
+                                              title: file.name,
+                                              media: file,
+                                            };
+                                          }
+                                          return state;
                                         });
-                                      } else {
-                                        alert(
-                                          `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
-                                        );
-                                      }
+                                      });
+                                    } else {
+                                      alert(
+                                        `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
+                                      );
                                     }
-                                  }}
-                                />
-                                <ImageUp className="text-slate-400" />
-                              </Label>
-                            </Button>
+                                  }
+                                }}
+                              />
+                              <ImageUp className="text-slate-400" />
+                            </Label>
+                          </Button>
 
-                            <Button
-                              type="button"
-                              size="icon"
-                              variant="ghost"
-                              onClick={() =>
-                                setFiles((prevState) =>
-                                  prevState
-                                    .filter((_, index) => index !== mediaIndex)
-                                    .map((state, index) => ({ ...state, order: index })),
-                                )
-                              }
-                            >
-                              <Trash2 className="text-slate-400" />
-                            </Button>
-                          </div>
-                        </li>
-                      );
-                    }}
-                  />
+                          <Button
+                            type="button"
+                            size="icon"
+                            variant="ghost"
+                            onClick={() =>
+                              setFiles((prevState) =>
+                                prevState
+                                  .filter((_, index) => index !== mediaIndex)
+                                  .map((state, index) => ({ ...state, order: index })),
+                              )
+                            }
+                          >
+                            <Trash2 className="text-slate-400" />
+                          </Button>
+                        </div>
+                      </li>
+                    );
+                  }}
+                />
 
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full rounded-none py-7 shadow-none"
-                    onClick={() =>
-                      setFiles((prevState) => [
-                        ...prevState,
-                        { title: "", order: prevState.length, media: null, preview: null },
-                      ])
-                    }
-                  >
-                    <Plus className="text-slate-400" />
-                  </Button>
-                </>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full rounded-none py-7 shadow-none"
+                  onClick={() =>
+                    setFiles((prevState) => [
+                      ...prevState,
+                      { title: "", order: prevState.length, media: null, preview: null },
+                    ])
+                  }
+                >
+                  <Plus className="text-slate-400" />
+                </Button>
               </ul>
             ) : (
               <div
@@ -765,10 +761,9 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   },
                 )}
               >
-                <Label {...getRootProps()} htmlFor="files-uploader" className="absolute size-full hover:cursor-pointer">
+                <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
                   <Input
                     {...getInputProps()}
-                    id="files-uploader"
                     form="create-product-form"
                     className="hidden"
                     type="file"
@@ -798,7 +793,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                       }
                     }}
                   />
-                </Label>
+                </div>
 
                 {isDragActive ? (
                   isDragAccept ? (
