@@ -44,6 +44,7 @@ export const MediaSchema = z.object({
   order: z.preprocess((val) => Number(val), z.number().int().min(0).max(999)),
   media: z
     .instanceof(File)
+    .nullable()
     .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
     .refine((file) => file && Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type), {
       message: `Only "${ACCEPTED_MEDIA_TYPES.join('", "')}" formats are supported.`,
