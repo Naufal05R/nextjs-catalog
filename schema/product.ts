@@ -1,5 +1,6 @@
-import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
+import { GalleryFormSchema } from "./gallery";
+import { capitalize, slugify } from "@/lib/utils";
 
 export const ProductSchema = z.object({
   id: z.string().cuid(),
@@ -74,7 +75,7 @@ export const ProductSchema = z.object({
         .multipleOf(0.01)
         .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
     )
-    .optional(),
+    .nullable(),
   description: z.string().min(50, {
     message: "Description must be at least 50 characters",
   }),
@@ -98,4 +99,4 @@ export const ProductFormSchema = ProductSchema.pick({
   discount: true,
   description: true,
   categoryId: true,
-});
+}).merge(GalleryFormSchema);
