@@ -36,7 +36,7 @@ export function getFileDetails(str: string) {
   if (lastDotIndex === -1) return { fileName: str, fileExt: "" };
 
   const fileName = str.substring(0, lastDotIndex);
-  const fileExt = str.substring(lastDotIndex + 1);
+  const fileExt = str.substring(lastDotIndex);
 
   return { fileName, fileExt };
 }
