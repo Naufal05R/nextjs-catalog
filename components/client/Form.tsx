@@ -2,9 +2,9 @@
 
 import { z } from "zod";
 import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileError, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
+import { useForm } from "react-hook-form";
 
 import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import { toast as sonner } from "sonner";
 
 import Mapper from "@/components/server/Mapper";
-import { Image, Video } from "../server/Media";
+import { Image, Video } from "@/components/server/Media";
 import {
   CloudUpload,
   Eye,
@@ -26,20 +26,19 @@ import {
   Plus,
   ShieldAlert,
   Trash2,
-  TriangleAlert,
 } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
-import { ProductFormSchema } from "@/schema/product";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { Dialog } from "../server/Dialog";
-import { Category } from "@prisma/client";
-import { ComboboxDropdownCategory } from "./Combobox";
+import { cn, getFileDetails, getFileMimeTypes, padValue, slugify } from "@/lib/utils";
 import { createProduct } from "@/lib/actions/product.action";
-import { cn, getFileDetails, getFileMimeTypes } from "@/lib/utils";
-import { Badge } from "../ui/badge";
+import { ComboboxDropdownCategory } from "./Combobox";
+import { Dialog } from "@/components/server/Dialog";
+import { Category } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
+import { useFormState } from "react-dom";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -222,43 +221,27 @@ export function ContactForm() {
 }
 
 export function CreateProductForm({ collection, categories }: { collection: string; categories: Array<Category> }) {
-  const [files, setFiles] = useState<
-    Required<Array<{ preview: string | ArrayBuffer | null } & z.infer<typeof MediaFormSchema>>>
-  >([]);
+  const [state, formAction, isPending] = useFormState(createProduct, undefined);
 
-  const productForm = useForm<z.infer<typeof ProductFormSchema>>({
-    resolver: zodResolver(ProductFormSchema),
-    defaultValues: {
-      title: "",
-      state: "",
-      color: "",
-      width: 0,
-      height: 0,
-      length: 0,
-      weight: 0,
-      price: 0,
-      discount: 0,
-      description: "",
-      categoryId: "",
-    },
-  });
+  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
 
-  const onSubmit = async (params: z.infer<typeof ProductFormSchema>) => {
-    const _files = files.map(({ title, preview, order }) => ({ title, preview, order }));
+  const actionHandler = async (formData: FormData) => {
+    files
+      .filter(({ media }) => !!media && new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(media.type))
+      .sort((a, b) => a.order - b.order)
+      .forEach(({ title, media }, index) => {
+        if (media) {
+          const { fileName } = getFileDetails(title);
+          const { fileMime } = getFileMimeTypes(media.type);
 
-    const data = await createProduct({
-      params,
-      files: _files,
-      collection,
-    });
-    toast({
-      title: "Product Created:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+          return formData.append(
+            "media.image",
+            new File([media], `${padValue(index)}_${fileName}.${fileMime}`, { type: media.type }),
+          );
+        }
+      });
+
+    formAction(formData);
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -271,7 +254,6 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               title: file.name,
               order: index,
               media: file,
-              preview: URL.createObjectURL(file),
             };
           }),
       );
@@ -308,527 +290,371 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 
   return (
     <>
-      <FormRoot {...productForm}>
-        <form id="create-product-form" onSubmit={productForm.handleSubmit(onSubmit)} />
+      <form action={actionHandler} id="create-product-form" />
 
-        <article className="mt-8 grid w-full grid-cols-12 gap-4">
-          <fieldset className="col-span-12">
-            <h6 className="mb-1 text-lg font-medium">Product Title</h6>
-            <FormField
-              control={productForm.control}
+      <article className="mt-8 grid w-full grid-cols-12 gap-4">
+        <fieldset className="col-span-12">
+          <h6 className="mb-1 text-lg font-medium">Product Title</h6>
+          <Label htmlFor="title">
+            <Input
+              id="title"
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="title">
-                    <FormControl>
-                      <Input
-                        id="title"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Title"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Title"
             />
-          </fieldset>
+          </Label>
+        </fieldset>
 
-          <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
-            <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
-            <FormField
-              control={productForm.control}
-              name="categoryId"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex flex-col">
-                    <ComboboxDropdownCategory
-                      data={categories}
-                      field={field}
-                      form={{ ...productForm, form: "create-product-form" }}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={productForm.control}
+        <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
+          <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
+          <Label htmlFor="categoryId" className="flex flex-col">
+            <ComboboxDropdownCategory data={categories} form="create-product-form" />
+          </Label>
+
+          <Label htmlFor="state">
+            <Input
+              id="state"
               name="state"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="state">
-                    <FormControl>
-                      <Input
-                        id="state"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Origin"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Origin"
             />
-            <FormField
-              control={productForm.control}
+          </Label>
+
+          <Label htmlFor="color">
+            <Input
+              id="color"
               name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="color">
-                    <FormControl>
-                      <Input
-                        id="color"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Color"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Color"
             />
-          </fieldset>
+          </Label>
+        </fieldset>
 
-          <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
-            <h6 className="-order-2 col-span-3 mb-1 text-lg font-medium">Product Size</h6>
-            <FormField
-              control={productForm.control}
+        <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
+          <h6 className="-order-2 col-span-3 mb-1 text-lg font-medium">Product Size</h6>
+          <Label htmlFor="width">
+            <Input
+              id="width"
               name="width"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="width">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="width"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Width"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Width"
             />
-            <FormField
-              control={productForm.control}
+          </Label>
+
+          <Label htmlFor="height">
+            <Input
+              id="height"
               name="height"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="height">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="height"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Height"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Height"
             />
-            <FormField
-              control={productForm.control}
+          </Label>
+
+          <Label htmlFor="length">
+            <Input
+              id="length"
               name="length"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="length">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="length"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Length"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Length"
             />
-            <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
-            <FormField
-              control={productForm.control}
+          </Label>
+
+          <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
+          <Label htmlFor="weight">
+            <Input
+              id="weight"
               name="weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="weight">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="weight"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Weight"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Weight"
             />
-          </fieldset>
+          </Label>
+        </fieldset>
 
-          <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
-            <h6 className="col-span-2 mb-1 text-lg font-medium">Product Rate</h6>
-            <FormField
-              control={productForm.control}
+        <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
+          <h6 className="col-span-2 mb-1 text-lg font-medium">Product Rate</h6>
+          <Label htmlFor="price">
+            <Input
+              id="price"
               name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="price">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="price"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Price"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Price"
             />
-            <FormField
-              control={productForm.control}
+          </Label>
+
+          <Label htmlFor="discount">
+            <Input
+              id="discount"
               name="discount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="discount">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="discount"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Discount"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Discount"
             />
-          </fieldset>
+          </Label>
+        </fieldset>
 
-          <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
-            <h6 className="-order-2 mb-1 text-lg font-medium">Product Description</h6>
-            <FormField
-              control={productForm.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description">
-                    <FormControl>
-                      <Textarea
-                        id="description"
-                        form="create-product-form"
-                        className="rounded-none shadow-none"
-                        placeholder="Description"
-                        rows={10}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+        <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
+          <h6 className="-order-2 mb-1 text-lg font-medium">Product Description</h6>
+          <Label htmlFor="description">
+            <Textarea
+              id="description"
+              form="create-product-form"
+              className="rounded-none shadow-none"
+              placeholder="Description"
+              rows={10}
             />
-          </fieldset>
+          </Label>
+        </fieldset>
 
-          <fieldset className="col-span-12">
-            <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
-            {!!files.length ? (
-              <ul className="flex flex-col gap-y-2.5">
-                <Mapper
-                  data={files}
-                  render={({ title, order, media, preview }, mediaIndex) => {
-                    const reader = new FileReader();
-                    reader.addEventListener("load", () => {
-                      setFiles((prevState) => {
-                        return prevState.map((state, index) => {
-                          if (index === mediaIndex) {
-                            return {
-                              ...state,
-                              preview: reader.result,
-                            };
-                          }
-                          return state;
-                        });
-                      });
+        <fieldset className="col-span-12">
+          <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
+          {!!files.length ? (
+            <ul className="flex flex-col gap-y-2.5">
+              <Mapper
+                data={files}
+                render={({ title, media }, mediaIndex) => {
+                  const { fileType, fileMime } = getFileMimeTypes(media?.type ?? "");
+                  const { fileName } = getFileDetails(title);
 
-                      if (media) {
-                        return reader.removeEventListener("load", () => {
-                          reader.readAsDataURL(media);
-                        });
-                      }
-                    });
+                  return (
+                    <li className="flex w-full items-center gap-x-2 border p-2.5">
+                      <Button type="button" size="icon" variant="ghost">
+                        <GripVertical className="text-slate-400" />
+                      </Button>
 
-                    const { fileName, fileExt } = getFileDetails(title);
-                    const { fileType } = getFileMimeTypes(media?.type ?? "");
-
-                    return (
-                      <li className="flex w-full items-center gap-x-2 border p-2.5">
-                        <Button type="button" size="icon" variant="ghost">
-                          {/* <GripVertical className="text-slate-400" /> */}
-                          {order}
-                        </Button>
-
-                        <Dialog
-                          header={{
-                            title: title ?? "",
-                            description: "Click the image to view in fullscreen",
-                          }}
-                          element={{
-                            trigger: (
-                              <Button type="button" size="icon" variant="ghost" disabled={!media}>
-                                {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
-                              </Button>
+                      <Dialog
+                        header={{
+                          title: title ?? "",
+                          description: "Click the image to view in fullscreen",
+                        }}
+                        element={{
+                          trigger: (
+                            <Button type="button" size="icon" variant="ghost" disabled={!media}>
+                              {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
+                            </Button>
+                          ),
+                          body:
+                            media && media.type.startsWith("image/") ? (
+                              <Image
+                                src={URL.createObjectURL(media)}
+                                alt={title ?? ""}
+                                fill
+                                sizes="(min-width: 768px) 50vw, 100vw"
+                                classNames={{
+                                  figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                  image: "object-contain",
+                                }}
+                                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                  (e.target as HTMLElement).requestFullscreen()
+                                }
+                              />
+                            ) : media && media.type.startsWith("video/") ? (
+                              <Video
+                                src={URL.createObjectURL(media)}
+                                controls
+                                autoPlay
+                                classNames={{
+                                  figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                  video: "object-contain",
+                                }}
+                                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                  (e.target as HTMLElement).requestFullscreen()
+                                }
+                              />
+                            ) : (
+                              <></>
                             ),
-                            body:
-                              media && preview && typeof preview === "string" ? (
-                                media.type.startsWith("image/") ? (
-                                  <Image
-                                    src={preview}
-                                    alt={title ?? ""}
-                                    fill
-                                    sizes="(min-width: 768px) 50vw, 100vw"
-                                    classNames={{
-                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                      image: "object-contain",
-                                    }}
-                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                      (e.target as HTMLElement).requestFullscreen()
-                                    }
-                                  />
-                                ) : media.type.startsWith("video/") ? (
-                                  <Video
-                                    src={preview}
-                                    controls
-                                    autoPlay
-                                    classNames={{
-                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                      video: "object-contain",
-                                    }}
-                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                      (e.target as HTMLElement).requestFullscreen()
-                                    }
-                                  />
-                                ) : (
-                                  <></>
-                                )
-                              ) : (
-                                <></>
-                              ),
+                        }}
+                      />
+
+                      <Label htmlFor={`medias.${mediaIndex}.title`} className="flex flex-1 items-center gap-2">
+                        <Input
+                          id={`medias.${mediaIndex}.title`}
+                          form="create-product-form"
+                          className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                          value={fileName}
+                          readOnly={!media}
+                          onChange={(e) => {
+                            setFiles((prevState) => {
+                              return prevState.map((state, index) => {
+                                if (index === mediaIndex) {
+                                  return {
+                                    ...state,
+                                    title: `${e.target.value}.${fileMime}`,
+                                  };
+                                }
+                                return state;
+                              });
+                            });
                           }}
                         />
 
-                        <Label htmlFor={`medias.${mediaIndex}.title`} className="flex flex-1 items-center gap-2">
-                          <Input
-                            id={`medias.${mediaIndex}.title`}
-                            name="media.title"
-                            form="create-product-form"
-                            className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                            value={fileName}
-                            readOnly={!media}
-                            onChange={(e) => {
-                              setFiles((prevState) => {
-                                return prevState.map((state, index) => {
-                                  if (index === mediaIndex) {
-                                    return {
-                                      ...state,
-                                      title: `${e.target.value}.${fileExt}`,
-                                    };
-                                  }
-                                  return state;
-                                });
-                              });
-                            }}
-                          />
+                        {fileType && (
+                          <Badge variant="secondary" className="text-slate-400">
+                            {fileType}
+                          </Badge>
+                        )}
 
-                          {fileType && (
-                            <Badge variant="secondary" className="text-slate-400">
-                              {fileType}
-                            </Badge>
-                          )}
+                        {fileMime && (
+                          <Badge variant="secondary" className="text-slate-400">
+                            {fileMime}
+                          </Badge>
+                        )}
+                      </Label>
 
-                          {fileExt && (
-                            <Badge variant="secondary" className="text-slate-400">
-                              {fileExt}
-                            </Badge>
-                          )}
-                        </Label>
-
-                        <div className="flex items-center gap-x-2">
-                          <Button asChild type="button" size="icon" variant="ghost">
-                            <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
-                              <Input
-                                id={`medias.${mediaIndex}.image`}
-                                name="media.image"
-                                form="create-product-form"
-                                className="hidden"
-                                type="file"
-                                accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    if (Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
-                                      setFiles((prevState) => {
-                                        return prevState.map((state, index) => {
-                                          if (index === mediaIndex) {
-                                            return {
-                                              ...state,
-                                              title: file.name,
-                                              media: file,
-                                            };
-                                          }
-                                          return state;
-                                        });
+                      <div className="flex items-center gap-x-2">
+                        <Button asChild type="button" size="icon" variant="ghost">
+                          <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
+                            <Input
+                              id={`medias.${mediaIndex}.image`}
+                              form="create-product-form"
+                              className="hidden"
+                              type="file"
+                              accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  if (Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
+                                    setFiles((prevState) => {
+                                      return prevState.map((state, index) => {
+                                        if (index === mediaIndex) {
+                                          return {
+                                            ...state,
+                                            title: file.name,
+                                            media: file,
+                                          };
+                                        }
+                                        return state;
                                       });
-                                    } else {
-                                      alert(
-                                        `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
-                                      );
-                                    }
+                                    });
+                                  } else {
+                                    alert(
+                                      `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
+                                    );
                                   }
-                                }}
-                              />
-                              <ImageUp className="text-slate-400" />
-                            </Label>
-                          </Button>
+                                }
+                              }}
+                            />
+                            <ImageUp className="text-slate-400" />
+                          </Label>
+                        </Button>
 
-                          <Button
-                            type="button"
-                            size="icon"
-                            variant="ghost"
-                            onClick={() =>
-                              setFiles((prevState) =>
-                                prevState
-                                  .filter((_, index) => index !== mediaIndex)
-                                  .map((state, index) => ({ ...state, order: index })),
-                              )
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="ghost"
+                          onClick={() =>
+                            setFiles((prevState) =>
+                              prevState
+                                .filter((_, index) => index !== mediaIndex)
+                                .map((state, index) => ({ ...state, order: index })),
+                            )
+                          }
+                        >
+                          <Trash2 className="text-slate-400" />
+                        </Button>
+                      </div>
+                    </li>
+                  );
+                }}
+              />
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full rounded-none py-7 shadow-none"
+                onClick={() =>
+                  setFiles((prevState) => [...prevState, { title: "", order: prevState.length, media: null }])
+                }
+              >
+                <Plus className="text-slate-400" />
+              </Button>
+            </ul>
+          ) : (
+            <div
+              className={cn(
+                "relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
+                {
+                  "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
+                  "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
+                },
+              )}
+            >
+              <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
+                <Input
+                  {...getInputProps()}
+                  form="create-product-form"
+                  className="hidden"
+                  type="file"
+                  multiple
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      setFiles(
+                        Array.from(files)
+                          .filter((file) => {
+                            if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
+                              return true;
+                            } else {
+                              alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                              return false;
                             }
-                          >
-                            <Trash2 className="text-slate-400" />
-                          </Button>
-                        </div>
-                      </li>
-                    );
+                          })
+                          .map((file, index) => {
+                            return {
+                              title: file.name,
+                              order: index,
+                              media: file,
+                            };
+                          }),
+                      );
+                    }
+                    console.log(e.target.value);
                   }}
                 />
+              </div>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full rounded-none py-7 shadow-none"
-                  onClick={() =>
-                    setFiles((prevState) => [
-                      ...prevState,
-                      { title: "", order: prevState.length, media: null, preview: null },
-                    ])
-                  }
-                >
-                  <Plus className="text-slate-400" />
-                </Button>
-              </ul>
-            ) : (
-              <div
-                className={cn(
-                  "relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
-                  {
-                    "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
-                    "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
-                  },
-                )}
-              >
-                <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
-                  <Input
-                    {...getInputProps()}
-                    form="create-product-form"
-                    className="hidden"
-                    type="file"
-                    multiple
-                    onChange={(e) => {
-                      const files = e.target.files;
-                      if (files) {
-                        setFiles(
-                          Array.from(files)
-                            .filter((file) => {
-                              if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
-                                return true;
-                              } else {
-                                alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
-                                return false;
-                              }
-                            })
-                            .map((file, index) => {
-                              return {
-                                title: file.name,
-                                order: index,
-                                media: file,
-                                preview: URL.createObjectURL(file),
-                              };
-                            }),
-                        );
-                      }
-                    }}
-                  />
-                </div>
-
-                {isDragActive ? (
-                  isDragAccept ? (
-                    <>
-                      <HardDriveUpload className="mb-3.5 size-8" strokeWidth={1.5} />
-                      Drag files or click to upload
-                    </>
-                  ) : (
-                    isDragReject && (
-                      <>
-                        <ShieldAlert className="mb-3.5 size-8" strokeWidth={1.5} />
-                        One or more files not allowed or not supported
-                      </>
-                    )
-                  )
-                ) : (
+              {isDragActive ? (
+                isDragAccept ? (
                   <>
-                    <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                    <HardDriveUpload className="mb-3.5 size-8" strokeWidth={1.5} />
                     Drag files or click to upload
                   </>
-                )}
-              </div>
-            )}
-          </fieldset>
+                ) : (
+                  isDragReject && (
+                    <>
+                      <ShieldAlert className="mb-3.5 size-8" strokeWidth={1.5} />
+                      One or more files not allowed or not supported
+                    </>
+                  )
+                )
+              ) : (
+                <>
+                  <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                  Drag files or click to upload
+                </>
+              )}
+            </div>
+          )}
+        </fieldset>
 
-          <Button
-            type="submit"
-            className="col-span-12 mt-8 flex w-full rounded-none"
-            form="create-product-form"
-            size="lg"
-          >
-            Save
-          </Button>
-        </article>
-      </FormRoot>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="col-span-12 mt-8 flex w-full rounded-none"
+          form="create-product-form"
+          size="lg"
+        >
+          Save
+        </Button>
+      </article>
     </>
   );
 }
