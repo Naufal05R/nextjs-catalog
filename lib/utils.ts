@@ -36,7 +36,7 @@ export function getFileMimeTypes(str: string) {
   if (lastDotIndex === -1) return { fileType: "", fileMime: "" };
 
   const fileType = str.substring(0, lastDotIndex);
-  const fileMime = str.substring(lastDotIndex);
+  const fileMime = str.substring(lastDotIndex + 1);
 
   return { fileType, fileMime };
 }
@@ -47,7 +47,7 @@ export function getFileDetails(str: string) {
   if (lastDotIndex === -1) return { fileName: str, fileExt: "" };
 
   const fileName = str.substring(0, lastDotIndex);
-  const fileExt = str.substring(lastDotIndex);
+  const fileExt = str.substring(lastDotIndex + 1);
 
   return { fileName, fileExt };
 }
