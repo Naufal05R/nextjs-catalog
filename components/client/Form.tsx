@@ -14,7 +14,7 @@ import { toast } from "@/hooks/use-toast";
 
 import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "../server/Media";
-import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
+import { CloudUpload, Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
@@ -208,7 +208,7 @@ export function ContactForm() {
 
 export function CreateProductForm({ collection, categories }: { collection: string; categories: Array<Category> }) {
   const [files, setFiles] = useState<
-    Required<Array<Partial<{ preview: string | ArrayBuffer | null } & z.infer<typeof MediaFormSchema>>>>
+    Required<Array<{ preview: string | ArrayBuffer | null } & z.infer<typeof MediaFormSchema>>>
   >([]);
 
   const productForm = useForm<z.infer<typeof ProductFormSchema>>({
@@ -498,173 +498,221 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 
           <fieldset className="col-span-12">
             <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
-            <ul className="flex flex-col gap-y-2.5">
-              {!!files && (
-                <Mapper
-                  data={files}
-                  render={({ media }, mediaIndex) => {
-                    const currentFile = files.find((_, index) => index === mediaIndex);
+            {!!files.length ? (
+              <ul className="flex flex-col gap-y-2.5">
+                <>
+                  <Mapper
+                    data={files}
+                    render={({ media }, mediaIndex) => {
+                      const currentFile = files.find((_, index) => index === mediaIndex);
 
-                    const reader = new FileReader();
-                    reader.addEventListener("load", () => {
-                      setFiles((prevState) => {
-                        return prevState.map((state, index) => {
-                          if (index === mediaIndex) {
-                            return {
-                              ...state,
-                              preview: reader.result as string,
-                            };
-                          }
-                          return state;
+                      const reader = new FileReader();
+                      reader.addEventListener("load", () => {
+                        setFiles((prevState) => {
+                          return prevState.map((state, index) => {
+                            if (index === mediaIndex) {
+                              return {
+                                ...state,
+                                preview: reader.result,
+                              };
+                            }
+                            return state;
+                          });
                         });
+
+                        if (media) {
+                          return reader.removeEventListener("load", () => {
+                            reader.readAsDataURL(media);
+                          });
+                        }
                       });
-                    });
-                    if (media) reader.readAsDataURL(media);
 
-                    return (
-                      <li className="flex w-full items-center gap-x-2 border p-2.5">
-                        <Button type="button" size="icon" variant="ghost">
-                          {/* <GripVertical className="text-slate-400" /> */}
-                          {currentFile?.order}
-                        </Button>
+                      return (
+                        <li className="flex w-full items-center gap-x-2 border p-2.5">
+                          <Button type="button" size="icon" variant="ghost">
+                            {/* <GripVertical className="text-slate-400" /> */}
+                            {currentFile?.order}
+                          </Button>
 
-                        <Dialog
-                          header={{
-                            title: currentFile?.title ?? "",
-                            description: "Click the image to view in fullscreen",
-                          }}
-                          element={{
-                            trigger: (
-                              <Button type="button" size="icon" variant="ghost" disabled={!media}>
-                                {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
-                              </Button>
-                            ),
-                            body:
-                              media && currentFile?.preview && typeof currentFile.preview === "string" ? (
-                                media.type.startsWith("image/") ? (
-                                  <Image
-                                    src={currentFile.preview}
-                                    alt={currentFile?.title ?? ""}
-                                    fill
-                                    sizes="(min-width: 768px) 50vw, 100vw"
-                                    classNames={{
-                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                      image: "object-contain",
-                                    }}
-                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                      (e.target as HTMLElement).requestFullscreen()
-                                    }
-                                  />
-                                ) : media.type.startsWith("video/") ? (
-                                  <Video
-                                    controls
-                                    autoPlay
-                                    classNames={{
-                                      figure: "w-full aspect-video rounded hover:cursor-pointer",
-                                      video: "object-contain",
-                                    }}
-                                    onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-                                      (e.target as HTMLElement).requestFullscreen()
-                                    }
-                                  />
+                          <Dialog
+                            header={{
+                              title: currentFile?.title ?? "",
+                              description: "Click the image to view in fullscreen",
+                            }}
+                            element={{
+                              trigger: (
+                                <Button type="button" size="icon" variant="ghost" disabled={!media}>
+                                  {media ? <Eye className="text-slate-400" /> : <EyeOff className="text-slate-400" />}
+                                </Button>
+                              ),
+                              body:
+                                media && currentFile?.preview && typeof currentFile.preview === "string" ? (
+                                  media.type.startsWith("image/") ? (
+                                    <Image
+                                      src={currentFile.preview}
+                                      alt={currentFile?.title ?? ""}
+                                      fill
+                                      sizes="(min-width: 768px) 50vw, 100vw"
+                                      classNames={{
+                                        figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                        image: "object-contain",
+                                      }}
+                                      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                        (e.target as HTMLElement).requestFullscreen()
+                                      }
+                                    />
+                                  ) : media.type.startsWith("video/") ? (
+                                    <Video
+                                      controls
+                                      autoPlay
+                                      classNames={{
+                                        figure: "w-full aspect-video rounded hover:cursor-pointer",
+                                        video: "object-contain",
+                                      }}
+                                      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                                        (e.target as HTMLElement).requestFullscreen()
+                                      }
+                                    />
+                                  ) : (
+                                    <></>
+                                  )
                                 ) : (
                                   <></>
-                                )
-                              ) : (
-                                <></>
-                              ),
-                          }}
-                        />
-
-                        <Label htmlFor={`medias.${mediaIndex}.title`} className="flex-1">
-                          <Input
-                            id={`medias.${mediaIndex}.title`}
-                            name="media.title"
-                            form="create-product-form"
-                            className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
-                            value={currentFile?.title ?? ""}
-                            readOnly={!media}
-                            onChange={(e) => {
-                              setFiles((prevState) => {
-                                return prevState.map((state, index) => {
-                                  if (index === mediaIndex) {
-                                    return {
-                                      ...state,
-                                      title: e.target.value,
-                                    };
-                                  }
-                                  return state;
-                                });
-                              });
+                                ),
                             }}
                           />
-                        </Label>
 
-                        <div className="flex items-center gap-x-2">
-                          <Button asChild type="button" size="icon" variant="ghost">
-                            <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
-                              <Input
-                                id={`medias.${mediaIndex}.image`}
-                                name="media.image"
-                                form="create-product-form"
-                                className="hidden"
-                                type="file"
-                                accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    setFiles((prevState) => {
-                                      return prevState.map((state, index) => {
-                                        if (index === mediaIndex) {
-                                          return {
-                                            ...state,
-                                            title: file.name,
-                                            media: file,
-                                          };
-                                        }
-                                        return state;
+                          <Label htmlFor={`medias.${mediaIndex}.title`} className="flex-1">
+                            <Input
+                              id={`medias.${mediaIndex}.title`}
+                              name="media.title"
+                              form="create-product-form"
+                              className="rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                              value={currentFile?.title ?? ""}
+                              readOnly={!media}
+                              onChange={(e) => {
+                                setFiles((prevState) => {
+                                  return prevState.map((state, index) => {
+                                    if (index === mediaIndex) {
+                                      return {
+                                        ...state,
+                                        title: e.target.value,
+                                      };
+                                    }
+                                    return state;
+                                  });
+                                });
+                              }}
+                            />
+                          </Label>
+
+                          <div className="flex items-center gap-x-2">
+                            <Button asChild type="button" size="icon" variant="ghost">
+                              <Label htmlFor={`medias.${mediaIndex}.image`} className="size-9 hover:cursor-pointer">
+                                <Input
+                                  id={`medias.${mediaIndex}.image`}
+                                  name="media.image"
+                                  form="create-product-form"
+                                  className="hidden"
+                                  type="file"
+                                  accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      setFiles((prevState) => {
+                                        return prevState.map((state, index) => {
+                                          if (index === mediaIndex) {
+                                            return {
+                                              ...state,
+                                              title: file.name,
+                                              media: file,
+                                            };
+                                          }
+                                          return state;
+                                        });
                                       });
-                                    });
-                                  }
-                                }}
-                              />
-                              <ImageUp className="text-slate-400" />
-                            </Label>
-                          </Button>
+                                    }
+                                  }}
+                                />
+                                <ImageUp className="text-slate-400" />
+                              </Label>
+                            </Button>
 
-                          <Button
-                            type="button"
-                            size="icon"
-                            variant="ghost"
-                            onClick={() =>
-                              setFiles((prevState) =>
-                                prevState
-                                  .filter((_, index) => index !== mediaIndex)
-                                  .map((state, index) => ({ ...state, order: index })),
-                              )
-                            }
-                          >
-                            <Trash2 className="text-slate-400" />
-                          </Button>
-                        </div>
-                      </li>
-                    );
+                            <Button
+                              type="button"
+                              size="icon"
+                              variant="ghost"
+                              onClick={() =>
+                                setFiles((prevState) =>
+                                  prevState
+                                    .filter((_, index) => index !== mediaIndex)
+                                    .map((state, index) => ({ ...state, order: index })),
+                                )
+                              }
+                            >
+                              <Trash2 className="text-slate-400" />
+                            </Button>
+                          </div>
+                        </li>
+                      );
+                    }}
+                  />
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full rounded-none py-7 shadow-none"
+                    onClick={() =>
+                      setFiles((prevState) => [
+                        ...prevState,
+                        { title: "", order: prevState.length, media: null, preview: null },
+                      ])
+                    }
+                  >
+                    <Plus className="text-slate-400" />
+                  </Button>
+                </>
+              </ul>
+            ) : (
+              <Label
+                htmlFor="files-uploader"
+                className="flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 p-7 text-slate-400 hover:cursor-pointer"
+              >
+                <Input
+                  id="files-uploader"
+                  form="create-product-form"
+                  className="hidden"
+                  type="file"
+                  multiple
+                  accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      setFiles(
+                        Array.from(files).map((file, index) => {
+                          return {
+                            title: file.name,
+                            order: index,
+                            media: file,
+                            preview: URL.createObjectURL(file),
+                          };
+                        }),
+                      );
+                    }
                   }}
                 />
-              )}
-
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full rounded-none py-7 shadow-none"
-                onClick={() => setFiles((prevState) => [...prevState, { order: prevState.length }])}
-              >
-                <Plus className="text-slate-400" />
-              </Button>
-            </ul>
+                <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                Drag & drop or click to upload files
+              </Label>
+            )}
           </fieldset>
 
-          <Button type="submit" className="col-span-12 flex w-full rounded-none" form="create-product-form">
+          <Button
+            type="submit"
+            className="col-span-12 mt-8 flex w-full rounded-none"
+            form="create-product-form"
+            size="lg"
+          >
             Save
           </Button>
         </article>
