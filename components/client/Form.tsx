@@ -1,10 +1,10 @@
 "use client";
 
 import { z } from "zod";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDropzone } from "react-dropzone";
+import { FileError, useDropzone } from "react-dropzone";
 
 import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { toast as sonner } from "sonner";
 
 import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "../server/Media";
@@ -23,6 +24,7 @@ import {
   HardDriveUpload,
   ImageUp,
   Plus,
+  ShieldAlert,
   Trash2,
   TriangleAlert,
 } from "lucide-react";
@@ -259,13 +261,51 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
-    console.log(acceptedFiles);
+    if (!!acceptedFiles.length) {
+      setFiles(
+        Array.from(acceptedFiles)
+          .filter((acceptedFile) => new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(acceptedFile.type))
+          .map((file, index) => {
+            return {
+              title: file.name,
+              order: index,
+              media: file,
+              preview: URL.createObjectURL(file),
+            };
+          }),
+      );
+    }
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections } = useDropzone({
     onDrop,
     accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
   });
+
+  useEffect(() => {
+    if (!!fileRejections.length) {
+      fileRejections.forEach((fileRejection, index) => {
+        const { file, errors } = fileRejection;
+
+        setTimeout(() => {
+          sonner.error(
+            <blockquote>
+              <h5 className="break-all text-sm">
+                <strong>Error: </strong>Invalid File <strong>{file.name}</strong>
+              </h5>
+              <br />
+              <ul>
+                {errors.map(({ message }) => (
+                  <li>{message}</li>
+                ))}
+              </ul>
+            </blockquote>,
+            { duration: 10000 },
+          );
+        }, 2000 * index);
+      });
+    }
+  }, [fileRejections]);
 
   return (
     <>
@@ -705,8 +745,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 className={cn(
                   "relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
                   {
-                    "border-teal-300 bg-teal-50 text-teal-400": isDragAccept,
-                    "border-rose-300 bg-rose-50 text-rose-400": isDragReject,
+                    "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
+                    "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
                   },
                 )}
               >
@@ -754,8 +794,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                   ) : (
                     isDragReject && (
                       <>
-                        <TriangleAlert className="mb-3.5 size-8" strokeWidth={1.5} />
-                        Files not allowed or not supported
+                        <ShieldAlert className="mb-3.5 size-8" strokeWidth={1.5} />
+                        One or more files not allowed or not supported
                       </>
                     )
                   )
