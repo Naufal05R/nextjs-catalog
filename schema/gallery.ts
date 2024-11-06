@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MediaSchema } from "./media";
+import { MediaFormSchema, MediaSchema } from "./media";
 import { capitalize, slugify } from "@/lib/utils";
 
 export const GallerySchema = z.object({
@@ -28,5 +28,8 @@ export const GallerySchema = z.object({
 
 export const GalleryFormSchema = GallerySchema.pick({
   title: true,
-  medias: true,
-});
+}).merge(
+  z.object({
+    medias: z.array(MediaFormSchema.omit({ order: true })),
+  }),
+);
