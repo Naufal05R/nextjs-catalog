@@ -30,6 +30,17 @@ export function slugify(str: string) {
   return str.toLowerCase().trim().replace(/\s+/g, "-");
 }
 
+export function getFileMimeTypes(str: string) {
+  const lastDotIndex = str.lastIndexOf("/");
+
+  if (lastDotIndex === -1) return { fileType: "", fileMime: "" };
+
+  const fileType = str.substring(0, lastDotIndex);
+  const fileMime = str.substring(lastDotIndex);
+
+  return { fileType, fileMime };
+}
+
 export function getFileDetails(str: string) {
   const lastDotIndex = str.lastIndexOf(".");
 
