@@ -27,3 +27,7 @@ export const Sonner = ({ ...props }: SonnerProps) => {
     />
   );
 };
+
+export const DashboardSonner = ({ ...props }: SonnerProps) => {
+  return <Toaster closeButton richColors visibleToasts={5} position="top-center" />;
+};
