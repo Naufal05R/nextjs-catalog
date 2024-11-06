@@ -692,7 +692,14 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                     if (files) {
                       setFiles(
                         Array.from(files)
-                          .filter((file) => Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type))
+                          .filter((file) => {
+                            if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
+                              return true;
+                            } else {
+                              alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                              return false;
+                            }
+                          })
                           .map((file, index) => {
                             return {
                               title: file.name,
