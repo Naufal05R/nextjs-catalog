@@ -30,6 +30,17 @@ export function slugify(str: string) {
   return str.toLowerCase().trim().replace(/\s+/g, "-");
 }
 
+export function getFileDetails(str: string) {
+  const lastDotIndex = str.lastIndexOf(".");
+
+  if (lastDotIndex === -1) return { fileName: str, fileExt: "" };
+
+  const fileName = str.substring(0, lastDotIndex);
+  const fileExt = str.substring(lastDotIndex + 1);
+
+  return { fileName, fileExt };
+}
+
 export function handlingError(error: unknown) {
   if (error instanceof Error) {
     console.error(error.message);
