@@ -36,6 +36,7 @@ import { Dialog } from "../server/Dialog";
 import { Category } from "@prisma/client";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { createProduct } from "@/lib/actions/product.action";
+import { cn } from "@/lib/utils";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -262,7 +263,6 @@ export function CreateProductForm({ collection, categories }: { collection: stri
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
-    
     onDrop,
     accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
   });
@@ -701,7 +701,15 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 </>
               </ul>
             ) : (
-              <div className="relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 p-7 text-slate-400">
+              <div
+                className={cn(
+                  "relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
+                  {
+                    "border-teal-300 bg-teal-50 text-teal-400": isDragAccept,
+                    "border-rose-300 bg-rose-50 text-rose-400": isDragReject,
+                  },
+                )}
+              >
                 <Label {...getRootProps()} htmlFor="files-uploader" className="absolute size-full hover:cursor-pointer">
                   <Input
                     {...getInputProps()}
@@ -740,7 +748,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 {isDragActive ? (
                   isDragAccept ? (
                     <>
-                      <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                      <HardDriveUpload className="mb-3.5 size-8" strokeWidth={1.5} />
                       Drag files or click to upload
                     </>
                   ) : (
