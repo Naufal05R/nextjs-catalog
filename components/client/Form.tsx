@@ -1,9 +1,10 @@
 "use client";
 
 import { z } from "zod";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDropzone } from "react-dropzone";
 
 import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +15,17 @@ import { toast } from "@/hooks/use-toast";
 
 import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "../server/Media";
-import { CloudUpload, Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
+import {
+  CloudUpload,
+  Eye,
+  EyeOff,
+  GripVertical,
+  HardDriveUpload,
+  ImageUp,
+  Plus,
+  Trash2,
+  TriangleAlert,
+} from "lucide-react";
 
 import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
@@ -245,6 +256,16 @@ export function CreateProductForm({ collection, categories }: { collection: stri
       ),
     });
   };
+
+  const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
+    console.log(acceptedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+    
+    onDrop,
+    accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
+  });
 
   return (
     <>
@@ -680,45 +701,63 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 </>
               </ul>
             ) : (
-              <Label
-                htmlFor="files-uploader"
-                className="flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 p-7 text-slate-400 hover:cursor-pointer"
-              >
-                <Input
-                  id="files-uploader"
-                  form="create-product-form"
-                  className="hidden"
-                  type="file"
-                  multiple
-                  accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
-                  onChange={(e) => {
-                    const files = e.target.files;
-                    if (files) {
-                      setFiles(
-                        Array.from(files)
-                          .filter((file) => {
-                            if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
-                              return true;
-                            } else {
-                              alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
-                              return false;
-                            }
-                          })
-                          .map((file, index) => {
-                            return {
-                              title: file.name,
-                              order: index,
-                              media: file,
-                              preview: URL.createObjectURL(file),
-                            };
-                          }),
-                      );
-                    }
-                  }}
-                />
-                <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
-                Drag & drop or click to upload files
-              </Label>
+              <div className="relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 p-7 text-slate-400">
+                <Label {...getRootProps()} htmlFor="files-uploader" className="absolute size-full hover:cursor-pointer">
+                  <Input
+                    {...getInputProps()}
+                    id="files-uploader"
+                    form="create-product-form"
+                    className="hidden"
+                    type="file"
+                    multiple
+                    onChange={(e) => {
+                      const files = e.target.files;
+                      if (files) {
+                        setFiles(
+                          Array.from(files)
+                            .filter((file) => {
+                              if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
+                                return true;
+                              } else {
+                                alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                                return false;
+                              }
+                            })
+                            .map((file, index) => {
+                              return {
+                                title: file.name,
+                                order: index,
+                                media: file,
+                                preview: URL.createObjectURL(file),
+                              };
+                            }),
+                        );
+                      }
+                    }}
+                  />
+                </Label>
+
+                {isDragActive ? (
+                  isDragAccept ? (
+                    <>
+                      <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                      Drag files or click to upload
+                    </>
+                  ) : (
+                    isDragReject && (
+                      <>
+                        <TriangleAlert className="mb-3.5 size-8" strokeWidth={1.5} />
+                        Files not allowed or not supported
+                      </>
+                    )
+                  )
+                ) : (
+                  <>
+                    <CloudUpload className="mb-3.5 size-8" strokeWidth={1.5} />
+                    Drag files or click to upload
+                  </>
+                )}
+              </div>
             )}
           </fieldset>
 
