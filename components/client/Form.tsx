@@ -20,7 +20,7 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 import { ProductFormSchema } from "@/schema/product";
 
-import { ACCEPTED_MEDIA_MIME_TYPES, MediaFormSchema } from "@/schema/media";
+import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
 import { Dialog } from "../server/Dialog";
 import { Category } from "@prisma/client";
 import { ComboboxDropdownCategory } from "./Combobox";
@@ -618,7 +618,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                   accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
                                   onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if (file) {
+                                    if (file && Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
                                       setFiles((prevState) => {
                                         return prevState.map((state, index) => {
                                           if (index === mediaIndex) {
@@ -631,6 +631,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                           return state;
                                         });
                                       });
+                                    } else {
+                                      alert(`Invalid File! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
                                     }
                                   }}
                                 />
