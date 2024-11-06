@@ -689,14 +689,16 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                     const files = e.target.files;
                     if (files) {
                       setFiles(
-                        Array.from(files).map((file, index) => {
-                          return {
-                            title: file.name,
-                            order: index,
-                            media: file,
-                            preview: URL.createObjectURL(file),
-                          };
-                        }),
+                        Array.from(files)
+                          .filter((file) => Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type))
+                          .map((file, index) => {
+                            return {
+                              title: file.name,
+                              order: index,
+                              media: file,
+                              preview: URL.createObjectURL(file),
+                            };
+                          }),
                       );
                     }
                   }}
