@@ -618,21 +618,25 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                   accept={ACCEPTED_MEDIA_MIME_TYPES.join(",")}
                                   onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if (file && Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
-                                      setFiles((prevState) => {
-                                        return prevState.map((state, index) => {
-                                          if (index === mediaIndex) {
-                                            return {
-                                              ...state,
-                                              title: file.name,
-                                              media: file,
-                                            };
-                                          }
-                                          return state;
+                                    if (file) {
+                                      if (Array.from<string>(ACCEPTED_MEDIA_MIME_TYPES).includes(file.type)) {
+                                        setFiles((prevState) => {
+                                          return prevState.map((state, index) => {
+                                            if (index === mediaIndex) {
+                                              return {
+                                                ...state,
+                                                title: file.name,
+                                                media: file,
+                                              };
+                                            }
+                                            return state;
+                                          });
                                         });
-                                      });
-                                    } else {
-                                      alert(`Invalid File! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                                      } else {
+                                        alert(
+                                          `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
+                                        );
+                                      }
                                     }
                                   }}
                                 />
