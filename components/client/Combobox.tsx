@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Mapper from "@/components/server/Mapper";
 
-import { z } from "zod";
 import { cn } from "@/lib/utils";
 
 import {
@@ -18,19 +17,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
-import { FormControl } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
-import { ProductFormSchema } from "@/schema/product";
 import { Category } from "@prisma/client";
 import { Dataset } from "@/types/data";
 
-import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { Check, ChevronsUpDown, LayoutList, PlusCircle } from "lucide-react";
-import { CreateCategoryDialog } from "./Dialog";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import { CreateCategoryDialog } from "@/components/client/Dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface ComboboxDropdownMenuProps extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   element: {
@@ -137,31 +133,39 @@ ComboboxDropdownMenu.displayName = "ComboboxDropdownMenu";
 
 interface ComboboxDropdownCategoryProps<T extends Dataset> extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   data: T;
-  field: ControllerRenderProps<z.infer<typeof ProductFormSchema>, keyof z.infer<typeof ProductFormSchema>>;
-  form: { form: string } & UseFormReturn<z.infer<typeof ProductFormSchema>>;
+  form: string;
 }
 
 export const ComboboxDropdownCategory = React.forwardRef<
   React.ElementRef<typeof DropdownMenu>,
   ComboboxDropdownCategoryProps<Array<Category>>
->(({ data, field, form }, ref) => {
+>(({ data, form }, ref) => {
+  const [selected, setSelected] = useState<string>();
+
   return (
     <ComboboxDropdownMenu
       ref={ref}
       element={{
         trigger: (
-          <FormControl>
-            <Button
-              type="button"
-              variant="outline"
-              role="combobox"
-              form={form.form}
-              className={cn("justify-between rounded-none px-2.5 shadow-none", !field.value && "text-slate-500")}
-            >
-              {field.value ? data.find((category) => category.id === field.value)?.title : "Select Category"}
-              <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-            </Button>
-          </FormControl>
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            className={cn("justify-between rounded-none px-2.5 shadow-none", selected && "text-slate-500")}
+          >
+            {selected ? data.find(({ id }) => id === selected)?.title : "Select Category"}
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+            <Input
+              id="categoryId"
+              name="categoryId"
+              className="hidden"
+              type="hidden"
+              value={selected}
+              form={form}
+              readOnly
+              hidden
+            />
+          </Button>
         ),
         content: [
           {
@@ -188,10 +192,10 @@ export const ComboboxDropdownCategory = React.forwardRef<
                             <CommandItem
                               value={title}
                               onSelect={() => {
-                                form.setValue("categoryId", id);
+                                setSelected(id);
                               }}
                             >
-                              <Check className={cn("mr-2 size-4", id === field.value ? "opacity-100" : "opacity-0")} />
+                              <Check className={cn("mr-2 size-4", id === selected ? "opacity-100" : "opacity-0")} />
                               {title}
                             </CommandItem>
                           )}
