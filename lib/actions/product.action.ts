@@ -73,9 +73,9 @@ export const createProduct = async ({
 }: {
   params: z.infer<typeof ProductFormSchema>;
   files: Array<{
-    title?: string;
-    preview?: string | ArrayBuffer | null;
-    order?: number;
+    title: string;
+    preview: string | ArrayBuffer | null;
+    order: number;
   }>;
   collection: string;
 }) => {
@@ -86,19 +86,7 @@ export const createProduct = async ({
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
-      const __files = files
-        .sort((a, b) => a.order! - b.order!)
-        .map(({ title, order, preview }) => {
-          if (typeof title === "string" && typeof order === "number" && typeof preview !== "undefined")
-            return {
-              title,
-              order,
-              preview,
-            };
-        })
-        .filter((item) => item !== undefined);
-
-      for (const { title, order, preview } of __files) {
+      for (const { title, order, preview } of files) {
         const imageBuffer = Buffer.from(preview as ArrayBuffer);
         const fileName = `${padValue(order)}_${slugify(title)}`;
         const objectParams: Parameters<typeof createObject>[0] = {
@@ -114,11 +102,13 @@ export const createProduct = async ({
         await createObject(objectParams);
       }
 
-      const _files = __files.map(({ title, order }) => {
-        const fileName = `${padValue(order)}_${slugify(title)}`;
+      const _files = files
+        .sort((a, b) => a.order - b.order)
+        .map(({ title, order }) => {
+          const fileName = `${padValue(order)}_${slugify(title)}`;
 
-        return { title, slug: slugify(title), order, name: fileName };
-      });
+          return { title, slug: slugify(title), order, name: fileName };
+        });
 
       const newProduct = await prisma.$transaction(async (_prisma) => {
         const _collection = await _prisma.collection.findFirst({
