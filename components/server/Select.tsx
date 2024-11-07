@@ -17,6 +17,7 @@ interface SelectProps<T extends Dataset, V extends keyof T[number]> {
   data: T;
   value: V;
   label: Array<keyof T[number]>;
+  side?: "bottom" | "top" | "right" | "left";
   defaultValue?: T[number][NoInfer<V>];
   placeholder?: string;
   classNames?: {
@@ -30,6 +31,7 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
   data,
   value,
   label,
+  side,
   defaultValue,
   placeholder,
   classNames,
@@ -48,7 +50,7 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
       >
         <SelectValue placeholder={placeholder || "Select an option"} />
       </SelectTrigger>
-      <SelectContent className={cn("shadow-none", classNames?.content)}>
+      <SelectContent side={side} className={cn("shadow-none", classNames?.content)}>
         <SelectGroup>
           <Mapper
             data={data}
