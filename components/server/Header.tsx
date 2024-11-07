@@ -55,10 +55,10 @@ export const PublicHeader = () => {
             defaultValue="IDR"
             classNames={{ trigger: "max-lg:hidden border-0" }}
           />
-          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
+          <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
             <Search className="size-6" />
           </Button>
-          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
+          <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
             <ShoppingBag className="size-6" />
           </Button>
         </menu>
