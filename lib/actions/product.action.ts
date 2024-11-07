@@ -13,6 +13,11 @@ export const getAllProduct = async (identifier?: string, field?: keyof z.infer<t
     const allProducts = await prisma.product.findMany({
       where: identifier && field && { [field]: identifier },
       include: {
+        category: {
+          select: {
+            title: true,
+          },
+        },
         collection: {
           select: {
             slug: true,
