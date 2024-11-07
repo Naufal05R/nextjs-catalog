@@ -81,7 +81,7 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
         dotsWrapper: "-mt-8",
         dotsContainer: "justify-center",
         dots: "basis-3 border-2",
-        root: "aspect-video flex-1",
+        root: "aspect-video flex-1 max-md:aspect-video max-lg:aspect-[34/13]",
       }}
       slides={
         <Mapper
@@ -95,7 +95,8 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
                   fill
                   sizes="(max-width: 1024px) 75vw, 100vw"
                   classNames={{
-                    figure: "aspect-video rounded overflow-hidden transition-all",
+                    figure:
+                      "aspect-video rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
                   }}
                 />
               </Link>
