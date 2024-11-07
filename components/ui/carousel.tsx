@@ -164,7 +164,10 @@ const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>((
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className={cn("overflow-hidden", classNames?.outer)}>
+    <div
+      ref={carouselRef}
+      className={cn(orientation === "horizontal" ? "overflow-x-hidden" : "overflow-y-hidden", classNames?.outer)}
+    >
       <div
         ref={ref}
         className={cn("-ml-4 flex", orientation === "horizontal" ? "flex-row" : "flex-col", classNames?.inner)}
@@ -307,10 +310,17 @@ interface CarouselDotsProps {
 }
 
 export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ dots, classNames }, ref) => {
-  const { dotsRef } = useCarousel();
+  const { dotsRef, orientation } = useCarousel();
 
   return (
-    <div className={cn("mt-4 w-full overflow-hidden", classNames?.wrapper)} ref={dotsRef}>
+    <div
+      className={cn(
+        "mt-4 w-full",
+        orientation === "horizontal" ? "overflow-x-hidden" : "overflow-y-hidden",
+        classNames?.wrapper,
+      )}
+      ref={dotsRef}
+    >
       <div className={cn("flex items-stretch gap-x-2", classNames?.container)} ref={ref}>
         {dots}
       </div>
