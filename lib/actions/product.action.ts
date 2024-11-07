@@ -74,7 +74,7 @@ export const createProduct = async (
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { title, medias } = data;
+    const { medias, ...product } = data;
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
@@ -86,7 +86,7 @@ export const createProduct = async (
           const fileName = `${padValue(index)}_${slugify(title)}`;
           const objectParams: Parameters<typeof createObject>[0] = {
             bucketName: "nextjs-catalog",
-            objectName: `${slugify(collection)}/${slugify(data.title)}/${fileName}`,
+            objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
               title,
@@ -113,16 +113,16 @@ export const createProduct = async (
         if (_collection) {
           const _newProduct = await _prisma.product.create({
             data: {
-              ...data,
-              slug: slugify(title),
+              ...product,
+              slug: slugify(product.title),
               collectionId: _collection.id,
             },
           });
 
           const _gallery = await _prisma.gallery.create({
             data: {
-              title,
-              slug: slugify(title),
+              title: product.title,
+              slug: slugify(product.title),
               productId: _newProduct.id,
             },
           });
