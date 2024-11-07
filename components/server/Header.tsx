@@ -32,7 +32,7 @@ export const PublicHeader = () => {
         </Link>
 
         <menu className="col-span-6 text-slate-500 max-lg:order-first lg:hidden">
-          <Button variant="ghost" size="icon" className="grid place-items-center">
+          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
             <Menu className="size-6" />
           </Button>
         </menu>
@@ -56,10 +56,10 @@ export const PublicHeader = () => {
             defaultValue="IDR"
             classNames={{ trigger: "max-lg:hidden border-0" }}
           />
-          <Button variant="ghost" size="icon" className="grid place-items-center">
+          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
             <Search className="size-6" />
           </Button>
-          <Button variant="ghost" size="icon" className="grid place-items-center">
+          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
             <ShoppingBag className="size-6" />
           </Button>
         </menu>
