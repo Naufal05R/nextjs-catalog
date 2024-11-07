@@ -42,8 +42,22 @@ export function NavClient({ side, title, description }: NavClientProps) {
             </fieldset>
 
             <menu className="mt-4 flex w-full flex-row gap-4">
-              <Select data={languages} label={["label"]} value={"key"} defaultValue="ID" side="bottom" />
-              <Select data={currencies} label={["key", "symbol"]} value={"key"} defaultValue="IDR" side="bottom" />
+              <Select
+                data={languages}
+                label={["label"]}
+                value={"key"}
+                defaultValue="ID"
+                side="bottom"
+                classNames={{ trigger: "flex-1" }}
+              />
+              <Select
+                data={currencies}
+                label={["key", "symbol"]}
+                value={"key"}
+                defaultValue="IDR"
+                side="bottom"
+                classNames={{ trigger: "flex-1" }}
+              />
             </menu>
 
             <ul className="mt-4 flex w-full flex-col justify-center gap-px">
