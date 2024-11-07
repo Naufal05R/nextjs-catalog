@@ -17,7 +17,13 @@ export default async function Home() {
       <section className="flex flex-nowrap items-stretch gap-px">
         {allCollections && <CarouselThumbnail data={allCollections} />}
 
-        <Image src="/dummy_2.jpg" alt="dummy_2" fill classNames={{ figure: "h-96 rounded w-1/3" }} />
+        <Image
+          src="/dummy_2.jpg"
+          alt="dummy_2"
+          fill
+          sizes="25vw"
+          classNames={{ figure: "min-h-full rounded max-lg:hidden shrink-0 basis-1/3" }}
+        />
       </section>
 
       <section className="mt-16">

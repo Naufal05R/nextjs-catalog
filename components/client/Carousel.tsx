@@ -77,7 +77,12 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
       opts={{ align: "start", loop: true }}
       plugins={["fade"]}
       showDots
-      classNames={{ dotsWrapper: "-mt-8", dotsContainer: "justify-center", dots: "basis-3 border-2" }}
+      classNames={{
+        dotsWrapper: "-mt-8",
+        dotsContainer: "justify-center",
+        dots: "basis-3 border-2",
+        root: "aspect-video flex-1",
+      }}
       slides={
         <Mapper
           data={data}
@@ -88,9 +93,9 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
                   src={`/dummy_${(i % 3) + 1}.jpg`}
                   alt="dummy_image"
                   fill
-                  sizes="25vw"
+                  sizes="(max-width: 1024px) 75vw, 100vw"
                   classNames={{
-                    figure: "h-96 w-full rounded overflow-hidden transition-all",
+                    figure: "aspect-video rounded overflow-hidden transition-all",
                   }}
                 />
               </Link>
