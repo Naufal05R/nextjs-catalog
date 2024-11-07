@@ -18,7 +18,7 @@ export const BaseSheet = ({ side, header, element }: BaseSheetProps) => {
       <SheetTrigger asChild>{element.trigger}</SheetTrigger>
       <SheetContent side={side}>
         <SheetHeader>
-          <SheetTitle>{header.title}</SheetTitle>
+          <SheetTitle className="text-2xl">{header.title}</SheetTitle>
           <SheetDescription>{header.description}</SheetDescription>
         </SheetHeader>
         {element.content}
