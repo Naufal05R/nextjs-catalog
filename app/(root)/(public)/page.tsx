@@ -7,6 +7,7 @@ import { ChevronRight, Mail, Star } from "lucide-react";
 import { collections, testimonials } from "@/constants";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { getAllCollection } from "@/lib/actions/collection.action";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const allProducts = await getAllProduct();
@@ -117,8 +118,14 @@ export default async function Home() {
               />
             </label>
 
-            <button className="rounded-sm bg-slate-800 px-4 py-2 text-slate-50">Submit</button>
+            <Button className="rounded-sm bg-slate-800 px-4 py-2 text-slate-50 shadow-none max-xs:hidden">
+              Submit
+            </Button>
           </fieldset>
+
+          <Button className="mt-2 w-full rounded-sm bg-slate-800 px-4 py-2 text-slate-50 shadow-none xs:hidden">
+            Submit
+          </Button>
         </form>
       </section>
     </>
