@@ -37,7 +37,7 @@ export default async function Home() {
                 title={title}
                 description={description ?? ""}
                 href={`/collections/${slug}`}
-                classNames={{ wrapper: "col-span-4" }}
+                classNames={{ wrapper: "col-span-12 sm:col-span-6 lg:col-span-4" }}
               />
             )}
           />
@@ -60,11 +60,11 @@ export default async function Home() {
       <section className="mt-16">
         <h4 className="mb-4 text-2xl">Testimonials</h4>
 
-        <fieldset className="flex flex-row flex-nowrap items-center gap-8">
+        <fieldset className="grid grid-cols-12 gap-4">
           <Mapper
             data={testimonials}
             render={({ name, citizen, comment, stars, createdAt }) => (
-              <article className="flex-1">
+              <article className="col-span-12 rounded p-4 shadow-[0_0_24px_2px_theme(colors.slate.200/0.5)] transition-shadow duration-300 hover:shadow-[0_4px_24px_2px_theme(colors.slate.300/0.5)] sm:col-span-6 lg:col-span-4">
                 <ul className="flex flex-row gap-1.5">
                   <Mapper
                     data={Array.from({ length: stars })}
