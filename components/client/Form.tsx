@@ -32,7 +32,7 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { cn, getFileDetails, getFileMimeTypes, padValue, slugify } from "@/lib/utils";
+import { cn, getFileDetails, getFileMimeTypes, padValue } from "@/lib/utils";
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -40,6 +40,8 @@ import { Category } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
+import { ProductFormSchema } from "@/schema/product";
+import { DataKeys } from "@/types/data";
 
 export function GuestbookForm() {
   const form = useForm<z.infer<typeof GuestbookFormSchema>>({
@@ -291,6 +293,10 @@ export function CreateProductForm({ collection, categories }: { collection: stri
     }
   }, [fileRejections]);
 
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof ProductFormSchema>>>({ name }: { name: T }) => {
+    return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
+  };
+
   return (
     <>
       <form action={actionHandler} id="create-product-form" />
@@ -306,7 +312,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Title"
             />
-            <InputFieldMessage errors={errors} name="title" />
+            <ErrorMessage name="title" />
           </Label>
         </fieldset>
 
@@ -314,7 +320,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
           <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
           <Label htmlFor="categoryId" className="flex flex-col">
             <ComboboxDropdownCategory data={categories} form="create-product-form" />
-            <InputFieldMessage errors={errors} name="categoryId" />
+            <ErrorMessage name="categoryId" />
           </Label>
 
           <Label htmlFor="state">
@@ -325,7 +331,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Origin"
             />
-            <InputFieldMessage errors={errors} name="state" />
+            <ErrorMessage name="state" />
           </Label>
 
           <Label htmlFor="color">
@@ -336,7 +342,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Color"
             />
-            <InputFieldMessage errors={errors} name="color" />
+            <ErrorMessage name="color" />
           </Label>
         </fieldset>
 
@@ -350,7 +356,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Width"
             />
-            <InputFieldMessage errors={errors} name="width" />
+            <ErrorMessage name="width" />
           </Label>
 
           <Label htmlFor="height">
@@ -361,7 +367,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Height"
             />
-            <InputFieldMessage errors={errors} name="height" />
+            <ErrorMessage name="height" />
           </Label>
 
           <Label htmlFor="length">
@@ -372,7 +378,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Length"
             />
-            <InputFieldMessage errors={errors} name="length" />
+            <ErrorMessage name="length" />
           </Label>
 
           <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
@@ -384,7 +390,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Weight"
             />
-            <InputFieldMessage errors={errors} name="weight" />
+            <ErrorMessage name="weight" />
           </Label>
         </fieldset>
 
@@ -398,7 +404,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Price"
             />
-            <InputFieldMessage errors={errors} name="price" />
+            <ErrorMessage name="price" />
           </Label>
 
           <Label htmlFor="discount">
@@ -409,7 +415,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               className="rounded-none shadow-none"
               placeholder="Discount"
             />
-            <InputFieldMessage errors={errors} name="discount" />
+            <ErrorMessage name="discount" />
           </Label>
         </fieldset>
 
@@ -424,7 +430,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               placeholder="Description"
               rows={10}
             />
-            <InputFieldMessage errors={errors} name="description" />
+            <ErrorMessage name="description" />
           </Label>
         </fieldset>
 
@@ -658,7 +664,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
               )}
             </div>
           )}
-          <InputFieldMessage errors={errors} name="medias" />
+          <ErrorMessage name="medias" />
         </fieldset>
 
         <Button
