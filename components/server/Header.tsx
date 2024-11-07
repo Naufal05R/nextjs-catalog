@@ -6,9 +6,9 @@ import { padding } from "@/lib/styles";
 import { Select } from "./Select";
 import { languages, navigations } from "@/constants";
 import { currencies } from "@/constants";
-import Mapper from "./Mapper";
-import { SidebarTrigger } from "../ui/sidebar";
-import { Separator } from "../ui/separator";
+import Mapper from "@/components/server/Mapper";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,8 +16,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../ui/breadcrumb";
-import { Button } from "../ui/button";
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 
 export const PublicHeader = () => {
   return (
