@@ -30,6 +30,6 @@ export const GalleryFormSchema = GallerySchema.pick({
   title: true,
 }).merge(
   z.object({
-    medias: z.array(MediaFormSchema).nonempty(),
+    medias: z.array(MediaFormSchema).nonempty({ message: "Please add at least one image or video" }),
   }),
 );
