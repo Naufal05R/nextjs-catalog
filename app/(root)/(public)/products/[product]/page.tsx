@@ -85,7 +85,7 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
               <Button variant={"secondary"} className="text-slate-600 shadow-none">
                 <Minus />
               </Button>
-              <Input className="flex-1 text-center text-slate-600 shadow-none focus-visible:ring-0" />
+              <Input className="flex-1 text-center text-slate-600 shadow-none" customize="no-focus" />
               <Button variant={"secondary"} className="text-slate-600 shadow-none">
                 <Plus />
               </Button>
