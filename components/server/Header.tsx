@@ -17,6 +17,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
+import { Button } from "../ui/button";
 
 export const PublicHeader = () => {
   return (
@@ -31,9 +32,9 @@ export const PublicHeader = () => {
         </Link>
 
         <menu className="col-span-6 text-slate-500 max-lg:order-first lg:hidden">
-          <button className="grid place-items-center">
-            <Menu />
-          </button>
+          <Button variant="ghost" size="icon" className="grid place-items-center">
+            <Menu className="size-6" />
+          </Button>
         </menu>
 
         <Link href="/" className="col-span-12 max-lg:py-4 lg:col-span-4">
@@ -55,12 +56,12 @@ export const PublicHeader = () => {
             defaultValue="IDR"
             classNames={{ trigger: "max-lg:hidden border-0" }}
           />
-          <button className="grid place-items-center">
+          <Button variant="ghost" size="icon" className="grid place-items-center">
             <Search className="size-6" />
-          </button>
-          <button className="grid place-items-center">
+          </Button>
+          <Button variant="ghost" size="icon" className="grid place-items-center">
             <ShoppingBag className="size-6" />
-          </button>
+          </Button>
         </menu>
 
         <ul className="col-span-12 flex flex-row items-center justify-center max-lg:hidden">
