@@ -1,6 +1,9 @@
+import { z } from "zod";
 import { Dataset } from "@/types/data";
-import { clsx, type ClassValue } from "clsx";
+import { MediaFormSchema } from "@/schema/media";
+
 import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,6 +53,30 @@ export function getFileDetails(str: string) {
   const fileExt = str.substring(lastDotIndex + 1);
 
   return { fileName, fileExt };
+}
+
+export function initRawData(formData: FormData) {
+  const rawData: { [key: string]: unknown } = {};
+  const medias: Array<z.infer<typeof MediaFormSchema>> = [];
+
+  for (const [key, value] of formData.entries()) {
+    if (key === "media.image" && value instanceof (File || Blob)) {
+      const { name, type } = value;
+      const underscoreIndex = value.name.indexOf("_");
+
+      medias.push({
+        title: readSlug(name.substring(underscoreIndex + 1)),
+        order: Number(name.substring(0, underscoreIndex)),
+        media: new File([value], name, { type }),
+      });
+    } else {
+      rawData[key] = value;
+    }
+  }
+
+  rawData["medias"] = medias;
+
+  return rawData;
 }
 
 export function handlingError(error: unknown) {
