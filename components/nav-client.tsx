@@ -28,7 +28,7 @@ export function NavClient({ side, title, description }: NavClientProps) {
       header={{ title, description }}
       element={{
         trigger: (
-          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
+          <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
             <Menu className="size-6" />
           </Button>
         ),
