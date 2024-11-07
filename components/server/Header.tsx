@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Mail, Menu, Search, ShoppingBag } from "lucide-react";
+import { Mail, Search, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
 import { Select } from "./Select";
@@ -18,6 +18,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { NavClient } from "@/components/nav-client";
 
 export const PublicHeader = () => {
   return (
@@ -32,9 +33,7 @@ export const PublicHeader = () => {
         </Link>
 
         <menu className="col-span-6 text-slate-500 max-lg:order-first lg:hidden">
-          <Button variant="ghost" size="icon" customize="icon" className="grid place-items-center">
-            <Menu className="size-6" />
-          </Button>
+          <NavClient side="left" title="Navigation" description="Navigation" />
         </menu>
 
         <Link href="/" className="col-span-12 max-lg:py-4 lg:col-span-4">
