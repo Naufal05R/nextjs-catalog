@@ -2,9 +2,8 @@
 
 import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError, initRawData, padValue, readSlug, slugify } from "../utils";
+import { handlingError, initRawData, padValue, slugify } from "../utils";
 import { z } from "zod";
-import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
 import { redirect } from "next/navigation";
 import { createObject } from "../service";
 import { revalidatePath } from "next/cache";
@@ -87,7 +86,7 @@ export const createProduct = async (
           const fileName = `${padValue(index)}_${slugify(title)}`;
           const objectParams: Parameters<typeof createObject>[0] = {
             bucketName: "nextjs-catalog",
-            objectName: `${slugify(collection)}/${slugify(title)}/${fileName}`,
+            objectName: `${slugify(collection)}/${slugify(data.title)}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
               title,
