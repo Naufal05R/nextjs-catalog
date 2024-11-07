@@ -499,7 +499,8 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                         <Input
                           id={`medias.${mediaIndex}.title`}
                           form="create-product-form"
-                          className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default focus-visible:ring-0"
+                          className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default"
+                          customize="no-focus"
                           value={fileName}
                           readOnly={!media}
                           onChange={(e) => {
