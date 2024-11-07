@@ -30,6 +30,6 @@ export const GalleryFormSchema = GallerySchema.pick({
   title: true,
 }).merge(
   z.object({
-    medias: z.array(MediaFormSchema.omit({ order: true })),
+    medias: z.array(MediaFormSchema).nonempty(),
   }),
 );
