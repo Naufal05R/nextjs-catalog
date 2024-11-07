@@ -150,7 +150,7 @@ export const CarouselFeatured = ({
             <CarouselItem responsiveArgs={["sm:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
               <Link href={`/products/${slug}`} draggable={false} className="select-none">
                 <Image
-                  src={sources[index] || "/"}
+                  src={sources[index]}
                   alt={slug}
                   fill
                   sizes="25vw"
