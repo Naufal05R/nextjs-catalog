@@ -2,11 +2,12 @@
 
 import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError, padValue, slugify } from "../utils";
+import { handlingError, initRawData, padValue, readSlug, slugify } from "../utils";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
 import { redirect } from "next/navigation";
 import { createObject } from "../service";
+import { revalidatePath } from "next/cache";
 
 export const getAllProduct = async (identifier?: string, field?: keyof z.infer<typeof ProductSchema>) => {
   try {
@@ -66,50 +67,43 @@ export const getProducts = async (identifier: string, field: keyof z.infer<typeo
   }
 };
 
-export const createProduct = async ({
-  params,
-  files,
-  collection,
-}: {
-  params: z.infer<typeof ProductFormSchema>;
-  files: Array<{
-    title: string;
-    preview: string | ArrayBuffer | null;
-    order: number;
-  }>;
-  collection: string;
-}) => {
-  const validated = ProductFormSchema.safeParse(params);
+export const createProduct = async (
+  prevstate: string[] | z.ZodIssue[] | void,
+  { formData, collection }: { formData: FormData; collection: string },
+) => {
+  console.log(initRawData(formData));
+  const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
-  if (validated.success) {
-    const { data: product } = validated;
+  if (success) {
+    const { title, medias } = data;
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
-      for (const { title, order, preview } of files) {
-        const imageBuffer = Buffer.from(preview as ArrayBuffer);
-        const fileName = `${padValue(order)}_${slugify(title)}`;
-        const objectParams: Parameters<typeof createObject>[0] = {
-          bucketName: "nextjs-catalog",
-          objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
-          objectStream: imageBuffer,
-          objectMetaData: {
-            title,
-            order,
-          },
-        };
-
-        await createObject(objectParams);
+      for (const [index, { title, media }] of medias.entries()) {
+        if (media) {
+          const previewFile = new File([media], "");
+          const arrayBuffer = await previewFile.arrayBuffer();
+          const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
+          const fileName = `${padValue(index)}_${slugify(title)}`;
+          const objectParams: Parameters<typeof createObject>[0] = {
+            bucketName: "nextjs-catalog",
+            objectName: `${slugify(collection)}/${slugify(title)}/${fileName}`,
+            objectStream: imageBuffer,
+            objectMetaData: {
+              title,
+              index,
+            },
+          };
+          await createObject(objectParams);
+        }
       }
 
-      const _files = files
+      const files = medias
         .sort((a, b) => a.order - b.order)
         .map(({ title, order }) => {
           const fileName = `${padValue(order)}_${slugify(title)}`;
-
           return { title, slug: slugify(title), order, name: fileName };
         });
-
       const newProduct = await prisma.$transaction(async (_prisma) => {
         const _collection = await _prisma.collection.findFirst({
           where: {
@@ -117,38 +111,37 @@ export const createProduct = async ({
           },
         });
 
-        if (!_collection) throw new Error("Collection not found");
+        if (_collection) {
+          const _newProduct = await _prisma.product.create({
+            data: {
+              ...data,
+              slug: slugify(title),
+              collectionId: _collection.id,
+            },
+          });
 
-        const _newProduct = await _prisma.product.create({
-          data: {
-            ...product,
-            slug: slugify(product.title),
-            collectionId: _collection.id,
-          },
-        });
+          const _gallery = await _prisma.gallery.create({
+            data: {
+              title,
+              slug: slugify(title),
+              productId: _newProduct.id,
+            },
+          });
 
-        const _gallery = await _prisma.gallery.create({
-          data: {
-            title: product.title,
-            slug: slugify(product.title),
-            productId: _newProduct.id,
-          },
-        });
-
-        await _prisma.media.createMany({
-          data: _files.map((file) => {
-            return {
-              galleryId: _gallery.id,
-              ...file,
-            };
-          }),
-        });
-
-        return _newProduct;
+          await _prisma.media.createMany({
+            data: files.map((file) => {
+              return {
+                galleryId: _gallery.id,
+                ...file,
+              };
+            }),
+          });
+        } else throw new Error("Collection not found");
       });
 
       pathname = `/dashboard/products/${collection}`;
       revalidatePath(`/dashboard/products/${collection}`);
+
       return newProduct;
     } catch (error) {
       handlingError(error);
@@ -156,6 +149,6 @@ export const createProduct = async ({
       redirect(pathname);
     }
   } else {
-    handlingError(validated.error);
+    return error.errors;
   }
 };
