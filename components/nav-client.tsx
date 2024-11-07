@@ -2,7 +2,7 @@
 
 import { BaseSheet, BaseSheetProps } from "@/components/server/Sheet";
 import { Button } from "@/components/ui/button";
-import { navigations } from "@/constants";
+import { currencies, languages, navigations } from "@/constants";
 import { Menu, Search } from "lucide-react";
 
 import Mapper from "./server/Mapper";
@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useState } from "react";
+import { Select } from "./server/Select";
 
 interface NavClientProps extends Pick<BaseSheetProps, "side"> {
   title: string;
@@ -40,7 +41,12 @@ export function NavClient({ side, title, description }: NavClientProps) {
               </Label>
             </fieldset>
 
-            <ul className="mt-2 flex w-full flex-col justify-center gap-px">
+            <menu className="mt-4 flex w-full flex-row gap-4">
+              <Select data={languages} label={["label"]} value={"key"} defaultValue="ID" side="bottom" />
+              <Select data={currencies} label={["key", "symbol"]} value={"key"} defaultValue="IDR" side="bottom" />
+            </menu>
+
+            <ul className="mt-4 flex w-full flex-col justify-center gap-px">
               <Mapper
                 data={navigations}
                 render={({ label, href }) => (
