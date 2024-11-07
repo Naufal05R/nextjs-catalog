@@ -1,6 +1,15 @@
+"use client";
+
 import { BaseSheet, BaseSheetProps } from "@/components/server/Sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { navigations } from "@/constants";
+import { Menu, Search } from "lucide-react";
+
+import Mapper from "./server/Mapper";
+import Link from "next/link";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { useState } from "react";
 
 interface NavClientProps extends Pick<BaseSheetProps, "side"> {
   title: string;
@@ -8,8 +17,12 @@ interface NavClientProps extends Pick<BaseSheetProps, "side"> {
 }
 
 export function NavClient({ side, title, description }: NavClientProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <BaseSheet
+      open={open}
+      setOpen={setOpen}
       side={side}
       header={{ title, description }}
       element={{
@@ -18,7 +31,29 @@ export function NavClient({ side, title, description }: NavClientProps) {
             <Menu className="size-6" />
           </Button>
         ),
-        content: <></>,
+        content: (
+          <article className="mt-2 flex flex-col">
+            <fieldset className="text-slate-400">
+              <Label htmlFor="search" className="relative flex flex-row">
+                <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2" />
+                <Input id="search" className="rounded-none pl-9 shadow-none" customize="no-focus" />
+              </Label>
+            </fieldset>
+
+            <ul className="mt-2 flex w-full flex-col justify-center gap-px">
+              <Mapper
+                data={navigations}
+                render={({ label, href }) => (
+                  <Button asChild variant="ghost" className="justify-start" onClick={() => setOpen(false)}>
+                    <Link href={href} className="px-4 py-2 font-light">
+                      {label}
+                    </Link>
+                  </Button>
+                )}
+              />
+            </ul>
+          </article>
+        ),
       }}
     />
   );
