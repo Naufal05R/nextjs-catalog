@@ -160,7 +160,7 @@ export const ComboboxDropdownCategory = React.forwardRef<
               name="categoryId"
               className="hidden"
               type="hidden"
-              value={selected}
+              defaultValue={selected}
               form={form}
               readOnly
               hidden
