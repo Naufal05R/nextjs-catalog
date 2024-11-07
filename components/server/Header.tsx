@@ -33,7 +33,7 @@ export const PublicHeader = () => {
         </Link>
 
         <menu className="col-span-6 text-slate-500 max-lg:order-first lg:hidden">
-          <NavClient side="left" title="Navigation" description="Navigation" />
+          <NavClient side="left" title="Legenda Permata" />
         </menu>
 
         <Link href="/" className="col-span-12 max-lg:py-4 lg:col-span-4">
