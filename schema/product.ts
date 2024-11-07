@@ -42,37 +42,44 @@ export const ProductSchema = z.object({
     (val) => Number(val),
     z
       .number()
-      .multipleOf(0.01)
+      .min(1, { message: "Width is required and must be in positive number" })
+      .multipleOf(0.01, { message: "Width can only have 2 decimal places" })
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
   height: z.preprocess(
     (val) => Number(val),
     z
       .number()
-      .multipleOf(0.01)
+      .min(1, { message: "Height is required and must be in positive number" })
+      .multipleOf(0.01, { message: "Height can only have 2 decimal places" })
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
   length: z.preprocess(
     (val) => Number(val),
     z
       .number()
-      .multipleOf(0.01)
+      .min(1, { message: "Length is required and must be in positive number" })
+      .multipleOf(0.01, { message: "Length can only have 2 decimal places" })
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
   weight: z.preprocess(
     (val) => Number(val),
     z
       .number()
-      .multipleOf(0.01)
+      .min(1, { message: "Weight is required and must be in positive number" })
+      .multipleOf(0.01, { message: "Weight can only have 2 decimal places" })
       .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
   ),
-  price: z.preprocess((val) => Number(val), z.number().min(1, { message: "Price must be in positive number" })),
+  price: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, { message: "Price is required and must be in positive number" }),
+  ),
   discount: z
     .preprocess(
       (val) => Number(val),
       z
         .number()
-        .multipleOf(0.01)
+        .multipleOf(0.01, { message: "Discount can only have 2 decimal places" })
         .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON),
     )
     .nullable(),
