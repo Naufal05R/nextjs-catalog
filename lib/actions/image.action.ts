@@ -18,13 +18,7 @@ export const getImageSrc = async ({
 }) => {
   try {
     const protocol = SECURE_URL === "true" ? "https" : "http";
-
-    const res = await fetch(
-      `${protocol}://${SERVER_HOST}:${SERVER_PORT}/${BUCKET_NAME}/${collection}/${product}/${name}`,
-    );
-    const src = await res.text();
-
-    return src;
+    return `${protocol}://${SERVER_HOST}:${SERVER_PORT}/${BUCKET_NAME}/${collection}/${product}/${name}`;
   } catch (error) {
     handlingError(error);
   }
