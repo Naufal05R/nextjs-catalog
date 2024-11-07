@@ -1,4 +1,5 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Dispatch, SetStateAction } from "react";
 
 export interface BaseSheetProps {
   side?: "top" | "bottom" | "left" | "right" | null | undefined;
@@ -10,11 +11,13 @@ export interface BaseSheetProps {
     trigger: React.JSX.Element;
     content: React.JSX.Element;
   };
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const BaseSheet = ({ side, header, element }: BaseSheetProps) => {
+export const BaseSheet = ({ open, setOpen, side, header, element }: BaseSheetProps) => {
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{element.trigger}</SheetTrigger>
       <SheetContent side={side}>
         <SheetHeader>
