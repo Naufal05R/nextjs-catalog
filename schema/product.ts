@@ -88,8 +88,8 @@ export const ProductSchema = z.object({
   }),
   isReady: z.boolean().default(true),
   collectionId: z.string().cuid(),
-  subcollectionId: z.string().cuid(),
-  categoryId: z.string().cuid(),
+  subcollectionId: z.string().cuid().optional(),
+  categoryId: z.string().min(1, { message: "Category is required" }).cuid({ message: "Invalid Category" }),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
 });
