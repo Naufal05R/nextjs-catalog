@@ -5,7 +5,7 @@ import Mapper from "./Mapper";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import { Image, Media } from "./Media";
-import { getImageSrc } from "@/lib/actions/image.action";
+import { getImageSrc } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 
 interface CollectionProps {
@@ -31,7 +31,7 @@ const CollectionPlaceholder = async ({
   collection: string;
   index: number;
 }) => {
-  const src = await getImageSrc({ product, name, collection });
+  const src = getImageSrc({ product, name, collection });
 
   return (
     <Image
