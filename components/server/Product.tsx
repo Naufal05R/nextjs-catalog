@@ -125,8 +125,8 @@ export const CatalogProductCard = ({
       />
 
       <blockquote className="mt-4">
-        <h5 className="mb-2 line-clamp-1 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
-          <span>{title}</span>
+        <h5 className="mb-2 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
+          <span className="line-clamp-1">{title}</span>
           <Badge variant="outline" className="border-sky-200 text-sky-400 focus:ring-sky-400">
             {category}
           </Badge>
