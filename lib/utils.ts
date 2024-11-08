@@ -5,6 +5,8 @@ import { MediaFormSchema } from "@/schema/media";
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
 
+const SERVER_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -36,6 +38,10 @@ export function formatPrice(price: number) {
 export function countDiscount(price: number, discount: number) {
   return price * (1 - Math.min(Math.abs(discount), 100) / 100);
 }
+
+export const getImageSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
+  return `${SERVER_ENDPOINT}/${collection}/${product}/${name}`;
+};
 
 export function getFileMimeTypes(str: string) {
   const lastDotIndex = str.lastIndexOf("/");
