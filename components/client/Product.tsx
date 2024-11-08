@@ -3,7 +3,7 @@ import React from "react";
 import { Image } from "../server/Media";
 import { cn, formatPrice } from "@/lib/utils";
 import { Product as ProductType } from "@prisma/client";
-import { getImageSrc } from "@/lib/actions/image.action";
+import { getImageSrc } from "@/lib/utils";
 
 interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "discount"> {
   thumbnail: string;
@@ -16,7 +16,7 @@ interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "d
 const Product = async ({ title, slug, price, discount, collection, thumbnail, classNames }: ProductProps) => {
   const { wrapper } = classNames ?? {};
 
-  const src = await getImageSrc({ collection, product: slug, name: thumbnail });
+  const src = getImageSrc({ collection, product: slug, name: thumbnail });
 
   return (
     <Link
