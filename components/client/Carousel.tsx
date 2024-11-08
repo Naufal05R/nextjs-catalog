@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
 import Mapper from "@/components/server/Mapper";
+
+import { cn } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
-import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel as CarouselRoot,
@@ -21,7 +22,7 @@ import { ResponsiveArgs } from "@/types/carousel";
 import { Collection, Media } from "@prisma/client";
 import { getImageSrc } from "@/lib/actions/image.action";
 import { getAllProduct } from "@/lib/actions/product.action";
-import { Badge } from "../ui/badge";
+import { CatalogProductCard } from "@/components/server/Product";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
@@ -139,53 +140,9 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
       slides={
         <Mapper
           data={data}
-          render={({ title, price, slug, description, discount, category }, index) => (
+          render={({ category, ...product }, index) => (
             <CarouselItem responsiveArgs={["xs:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
-              <Link
-                href={`/products/${slug}`}
-                draggable={false}
-                className="group flex select-none flex-col rounded-md p-4 card-shadow"
-              >
-                <Image
-                  src={sources[index]}
-                  alt={slug}
-                  fill
-                  sizes="25vw"
-                  classNames={{
-                    figure: "w-full aspect-[4/3] rounded overflow-hidden transition-all",
-                    image: "group-hover:scale-110 transition-transform duration-500",
-                  }}
-                />
-
-                <blockquote className="mt-4">
-                  <h5 className="mb-2 line-clamp-1 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
-                    <span>{title}</span>
-                    <Badge variant="outline" className="border-sky-200 text-sky-400 focus:ring-sky-400">
-                      {category.title}
-                    </Badge>
-                  </h5>
-                  <p className="mb-4 line-clamp-2 select-none text-sm text-slate-500">{description}</p>
-
-                  <div className="flex items-center justify-between">
-                    <Badge
-                      variant="secondary"
-                      className="bg-rose-100 text-rose-400 hover:bg-rose-100/80 dark:bg-rose-800 dark:text-rose-50 dark:hover:bg-rose-800/80"
-                    >
-                      %{discount} OFF!
-                    </Badge>
-                    <div>
-                      {discount && (
-                        <p className="select-none text-right text-xs text-rose-400 line-through">
-                          {formatPrice(price)}
-                        </p>
-                      )}
-                      <p className="select-none text-right text-base font-semibold">
-                        Rp {formatPrice(countDiscount(price, discount ?? 0))}
-                      </p>
-                    </div>
-                  </div>
-                </blockquote>
-              </Link>
+              <CatalogProductCard {...product} category={category.title} src={sources[index]} />
             </CarouselItem>
           )}
         />
