@@ -1,9 +1,10 @@
-import Product from "@/components/client/Product";
 import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
 import { getCollection } from "@/lib/actions/collection.action";
+import { getImageSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
+import { CatalogProductCard } from "@/components/server/Product";
 
 export default async function CollectionPage({ params }: { params: { collection: string } }) {
   const collection = await getCollection(params.collection, "slug").then((collection) => {
@@ -23,11 +24,13 @@ export default async function CollectionPage({ params }: { params: { collection:
 
       <Select
         data={collections}
+        side="bottom"
         value={"title"}
         label={["title"]}
         placeholder="Filter Collection"
         classNames={{
-          trigger: "w-48",
+          trigger: "w-48 card-shadow transition-shadow duration-300 border-transparent",
+          content: "card-shadow transition-shadow duration-300 border-transparent",
         }}
       />
 
@@ -35,14 +38,18 @@ export default async function CollectionPage({ params }: { params: { collection:
         {!!allProducts?.length && (
           <Mapper
             data={allProducts}
-            render={(product) => (
-              <Product
-                {...product}
-                collection={params.collection}
-                thumbnail={product.gallery!.medias[0].name}
-                classNames={{ wrapper: "col-span-3" }}
-              />
-            )}
+            render={({ category, gallery, ...product }) => {
+              const src = getImageSrc({
+                product: product.slug,
+                collection: collection.slug,
+                name: gallery!.medias[0].name,
+              });
+              return (
+                <li className="col-span-3">
+                  <CatalogProductCard {...product} category={category.title} src={src} />
+                </li>
+              );
+            }}
           />
         )}
       </ul>
