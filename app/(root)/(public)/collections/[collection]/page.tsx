@@ -7,7 +7,7 @@ import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
 export default async function CollectionPage({ params }: { params: { collection: string } }) {
-  const collection = await getCollection(params.collection, "slug").then((collection) => {
+  const { id, title, slug, description } = await getCollection(params.collection, "slug").then((collection) => {
     if (collection) {
       return collection;
     } else {
@@ -15,12 +15,12 @@ export default async function CollectionPage({ params }: { params: { collection:
     }
   });
 
-  const allProducts = await getAllProduct(collection.id, "collectionId");
+  const allProducts = await getAllProduct(id, "collectionId");
 
   return (
     <section className="pt-8">
-      <h4 className="mb-4 text-3xl capitalize">{collection.title}</h4>
-      <p className="mb-8 text-sm text-slate-500">{collection.description}</p>
+      <h4 className="mb-4 text-3xl capitalize">{title}</h4>
+      <p className="mb-8 text-sm text-slate-500">{description}</p>
 
       <Select
         data={collections}
@@ -41,7 +41,7 @@ export default async function CollectionPage({ params }: { params: { collection:
             render={({ category, gallery, ...product }) => {
               const src = getImageSrc({
                 product: product.slug,
-                collection: collection.slug,
+                collection: slug,
                 name: gallery!.medias[0].name,
               });
               return (
