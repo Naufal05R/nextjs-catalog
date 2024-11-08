@@ -20,7 +20,7 @@ import {
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
 import { Collection, Media } from "@prisma/client";
-import { getImageSrc } from "@/lib/actions/image.action";
+import { getImageSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
@@ -121,7 +121,7 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
           if (gallery) {
             const { medias } = gallery;
 
-            const src = await getImageSrc({ product: slug, collection: collection.slug, name: medias[0].name });
+            const src = getImageSrc({ product: slug, collection: collection.slug, name: medias[0].name });
 
             if (src) {
               setSources((prev) => [...prev, src]);
@@ -168,7 +168,7 @@ export const CarouselDetail = ({
     return () => {
       (async () => {
         for (const { name } of data) {
-          const src = await getImageSrc({ product, collection, name });
+          const src = getImageSrc({ product, collection, name });
 
           if (src) {
             setSources((prev) => [...prev, src]);
