@@ -1,6 +1,7 @@
 import React from "react";
 import { CarouselDetail, CarouselFeatured, CarouselThumbnail } from "../client/Carousel";
 import { getAllProduct } from "@/lib/actions/product.action";
+import Mapper from "./Mapper";
 
 interface DynamicCarouselBaseProps {
   variant: "thumbnail" | "featured" | "detail";
@@ -42,31 +43,64 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
 };
 
 export const DynamicCarouselThumbnail = async () => {
-  const allProducts = await getAllProduct();
+  const Component = async () => {
+    const allProducts = await getAllProduct();
+
+    return (
+      allProducts && (
+        <DynamicCarousel
+          variant="thumbnail"
+          props={{
+            data: allProducts,
+          }}
+        />
+      )
+    );
+  };
 
   return (
-    allProducts && (
-      <DynamicCarousel
-        variant="thumbnail"
-        props={{
-          data: allProducts,
-        }}
-      />
-    )
+    <React.Suspense
+      fallback={<div className="aspect-video flex-1 rounded bg-slate-200 max-lg:aspect-[34/13] max-md:aspect-video" />}
+    >
+      <Component />
+    </React.Suspense>
   );
 };
 
-export const DynamicCarouselFeatured = async () => {
-  const allProducts = await getAllProduct();
+export const DynamicCarouselFeatured = () => {
+  const Component = async () => {
+    const allProducts = await getAllProduct();
+
+    return (
+      allProducts && (
+        <DynamicCarousel
+          variant="featured"
+          props={{
+            data: allProducts,
+          }}
+        />
+      )
+    );
+  };
 
   return (
-    allProducts && (
-      <DynamicCarousel
-        variant="featured"
-        props={{
-          data: allProducts,
-        }}
-      />
-    )
+    <React.Suspense
+      fallback={
+        <div className="max-w-full overflow-hidden">
+          <ul className="-ml-4 flex min-w-fit items-center">
+            <Mapper
+              data={[1, 2, 3, 4]}
+              render={() => (
+                <li className="pl-4 xs:min-w-[50%] md:min-w-[calc(100%/3)] xl:min-w-[25%]">
+                  <div className="h-96 rounded bg-slate-200"></div>
+                </li>
+              )}
+            />
+          </ul>
+        </div>
+      }
+    >
+      <Component />
+    </React.Suspense>
   );
 };
