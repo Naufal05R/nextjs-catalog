@@ -56,7 +56,7 @@ const Route = ({ title, href }: { title: string; href: string }) => {
                 data={collections}
                 render={(collection) => (
                   <Link href={`/${title}/${collection}`}>
-                    <DropdownMenuItem>{collection}</DropdownMenuItem>
+                    <DropdownMenuItem>{readSlug(collection)}</DropdownMenuItem>
                   </Link>
                 )}
               />
