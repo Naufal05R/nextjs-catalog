@@ -1,22 +1,17 @@
 import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
-import Collection from "@/components/server/Collection";
+import { DynamicCollections } from "@/components/server/Collection";
 import { Image } from "@/components/server/Media";
-import { CarouselFeatured, CarouselThumbnail } from "@/components/client/Carousel";
 import { ChevronRight, Mail, Star } from "lucide-react";
-import { collections, testimonials } from "@/constants";
-import { getAllProduct } from "@/lib/actions/product.action";
-import { getAllCollection } from "@/lib/actions/collection.action";
+import { testimonials } from "@/constants";
 import { Button } from "@/components/ui/button";
+import { DynamicCarouselFeatured, DynamicCarouselThumbnail } from "@/components/server/Carousel";
 
-export default async function Home() {
-  const allProducts = await getAllProduct();
-  const allCollections = await getAllCollection();
-
+export default function Home() {
   return (
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
-        {allCollections && <CarouselThumbnail data={allCollections} />}
+        <DynamicCarouselThumbnail />
 
         <Image
           src="/dummy_2.jpg"
@@ -30,19 +25,7 @@ export default async function Home() {
       <section className="mt-16">
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
-        <ul className="grid grid-cols-12 items-center gap-4">
-          <Mapper
-            data={allCollections!.slice(0, 3) ?? collections}
-            render={({ title, description, slug }) => (
-              <Collection
-                title={title}
-                description={description ?? ""}
-                href={`/collections/${slug}`}
-                classNames={{ wrapper: "col-span-12 sm:col-span-6 lg:col-span-4" }}
-              />
-            )}
-          />
-        </ul>
+        <DynamicCollections />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
@@ -97,7 +80,7 @@ export default async function Home() {
           </Link>
         </hgroup>
 
-        {allProducts && <CarouselFeatured data={allProducts} />}
+        <DynamicCarouselFeatured />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
