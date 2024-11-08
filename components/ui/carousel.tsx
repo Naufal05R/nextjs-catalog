@@ -166,7 +166,7 @@ const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>((
   return (
     <div
       ref={carouselRef}
-      className={cn(orientation === "horizontal" ? "overflow-x-hidden" : "overflow-y-hidden", classNames?.outer)}
+      className={cn(orientation === "horizontal" ? "overflow-x-clip" : "overflow-y-clip", classNames?.outer)}
     >
       <div
         ref={ref}
@@ -316,7 +316,7 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
     <div
       className={cn(
         "mt-4 w-full",
-        orientation === "horizontal" ? "overflow-x-hidden" : "overflow-y-hidden",
+        orientation === "horizontal" ? "overflow-x-clip" : "overflow-y-clip",
         classNames?.wrapper,
       )}
       ref={dotsRef}
