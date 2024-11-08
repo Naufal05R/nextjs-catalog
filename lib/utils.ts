@@ -30,7 +30,7 @@ export function readSlug(str: string) {
 }
 
 export function formatPrice(price: number) {
-  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return price.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export function countDiscount(price: number, discount: number) {
