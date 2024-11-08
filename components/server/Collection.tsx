@@ -7,6 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Image, Media } from "./Media";
 import { getImageSrc } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
+import { getAllCollection } from "@/lib/actions/collection.action";
+import { collections } from "@/constants";
 
 interface CollectionProps {
   title: string;
@@ -125,4 +127,22 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
   );
 };
 
-export default Collection;
+export const DynamicCollections = async () => {
+  const allCollections = await getAllCollection();
+
+  return (
+    <ul className="grid grid-cols-12 items-center gap-4">
+      <Mapper
+        data={allCollections!.slice(0, 3) ?? collections}
+        render={({ title, description, slug }) => (
+          <Collection
+            title={title}
+            description={description ?? ""}
+            href={`/collections/${slug}`}
+            classNames={{ wrapper: "col-span-12 sm:col-span-6 lg:col-span-4" }}
+          />
+        )}
+      />
+    </ul>
+  );
+};
