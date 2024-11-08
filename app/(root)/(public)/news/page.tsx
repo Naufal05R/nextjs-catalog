@@ -2,10 +2,10 @@ import React from "react";
 import Mapper from "@/components/server/Mapper";
 import { Image } from "@/components/server/Media";
 
-const BlogPage = () => {
+const NewsPage = () => {
   return (
     <section className="pt-8">
-      <h4 className="mb-4 text-3xl">Blog</h4>
+      <h4 className="mb-4 text-3xl">News</h4>
 
       <ul className="mt-8 grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-12">
         <Mapper
@@ -44,6 +44,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage;
-
-// class="mt-8 grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-4"
+export default NewsPage;

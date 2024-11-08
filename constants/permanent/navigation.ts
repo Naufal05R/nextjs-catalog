@@ -22,9 +22,9 @@ const navigations = defineConst([
     href: "/about-us",
   },
   {
-    key: "blog",
-    label: "Blog",
-    href: "/blog",
+    key: "news",
+    label: "News",
+    href: "/news",
   },
   {
     key: "contact",
