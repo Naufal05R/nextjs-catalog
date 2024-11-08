@@ -8,7 +8,7 @@ import { Image } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
-import { getImageSrc } from "@/lib/actions/image.action";
+import { getImageSrc } from "@/lib/utils";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -26,7 +26,7 @@ export const DashbaordProductCard = async ({
   collection,
   thumbnail,
 }: DashbaordProductCardProps) => {
-  const src = await getImageSrc({ collection, product: slug, name: thumbnail });
+  const src = getImageSrc({ collection, product: slug, name: thumbnail });
 
   if (isReady && src)
     return (
