@@ -92,7 +92,7 @@ export default async function Home() {
         <hgroup className="flex flex-row flex-nowrap justify-between">
           <h4 className="mb-4 text-2xl">Featured collections</h4>
 
-          <Link href="/" className="flex flex-row items-center text-slate-500">
+          <Link href="/collections" className="flex flex-row items-center text-slate-500">
             <span className="text-sm">See all</span> <ChevronRight className="size-5" />
           </Link>
         </hgroup>
