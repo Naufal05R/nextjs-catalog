@@ -206,10 +206,11 @@ CarouselItem.displayName = "CarouselItem";
 
 interface CarouselControllerProps extends React.ComponentProps<typeof Button> {
   controller?: React.JSX.Element;
+  placement?: "inside" | "outside";
 }
 
 const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselControllerProps>(
-  ({ className, variant = null, size = "icon", controller, ...props }, ref) => {
+  ({ className, variant = null, size = "icon", placement = "outside", controller, ...props }, ref) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
     return (
@@ -218,10 +219,15 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselControllerP
         variant={variant}
         size={size}
         className={cn(
-          "absolute flex size-8 transition-opacity",
-          orientation === "horizontal"
-            ? "-left-8 top-1/2 -translate-y-1/2 lg:-left-12"
-            : "-top-8 left-1/2 -translate-x-1/2 rotate-90 lg:-top-12",
+          "absolute flex size-8 rounded-full transition-opacity",
+          {
+            "top-1/2 -translate-y-1/2": orientation === "horizontal",
+            "-left-8 lg:-left-12": orientation === "horizontal" && placement === "outside",
+            "left-0 lg:left-4": orientation === "horizontal" && placement === "inside",
+            "left-1/2 -translate-x-1/2 rotate-90": orientation === "vertical",
+            "-top-8 lg:-top-12": orientation === "vertical" && placement === "outside",
+            "top-0 lg:top-4": orientation === "vertical" && placement === "inside",
+          },
           { "disabled:opacity-0": !canScrollPrev },
           className,
         )}
@@ -230,11 +236,12 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselControllerP
         {...props}
       >
         {controller || (
-          <>
-            <ChevronLeft strokeWidth={0.5} className="min-h-full min-w-full" />
-            <span className="sr-only">Previous slide</span>
-          </>
+          <ChevronLeft
+            strokeWidth={0.5}
+            className={cn("min-h-full min-w-full", { "-ml-[3px] text-slate-100/75": placement === "inside" })}
+          />
         )}
+        <span className="sr-only">Previous slide</span>
       </Button>
     );
   },
@@ -242,7 +249,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselControllerP
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselControllerProps>(
-  ({ className, variant = null, size = "icon", controller, ...props }, ref) => {
+  ({ className, variant = null, size = "icon", placement = "outside", controller, ...props }, ref) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel();
 
     return (
@@ -251,10 +258,15 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselControllerProps
         variant={variant}
         size={size}
         className={cn(
-          "absolute h-8 w-8 transition-opacity",
-          orientation === "horizontal"
-            ? "-right-8 top-1/2 -translate-y-1/2 lg:-right-12"
-            : "-bottom-8 left-1/2 -translate-x-1/2 rotate-90 lg:-bottom-12",
+          "absolute h-8 w-8 rounded-full transition-opacity",
+          {
+            "bottom-1/2 translate-y-1/2": orientation === "horizontal",
+            "-right-8 lg:-right-12": orientation === "horizontal" && placement === "outside",
+            "right-0 lg:right-4": orientation === "horizontal" && placement === "inside",
+            "right-1/2 translate-x-1/2 rotate-90": orientation === "vertical",
+            "-bottom-8 lg:-bottom-12": orientation === "vertical" && placement === "outside",
+            "bottom-0 lg:bottom-4": orientation === "vertical" && placement === "inside",
+          },
           { "disabled:opacity-0": !canScrollNext },
           className,
         )}
@@ -263,11 +275,12 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselControllerProps
         {...props}
       >
         {controller || (
-          <>
-            <ChevronRight strokeWidth={0.5} className="min-h-full min-w-full" />
-            <span className="sr-only">Next slide</span>
-          </>
+          <ChevronRight
+            strokeWidth={0.5}
+            className={cn("min-h-full min-w-full", { "-mr-[3px] text-slate-100/75": placement === "inside" })}
+          />
         )}
+        <span className="sr-only">Next slide</span>
       </Button>
     );
   },
