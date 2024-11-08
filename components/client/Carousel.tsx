@@ -30,6 +30,7 @@ interface CarouselProps<T extends Dataset> {
     prev: React.JSX.Element;
     next: React.JSX.Element;
   };
+  placement?: "inside" | "outside";
   slidesElement: React.JSX.Element;
   dotsElement?: React.JSX.Element;
   opts?: EmblaOptionsType;
@@ -40,6 +41,8 @@ interface CarouselProps<T extends Dataset> {
   classNames?: {
     root?: string;
     wrapper?: string;
+    controllerPrev?: string;
+    controllerNext?: string;
     dotsWrapper?: string;
     dotsContainer?: string;
     dots?: string;
@@ -51,6 +54,7 @@ const Carousel = <T extends Dataset>({
   controllersElement,
   slidesElement,
   dotsElement,
+  placement,
   opts,
   plugins: _plugins,
 
@@ -68,8 +72,24 @@ const Carousel = <T extends Dataset>({
         <CarouselContent>{slidesElement}</CarouselContent>
         {showControllers && (
           <>
-            <CarouselPrevious controller={controllersElement?.prev} className="max-sm:hidden" />
-            <CarouselNext controller={controllersElement?.next} className="max-sm:hidden" />
+            <CarouselPrevious
+              controller={controllersElement?.prev}
+              className={cn(
+                "max-sm:hidden",
+                { "bg-slate-50/25 backdrop-blur": placement === "inside" },
+                classNames?.controllerPrev,
+              )}
+              placement={placement}
+            />
+            <CarouselNext
+              controller={controllersElement?.next}
+              className={cn(
+                "max-sm:hidden",
+                { "bg-slate-50/25 backdrop-blur": placement === "inside" },
+                classNames?.controllerNext,
+              )}
+              placement={placement}
+            />
           </>
         )}
       </div>
@@ -198,6 +218,7 @@ export const CarouselDetail = ({
       data={data}
       plugins={["fade"]}
       showDots
+      placement="inside"
       showControllers
       slidesElement={
         <Mapper
@@ -231,7 +252,9 @@ export const CarouselDetail = ({
           )}
         />
       }
-      classNames={classNames}
+      classNames={{
+        ...classNames,
+      }}
     />
   );
 };
