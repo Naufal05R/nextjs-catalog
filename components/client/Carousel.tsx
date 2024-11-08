@@ -26,7 +26,7 @@ import { CatalogProductCard } from "@/components/server/Product";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
-  slides: React.JSX.Element;
+  slidesElement: React.JSX.Element;
   dotsElement?: React.JSX.Element;
   opts?: EmblaOptionsType;
   plugins?: Array<"fade">;
@@ -43,7 +43,7 @@ interface CarouselProps<T extends Dataset> {
 
 const Carousel = <T extends Dataset>({
   data,
-  slides,
+  slidesElement,
   dotsElement,
   opts,
   plugins: _plugins,
@@ -58,7 +58,7 @@ const Carousel = <T extends Dataset>({
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent>{slides}</CarouselContent>
+      <CarouselContent>{slidesElement}</CarouselContent>
       {showControllers && (
         <>
           <CarouselPrevious className="max-sm:hidden" />
@@ -86,7 +86,7 @@ export const CarouselThumbnail = ({ data }: { data: Array<Product> }) => {
         dots: "basis-3 border-2",
         root: "aspect-video flex-1 max-md:aspect-video max-lg:aspect-[34/13]",
       }}
-      slides={
+      slidesElement={
         <Mapper
           data={data}
           render={(_, i) => (
@@ -145,7 +145,7 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
       data={data}
       opts={{ align: "start", breakpoints: {} }}
       showControllers
-      slides={
+      slidesElement={
         <Mapper
           data={data}
           render={({ category, ...product }, index) => (
@@ -191,7 +191,8 @@ export const CarouselDetail = ({
       data={data}
       plugins={["fade"]}
       showDots
-      slides={
+      showControllers
+      slidesElement={
         <Mapper
           data={data}
           render={({ title }, index) => (
