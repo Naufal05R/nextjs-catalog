@@ -128,21 +128,76 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
 };
 
 export const DynamicCollections = async () => {
-  const allCollections = await getAllCollection();
+
+  const Component = async () => {
+    const allCollections = await getAllCollection();
+
+    return (
+      <ul className="grid grid-cols-12 items-center gap-4">
+        <Mapper
+          data={allCollections!.slice(0, 3) ?? collections}
+          render={({ title, description, slug }) => (
+            <Collection
+              title={title}
+              description={description ?? ""}
+              href={`/collections/${slug}`}
+              classNames={{ wrapper: "col-span-12 sm:col-span-6 lg:col-span-4" }}
+            />
+          )}
+        />
+      </ul>
+    );
+  };
 
   return (
-    <ul className="grid grid-cols-12 items-center gap-4">
-      <Mapper
-        data={allCollections!.slice(0, 3) ?? collections}
-        render={({ title, description, slug }) => (
-          <Collection
-            title={title}
-            description={description ?? ""}
-            href={`/collections/${slug}`}
-            classNames={{ wrapper: "col-span-12 sm:col-span-6 lg:col-span-4" }}
-          />
-        )}
-      />
-    </ul>
+    <React.Suspense
+      fallback={
+        <ul className="grid grid-cols-12 items-center gap-4">
+          <li className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <div className="grid grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded">
+              <div className="col-span-2 row-span-2 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+            </div>
+            <div className="w-2/3 py-0.5">
+              <div className="mt-4 h-6 rounded bg-slate-200" />
+            </div>
+            <div className="w-1/3 py-0.5">
+              <div className="mt-1 h-4 rounded bg-slate-200" />
+            </div>
+          </li>
+
+          <li className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <div className="grid grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded">
+              <div className="col-span-2 row-span-2 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+            </div>
+            <div className="w-2/3 py-0.5">
+              <div className="mt-4 h-6 rounded bg-slate-200" />
+            </div>
+            <div className="w-1/3 py-0.5">
+              <div className="mt-1 h-4 rounded bg-slate-200" />
+            </div>
+          </li>
+
+          <li className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <div className="grid grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded">
+              <div className="col-span-2 row-span-2 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+              <div className="col-span-1 row-span-1 aspect-square bg-slate-200" />
+            </div>
+            <div className="w-2/3 py-0.5">
+              <div className="mt-4 h-6 rounded bg-slate-200" />
+            </div>
+            <div className="w-1/3 py-0.5">
+              <div className="mt-1 h-4 rounded bg-slate-200" />
+            </div>
+          </li>
+        </ul>
+      }
+    >
+      <Component />
+    </React.Suspense>
   );
 };
