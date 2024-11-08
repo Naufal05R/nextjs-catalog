@@ -9,6 +9,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function capitalize(str: string, lower = false) {
+  return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
+}
+
+export function slugify(str: string) {
+  return str.toLowerCase().trim().replace(/\s+/g, "-");
+}
+
 export function padValue(value: number) {
   return String(value).padStart(3, "0");
 }
@@ -17,20 +25,16 @@ export function defineConst<T extends Dataset>(fields: T): T {
   return fields;
 }
 
-export function formatPrice(price: number) {
-  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-export function capitalize(str: string, lower = false) {
-  return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
-}
-
 export function readSlug(str: string) {
   return capitalize(str.replace(/-/g, " ").trim());
 }
 
-export function slugify(str: string) {
-  return str.toLowerCase().trim().replace(/\s+/g, "-");
+export function formatPrice(price: number) {
+  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function countDiscount(price: number, discount: number) {
+  return price * (1 - Math.min(Math.abs(discount), 100) / 100);
 }
 
 export function getFileMimeTypes(str: string) {
