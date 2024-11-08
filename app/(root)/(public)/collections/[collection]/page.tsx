@@ -34,7 +34,7 @@ export default async function CollectionPage({ params }: { params: { collection:
         }}
       />
 
-      <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 lg:grid-cols-12">
+      <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
         {!!allProducts?.length && (
           <Mapper
             data={allProducts}
