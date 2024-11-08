@@ -48,7 +48,7 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>(
-  ({ orientation = "horizontal", opts, setCarouselApi, plugins, className, slides, children, ...props }, ref) => {
+  ({ orientation = "horizontal", opts, setCarouselApi, plugins, slides, children, ...props }, ref) => {
     const [carouselRef, carouselApi] = useEmblaCarousel(
       {
         ...opts,
@@ -137,14 +137,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
           slides,
         }}
       >
-        <div
-          ref={ref}
-          onKeyDownCapture={handleKeyDown}
-          className={cn("relative", className)}
-          role="region"
-          aria-roledescription="carousel"
-          {...props}
-        >
+        <div ref={ref} onKeyDownCapture={handleKeyDown} role="region" aria-roledescription="carousel" {...props}>
           {children}
         </div>
       </CarouselContext.Provider>
@@ -211,8 +204,12 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
 );
 CarouselItem.displayName = "CarouselItem";
 
-const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
-  ({ className, variant = null, size = "icon", ...props }, ref) => {
+interface CarouselControllerProps extends React.ComponentProps<typeof Button> {
+  controller?: React.JSX.Element;
+}
+
+const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselControllerProps>(
+  ({ className, variant = null, size = "icon", controller, ...props }, ref) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
     return (
@@ -232,16 +229,20 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         onClick={scrollPrev}
         {...props}
       >
-        <ChevronLeft strokeWidth={0.5} className="min-h-full min-w-full" />
-        <span className="sr-only">Previous slide</span>
+        {controller || (
+          <>
+            <ChevronLeft strokeWidth={0.5} className="min-h-full min-w-full" />
+            <span className="sr-only">Previous slide</span>
+          </>
+        )}
       </Button>
     );
   },
 );
 CarouselPrevious.displayName = "CarouselPrevious";
 
-const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
-  ({ className, variant = null, size = "icon", ...props }, ref) => {
+const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselControllerProps>(
+  ({ className, variant = null, size = "icon", controller, ...props }, ref) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel();
 
     return (
@@ -261,8 +262,12 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         onClick={scrollNext}
         {...props}
       >
-        <ChevronRight strokeWidth={0.5} className="min-h-full min-w-full" />
-        <span className="sr-only">Next slide</span>
+        {controller || (
+          <>
+            <ChevronRight strokeWidth={0.5} className="min-h-full min-w-full" />
+            <span className="sr-only">Next slide</span>
+          </>
+        )}
       </Button>
     );
   },
