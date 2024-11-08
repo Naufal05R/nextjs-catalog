@@ -111,7 +111,7 @@ export const CatalogProductCard = ({
     <Link
       href={`/products/${slug}`}
       draggable={false}
-      className="group flex select-none flex-col rounded-md p-4 card-shadow"
+      className="group flex select-none flex-col rounded-md p-4 transition-shadow duration-300 card-shadow"
     >
       <Image
         src={src}
