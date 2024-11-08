@@ -26,6 +26,10 @@ import { CatalogProductCard } from "@/components/server/Product";
 
 interface CarouselProps<T extends Dataset> {
   data: T;
+  controllersElement?: {
+    prev: React.JSX.Element;
+    next: React.JSX.Element;
+  };
   slidesElement: React.JSX.Element;
   dotsElement?: React.JSX.Element;
   opts?: EmblaOptionsType;
@@ -35,6 +39,7 @@ interface CarouselProps<T extends Dataset> {
   responsiveArgs?: ResponsiveArgs;
   classNames?: {
     root?: string;
+    wrapper?: string;
     dotsWrapper?: string;
     dotsContainer?: string;
     dots?: string;
@@ -43,6 +48,7 @@ interface CarouselProps<T extends Dataset> {
 
 const Carousel = <T extends Dataset>({
   data,
+  controllersElement,
   slidesElement,
   dotsElement,
   opts,
@@ -52,20 +58,21 @@ const Carousel = <T extends Dataset>({
   showControllers,
   showDots,
 }: CarouselProps<T>) => {
-  const { root, dots, dotsContainer, dotsWrapper } = classNames ?? {};
+  const { root, wrapper, dots, dotsContainer, dotsWrapper } = classNames ?? {};
 
   const plugins = _plugins?.includes("fade") ? [Fade()] : [];
 
   return (
     <CarouselRoot slides={data} className={cn("w-full", root)} opts={opts} plugins={plugins}>
-      <CarouselContent>{slidesElement}</CarouselContent>
-      {showControllers && (
-        <>
-          <CarouselPrevious className="max-sm:hidden" />
-          <CarouselNext className="max-sm:hidden" />
-        </>
-      )}
-
+      <div className={cn("relative", wrapper)}>
+        <CarouselContent>{slidesElement}</CarouselContent>
+        {showControllers && (
+          <>
+            <CarouselPrevious controller={controllersElement?.prev} className="max-sm:hidden" />
+            <CarouselNext controller={controllersElement?.next} className="max-sm:hidden" />
+          </>
+        )}
+      </div>
       {showDots && (
         <CarouselDots dots={dotsElement} classNames={{ wrapper: dotsWrapper, container: dotsContainer, dots }} />
       )}
