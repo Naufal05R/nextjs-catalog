@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/carousel";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
-import { Collection, Media } from "@prisma/client";
+import { Media, Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
@@ -73,7 +73,7 @@ const Carousel = <T extends Dataset>({
   );
 };
 
-export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
+export const CarouselThumbnail = ({ data }: { data: Array<Product> }) => {
   return (
     <Carousel
       data={data}
@@ -89,9 +89,9 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
       slides={
         <Mapper
           data={data}
-          render={({ slug }, i) => (
+          render={(_, i) => (
             <CarouselItem>
-              <Link href={`/collections/${slug}`} draggable={false} className="select-none">
+              <Link href={`/`} draggable={false} className="select-none">
                 <Image
                   src={`/dummy_${(i % 3) + 1}.jpg`}
                   alt="dummy_image"
@@ -104,6 +104,14 @@ export const CarouselThumbnail = ({ data }: { data: Array<Collection> }) => {
                 />
               </Link>
             </CarouselItem>
+          )}
+        />
+      }
+      dotsElement={
+        <Mapper
+          data={data}
+          render={(_, index) => (
+            <CarouselDot index={index} className={cn("aspect-square basis-3 rounded-full border-2 text-xl")} />
           )}
         />
       }
