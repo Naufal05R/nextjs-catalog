@@ -75,7 +75,6 @@ export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
 ) => {
-  console.log(initRawData(formData));
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
