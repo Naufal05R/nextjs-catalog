@@ -80,14 +80,11 @@ export const DashbaordProductCard = async ({
         </CardFooter>
 
         <CardFooter className="mt-auto gap-4">
-          <Button asChild className="flex-1">
-            <form action={archiveProduct}>
-              <button className="flex items-center gap-2">
-                <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly />
-                <Archive />
-                Archive
-              </button>
-            </form>
+          <Button className="flex-1" form="archive-product">
+            <form id="archive-product" action={archiveProduct} />
+            <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
+            <Archive />
+            Archive
           </Button>
 
           <Button asChild className="flex-1">
