@@ -69,11 +69,11 @@ export const DashbaordProductCard = async ({
           )}
           <div className="flex flex-col">
             {!!discount && (
-              <CardDescription className="w-full text-right font-semibold line-through">
-                Rp. {formatPrice(price)}
+              <CardDescription className="w-full text-right text-xs line-through">
+                {formatPrice(price)}
               </CardDescription>
             )}
-            <CardTitle className="w-full text-right font-semibold">
+            <CardTitle className="w-full select-none text-right text-base font-semibold">
               Rp. {formatPrice(countDiscount(price, discount ?? 0))}
             </CardTitle>
           </div>
