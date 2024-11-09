@@ -54,8 +54,6 @@ export function GuestbookForm() {
   });
 
   function onSubmit(data: z.infer<typeof GuestbookFormSchema>) {
-    console.log(data);
-
     toast({
       title: "You submitted the following values:",
       description: (
@@ -137,8 +135,6 @@ export function ContactForm() {
   });
 
   function onSubmit(data: z.infer<typeof ContactFormSchema>) {
-    console.log(data);
-
     toast({
       title: "You submitted the following values:",
       description: (
@@ -638,7 +634,6 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                           }),
                       );
                     }
-                    console.log(e.target.value);
                   }}
                 />
               </div>
