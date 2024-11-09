@@ -16,7 +16,11 @@ export function capitalize(str: string, lower = false) {
 }
 
 export function slugify(str: string) {
-  return str.toLowerCase().trim().replace(/\s+/g, "-");
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
 }
 
 export function padValue(value: number) {
