@@ -37,8 +37,6 @@ export const createCollection = async (prevState: string | undefined, formData: 
   const validated = CollectionFormSchema.safeParse(raw);
 
   if (validated.success) {
-    console.log(validated);
-
     try {
       const { title, description } = validated.data;
       const newCollection = await prisma.collection.create({
