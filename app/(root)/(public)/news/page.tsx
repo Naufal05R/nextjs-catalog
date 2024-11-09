@@ -19,14 +19,16 @@ const NewsPage = () => {
                   fill
                   sizes="25vw"
                   classNames={{
-                    figure: "w-full aspect-video rounded group-hover:rounded-b-none",
+                    figure: "w-full aspect-video rounded",
                     image: "group-hover:scale-125 transition-transform duration-500",
                   }}
                 />
 
                 <blockquote>
-                  <h5 className="mt-2 text-xl">Langka dan Sulit Terbentuk, Bikin Batu Akik Bernilai Tinggi</h5>
-                  <p className="mr-4 mt-4 line-clamp-2 w-full break-words text-sm text-gray-600">
+                  <h5 className="mt-2 text-xl font-medium">
+                    Langka dan Sulit Terbentuk, Bikin Batu Akik Bernilai Tinggi
+                  </h5>
+                  <p className="mr-4 mt-4 line-clamp-2 w-full break-words text-sm text-gray-500">
                     Batu akik yang kini sedang populer sebagai aksesoris perhiasan memang dibanderol dengan harga tak
                     biasa. Namun, ternyata batu akik itu dibanderol dengan harga yang murah.
                   </p>
