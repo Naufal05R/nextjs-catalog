@@ -69,9 +69,7 @@ export const DashbaordProductCard = async ({
           )}
           <div className="flex flex-col">
             {!!discount && (
-              <CardDescription className="w-full text-right text-xs line-through">
-                {formatPrice(price)}
-              </CardDescription>
+              <CardDescription className="w-full text-right text-xs line-through">{formatPrice(price)}</CardDescription>
             )}
             <CardTitle className="w-full select-none text-right text-base font-semibold">
               Rp. {formatPrice(countDiscount(price, discount ?? 0))}
@@ -84,9 +82,11 @@ export const DashbaordProductCard = async ({
             <Archive />
             Archive
           </Button>
-          <Button className="flex-1">
-            <Pencil />
-            Edit
+          <Button asChild className="flex-1">
+            <Link href={`/dashboard/products/${collection}/${slug}`}>
+              <Pencil />
+              Edit
+            </Link>
           </Button>
         </CardFooter>
       </Card>
