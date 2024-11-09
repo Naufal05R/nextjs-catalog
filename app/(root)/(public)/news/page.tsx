@@ -1,6 +1,10 @@
 import React from "react";
+import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
+
 import { Image } from "@/components/server/Media";
+
+import { slugify } from "@/lib/utils";
 
 const NewsPage = () => {
   return (
@@ -11,7 +15,10 @@ const NewsPage = () => {
         <Mapper
           data={Array.from({ length: 12 })}
           render={() => (
-            <li className="group col-span-4">
+            <Link
+              href={`/news/${slugify("Langka dan Sulit Terbentuk, Bikin Batu Akik Bernilai Tinggi")}`}
+              className="group col-span-4"
+            >
               <article className="w-full overflow-hidden rounded bg-inherit group-hover:cursor-pointer">
                 <Image
                   src={`/dummy_1.jpg`}
@@ -38,7 +45,7 @@ const NewsPage = () => {
                   <time>{new Date().toLocaleDateString()}</time>
                 </blockquote>
               </article>
-            </li>
+            </Link>
           )}
         />
       </ul>
