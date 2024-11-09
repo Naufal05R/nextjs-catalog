@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
 import Mapper from "@/components/server/Mapper";
@@ -147,26 +147,6 @@ export const CarouselThumbnail = ({ data }: { data: Array<Product> }) => {
 };
 
 export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnType<typeof getAllProduct>>> }) => {
-  const [sources, setSources] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    return () => {
-      (async () => {
-        for (const { slug, gallery, collection } of data) {
-          if (gallery) {
-            const { medias } = gallery;
-
-            const src = getImageSrc({ product: slug, collection: collection.slug, name: medias[0].name });
-
-            if (src) {
-              setSources((prev) => [...prev, src]);
-            }
-          }
-        }
-      })();
-    };
-  }, [data]);
-
   return (
     <Carousel
       data={data}
@@ -175,9 +155,17 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
       slidesElement={
         <Mapper
           data={data}
-          render={({ category, ...product }, index) => (
+          render={({ category, gallery, collection, ...product }) => (
             <CarouselItem responsiveArgs={["xs:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
-              <CatalogProductCard {...product} category={category.title} src={sources[index]} />
+              <CatalogProductCard
+                {...product}
+                category={category.title}
+                src={getImageSrc({
+                  product: product.slug,
+                  collection: collection.slug,
+                  name: gallery!.medias[0].name,
+                })}
+              />
             </CarouselItem>
           )}
         />
@@ -197,22 +185,6 @@ export const CarouselDetail = ({
   collection: string;
   classNames?: Pick<CarouselProps<Dataset>, "classNames">["classNames"];
 }) => {
-  const [sources, setSources] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    return () => {
-      (async () => {
-        for (const { name } of data) {
-          const src = getImageSrc({ product, collection, name });
-
-          if (src) {
-            setSources((prev) => [...prev, src]);
-          }
-        }
-      })();
-    };
-  }, [data, collection, product]);
-
   return (
     <Carousel
       data={data}
@@ -223,10 +195,10 @@ export const CarouselDetail = ({
       slidesElement={
         <Mapper
           data={data}
-          render={({ title }, index) => (
+          render={({ title, name }) => (
             <CarouselItem>
               <Image
-                src={sources[index]}
+                src={getImageSrc({ product, collection, name })}
                 alt={title}
                 fill
                 sizes="50vw"
@@ -239,10 +211,10 @@ export const CarouselDetail = ({
       dotsElement={
         <Mapper
           data={data}
-          render={({ title }, index) => (
+          render={({ title, name }, index) => (
             <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
               <Image
-                src={sources[index]}
+                src={getImageSrc({ product, collection, name })}
                 alt={title}
                 fill
                 sizes="10vw"
