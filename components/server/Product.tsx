@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
+import { archiveProduct } from "@/lib/actions/product.action";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -16,6 +17,7 @@ interface DashbaordProductCardProps extends Product {
 }
 
 export const DashbaordProductCard = async ({
+  id,
   title,
   slug,
   price,
@@ -78,10 +80,16 @@ export const DashbaordProductCard = async ({
         </CardFooter>
 
         <CardFooter className="mt-auto gap-4">
-          <Button className="flex-1">
-            <Archive />
-            Archive
+          <Button asChild className="flex-1">
+            <form action={archiveProduct}>
+              <button className="flex items-center gap-2">
+                <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly />
+                <Archive />
+                Archive
+              </button>
+            </form>
           </Button>
+
           <Button asChild className="flex-1">
             <Link href={`/dashboard/products/${collection}/${slug}`}>
               <Pencil />
