@@ -155,3 +155,26 @@ export const createProduct = async (
     return error.errors;
   }
 };
+
+export const archiveProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  console.log("executed");
+
+  if (id) {
+    try {
+      await prisma.product.update({
+        where: {
+          id,
+        },
+        data: {
+          isReady: false,
+        },
+      });
+
+      revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
