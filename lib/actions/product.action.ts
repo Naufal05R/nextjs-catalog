@@ -144,7 +144,7 @@ export const createProduct = async (
       });
 
       pathname = `/dashboard/products/${collection}`;
-      revalidatePath(`/dashboard/products/${collection}`);
+      revalidatePath("/", "layout");
 
       return newProduct;
     } catch (error) {
