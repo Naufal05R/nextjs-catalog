@@ -38,8 +38,6 @@ export const createCategory = async (prevState: string | undefined, formData: Fo
   const validated = CategoryFormSchema.safeParse(raw);
 
   if (validated.success) {
-    console.log(validated);
-
     try {
       const { title, description } = validated.data;
       const newCategory = await prisma.category.create({
