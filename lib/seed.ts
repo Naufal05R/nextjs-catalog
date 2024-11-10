@@ -1,7 +1,7 @@
 import { prisma } from "./prisma";
 import { collection } from "./seeds";
 
-(async function main() {
+(async () => {
   try {
     await collection();
 
