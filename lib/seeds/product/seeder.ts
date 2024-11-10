@@ -5,6 +5,7 @@ export const cincin_surgawi = async () => {
     where: { slug: "cincin-surgawi" },
     update: {},
     create: {
+      id: "cm36utuy5000gma150ikuh9ia",
       title: "Cincin Surgawi",
       slug: "cincin-surgawi",
       state: "Papua",
@@ -30,6 +31,7 @@ export const cincin_abadi = async () => {
     where: { slug: "cincin-abadi" },
     update: {},
     create: {
+      id: "cm39h56un00025qut61f8phx5",
       title: "Cincin Abadi",
       slug: "cincin-abadi",
       state: "Majapahit",
@@ -55,6 +57,7 @@ export const cincin_kuno = async () => {
     where: { slug: "cincin-kuno" },
     update: {},
     create: {
+      id: "cm39hdrk40002107rv7v7095p",
       title: "Cincin Kuno",
       slug: "cincin-kuno",
       state: "Papua",
@@ -80,6 +83,7 @@ export const gelang_baru = async () => {
     where: { slug: "gelang-baru" },
     update: {},
     create: {
+      id: "cm3bc1wbd0003100yf9j4lumr",
       title: "Gelang Baru",
       slug: "gelang-baru",
       state: "Papua",
@@ -105,6 +109,7 @@ export const batu_emerald = async () => {
     where: { slug: "batu-emerald" },
     update: {},
     create: {
+      id: "cm39i2mjl0003la8wgk17zkgc",
       title: "Batu Emerald",
       slug: "batu-emerald",
       state: "Jepang",
@@ -130,6 +135,7 @@ export const batu_surgawi = async () => {
     where: { slug: "batu-surgawi" },
     update: {},
     create: {
+      id: "cm39humvl000a6xneg6wy8vkn",
       title: "Batu Surgawi",
       slug: "batu-surgawi",
       state: "Europe",
@@ -155,6 +161,7 @@ export const batu_ajaib = async () => {
     where: { slug: "batu-ajaib" },
     update: {},
     create: {
+      id: "cm39hj1tw00026xnea4y15n5t",
       title: "Batu Ajaib",
       slug: "batu-ajaib",
       state: "Saudi",
@@ -180,6 +187,7 @@ export const cincin_kristal = async () => {
     where: { slug: "cincin-kristal" },
     update: {},
     create: {
+      id: "cm36umo0n0008ma15w17agl6f",
       title: "Cincin Kristal",
       slug: "cincin-kristal",
       state: "Kalimalang",
