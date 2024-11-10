@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 export const cincin = async () => {
   await prisma.collection.upsert({
-    where: { slug: "cincin" },
+    where: { id: "cm2x7wgop0000w6g9yk4wa4yv" },
     update: {},
     create: {
       id: "cm2x7wgop0000w6g9yk4wa4yv",
@@ -17,7 +17,7 @@ export const cincin = async () => {
 
 export const batu = async () => {
   await prisma.collection.upsert({
-    where: { slug: "batu" },
+    where: { id: "cm32yk6pa000fvlqxco3648rv" },
     update: {},
     create: {
       id: "cm32yk6pa000fvlqxco3648rv",

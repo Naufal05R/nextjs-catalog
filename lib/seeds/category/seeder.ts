@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 export const sapphire = async () => {
   await prisma.category.upsert({
-    where: { slug: "sapphire" },
+    where: { id: "cm32ooxry0002gk847mqzh1to" },
     update: {},
     create: {
       id: "cm32ooxry0002gk847mqzh1to",
@@ -17,7 +17,7 @@ export const sapphire = async () => {
 
 export const ruby = async () => {
   await prisma.category.upsert({
-    where: { slug: "ruby" },
+    where: { id: "cm32ot82q0003gk84owcim11u" },
     update: {},
     create: {
       id: "cm32ot82q0003gk84owcim11u",
@@ -32,7 +32,7 @@ export const ruby = async () => {
 
 export const crystal = async () => {
   await prisma.category.upsert({
-    where: { slug: "crystal" },
+    where: { id: "cm35mv1h500001z47i1pvnvnp" },
     update: {},
     create: {
       id: "cm35mv1h500001z47i1pvnvnp",
@@ -47,7 +47,7 @@ export const crystal = async () => {
 
 export const emerald = async () => {
   await prisma.category.upsert({
-    where: { slug: "emerald" },
+    where: { id: "cm39i13s00000la8wdjqbz726" },
     update: {},
     create: {
       id: "cm39i13s00000la8wdjqbz726",

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 export const cincin_surgawi = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "cincin-surgawi" },
+    where: { id: "cm36umo0o000ama15bfkcepqz" },
     update: {},
     create: {
       id: "cm36umo0o000ama15bfkcepqz",
@@ -17,7 +17,7 @@ export const cincin_surgawi = async () => {
 
 export const cincin_abadi = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "cincin-abadi" },
+    where: { id: "cm36utuy8000ima15zb7s2t7t" },
     update: {},
     create: {
       id: "cm36utuy8000ima15zb7s2t7t",
@@ -32,7 +32,7 @@ export const cincin_abadi = async () => {
 
 export const cincin_kuno = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "cincin-kuno" },
+    where: { id: "cm39h56uv00045qutpbqf967j" },
     update: {},
     create: {
       id: "cm39h56uv00045qutpbqf967j",
@@ -47,7 +47,7 @@ export const cincin_kuno = async () => {
 
 export const gelang_baru = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "gelang-baru" },
+    where: { id: "cm39hdrk70004107r25bmaeoo" },
     update: {},
     create: {
       id: "cm39hdrk70004107r25bmaeoo",
@@ -62,7 +62,7 @@ export const gelang_baru = async () => {
 
 export const batu_emerald = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "batu-emerald" },
+    where: { id: "cm39hj1tz00046xne7dub4tsa" },
     update: {},
     create: {
       id: "cm39hj1tz00046xne7dub4tsa",
@@ -77,7 +77,7 @@ export const batu_emerald = async () => {
 
 export const batu_surgawi = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "batu-surgawi" },
+    where: { id: "cm39humvo000c6xne8djm036d" },
     update: {},
     create: {
       id: "cm39humvo000c6xne8djm036d",
@@ -92,7 +92,7 @@ export const batu_surgawi = async () => {
 
 export const batu_ajaib = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "batu-ajaib" },
+    where: { id: "cm39i2mjn0005la8wrddcbcss" },
     update: {},
     create: {
       id: "cm39i2mjn0005la8wrddcbcss",
@@ -107,7 +107,7 @@ export const batu_ajaib = async () => {
 
 export const cincin_kristal = async () => {
   await prisma.gallery.upsert({
-    where: { slug: "cincin-kristal" },
+    where: { id: "cm3bc1wbg0005100ypaz8gr9a" },
     update: {},
     create: {
       id: "cm3bc1wbg0005100ypaz8gr9a",
