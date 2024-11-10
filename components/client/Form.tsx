@@ -32,7 +32,7 @@ import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { cn, getFileDetails, getFileMimeTypes, padValue } from "@/lib/utils";
+import { cn, getFileDetails, getFileMimeTypes, removeUnwantedChars } from "@/lib/utils";
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -228,17 +228,10 @@ export function CreateProductForm({ collection, categories }: { collection: stri
     files
       .filter(({ media }) => !!media && new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(media.type))
       .sort((a, b) => a.order - b.order)
-      .forEach(({ title, media }, index) => {
+      .forEach(({ title, media }) => {
         if (media) {
-          const { fileName } = getFileDetails(title);
-          const { fileMime } = getFileMimeTypes(media.type);
-
-          if (fileName && fileMime) {
-            return formData.append(
-              "media.image",
-              new File([media], `${padValue(index)}_${fileName}.${fileMime}`, { type: media.type }),
-            );
-          }
+          formData.append("media.title", getFileDetails(title).fileName);
+          formData.append("media.image", media);
         }
       });
 
@@ -438,7 +431,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                 data={files}
                 render={({ title, media }, mediaIndex) => {
                   const { fileType, fileMime } = getFileMimeTypes(media?.type ?? "");
-                  const { fileName } = getFileDetails(title);
+                  const { fileName } = getFileDetails(title, true);
 
                   return (
                     <li className="flex w-full items-center gap-x-2 border p-2.5">
@@ -497,7 +490,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                           form="create-product-form"
                           className="flex-1 shrink-0 rounded-none border-none shadow-none read-only:cursor-default"
                           customize="no-focus"
-                          value={fileName}
+                          value={removeUnwantedChars(fileName)}
                           readOnly={!media}
                           onChange={(e) => {
                             setFiles((prevState) => {
@@ -505,7 +498,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
                                 if (index === mediaIndex) {
                                   return {
                                     ...state,
-                                    title: `${e.target.value}.${fileMime}`,
+                                    title: removeUnwantedChars(e.target.value),
                                   };
                                 }
                                 return state;
