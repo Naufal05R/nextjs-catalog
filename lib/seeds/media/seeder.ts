@@ -322,37 +322,3 @@ export const batu_lepas_shine = async () => {
 
   console.log('Seeding Media "Batu Lepas Shine" success!');
 };
-
-export const christian_wiediger_1 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm3bc1wbi0006100yu6lmyrus" },
-    update: {},
-    create: {
-      id: "cm3bc1wbi0006100yu6lmyrus",
-      title: "Christian Wiediger 1",
-      slug: "christian-wiediger-1",
-      name: "000_christian-wiediger-1.jpeg",
-      order: 0,
-      galleryId: "cm3bc1wbg0005100ypaz8gr9a",
-    },
-  });
-
-  console.log('Seeding Media "Christian Wiediger 1" success!');
-};
-
-export const christian_wiediger_2 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm3bc1wbi0007100y732y6bcs" },
-    update: {},
-    create: {
-      id: "cm3bc1wbi0007100y732y6bcs",
-      title: "Christian Wiediger 2",
-      slug: "christian-wiediger-2",
-      name: "001_christian-wiediger-2.jpeg",
-      order: 1,
-      galleryId: "cm3bc1wbg0005100ypaz8gr9a",
-    },
-  });
-
-  console.log('Seeding Media "Christian Wiediger 2" success!');
-};
