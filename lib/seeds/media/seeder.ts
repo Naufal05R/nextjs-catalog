@@ -13,6 +13,8 @@ export const sapphire_ceylon_1 = async () => {
       galleryId: "cm36umo0o000ama15bfkcepqz",
     },
   });
+
+  console.log('Seeding Media "Sapphire Ceylon 1" success!');
 };
 
 export const sapphire_ceylon_2 = async () => {
@@ -28,6 +30,8 @@ export const sapphire_ceylon_2 = async () => {
       galleryId: "cm36umo0o000ama15bfkcepqz",
     },
   });
+
+  console.log('Seeding Media "Sapphire Ceylon 2" success!');
 };
 
 export const sapphire_ceylon_3 = async () => {
@@ -43,6 +47,8 @@ export const sapphire_ceylon_3 = async () => {
       galleryId: "cm36umo0o000ama15bfkcepqz",
     },
   });
+
+  console.log('Seeding Media "Sapphire Ceylon 3" success!');
 };
 
 export const blue_star_sapphire_1 = async () => {
@@ -58,6 +64,8 @@ export const blue_star_sapphire_1 = async () => {
       galleryId: "cm36utuy8000ima15zb7s2t7t",
     },
   });
+
+  console.log('Seeding Media "Star Sapphire 1" success!');
 };
 
 export const blue_star_sapphire_2 = async () => {
@@ -73,6 +81,8 @@ export const blue_star_sapphire_2 = async () => {
       galleryId: "cm36utuy8000ima15zb7s2t7t",
     },
   });
+
+  console.log('Seeding Media "Star Sapphire 2" success!');
 };
 
 export const blue_star_sapphire_3 = async () => {
@@ -88,6 +98,8 @@ export const blue_star_sapphire_3 = async () => {
       galleryId: "cm36utuy8000ima15zb7s2t7t",
     },
   });
+
+  console.log('Seeding Media "Star Sapphire 3" success!');
 };
 
 export const yellow_sapphire_1 = async () => {
@@ -103,6 +115,8 @@ export const yellow_sapphire_1 = async () => {
       galleryId: "cm39h56uv00045qutpbqf967j",
     },
   });
+
+  console.log('Seeding Media "Yellow Sapphire 1" success!');
 };
 
 export const yellow_sapphire_2 = async () => {
@@ -118,6 +132,8 @@ export const yellow_sapphire_2 = async () => {
       galleryId: "cm39h56uv00045qutpbqf967j",
     },
   });
+
+  console.log('Seeding Media "Yellow Sapphire 2" success!');
 };
 
 export const yellow_sapphire_3 = async () => {
@@ -133,6 +149,8 @@ export const yellow_sapphire_3 = async () => {
       galleryId: "cm39h56uv00045qutpbqf967j",
     },
   });
+
+  console.log('Seeding Media "Yellow Sapphire 3" success!');
 };
 
 export const ruby_burma_star_1 = async () => {
@@ -148,6 +166,8 @@ export const ruby_burma_star_1 = async () => {
       galleryId: "cm39hdrk70004107r25bmaeoo",
     },
   });
+
+  console.log('Seeding Media "Burma Star 1" success!');
 };
 
 export const ruby_burma_star_2 = async () => {
@@ -163,6 +183,8 @@ export const ruby_burma_star_2 = async () => {
       galleryId: "cm39hdrk70004107r25bmaeoo",
     },
   });
+
+  console.log('Seeding Media "Burma Star 2" success!');
 };
 
 export const ruby_burma_star_3 = async () => {
@@ -178,6 +200,8 @@ export const ruby_burma_star_3 = async () => {
       galleryId: "cm39hdrk70004107r25bmaeoo",
     },
   });
+
+  console.log('Seeding Media "Burma Star 3" success!');
 };
 
 export const permata_1 = async () => {
@@ -193,6 +217,8 @@ export const permata_1 = async () => {
       galleryId: "cm39hj1tz00046xne7dub4tsa",
     },
   });
+
+  console.log('Seeding Media ""Permata 1" success!');
 };
 
 export const permata_2 = async () => {
@@ -208,6 +234,8 @@ export const permata_2 = async () => {
       galleryId: "cm39hj1tz00046xne7dub4tsa",
     },
   });
+
+  console.log('Seeding Media ""Permata 2" success!');
 };
 
 export const permata_3 = async () => {
@@ -223,6 +251,8 @@ export const permata_3 = async () => {
       galleryId: "cm39hj1tz00046xne7dub4tsa",
     },
   });
+
+  console.log('Seeding Media ""Permata 3" success!');
 };
 
 export const display_batu_surgawi = async () => {
@@ -238,6 +268,8 @@ export const display_batu_surgawi = async () => {
       galleryId: "cm39humvo000c6xne8djm036d",
     },
   });
+
+  console.log('Seeding Media "Display Batu Surgawi" success!');
 };
 
 export const detail_batu_surgawi = async () => {
@@ -253,6 +285,8 @@ export const detail_batu_surgawi = async () => {
       galleryId: "cm39humvo000c6xne8djm036d",
     },
   });
+
+  console.log('Seeding Media "Detail Batu Surgawi" success!');
 };
 
 export const batu_lepas_hijau = async () => {
@@ -268,6 +302,8 @@ export const batu_lepas_hijau = async () => {
       galleryId: "cm39i2mjn0005la8wrddcbcss",
     },
   });
+
+  console.log('Seeding Media "Batu Lepas Hijau" success!');
 };
 
 export const batu_lepas_shine = async () => {
@@ -283,6 +319,8 @@ export const batu_lepas_shine = async () => {
       galleryId: "cm39i2mjn0005la8wrddcbcss",
     },
   });
+
+  console.log('Seeding Media "Batu Lepas Shine" success!');
 };
 
 export const christian_wiediger_1 = async () => {
@@ -298,6 +336,8 @@ export const christian_wiediger_1 = async () => {
       galleryId: "cm3bc1wbg0005100ypaz8gr9a",
     },
   });
+
+  console.log('Seeding Media "Christian Wiediger 1" success!');
 };
 
 export const christian_wiediger_2 = async () => {
@@ -313,4 +353,6 @@ export const christian_wiediger_2 = async () => {
       galleryId: "cm3bc1wbg0005100ypaz8gr9a",
     },
   });
+
+  console.log('Seeding Media "Christian Wiediger 2" success!');
 };
