@@ -2,7 +2,7 @@
 
 import { ProductFormSchema, ProductSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { handlingError, initRawData, padValue, slugify } from "../utils";
+import { getFileMimeTypes, handlingError, initRawData, padValue, slugify } from "../utils";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { createObject } from "../service";
@@ -75,6 +75,7 @@ export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
 ) => {
+  console.log(initRawData(formData));
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
@@ -82,31 +83,35 @@ export const createProduct = async (
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
-      for (const [index, { title, media }] of medias.entries()) {
+      for (const { title, order, media } of medias) {
         if (media) {
-          const previewFile = new File([media], "");
+          const { fileMime } = getFileMimeTypes(media.type);
+          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
+          const previewFile = new File([media], fileName, { type: media.type });
           const arrayBuffer = await previewFile.arrayBuffer();
           const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
-          const fileName = `${padValue(index)}_${slugify(title)}`;
           const objectParams: Parameters<typeof createObject>[0] = {
             bucketName: "nextjs-catalog",
             objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
               title,
-              index,
+              order,
             },
           };
+
           await createObject(objectParams);
         }
       }
 
       const files = medias
         .sort((a, b) => a.order - b.order)
-        .map(({ title, order }) => {
-          const fileName = `${padValue(order)}_${slugify(title)}`;
+        .map(({ title, order, media }) => {
+          const { fileMime } = getFileMimeTypes(media!.type);
+          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
           return { title, slug: slugify(title), order, name: fileName };
         });
+
       const newProduct = await prisma.$transaction(async (_prisma) => {
         const _collection = await _prisma.collection.findFirst({
           where: {
