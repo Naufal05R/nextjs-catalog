@@ -5,6 +5,7 @@ export const sapphire = async () => {
     where: { slug: "sapphire" },
     update: {},
     create: {
+      id: "cm32ooxry0002gk847mqzh1to",
       title: "Shappire",
       slug: "sapphire",
       description: "Sapphire Category",
@@ -19,6 +20,7 @@ export const ruby = async () => {
     where: { slug: "ruby" },
     update: {},
     create: {
+      id: "cm32ot82q0003gk84owcim11u",
       title: "Ruby",
       slug: "ruby",
       description: "Ruby Category",
@@ -33,6 +35,7 @@ export const crystal = async () => {
     where: { slug: "crystal" },
     update: {},
     create: {
+      id: "cm35mv1h500001z47i1pvnvnp",
       title: "Crystal",
       slug: "crystal",
       description: "Crystal Category",
@@ -47,6 +50,7 @@ export const emerald = async () => {
     where: { slug: "emerald" },
     update: {},
     create: {
+      id: "cm39i13s00000la8wdjqbz726",
       title: "Emerald",
       slug: "emerald",
       description: "Emerald Category",
