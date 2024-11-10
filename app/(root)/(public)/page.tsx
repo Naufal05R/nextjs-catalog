@@ -25,7 +25,7 @@ export default function Home() {
       <section className="mt-16">
         <h4 className="mb-4 text-2xl">Shop our collections</h4>
 
-        <DynamicCollections />
+        <DynamicCollections max={3} />
       </section>
 
       <section className="mt-16 w-full bg-slate-200 p-8">
