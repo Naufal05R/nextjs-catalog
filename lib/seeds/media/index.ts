@@ -19,8 +19,6 @@ import {
   detail_batu_surgawi,
   batu_lepas_hijau,
   batu_lepas_shine,
-  christian_wiediger_1,
-  christian_wiediger_2,
 } from "./seeder";
 
 export default async function seeder() {
@@ -44,8 +42,6 @@ export default async function seeder() {
     await detail_batu_surgawi();
     await batu_lepas_hijau();
     await batu_lepas_shine();
-    await christian_wiediger_1();
-    await christian_wiediger_2();
 
     console.log("Seeding Media success!");
   } catch (error) {
