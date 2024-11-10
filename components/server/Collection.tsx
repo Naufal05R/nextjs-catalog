@@ -127,15 +127,14 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
   );
 };
 
-export const DynamicCollections = async () => {
-
+export const DynamicCollections = async ({ max }: { max?: number }) => {
   const Component = async () => {
     const allCollections = await getAllCollection();
 
     return (
       <ul className="grid grid-cols-12 items-center gap-4">
         <Mapper
-          data={allCollections!.slice(0, 3) ?? collections}
+          data={allCollections!.slice(0, max) ?? collections}
           render={({ title, description, slug }) => (
             <Collection
               title={title}
