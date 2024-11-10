@@ -43,6 +43,14 @@ export function countDiscount(price: number, discount: number) {
   return price * (1 - Math.min(Math.abs(discount), 100) / 100);
 }
 
+export function cleanExtraSpaces(str: string) {
+  return str.trim().replace(/\s+/g, " ");
+}
+
+export function removeUnwantedChars(str: string) {
+  return str.replace(/[^a-zA-Z0-9\-\_\s]/g, "");
+}
+
 export const getImageSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
   return `${SERVER_ENDPOINT}/${collection}/${product}/${name}`;
 };
@@ -58,13 +66,14 @@ export function getFileMimeTypes(str: string) {
   return { fileType, fileMime };
 }
 
-export function getFileDetails(str: string) {
-  const lastDotIndex = str.lastIndexOf(".");
+export function getFileDetails(str: string, mutable = false) {
+  const title = mutable ? str : cleanExtraSpaces(str);
+  const lastDotIndex = title.lastIndexOf(".");
 
-  if (lastDotIndex === -1) return { fileName: str, fileExt: "" };
+  if (lastDotIndex === -1) return { fileName: title, fileExt: "" };
 
-  const fileName = str.substring(0, lastDotIndex);
-  const fileExt = str.substring(lastDotIndex + 1);
+  const fileName = title.substring(0, lastDotIndex);
+  const fileExt = title.substring(lastDotIndex + 1);
 
   return { fileName, fileExt };
 }
@@ -73,20 +82,27 @@ export function initRawData(formData: FormData) {
   const rawData: { [key: string]: unknown } = {};
   const medias: Array<z.infer<typeof MediaFormSchema>> = [];
 
-  for (const [key, value] of formData.entries()) {
-    if (key === "media.image" && value instanceof (File || Blob)) {
-      const { name, type } = value;
-      const underscoreIndex = value.name.indexOf("_");
+  const medias_title = formData.getAll("media.title");
+  const medias_image = formData.getAll("media.image");
 
-      medias.push({
-        title: readSlug(name.substring(underscoreIndex + 1)),
-        order: Number(name.substring(0, underscoreIndex)),
-        media: new File([value], name, { type }),
-      });
-    } else {
+  for (const [key, value] of formData.entries()) {
+    if (!key.includes("media")) {
       rawData[key] = value;
     }
   }
+
+  Array.from({ length: Math.min(medias_title.length, medias_image.length) }).forEach((_, index) => {
+    const title = medias_title[index];
+    const image = medias_image[index];
+
+    if (typeof title === "string" && image instanceof (File || Blob)) {
+      medias.push({
+        title,
+        order: index,
+        media: image,
+      });
+    }
+  });
 
   rawData["medias"] = medias;
 
