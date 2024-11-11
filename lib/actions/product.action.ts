@@ -76,6 +76,8 @@ export const getProducts = async (identifier: string, field: keyof z.infer<typeo
   }
 };
 
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
+
 export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
@@ -96,7 +98,7 @@ export const createProduct = async (
           const arrayBuffer = await previewFile.arrayBuffer();
           const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
           const objectParams: Parameters<typeof createObject>[0] = {
-            bucketName: "nextjs-catalog",
+            bucketName: APP_NAME,
             objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
