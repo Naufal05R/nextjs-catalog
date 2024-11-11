@@ -60,12 +60,12 @@ const initialNavigations = {
     },
     {
       name: "Products",
-      url: "/dashboard",
+      url: "/dashboard/deprecated/products",
       icon: Archive,
     },
     {
       name: "News",
-      url: "/dashboard",
+      url: "/dashboard/deprecated/news",
       icon: Archive,
     },
   ],
