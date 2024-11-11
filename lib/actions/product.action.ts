@@ -9,8 +9,8 @@ import { createObject } from "../service";
 import { revalidatePath } from "next/cache";
 
 export const getAllProduct = async (
-  identifier?: string | number | boolean,
   field?: keyof z.infer<typeof ProductSchema>,
+  identifier?: string | number | boolean,
 ) => {
   try {
     const allProducts = await prisma.product.findMany({
