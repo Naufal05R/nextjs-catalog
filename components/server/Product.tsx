@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { Archive, ArchiveRestore, Pencil } from "lucide-react";
+import { Archive, ArchiveRestore, Grid2x2Plus, Pencil, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
@@ -22,6 +22,7 @@ export const DashbaordProductCard = ({
   slug,
   price,
   state,
+  isReady,
   discount,
   description,
   collection,
@@ -78,100 +79,72 @@ export const DashbaordProductCard = ({
       </CardFooter>
 
       <CardFooter className="mt-auto gap-4">
-        <Button className="flex-1" form="archive-product">
-          <form id="archive-product" action={archiveProduct} />
+        <Button className={cn("flex-1", { "bg-blue-600 hover:bg-blue-600/90": !isReady })} form="archive-product">
+          <form id="archive-product" action={isReady ? archiveProduct : unarchiveProduct} className="hidden" />
           <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
-          <Archive />
-          Archive
+          {isReady ? <Archive /> : <ArchiveRestore />}
+          {isReady ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button asChild className="flex-1">
-          <Link href={`/dashboard/products/${collection}/${slug}`}>
-            <Pencil />
-            Edit
-          </Link>
+        <Button asChild={isReady} variant={isReady ? "default" : "destructive"} className="flex-1">
+          {isReady ? (
+            <Link href={`/dashboard/products/${collection}/${slug}`}>
+              <Pencil />
+              Edit
+            </Link>
+          ) : (
+            <>
+              <Trash2 />
+              Delete
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>
   );
 };
 
-export const DeprecatedProductCard = ({
-  id,
-  title,
-  slug,
-  price,
-  state,
-  discount,
-  description,
-  collection,
-  thumbnail,
-}: DashbaordProductCardProps) => {
-  const src = getImageSrc({ collection, product: slug, name: thumbnail });
-
+export const CreateProductCard = ({ collection }: { collection?: string }) => {
   return (
-    <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
-      <CardHeader>
-        <Image
-          src={src}
-          unoptimized
-          alt="dummy_image"
-          fill
-          sizes="25vw"
-          classNames={{ figure: "w-full aspect-video rounded-md" }}
-        />
+    <Card
+      className={cn(
+        "relative col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4",
+        { invisible: !collection },
+      )}
+    >
+      <CardHeader className="invisible">
+        <figure className="aspect-video w-full rounded-md"></figure>
       </CardHeader>
-
-      <CardContent>
-        <CardTitle className="line-clamp-1 whitespace-nowrap text-lg font-semibold">{title}</CardTitle>
-        <CardDescription className="mb-2 line-clamp-3">{description}</CardDescription>
-        <div className="ml-auto flex w-fit gap-2">
-          <Badge
-            variant={"secondary"}
-            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
-          >
-            Sapphire
-          </Badge>
-          <Badge
-            variant={"secondary"}
-            className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
-          >
-            {state} Origin
-          </Badge>
-        </div>
+      <CardContent className="invisible">
+        <CardTitle className="text-lg font-semibold">Invisible Title</CardTitle>
+        <CardDescription className="mb-2 line-clamp-3">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur unde, quidem amet labore quasi
+          laboriosam placeat ut repellendus. Voluptatum velit optio repellat, cum tempora fuga harum aperiam provident
+          voluptate dolorum! Architecto, harum?
+        </CardDescription>
+        <Badge>Invisible Badge</Badge>
       </CardContent>
-
-      <CardFooter className={cn("flex-1 justify-end", { "justify-between": !!discount })}>
-        {!!discount && (
-          <Badge variant={"outline"} className="border-rose-200 text-rose-500">
-            {discount}% OFF
-          </Badge>
-        )}
+      <CardFooter className="invisible">
         <div className="flex flex-col">
-          {!!discount && (
-            <CardDescription className="w-full text-right text-xs line-through">{formatPrice(price)}</CardDescription>
-          )}
-          <CardTitle className="w-full select-none text-right text-base font-semibold">
-            Rp. {formatPrice(countDiscount(price, discount ?? 0))}
-          </CardTitle>
+          <CardDescription className="w-full">Invisible Price</CardDescription>
+          <CardTitle className="w-full">Invisible Price</CardTitle>
         </div>
       </CardFooter>
-
-      <CardFooter className="mt-auto gap-4">
-        <Button className="flex-1" form="archive-product">
-          <form id="archive-product" action={unarchiveProduct} />
-          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
-          <ArchiveRestore />
-          Archive
-        </Button>
-
-        <Button asChild className="flex-1">
-          <Link href={`/dashboard/products/${collection}/${slug}`}>
-            <Pencil />
-            Edit
-          </Link>
-        </Button>
+      <CardFooter className="invisible">
+        <Button className="flex-1">Invisible Button</Button>
       </CardFooter>
+
+      {collection && (
+        <Link
+          href={`/dashboard/products/${collection}/add`}
+          className="absolute inset-0 flex size-full flex-col items-center justify-center"
+        >
+          <Grid2x2Plus className="mx-auto" size={64} />
+          <CardTitle className="mt-4 line-clamp-1 whitespace-nowrap text-xl font-semibold">
+            Create new <span className="capitalize">{collection}</span>
+          </CardTitle>
+        </Link>
+      )}
     </Card>
   );
 };
