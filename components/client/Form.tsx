@@ -55,10 +55,6 @@ export function GuestbookForm() {
     <article className="mt-8 flex w-full flex-col space-y-4 text-right">
       <form id="guestbook-form" action={actionHanlder} className="hidden" />
 
-      <Label htmlFor="title" form="guestbook-form">
-        <Input id="title" name="title" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
-      </Label>
-
       <Label htmlFor="name" form="guestbook-form">
         <Input id="name" name="name" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
       </Label>
@@ -603,4 +599,48 @@ export function CreateNewsForm() {
       ),
     });
   };
+
+  return (
+    <article className="mt-8 flex w-full flex-col space-y-4 text-right">
+      <form id="create-news-form" action={actionHanlder} className="hidden" />
+
+      <Label htmlFor="title" form="create-news-form">
+        <Input
+          id="title"
+          name="title"
+          className="rounded-none shadow-none"
+          placeholder="Title"
+          form="create-news-form"
+        />
+      </Label>
+
+      <Label htmlFor="description" form="create-news-form">
+        <Textarea
+          id="description"
+          name="description"
+          className="rounded-none shadow-none"
+          placeholder="Description"
+          form="create-news-form"
+          cols={30}
+          rows={10}
+        />
+      </Label>
+
+      <Label htmlFor="content" form="create-news-form">
+        <Textarea
+          id="content"
+          name="content"
+          className="rounded-none shadow-none"
+          placeholder="Message"
+          form="create-news-form"
+          cols={30}
+          rows={10}
+        />
+      </Label>
+
+      <Button type="submit" className="ml-auto rounded-none" form="create-news-form">
+        Send
+      </Button>
+    </article>
+  );
 }
