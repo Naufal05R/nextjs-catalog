@@ -50,7 +50,7 @@ const initialNavigations = {
   projects: [
     {
       name: "News",
-      url: "/dashboard",
+      url: "/dashboard/news",
       icon: Newspaper,
     },
     {
