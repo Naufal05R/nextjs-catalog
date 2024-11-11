@@ -14,7 +14,7 @@ export const getAllProduct = async (
 ) => {
   try {
     const allProducts = await prisma.product.findMany({
-      where: identifier ? field && { [field]: identifier } : undefined,
+      where: field && { [field]: identifier },
       include: {
         category: {
           select: {
