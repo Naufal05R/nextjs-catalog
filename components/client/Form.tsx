@@ -44,33 +44,44 @@ import { DataKeys } from "@/types/data";
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
-    const data = formData.entries();
-
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">
+            <Mapper data={formData.entries().toArray()} render={([key, value]) => `${key}: ${value}\n`} />
+          </code>
         </pre>
       ),
     });
   };
 
   return (
-    <article className="mt-8 w-full space-y-4 text-right">
+    <article className="mt-8 flex w-full flex-col space-y-4 text-right">
       <form id="guestbook-form" action={actionHanlder} className="hidden" />
 
+      <Label htmlFor="title" form="guestbook-form">
+        <Input id="title" name="title" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
+      </Label>
+
       <Label htmlFor="name" form="guestbook-form">
-        <Input id="name" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
+        <Input id="name" name="name" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
       </Label>
 
       <Label htmlFor="origin" form="guestbook-form">
-        <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" form="guestbook-form" />
+        <Input
+          id="origin"
+          name="origin"
+          className="rounded-none shadow-none"
+          placeholder="Origin"
+          form="guestbook-form"
+        />
       </Label>
 
       <Label htmlFor="message" form="guestbook-form">
         <Textarea
           id="message"
+          name="message"
           className="rounded-none shadow-none"
           placeholder="Message"
           form="guestbook-form"
