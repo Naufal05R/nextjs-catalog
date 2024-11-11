@@ -3,13 +3,13 @@ import Link from "next/link";
 
 import { Archive, ArchiveRestore, Grid2x2Plus, Pencil, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { archiveProduct, deleteProduct, unarchiveProduct } from "@/lib/actions/product.action";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
-import { archiveProduct, unarchiveProduct } from "@/lib/actions/product.action";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -86,7 +86,7 @@ export const DashbaordProductCard = ({
           {isReady ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button asChild={isReady} className="flex-1">
+        <Button asChild={isReady} className="flex-1" form="delete-product">
           {isReady ? (
             <Link href={`/dashboard/products/${collection}/${slug}`}>
               <Pencil />
@@ -94,6 +94,8 @@ export const DashbaordProductCard = ({
             </Link>
           ) : (
             <>
+              <form id="delete-product" action={deleteProduct} className="hidden" />
+              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="delete-product" />
               <Trash2 />
               Delete
             </>
