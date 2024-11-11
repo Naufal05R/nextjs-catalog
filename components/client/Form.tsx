@@ -28,7 +28,6 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { GuestbookFormSchema } from "@/schema/guestbook";
 import { ContactFormSchema } from "@/schema/contact";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
@@ -44,16 +43,9 @@ import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
 
 export function GuestbookForm() {
-  const form = useForm<z.infer<typeof GuestbookFormSchema>>({
-    resolver: zodResolver(GuestbookFormSchema),
-    defaultValues: {
-      name: "",
-      origin: "",
-      message: "",
-    },
-  });
+  const actionHanlder = async (formData: FormData) => {
+    const data = formData.entries();
 
-  function onSubmit(data: z.infer<typeof GuestbookFormSchema>) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -62,65 +54,35 @@ export function GuestbookForm() {
         </pre>
       ),
     });
-  }
-  return (
-    <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-4 text-right">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="name">
-                <FormControl>
-                  <Input id="name" className="rounded-none shadow-none" placeholder="Name" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="origin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="origin">
-                <FormControl>
-                  <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="message">
-                <FormControl>
-                  <Textarea
-                    cols={30}
-                    rows={10}
-                    id="message"
-                    className="rounded-none shadow-none"
-                    placeholder="Message"
-                    {...field}
-                  />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+  };
 
-        <Button type="submit" className="ml-auto rounded-none">
-          Send
-        </Button>
-      </form>
-    </FormRoot>
+  return (
+    <article className="mt-8 w-full space-y-4 text-right">
+      <form id="guestbook-form" action={actionHanlder} className="hidden" />
+
+      <Label htmlFor="name" form="guestbook-form">
+        <Input id="name" className="rounded-none shadow-none" placeholder="Name" form="guestbook-form" />
+      </Label>
+
+      <Label htmlFor="origin" form="guestbook-form">
+        <Input id="origin" className="rounded-none shadow-none" placeholder="Origin" form="guestbook-form" />
+      </Label>
+
+      <Label htmlFor="message" form="guestbook-form">
+        <Textarea
+          id="message"
+          className="rounded-none shadow-none"
+          placeholder="Message"
+          form="guestbook-form"
+          cols={30}
+          rows={10}
+        />
+      </Label>
+
+      <Button type="submit" className="ml-auto rounded-none" form="guestbook-form">
+        Send
+      </Button>
+    </article>
   );
 }
 
