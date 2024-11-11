@@ -57,7 +57,7 @@ export const uploadObject = async ({
   bucketName: string;
   objectName: string;
   filePath: string;
-  objectMetadata: Record<string, string | number>;
+  objectMetadata?: Record<string, string | number>;
 }) => {
   try {
     const result = await minioClient.fPutObject(bucketName, objectName, filePath, objectMetadata);
