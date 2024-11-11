@@ -14,7 +14,7 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
 
   if (!collectionId) return notFound();
 
-  const products = await getAllProduct({ where: { collectionId: "collectionId", isReady: true } });
+  const products = await getAllProduct({ where: { collectionId: collectionId, isReady: true } });
 
   return (
     <section className="grid size-full place-items-start">
