@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { createObject } from "@/lib/service";
+import { uploadObject } from "@/lib/service";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
+const STORAGE_URL = process.env.STORAGE_URL ?? "";
 
 export const permata_1 = async () => {
   const name = "000_permata-1.jpeg";
@@ -20,10 +21,10 @@ export const permata_1 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Permata 1" success!');
@@ -46,10 +47,10 @@ export const permata_2 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Permata 2" success!');
@@ -72,10 +73,10 @@ export const permata_3 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Permata 3" success!');
@@ -98,10 +99,10 @@ export const blue_star_sapphire_1 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Blue Star Sapphire 1" success!');
@@ -124,10 +125,10 @@ export const blue_star_sapphire_2 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Blue Star Sapphire 2" success!');
@@ -150,10 +151,10 @@ export const blue_star_sapphire_3 = async () => {
     },
   });
 
-  await createObject({
+  await uploadObject({
     bucketName: APP_NAME,
     objectName: `${path}/${name}`,
-    objectStream: `/public/storage/${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
   console.log('Seeding Media "Blue Star Sapphire 3" success!');
