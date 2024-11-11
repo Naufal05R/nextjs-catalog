@@ -591,3 +591,7 @@ export function CreateProductForm({ collection, categories }: { collection: stri
     </>
   );
 }
+
+export function CreateNewsForm() {
+  
+}
