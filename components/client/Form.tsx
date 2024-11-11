@@ -601,45 +601,63 @@ export function CreateNewsForm() {
   };
 
   return (
-    <article className="mt-8 flex w-full flex-col space-y-4 text-right">
+    <article className="mt-8 grid w-full grid-cols-12 gap-4">
       <form id="create-news-form" action={actionHanlder} className="hidden" />
 
-      <Label htmlFor="title" form="create-news-form">
-        <Input
-          id="title"
-          name="title"
-          className="rounded-none shadow-none"
-          placeholder="Title"
-          form="create-news-form"
-        />
-      </Label>
+      <fieldset className="col-span-12">
+        <h6 className="mb-1 text-lg font-medium">News Title</h6>
+        <Label htmlFor="title">
+          <Input
+            id="title"
+            name="title"
+            form="create-news-form"
+            className="rounded-none shadow-none"
+            placeholder="Title"
+          />
+          {/* <ErrorMessage name="title" /> */}
+        </Label>
+      </fieldset>
 
-      <Label htmlFor="description" form="create-news-form">
-        <Textarea
-          id="description"
-          name="description"
-          className="rounded-none shadow-none"
-          placeholder="Description"
-          form="create-news-form"
-          cols={30}
-          rows={10}
-        />
-      </Label>
+      <fieldset className="col-span-12">
+        <h6 className="mb-1 text-lg font-medium">News Description</h6>
+        <Label htmlFor="description">
+          <Textarea
+            id="description"
+            name="description"
+            className="rounded-none shadow-none"
+            placeholder="Description"
+            form="create-news-form"
+            cols={30}
+            rows={10}
+          />
+          {/* <ErrorMessage name="description" /> */}
+        </Label>
+      </fieldset>
 
-      <Label htmlFor="content" form="create-news-form">
-        <Textarea
-          id="content"
-          name="content"
-          className="rounded-none shadow-none"
-          placeholder="Message"
-          form="create-news-form"
-          cols={30}
-          rows={10}
-        />
-      </Label>
+      <fieldset className="col-span-12">
+        <h6 className="mb-1 text-lg font-medium">News Content</h6>
+        <Label htmlFor="content">
+          <Textarea
+            id="content"
+            name="content"
+            className="rounded-none shadow-none"
+            placeholder="Message"
+            form="create-news-form"
+            cols={30}
+            rows={10}
+          />
+          {/* <ErrorMessage name="description" /> */}
+        </Label>
+      </fieldset>
 
-      <Button type="submit" className="ml-auto rounded-none" form="create-news-form">
-        Send
+      <Button
+        type="submit"
+        // disabled={isPending}
+        className="col-span-12 mt-8 flex w-full rounded-none"
+        form="create-news-form"
+        size="lg"
+      >
+        Save
       </Button>
     </article>
   );
