@@ -1,20 +1,39 @@
-import { getAllProduct } from "@/lib/actions/product.action";
 import React from "react";
-import Mapper from "../server/Mapper";
+import Link from "next/link";
+import Mapper from "@/components/server/Mapper";
+import { getAllProduct } from "@/lib/actions/product.action";
+import { CreateProductCard, DashbaordProductCard } from "@/components/server/Product";
+import { Button } from "@/components/ui/button";
 
 const DeprecatedProducts = async () => {
   const deprecatedProducts = await getAllProduct({ where: { isReady: false } });
   return (
-    <div>
+    <section className="grid size-full place-items-start">
       {deprecatedProducts && !!deprecatedProducts.length ? (
-        <ul>
-          Deprecated Products
-          <Mapper data={deprecatedProducts} render={({ title }) => <li>{title}</li>} />
+        <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
+          <Mapper
+            data={deprecatedProducts}
+            render={({ gallery, collection: { slug }, ...product }) => {
+              return (
+                !!gallery &&
+                !!gallery.medias.length && (
+                  <DashbaordProductCard {...product} collection={slug} thumbnail={gallery.medias[0].name} />
+                )
+              );
+            }}
+          />
+
+          <CreateProductCard />
         </ul>
       ) : (
-        "No Products"
+        <article className="flex size-full flex-col items-center justify-center space-y-4">
+          <h4 className="text-center text-3xl font-medium">There&apos;s no archived products</h4>
+          <Button asChild>
+            <Link href={`/dashboard/products`}>Back to collection</Link>
+          </Button>
+        </article>
       )}
-    </div>
+    </section>
   );
 };
 
