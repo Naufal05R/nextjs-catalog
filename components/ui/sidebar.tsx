@@ -64,7 +64,7 @@ const initialNavigations = {
       icon: Archive,
     },
     {
-      name: "Blogs",
+      name: "News",
       url: "/dashboard",
       icon: Archive,
     },
