@@ -1,10 +1,9 @@
-import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
-import { Button } from "@/components/ui/button";
 import { getCollection } from "@/lib/actions/collection.action";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { notFound } from "next/navigation";
 import { CreateProductCard, DashbaordProductCard } from "@/components/server/Product";
+import { EmptyState } from "@/components/server/Empty";
 
 export default async function ProductsByCollectionPage({ params }: { params: { collection: string } }) {
   const collectionId = await getCollection(params.collection, "slug").then((collection) => collection?.id);
@@ -35,14 +34,11 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
           <CreateProductCard collection={params.collection} />
         </ul>
       ) : (
-        <article className="flex size-full flex-col items-center justify-center space-y-4">
-          <h4 className="text-center text-3xl font-medium">
-            There&apos;s no products exist <br /> in this collection
-          </h4>
-          <Button asChild>
-            <Link href={`/dashboard/products/${params.collection}/add`}>Create a New Product</Link>
-          </Button>
-        </article>
+        <EmptyState
+          title="There's no products exist in this collection"
+          href={`/dashboard/products/${params.collection}/add`}
+          alt="Create a New Product"
+        />
       )}
     </section>
   );
