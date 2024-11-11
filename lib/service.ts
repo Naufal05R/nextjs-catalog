@@ -81,3 +81,25 @@ export const streamObjects = ({ bucketName, includeMetadata }: { bucketName: str
     handlingError(error);
   });
 };
+
+export const deleteObjects = ({ bucketName, prefix }: { bucketName: string; prefix: string }) => {
+  const objectsList: Array<string> = [];
+
+  if (!prefix) throw new Error("Prefix is required!");
+
+  const objectsStream = minioClient.listObjects(bucketName, prefix, true);
+
+  objectsStream.on("data", function (object) {
+    if (object.name) {
+      objectsList.push(object.name);
+    }
+  });
+
+  objectsStream.on("error", function (error) {
+    handlingError(error);
+  });
+
+  objectsStream.on("end", async () => {
+    await minioClient.removeObjects(bucketName, objectsList);
+  });
+};
