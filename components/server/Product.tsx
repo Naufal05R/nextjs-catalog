@@ -115,7 +115,7 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
       )}
     >
       <CardHeader className="invisible">
-        <figure className="aspect-video w-full rounded-md"></figure>
+        <figure className="aspect-video w-full rounded-md" />
       </CardHeader>
       <CardContent className="invisible">
         <CardTitle className="text-lg font-semibold">Invisible Title</CardTitle>
