@@ -7,14 +7,16 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { createObject } from "../service";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
 
-export const getAllProduct = async (
-  field?: keyof z.infer<typeof ProductSchema>,
-  identifier?: string | number | boolean,
-) => {
+type GetAllProductProps = {
+  where?: Prisma.ProductWhereInput;
+};
+
+export const getAllProduct = async ({ where }: GetAllProductProps) => {
   try {
     const allProducts = await prisma.product.findMany({
-      where: field && { [field]: identifier },
+      where,
       include: {
         category: {
           select: {
