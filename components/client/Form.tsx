@@ -1,12 +1,10 @@
 "use client";
 
-import { z } from "zod";
-import { useCallback, useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useCallback, useEffect, useState } from "react";
+import Mapper from "@/components/server/Mapper";
 import { useDropzone } from "react-dropzone";
-import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Form as FormRoot, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { toast as sonner } from "sonner";
 
-import Mapper from "@/components/server/Mapper";
 import { Image, Video } from "@/components/server/Media";
 import {
   CloudUpload,
@@ -27,8 +24,6 @@ import {
   ShieldAlert,
   Trash2,
 } from "lucide-react";
-
-import { ContactFormSchema } from "@/schema/contact";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
 import { cn, getFileDetails, getFileMimeTypes, removeUnwantedChars } from "@/lib/utils";
