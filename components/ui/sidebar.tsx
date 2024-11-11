@@ -44,7 +44,7 @@ const initialNavigations = {
       url: "#",
       icon: Boxes,
       isActive: true,
-      items: [{ title: "", url: "" }],
+      items: Array.from([{ title: "", url: "" }]).slice(0, 0),
     },
   ],
   projects: [
