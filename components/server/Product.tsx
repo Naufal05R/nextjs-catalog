@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { Archive, Pencil } from "lucide-react";
+import { Archive, ArchiveRestore, Pencil } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
-import { archiveProduct } from "@/lib/actions/product.action";
+import { archiveProduct, unarchiveProduct } from "@/lib/actions/product.action";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
   thumbnail: string;
 }
 
-export const DashbaordProductCard = async ({
+export const DashbaordProductCard = ({
   id,
   title,
   slug,
@@ -24,78 +24,156 @@ export const DashbaordProductCard = async ({
   state,
   discount,
   description,
-  isReady,
   collection,
   thumbnail,
 }: DashbaordProductCardProps) => {
   const src = getImageSrc({ collection, product: slug, name: thumbnail });
 
-  if (isReady && src)
-    return (
-      <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
-        <CardHeader>
-          <Image
-            src={src}
-            unoptimized
-            alt="dummy_image"
-            fill
-            sizes="25vw"
-            classNames={{ figure: "w-full aspect-video rounded-md" }}
-          />
-        </CardHeader>
+  return (
+    <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
+      <CardHeader>
+        <Image
+          src={src}
+          unoptimized
+          alt="dummy_image"
+          fill
+          sizes="25vw"
+          classNames={{ figure: "w-full aspect-video rounded-md" }}
+        />
+      </CardHeader>
 
-        <CardContent>
-          <CardTitle className="line-clamp-1 whitespace-nowrap text-lg font-semibold">{title}</CardTitle>
-          <CardDescription className="mb-2 line-clamp-3">{description}</CardDescription>
-          <div className="ml-auto flex w-fit gap-2">
-            <Badge
-              variant={"secondary"}
-              className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
-            >
-              Sapphire
-            </Badge>
-            <Badge
-              variant={"secondary"}
-              className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
-            >
-              {state} Origin
-            </Badge>
-          </div>
-        </CardContent>
+      <CardContent>
+        <CardTitle className="line-clamp-1 whitespace-nowrap text-lg font-semibold">{title}</CardTitle>
+        <CardDescription className="mb-2 line-clamp-3">{description}</CardDescription>
+        <div className="ml-auto flex w-fit gap-2">
+          <Badge
+            variant={"secondary"}
+            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
+          >
+            Sapphire
+          </Badge>
+          <Badge
+            variant={"secondary"}
+            className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
+          >
+            {state} Origin
+          </Badge>
+        </div>
+      </CardContent>
 
-        <CardFooter className={cn("flex-1 justify-end", { "justify-between": !!discount })}>
+      <CardFooter className={cn("flex-1 justify-end", { "justify-between": !!discount })}>
+        {!!discount && (
+          <Badge variant={"outline"} className="border-rose-200 text-rose-500">
+            {discount}% OFF
+          </Badge>
+        )}
+        <div className="flex flex-col">
           {!!discount && (
-            <Badge variant={"outline"} className="border-rose-200 text-rose-500">
-              {discount}% OFF
-            </Badge>
+            <CardDescription className="w-full text-right text-xs line-through">{formatPrice(price)}</CardDescription>
           )}
-          <div className="flex flex-col">
-            {!!discount && (
-              <CardDescription className="w-full text-right text-xs line-through">{formatPrice(price)}</CardDescription>
-            )}
-            <CardTitle className="w-full select-none text-right text-base font-semibold">
-              Rp. {formatPrice(countDiscount(price, discount ?? 0))}
-            </CardTitle>
-          </div>
-        </CardFooter>
+          <CardTitle className="w-full select-none text-right text-base font-semibold">
+            Rp. {formatPrice(countDiscount(price, discount ?? 0))}
+          </CardTitle>
+        </div>
+      </CardFooter>
 
-        <CardFooter className="mt-auto gap-4">
-          <Button className="flex-1" form="archive-product">
-            <form id="archive-product" action={archiveProduct} />
-            <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
-            <Archive />
-            Archive
-          </Button>
+      <CardFooter className="mt-auto gap-4">
+        <Button className="flex-1" form="archive-product">
+          <form id="archive-product" action={archiveProduct} />
+          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
+          <Archive />
+          Archive
+        </Button>
 
-          <Button asChild className="flex-1">
-            <Link href={`/dashboard/products/${collection}/${slug}`}>
-              <Pencil />
-              Edit
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
-    );
+        <Button asChild className="flex-1">
+          <Link href={`/dashboard/products/${collection}/${slug}`}>
+            <Pencil />
+            Edit
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export const DeprecatedProductCard = ({
+  id,
+  title,
+  slug,
+  price,
+  state,
+  discount,
+  description,
+  collection,
+  thumbnail,
+}: DashbaordProductCardProps) => {
+  const src = getImageSrc({ collection, product: slug, name: thumbnail });
+
+  return (
+    <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
+      <CardHeader>
+        <Image
+          src={src}
+          unoptimized
+          alt="dummy_image"
+          fill
+          sizes="25vw"
+          classNames={{ figure: "w-full aspect-video rounded-md" }}
+        />
+      </CardHeader>
+
+      <CardContent>
+        <CardTitle className="line-clamp-1 whitespace-nowrap text-lg font-semibold">{title}</CardTitle>
+        <CardDescription className="mb-2 line-clamp-3">{description}</CardDescription>
+        <div className="ml-auto flex w-fit gap-2">
+          <Badge
+            variant={"secondary"}
+            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
+          >
+            Sapphire
+          </Badge>
+          <Badge
+            variant={"secondary"}
+            className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
+          >
+            {state} Origin
+          </Badge>
+        </div>
+      </CardContent>
+
+      <CardFooter className={cn("flex-1 justify-end", { "justify-between": !!discount })}>
+        {!!discount && (
+          <Badge variant={"outline"} className="border-rose-200 text-rose-500">
+            {discount}% OFF
+          </Badge>
+        )}
+        <div className="flex flex-col">
+          {!!discount && (
+            <CardDescription className="w-full text-right text-xs line-through">{formatPrice(price)}</CardDescription>
+          )}
+          <CardTitle className="w-full select-none text-right text-base font-semibold">
+            Rp. {formatPrice(countDiscount(price, discount ?? 0))}
+          </CardTitle>
+        </div>
+      </CardFooter>
+
+      <CardFooter className="mt-auto gap-4">
+        <Button className="flex-1" form="archive-product">
+          <form id="archive-product" action={unarchiveProduct} />
+          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
+          <ArchiveRestore />
+          Archive
+        </Button>
+
+        <Button asChild className="flex-1">
+          <Link href={`/dashboard/products/${collection}/${slug}`}>
+            <Pencil />
+            Edit
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
 };
 
 interface CatalogProductCardProps extends Pick<Product, "title" | "slug" | "description" | "price" | "discount"> {
