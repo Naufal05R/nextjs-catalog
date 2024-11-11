@@ -48,6 +48,26 @@ export const createObject = async ({
   }
 };
 
+export const uploadObject = async ({
+  bucketName,
+  objectName,
+  filePath,
+  objectMetadata,
+}: {
+  bucketName: string;
+  objectName: string;
+  filePath: string;
+  objectMetadata: Record<string, string | number>;
+}) => {
+  try {
+    const result = await minioClient.fPutObject(bucketName, objectName, filePath, objectMetadata);
+
+    return result;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
 export const getObject = async ({
   bucketName,
   objectName,
