@@ -79,14 +79,14 @@ export const DashbaordProductCard = ({
       </CardFooter>
 
       <CardFooter className="mt-auto gap-4">
-        <Button className={cn("flex-1", { "bg-blue-600 hover:bg-blue-600/90": !isReady })} form="archive-product">
+        <Button className="flex-1" form="archive-product">
           <form id="archive-product" action={isReady ? archiveProduct : unarchiveProduct} className="hidden" />
           <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
           {isReady ? <Archive /> : <ArchiveRestore />}
           {isReady ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button asChild={isReady} variant={isReady ? "default" : "destructive"} className="flex-1">
+        <Button asChild={isReady} className="flex-1">
           {isReady ? (
             <Link href={`/dashboard/products/${collection}/${slug}`}>
               <Pencil />
