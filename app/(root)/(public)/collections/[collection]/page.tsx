@@ -15,7 +15,7 @@ export default async function CollectionPage({ params }: { params: { collection:
     }
   });
 
-  const allProducts = await getAllProduct("collectionId", id);
+  const allProducts = await getAllProduct({ where: { collectionId: id } });
 
   return (
     <section className="pt-8">

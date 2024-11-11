@@ -3,7 +3,7 @@ import React from "react";
 import Mapper from "../server/Mapper";
 
 const DeprecatedProducts = async () => {
-  const deprecatedProducts = await getAllProduct("isReady", false);
+  const deprecatedProducts = await getAllProduct({ where: { isReady: false } });
   return (
     <div>
       {deprecatedProducts && !!deprecatedProducts.length ? (
