@@ -5,7 +5,7 @@ import { prisma } from "../prisma";
 import { getFileMimeTypes, handlingError, initRawData, padValue, slugify } from "../utils";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { createObject } from "../service";
+import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 
@@ -204,6 +204,49 @@ export const unarchiveProduct = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
+
+export const deleteProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+      const selectedProduct = await prisma.product.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          slug: true,
+          collection: {
+            select: {
+              slug: true,
+            },
+          },
+        },
+      });
+
+      if (selectedProduct) {
+        await prisma.$transaction(async (_prisma) => {
+          await _prisma.product.delete({
+            where: {
+              id,
+            },
+          });
+
+          deleteObjects({
+            bucketName: APP_NAME,
+            prefix: `${selectedProduct.collection.slug}/${selectedProduct.slug}/`,
+          });
+        });
+
+        revalidatePath("/", "layout");
+      } else {
+        throw new Error("Product not found!");
+      }
     } catch (error) {
       handlingError(error);
     }
