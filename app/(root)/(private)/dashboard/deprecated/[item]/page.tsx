@@ -1,3 +1,4 @@
+import { DeprecatedProducts } from "@/components/page";
 import { notFound } from "next/navigation";
 
 interface DeprecatedItemPageProps {
@@ -9,7 +10,7 @@ interface DeprecatedItemPageProps {
 export default function DeprecatedItemPage({ params }: DeprecatedItemPageProps) {
   switch (params.item) {
     case "products":
-      return <>Deprecated {params.item}</>;
+      return <DeprecatedProducts />;
     case "news":
       return <>Deprecated {params.item}</>;
     default:
