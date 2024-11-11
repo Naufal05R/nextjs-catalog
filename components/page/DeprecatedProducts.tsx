@@ -1,9 +1,8 @@
 import React from "react";
-import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CreateProductCard, DashbaordProductCard } from "@/components/server/Product";
-import { Button } from "@/components/ui/button";
+import { EmptyState } from "../server/Empty";
 
 const DeprecatedProducts = async () => {
   const deprecatedProducts = await getAllProduct({ where: { isReady: false } });
@@ -26,12 +25,7 @@ const DeprecatedProducts = async () => {
           <CreateProductCard />
         </ul>
       ) : (
-        <article className="flex size-full flex-col items-center justify-center space-y-4">
-          <h4 className="text-center text-3xl font-medium">There&apos;s no archived products</h4>
-          <Button asChild>
-            <Link href={`/dashboard/products`}>Back to collection</Link>
-          </Button>
-        </article>
+        <EmptyState title="There's no archived products" href="/dashboard/products" alt="Back to collection" />
       )}
     </section>
   );
