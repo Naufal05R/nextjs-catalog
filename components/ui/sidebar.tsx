@@ -41,7 +41,7 @@ const initialNavigations = {
   navMain: [
     {
       title: "Collections",
-      url: "#",
+      url: "/dashboard",
       icon: Boxes,
       isActive: true,
       items: Array.from([{ title: "", url: "" }]).slice(0, 0),
@@ -50,22 +50,22 @@ const initialNavigations = {
   projects: [
     {
       name: "News",
-      url: "#",
+      url: "/dashboard",
       icon: Newspaper,
     },
     {
       name: "Broadcast",
-      url: "#",
+      url: "/dashboard",
       icon: Radio,
     },
     {
       name: "Products",
-      url: "#",
+      url: "/dashboard",
       icon: ArchiveX,
     },
     {
       name: "Blogs",
-      url: "#",
+      url: "/dashboard",
       icon: ArchiveX,
     },
   ],
