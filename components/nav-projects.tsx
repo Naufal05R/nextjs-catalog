@@ -32,7 +32,7 @@ export function NavProjectsPromotions({
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Deprecated</SidebarGroupLabel>
+      <SidebarGroupLabel>Promotions</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
