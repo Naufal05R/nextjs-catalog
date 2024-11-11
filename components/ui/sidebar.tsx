@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { ArchiveX, AudioWaveform, Boxes, Command, GalleryVerticalEnd, Newspaper, PanelLeft } from "lucide-react";
+import { ArchiveX, AudioWaveform, Boxes, Command, GalleryVerticalEnd, Newspaper, PanelLeft, Radio } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn, handlingError } from "@/lib/utils";
@@ -44,22 +44,20 @@ const initialNavigations = {
       url: "#",
       icon: Boxes,
       isActive: true,
-      items: [],
-    },
-    {
-      title: "Blogs",
-      url: "#",
-      icon: Newspaper,
-      isActive: true,
-      items: [
-        {
-          title: "Permata Indah",
-          url: "#",
-        },
-      ],
+      items: [{ title: "", url: "" }],
     },
   ],
   projects: [
+    {
+      name: "News",
+      url: "#",
+      icon: Newspaper,
+    },
+    {
+      name: "Broadcast",
+      url: "#",
+      icon: Radio,
+    },
     {
       name: "Products",
       url: "#",
