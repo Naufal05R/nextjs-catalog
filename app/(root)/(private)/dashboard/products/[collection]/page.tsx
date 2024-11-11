@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCollection } from "@/lib/actions/collection.action";
-import { getProducts } from "@/lib/actions/product.action";
+import { getAllProduct } from "@/lib/actions/product.action";
 import { Grid2x2Plus } from "lucide-react";
 import { notFound } from "next/navigation";
 import { DashbaordProductCard } from "@/components/server/Product";
@@ -14,7 +14,7 @@ export default async function ProductsByCollectionPage({ params }: { params: { c
 
   if (!collectionId) return notFound();
 
-  const products = await getProducts(collectionId, "collectionId");
+  const products = await getAllProduct({ where: { collectionId: "collectionId", isReady: true } });
 
   return (
     <section className="grid size-full place-items-start">
