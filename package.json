@@ -2,6 +2,9 @@
   "name": "nextjs-catalog",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "npx tsx lib/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +14,8 @@
     "local:generate": "dotenv -e .env.local -- npx prisma generate",
     "local:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
     "local:migrate:reset": "dotenv -e .env.local -- npx prisma migrate reset",
-    "local:studio": "dotenv -e .env.local -- npx prisma studio"
+    "local:studio": "dotenv -e .env.local -- npx prisma studio",
+    "postlocal:migrate:dev": "dotenv -e .env.local -- npx @snaplet/seed sync"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -52,6 +56,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@snaplet/copycat": "^5.1.0",
+    "@snaplet/seed": "^0.98.0",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^18.3.12",
