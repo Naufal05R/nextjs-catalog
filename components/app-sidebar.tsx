@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjectsPromotions } from "@/components/nav-projects";
+import { NavProjectsDeprecated, NavProjectsPromotions } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -25,7 +25,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navigations.navMain} />
-        <NavProjectsPromotions projects={navigations.projects} />
+        <NavProjectsPromotions projects={navigations.projects.slice(0, 2)} />
+        <NavProjectsDeprecated projects={navigations.projects.slice(2, 4)} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={navigations.user} />
