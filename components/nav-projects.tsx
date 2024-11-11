@@ -28,8 +28,6 @@ export function NavProjectsPromotions({
     icon: LucideIcon;
   }[];
 }) {
-  const { isMobile } = useSidebar();
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Promotions</SidebarGroupLabel>
@@ -42,33 +40,6 @@ export function NavProjectsPromotions({
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder className="text-slate-500 dark:text-slate-400" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-slate-500 dark:text-slate-400" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-slate-500 dark:text-slate-400" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </SidebarMenuItem>
         ))}
       </SidebarMenu>
