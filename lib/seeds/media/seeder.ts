@@ -1,324 +1,103 @@
 import { prisma } from "@/lib/prisma";
 
-export const sapphire_ceylon_1 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36umo0r000bma15g0p3f4f6" },
-    update: {},
-    create: {
-      id: "cm36umo0r000bma15g0p3f4f6",
-      title: "Sapphire Ceylon 1",
-      slug: "sapphire-ceylon-1",
-      name: "000_sapphire-ceylon-1.jpeg",
-      order: 0,
-      galleryId: "cm36umo0o000ama15bfkcepqz",
-    },
-  });
-
-  console.log('Seeding Media "Sapphire Ceylon 1" success!');
-};
-
-export const sapphire_ceylon_2 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36umo0r000cma15ncchjr2f" },
-    update: {},
-    create: {
-      id: "cm36umo0r000cma15ncchjr2f",
-      title: "Sapphire Ceylon 2",
-      slug: "sapphire-ceylon-2",
-      name: "001_sapphire-ceylon-2.jpeg",
-      order: 1,
-      galleryId: "cm36umo0o000ama15bfkcepqz",
-    },
-  });
-
-  console.log('Seeding Media "Sapphire Ceylon 2" success!');
-};
-
-export const sapphire_ceylon_3 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36umo0r000dma1571hes92s" },
-    update: {},
-    create: {
-      id: "cm36umo0r000dma1571hes92s",
-      title: "Sapphire Ceylon 3",
-      slug: "sapphire-ceylon-3",
-      name: "002_sapphire-ceylon-3.jpeg",
-      order: 1,
-      galleryId: "cm36umo0o000ama15bfkcepqz",
-    },
-  });
-
-  console.log('Seeding Media "Sapphire Ceylon 3" success!');
-};
-
-export const blue_star_sapphire_1 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36utuy9000jma15bmiia5jl" },
-    update: {},
-    create: {
-      id: "cm36utuy9000jma15bmiia5jl",
-      title: "Blue Star Sapphire 1",
-      slug: "blue-star-sapphire-1",
-      name: "000_blue-star-sapphire-1.jpeg",
-      order: 0,
-      galleryId: "cm36utuy8000ima15zb7s2t7t",
-    },
-  });
-
-  console.log('Seeding Media "Star Sapphire 1" success!');
-};
-
-export const blue_star_sapphire_2 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36utuy9000kma15rnqp9wjf" },
-    update: {},
-    create: {
-      id: "cm36utuy9000kma15rnqp9wjf",
-      title: "Blue Star Sapphire 2",
-      slug: "blue-star-sapphire-2",
-      name: "001_blue-star-sapphire-2.jpeg",
-      order: 1,
-      galleryId: "cm36utuy8000ima15zb7s2t7t",
-    },
-  });
-
-  console.log('Seeding Media "Star Sapphire 2" success!');
-};
-
-export const blue_star_sapphire_3 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm36utuy9000lma15tbrzzyfs" },
-    update: {},
-    create: {
-      id: "cm36utuy9000lma15tbrzzyfs",
-      title: "Blue Star Sapphire 3",
-      slug: "blue-star-sapphire-3",
-      name: "002_blue-star-sapphire-3.jpeg",
-      order: 2,
-      galleryId: "cm36utuy8000ima15zb7s2t7t",
-    },
-  });
-
-  console.log('Seeding Media "Star Sapphire 3" success!');
-};
-
-export const yellow_sapphire_1 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39h56ux00055qutid5npg9h" },
-    update: {},
-    create: {
-      id: "cm39h56ux00055qutid5npg9h",
-      title: "Yellow Sapphire 1",
-      slug: "yellow-sapphire-1",
-      name: "000_yellow-sapphire-1.jpeg",
-      order: 0,
-      galleryId: "cm39h56uv00045qutpbqf967j",
-    },
-  });
-
-  console.log('Seeding Media "Yellow Sapphire 1" success!');
-};
-
-export const yellow_sapphire_2 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39h56ux00065qutxm0ndecv" },
-    update: {},
-    create: {
-      id: "cm39h56ux00065qutxm0ndecv",
-      title: "Yellow Sapphire 2",
-      slug: "yellow-sapphire-2",
-      name: "001_yellow-sapphire-2.jpeg",
-      order: 1,
-      galleryId: "cm39h56uv00045qutpbqf967j",
-    },
-  });
-
-  console.log('Seeding Media "Yellow Sapphire 2" success!');
-};
-
-export const yellow_sapphire_3 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39h56ux00075qutg8kweo3r" },
-    update: {},
-    create: {
-      id: "cm39h56ux00075qutg8kweo3r",
-      title: "Yellow Sapphire 3",
-      slug: "yellow-sapphire-3",
-      name: "002_yellow-sapphire-3.jpeg",
-      order: 2,
-      galleryId: "cm39h56uv00045qutpbqf967j",
-    },
-  });
-
-  console.log('Seeding Media "Yellow Sapphire 3" success!');
-};
-
-export const ruby_burma_star_1 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39hdrk90005107rzzdqps88" },
-    update: {},
-    create: {
-      id: "cm39hdrk90005107rzzdqps88",
-      title: "Ruby Burma Star 1",
-      slug: "ruby-burma-star-1",
-      name: "000_ruby-burma-star-1.jpeg",
-      order: 0,
-      galleryId: "cm39hdrk70004107r25bmaeoo",
-    },
-  });
-
-  console.log('Seeding Media "Burma Star 1" success!');
-};
-
-export const ruby_burma_star_2 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39hdrk90006107r4u38ohkr" },
-    update: {},
-    create: {
-      id: "cm39hdrk90006107r4u38ohkr",
-      title: "Ruby Burma Star 2",
-      slug: "ruby-burma-star-2",
-      name: "001_ruby-burma-star-2.jpeg",
-      order: 1,
-      galleryId: "cm39hdrk70004107r25bmaeoo",
-    },
-  });
-
-  console.log('Seeding Media "Burma Star 2" success!');
-};
-
-export const ruby_burma_star_3 = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39hdrk90007107rqlk6eguc" },
-    update: {},
-    create: {
-      id: "cm39hdrk90007107rqlk6eguc",
-      title: "Ruby Burma Star 3",
-      slug: "ruby-burma-star-3",
-      name: "002_ruby-burma-star-3.jpeg",
-      order: 2,
-      galleryId: "cm39hdrk70004107r25bmaeoo",
-    },
-  });
-
-  console.log('Seeding Media "Burma Star 3" success!');
-};
-
 export const permata_1 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39hj1u100056xne1y2dgibm" },
+    where: { id: "cm3ceev1t0005dr9f5dtcm651" },
     update: {},
     create: {
-      id: "cm39hj1u100056xne1y2dgibm",
+      id: "cm3ceev1t0005dr9f5dtcm651",
       title: "Permata 1",
       slug: "permata-1",
       name: "000_permata-1.jpeg",
       order: 0,
-      galleryId: "cm39hj1tz00046xne7dub4tsa",
+      galleryId: "cm3ceev1s0004dr9f0a1eazdw",
     },
   });
 
-  console.log('Seeding Media ""Permata 1" success!');
+  console.log('Seeding Media "Permata 1" success!');
 };
 
 export const permata_2 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39hj1u100066xnebvns0n44" },
+    where: { id: "cm3cf9uvb00032e6605eyic55" },
     update: {},
     create: {
-      id: "cm39hj1u100066xnebvns0n44",
+      id: "cm3cf9uvb00032e6605eyic55",
       title: "Permata 2",
       slug: "permata-2",
       name: "001_permata-2.jpeg",
       order: 1,
-      galleryId: "cm39hj1tz00046xne7dub4tsa",
+      galleryId: "cm3ceev1s0004dr9f0a1eazdw",
     },
   });
 
-  console.log('Seeding Media ""Permata 2" success!');
+  console.log('Seeding Media "Permata 2" success!');
 };
 
 export const permata_3 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39hj1u100076xnedxqkl66u" },
+    where: { id: "cm3cfc3ts00042e66z4yhlgqo" },
     update: {},
     create: {
-      id: "cm39hj1u100076xnedxqkl66u",
+      id: "cm3cfc3ts00042e66z4yhlgqo",
       title: "Permata 3",
       slug: "permata-3",
       name: "002_permata-3.jpeg",
       order: 2,
-      galleryId: "cm39hj1tz00046xne7dub4tsa",
+      galleryId: "cm3ceev1s0004dr9f0a1eazdw",
     },
   });
 
-  console.log('Seeding Media ""Permata 3" success!');
+  console.log('Seeding Media "Permata 3" success!');
 };
 
-export const display_batu_surgawi = async () => {
+export const blue_star_sapphire_1 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39humvp000d6xneknmo4r93" },
+    where: { id: "cm3cfn31j00052e66x5zqmqn5" },
     update: {},
     create: {
-      id: "cm39humvp000d6xneknmo4r93",
-      title: "Display Batu Surgawi",
-      slug: "display-batu-surgawi",
-      name: "000_display-batu-surgawi.jpeg",
+      id: "cm3cfn31j00052e66x5zqmqn5",
+      title: "Blue Star Sapphire 1",
+      slug: "blue-star-sapphire-1",
+      name: "000_blue-star-sapphire-1.jpeg",
       order: 0,
-      galleryId: "cm39humvo000c6xne8djm036d",
+      galleryId: "cm3cerfcq0004dgfumzio2iyj",
     },
   });
 
-  console.log('Seeding Media "Display Batu Surgawi" success!');
+  console.log('Seeding Media "Blue Star Sapphire 1" success!');
 };
 
-export const detail_batu_surgawi = async () => {
+export const blue_star_sapphire_2 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39humvp000e6xneyc2jiby4" },
+    where: { id: "cm3cfnd8u00062e66au3qgzy9" },
     update: {},
     create: {
-      id: "cm39humvp000e6xneyc2jiby4",
-      title: "Detail Batu Surgawi",
-      slug: "detail-batu-surgawi",
-      name: "001_detail-batu-surgawi.jpeg",
-      order: 1,
-      galleryId: "cm39humvo000c6xne8djm036d",
-    },
-  });
-
-  console.log('Seeding Media "Detail Batu Surgawi" success!');
-};
-
-export const batu_lepas_hijau = async () => {
-  await prisma.media.upsert({
-    where: { id: "cm39i2mjp0006la8wp6tzcbec" },
-    update: {},
-    create: {
-      id: "cm39i2mjp0006la8wp6tzcbec",
-      title: "Batu Lepas Hijau",
-      slug: "batu-lepas-hijau",
-      name: "000_batu-lepas-hijau.jpeg",
+      id: "cm3cfnd8u00062e66au3qgzy9",
+      title: "Blue Star Sapphire 2",
+      slug: "blue-star-sapphire-2",
+      name: "001_blue-star-sapphire-2.jpeg",
       order: 0,
-      galleryId: "cm39i2mjn0005la8wrddcbcss",
+      galleryId: "cm3cerfcq0004dgfumzio2iyj",
     },
   });
 
-  console.log('Seeding Media "Batu Lepas Hijau" success!');
+  console.log('Seeding Media "Blue Star Sapphire 2" success!');
 };
 
-export const batu_lepas_shine = async () => {
+export const blue_star_sapphire_3 = async () => {
   await prisma.media.upsert({
-    where: { id: "cm39i2mjp0007la8w7tsvbg02" },
+    where: { id: "cm3cfnjmt00072e660qqi4gth" },
     update: {},
     create: {
-      id: "cm39i2mjp0007la8w7tsvbg02",
-      title: "Batu Lepas Shine",
-      slug: "batu-lepas-shine",
-      name: "001_batu-lepas-shine.jpeg",
-      order: 1,
-      galleryId: "cm39i2mjn0005la8wrddcbcss",
+      id: "cm3cfnjmt00072e660qqi4gth",
+      title: "Blue Star Sapphire 3",
+      slug: "blue-star-sapphire-3",
+      name: "002_blue-star-sapphire-3.jpeg",
+      order: 0,
+      galleryId: "cm3cerfcq0004dgfumzio2iyj",
     },
   });
 
-  console.log('Seeding Media "Batu Lepas Shine" success!');
+  console.log('Seeding Media "Blue Star Sapphire 3" success!');
 };
