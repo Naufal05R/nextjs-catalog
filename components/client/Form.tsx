@@ -98,97 +98,51 @@ export function GuestbookForm() {
 }
 
 export function ContactForm() {
-  const form = useForm<z.infer<typeof ContactFormSchema>>({
-    resolver: zodResolver(ContactFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  function onSubmit(data: z.infer<typeof ContactFormSchema>) {
+  const actionHanlder = async (formData: FormData) => {
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">
+            <Mapper data={formData.entries().toArray()} render={([key, value]) => `${key}: ${value}\n`} />
+          </code>
         </pre>
       ),
     });
-  }
-  return (
-    <FormRoot {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-full space-y-4 text-right">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="name">
-                <FormControl>
-                  <Input id="name" className="rounded-none shadow-none" placeholder="Name" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="email">
-                <FormControl>
-                  <Input id="email" className="rounded-none shadow-none" placeholder="Email" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="phone">
-                <FormControl>
-                  <Input id="phone" className="rounded-none shadow-none" placeholder="Phone" {...field} />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="message">
-                <FormControl>
-                  <Textarea
-                    cols={30}
-                    rows={10}
-                    id="message"
-                    className="rounded-none shadow-none"
-                    placeholder="Message"
-                    {...field}
-                  />
-                </FormControl>
-              </FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+  };
 
-        <Button type="submit" className="ml-auto rounded-none">
-          Send
-        </Button>
-      </form>
-    </FormRoot>
+  return (
+    <article className="mt-8 flex w-full flex-col space-y-4 text-right">
+      <form id="contact-form" action={actionHanlder} className="hidden" />
+
+      <Label htmlFor="name" form="contact-form">
+        <Input id="name" name="name" className="rounded-none shadow-none" placeholder="Name" form="contact-form" />
+      </Label>
+
+      <Label htmlFor="email" form="contact-form">
+        <Input id="email" name="email" className="rounded-none shadow-none" placeholder="Email" form="contact-form" />
+      </Label>
+
+      <Label htmlFor="phone" form="contact-form">
+        <Input id="phone" name="phone" className="rounded-none shadow-none" placeholder="Phone" form="contact-form" />
+      </Label>
+
+      <Label htmlFor="message" form="contact-form">
+        <Textarea
+          id="message"
+          name="message"
+          className="rounded-none shadow-none"
+          placeholder="Message"
+          form="contact-form"
+          cols={30}
+          rows={10}
+        />
+      </Label>
+
+      <Button type="submit" className="ml-auto rounded-none" form="contact-form">
+        Send
+      </Button>
+    </article>
   );
 }
 
