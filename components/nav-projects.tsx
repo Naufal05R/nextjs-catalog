@@ -83,18 +83,9 @@ export function NavProjectsDeprecated({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
-                  <Folder className="text-slate-500 dark:text-slate-400" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-slate-500 dark:text-slate-400" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-slate-500 dark:text-slate-400" />
-                  <span>Delete Project</span>
+                <DropdownMenuItem className="focus:bg-rose-50">
+                  <Trash2 className="text-rose-500 dark:text-rose-400" />
+                  <span className="text-rose-500 dark:text-rose-400">Delete {item.name}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
