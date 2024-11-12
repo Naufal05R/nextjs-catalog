@@ -4,13 +4,14 @@ import "@mdxeditor/editor/style.css";
 import type { ForwardedRef } from "react";
 import {
   headingsPlugin,
-  listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
   MDXEditor,
   type MDXEditorMethods,
   type MDXEditorProps,
+  toolbarPlugin,
+  UndoRedo,
+  BoldItalicUnderlineToggles,
+  Separator,
+  BlockTypeSelect,
 } from "@mdxeditor/editor";
 
 export default function InitializedMDXEditor({
@@ -19,7 +20,22 @@ export default function InitializedMDXEditor({
 }: { editorRef: ForwardedRef<MDXEditorMethods> | null } & MDXEditorProps) {
   return (
     <MDXEditor
-      plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin(), markdownShortcutPlugin()]}
+      plugins={[
+        headingsPlugin(),
+        toolbarPlugin({
+          toolbarContents: () => (
+            <>
+              {" "}
+              <UndoRedo />
+              <Separator />
+              <BlockTypeSelect />
+              <BoldItalicUnderlineToggles />
+              <Separator />
+              <BlockTypeSelect />
+            </>
+          ),
+        }),
+      ]}
       {...props}
       ref={editorRef}
     />
