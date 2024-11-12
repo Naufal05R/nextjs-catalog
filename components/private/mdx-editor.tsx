@@ -3,10 +3,10 @@
 import "@mdxeditor/editor/style.css";
 import type { ForwardedRef } from "react";
 import {
-  headingsPlugin,
-  MDXEditor,
   type MDXEditorMethods,
   type MDXEditorProps,
+  headingsPlugin,
+  MDXEditor,
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -21,11 +21,14 @@ import {
   codeBlockPlugin,
   linkPlugin,
   diffSourcePlugin,
-  DiffSourceToggleWrapper,
   InsertAdmonition,
   imagePlugin,
   InsertImage,
   ListsToggle,
+  InsertThematicBreak,
+  linkDialogPlugin,
+  CreateLink,
+  CodeToggle,
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
 
@@ -46,27 +49,49 @@ export default function InitializedMDXEditor({
         }),
         headingsPlugin(),
         codeBlockPlugin(),
+        linkDialogPlugin(),
         diffSourcePlugin(),
         thematicBreakPlugin(),
         markdownShortcutPlugin(),
         directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
         toolbarPlugin({
           toolbarClassName:
-            "!rounded-none !bg-slate-100 [&_button:checked]:!bg-slate-200 [&_button:hover]:!bg-slate-200 [&_button[aria-checked=true]]:!bg-slate-200",
+            "flex flex-wrap !rounded-none !bg-slate-100 !gap-y-2 [&_[role=separator]]:max-lg:invisible [&_button:checked]:!bg-slate-200 [&_button:hover]:!bg-slate-200 [&_button[aria-checked=true]]:!bg-slate-200",
           toolbarContents: () => (
-            <DiffSourceToggleWrapper options={[]}>
-              <UndoRedo />
-              <Separator />
-              <BoldItalicUnderlineToggles />
-              <Separator />
-              <ListsToggle />
-              <Separator />
-              <InsertImage />
-              <Separator />
-              <BlockTypeSelect />
-              <Separator />
-              <InsertAdmonition />
-            </DiffSourceToggleWrapper>
+            <>
+              <div className="flex flex-wrap items-center gap-y-2">
+                <div className="flex flex-wrap items-center">
+                  <UndoRedo />
+                  <Separator />
+                </div>
+                <div className="flex flex-wrap items-center">
+                  <BoldItalicUnderlineToggles />
+                  <Separator />
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-y-2">
+                <div className="flex flex-wrap items-center">
+                  <ListsToggle options={["bullet", "number"]} />
+                  <Separator />
+                </div>
+                <div className="flex flex-wrap items-center">
+                  <BlockTypeSelect />
+                  <Separator />
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-y-2">
+                <div className="flex flex-wrap items-center">
+                  <InsertImage />
+                  <CodeToggle />
+                  <CreateLink />
+                  <InsertThematicBreak />
+                  <Separator />
+                </div>
+                <div className="flex flex-wrap items-center">
+                  <InsertAdmonition />
+                </div>
+              </div>
+            </>
           ),
         }),
       ]}
