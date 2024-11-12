@@ -52,7 +52,7 @@ export default function InitializedMDXEditor({
         directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
         toolbarPlugin({
           toolbarClassName:
-            "!rounded-none !bg-slate-100 [&_button:hover]:!bg-slate-200 [&_button:checked]:!bg-slate-200 [&_button[aria-checked=true]]:!bg-slate-200",
+            "!rounded-none !bg-slate-100 [&_button:checked]:!bg-slate-200 [&_button:hover]:!bg-slate-200 [&_button[aria-checked=true]]:!bg-slate-200",
           toolbarContents: () => (
             <DiffSourceToggleWrapper options={[]}>
               <UndoRedo />
@@ -71,7 +71,7 @@ export default function InitializedMDXEditor({
         }),
       ]}
       contentEditableClassName={cn(
-        "mt-2 border border-slate-100 text-slate-800 min-h-96 bg-slate-50 [&_blockquote]:border-l-4 [&_blockquote]:text-base [&_blockquote]:pl-2.5 [&_blockquote]:py-1 [&_blockquote]:bg-slate-100 [&_blockquote]:text-slate-600 [&_*]:list-inside [&_ul]:list-disc [&_ol]:list-decimal [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg",
+        "mt-2 min-h-96 border border-slate-100 bg-slate-50 leading-normal text-slate-800 [&_*]:list-inside [&_blockquote]:border-l-4 [&_blockquote]:bg-slate-100 [&_blockquote]:py-1 [&_blockquote]:pl-2.5 [&_blockquote]:text-base [&_blockquote]:text-slate-600 [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg [&_ol]:list-decimal [&_ul]:list-disc",
         props.contentEditableClassName,
       )}
       {...props}
