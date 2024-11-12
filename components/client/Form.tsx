@@ -605,9 +605,9 @@ export function CreateNewsForm() {
     <article className="mt-8 grid w-full grid-cols-12 gap-4">
       <form id="create-news-form" action={actionHanlder} className="hidden" />
 
-      <fieldset className="col-span-12">
+      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="mb-1 text-lg font-medium">News Title</h6>
-        <Label htmlFor="title">
+        <Label htmlFor="title" className="order-1">
           <Input
             id="title"
             name="title"
@@ -617,19 +617,15 @@ export function CreateNewsForm() {
           />
           {/* <ErrorMessage name="title" /> */}
         </Label>
-      </fieldset>
 
-      <fieldset className="col-span-12">
-        <h6 className="mb-1 text-lg font-medium">News Description</h6>
-        <Label htmlFor="description">
-          <Textarea
+        <h6 className="col-span-3 mb-1 text-lg font-medium">News Description</h6>
+        <Label htmlFor="description" className="order-2 col-span-3">
+          <Input
             id="description"
             name="description"
+            form="create-news-form"
             className="rounded-none shadow-none"
             placeholder="Description"
-            form="create-news-form"
-            cols={30}
-            rows={10}
           />
           {/* <ErrorMessage name="description" /> */}
         </Label>
@@ -638,16 +634,7 @@ export function CreateNewsForm() {
       <fieldset className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">News Content</h6>
         <Label htmlFor="content">
-          {/* <Textarea
-            id="content"
-            name="content"
-            className="rounded-none shadow-none"
-            placeholder="Message"
-            form="create-news-form"
-            cols={30}
-            rows={10}
-          /> */}
-          <RichText markdown="**Hello, world!**" />
+          <RichText markdown={"**Hello,** world!"} />
           {/* <ErrorMessage name="description" /> */}
         </Label>
       </fieldset>
