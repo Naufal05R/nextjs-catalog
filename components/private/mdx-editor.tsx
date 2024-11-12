@@ -13,6 +13,7 @@ import {
   Separator,
   BlockTypeSelect,
 } from "@mdxeditor/editor";
+import { cn } from "@/lib/utils";
 
 export default function InitializedMDXEditor({
   editorRef,
@@ -37,6 +38,10 @@ export default function InitializedMDXEditor({
         }),
       ]}
       {...props}
+      contentEditableClassName={cn(
+        "mt-2 rounded-md border border-slate-100 min-h-96 bg-slate-50",
+        props.contentEditableClassName,
+      )}
       ref={editorRef}
     />
   );
