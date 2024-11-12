@@ -36,6 +36,7 @@ import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
 import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
+import { RichText } from "./Editor";
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
@@ -637,7 +638,7 @@ export function CreateNewsForm() {
       <fieldset className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">News Content</h6>
         <Label htmlFor="content">
-          <Textarea
+          {/* <Textarea
             id="content"
             name="content"
             className="rounded-none shadow-none"
@@ -645,7 +646,8 @@ export function CreateNewsForm() {
             form="create-news-form"
             cols={30}
             rows={10}
-          />
+          /> */}
+          <RichText markdown="**Hello, world!**" />
           {/* <ErrorMessage name="description" /> */}
         </Label>
       </fieldset>
