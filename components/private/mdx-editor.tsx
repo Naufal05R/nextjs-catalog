@@ -12,6 +12,9 @@ import {
   BoldItalicUnderlineToggles,
   Separator,
   BlockTypeSelect,
+  quotePlugin,
+  listsPlugin,
+  thematicBreakPlugin,
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +26,9 @@ export default function InitializedMDXEditor({
     <MDXEditor
       plugins={[
         headingsPlugin(),
+        quotePlugin(),
+        listsPlugin(),
+        thematicBreakPlugin(),
         toolbarPlugin({
           toolbarContents: () => (
             <>
