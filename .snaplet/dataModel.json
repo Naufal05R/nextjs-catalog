@@ -478,6 +478,92 @@
         }
       ]
     },
+    "News": {
+      "id": "public.News",
+      "schemaName": "public",
+      "tableName": "News",
+      "fields": [
+        {
+          "id": "public.News.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.News.title",
+          "name": "title",
+          "columnName": "title",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 64
+        },
+        {
+          "id": "public.News.slug",
+          "name": "slug",
+          "columnName": "slug",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 64
+        },
+        {
+          "id": "public.News.description",
+          "name": "description",
+          "columnName": "description",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 256
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "News_pkey",
+          "fields": [
+            "id"
+          ],
+          "nullNotDistinct": false
+        },
+        {
+          "name": "News_slug_key",
+          "fields": [
+            "slug"
+          ],
+          "nullNotDistinct": false
+        },
+        {
+          "name": "News_title_key",
+          "fields": [
+            "title"
+          ],
+          "nullNotDistinct": false
+        }
+      ]
+    },
     "Product": {
       "id": "public.Product",
       "schemaName": "public",
