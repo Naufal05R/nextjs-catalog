@@ -33,7 +33,7 @@ interface CreateCollectionDialogProps extends DialogProps {
   };
 }
 
-export function CreateCollectionDialog({ trigger, content }: CreateCollectionDialogProps) {
+export const CreateCollectionDialog = ({ trigger, content }: CreateCollectionDialogProps) => {
   const [open, setOpen] = useState(false);
   const [collection, formAction, isLoading] = useFormState(createCollection, "");
   const [temporaryState, setTemporaryState] = useState<typeof collection>("");
@@ -103,7 +103,7 @@ export function CreateCollectionDialog({ trigger, content }: CreateCollectionDia
       </DialogContent>
     </DialogRoot>
   );
-}
+};
 
 interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof DialogRoot>, DialogProps {
   trigger: React.ReactNode;
