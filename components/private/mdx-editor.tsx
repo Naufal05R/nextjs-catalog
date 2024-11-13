@@ -1,8 +1,7 @@
 "use client";
 
 import "@mdxeditor/editor/style.css";
-import Image from "next/image";
-import { useCallback, useState, type ForwardedRef } from "react";
+import { Dispatch, SetStateAction, useCallback, useState, type ForwardedRef } from "react";
 import {
   type MDXEditorMethods,
   type MDXEditorProps,
@@ -34,48 +33,47 @@ import {
   ButtonWithTooltip,
   StrikeThroughSupSubToggles,
 } from "@mdxeditor/editor";
-import { cn } from "@/lib/utils";
-import { CloudUpload, HardDriveUpload, ImagePlus, ShieldAlert } from "lucide-react";
+import { cn, refineBlobStr } from "@/lib/utils";
+import { CloudUpload, HardDriveUpload, ImagePlus, Menu, ShieldAlert } from "lucide-react";
 import { Input } from "../ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog } from "../server/Dialog";
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  Dialog as DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useDropzone } from "react-dropzone";
 import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
+import { InsertImageDialog } from "../client/Dialog";
+import { Image } from "../server/Media";
+import Mapper from "../server/Mapper";
 
 const InsertImage = () => {
   const insertImage = usePublisher(insertImage$);
-  const [files, setFiles] = useState<Array<Record<string, unknown>>>([]);
-  const [openImageDialog, seOpenImageDialog] = useState(false);
-  const [imgUrl, setImgUrl] = useState({
-    src: "",
-    alt: "",
-  });
+  const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
     if (!!acceptedFiles.length) {
-      // setFiles(
-      //   Array.from(acceptedFiles)
-      //     .filter((acceptedFile) => new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(acceptedFile.type))
-      //     .map((file, index) => {
-      //       return {
-      //         title: file.name,
-      //         order: index,
-      //         media: file,
-      //       };
-      //     }),
-      // );
+      const [selectedFile] = acceptedFiles;
+      if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(selectedFile.type)) setFile(selectedFile);
     }
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
-    onDrop,
-    accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, acceptedFiles, open } =
+    useDropzone({
+      onDrop,
+      accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
+    });
 
   const DynamicUI = () => (
     <div className="line-clamp-2 text-center">
@@ -106,119 +104,114 @@ const InsertImage = () => {
   );
 
   return (
-    <Dialog
-      header={{
-        title: "Insert Image",
-      }}
-      element={{
-        trigger: (
-          <ButtonWithTooltip title="Insert image" className="!size-7 !p-1">
-            <ImagePlus size={20} />
-          </ButtonWithTooltip>
-        ),
-        body: (
-          <>
-            <fieldset className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor={"title"} className="text-left">
-                Title
-              </Label>
-              <Input id={"title"} name="title" className="col-span-3" form="create-collection-form" />
-            </fieldset>
-            <fieldset className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="description" className="py-[11px] text-left">
-                Description
-              </Label>
-              <Textarea
-                rows={3}
-                id="description"
-                name="description"
-                className="col-span-3"
-                form="create-collection-form"
-              />
-            </fieldset>
-            <fieldset>
-              <div
-                className={cn(
-                  "relative flex h-40 w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
-                  {
-                    "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
-                    "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
-                  },
-                )}
-              >
-                <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
-                  <Input
-                    {...getInputProps()}
-                    // form="create-product-form"
-                    className="hidden"
-                    type="file"
-                    onChange={(e) => {
-                      const files = e.target.files;
-                      if (files) {
-                        setFiles(
-                          Array.from(files)
-                            .filter((file) => {
-                              if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(file.type)) {
-                                return true;
-                              } else {
-                                alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
-                                return false;
-                              }
-                            })
-                            .map((file, index) => {
-                              return {
-                                title: file.name,
-                                order: index,
-                                media: file,
-                              };
-                            }),
-                        );
-                      }
-                    }}
-                  />
-                </div>
+    <DialogRoot onOpenChange={() => setTimeout(setFile, 500)}>
+      <ButtonWithTooltip title="Insert image" className="!p-0">
+        <DialogTrigger asChild>
+          <ImagePlus className="size-7 p-1" />
+        </DialogTrigger>
+      </ButtonWithTooltip>
+      <DialogContent className="sm:max-w-md" aria-describedby="insert-image-dialog">
+        <form action="" id="insert-image-form" className="hidden" />
 
-                <DynamicUI />
+        <DialogHeader>
+          <DialogTitle className="break-all font-body">Insert Image</DialogTitle>
+          <DialogDescription className="break-all font-body">Select image for news content</DialogDescription>
+        </DialogHeader>
+
+        <fieldset>
+          {file ? (
+            <Image
+              src={URL.createObjectURL(file)}
+              alt={file.name ?? ""}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              classNames={{
+                figure: "w-full h-40 aspect-auto rounded hover:cursor-pointer",
+                image: "object-contain aspect-auto size-full",
+              }}
+              onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => (e.target as HTMLElement).requestFullscreen()}
+            />
+          ) : (
+            <div
+              className={cn(
+                "relative flex h-40 w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
+                {
+                  "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
+                  "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
+                },
+              )}
+            >
+              <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
+                <Input
+                  {...getInputProps()}
+                  form="insert-image-form"
+                  className="hidden"
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file && new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(file.type)) {
+                      setFile(file);
+                    } else {
+                      alert("filetype not allowed!");
+                    }
+                  }}
+                />
               </div>
-            </fieldset>
-          </>
-        ),
-      }}
-      footer={{
-        button: (
-          <Button
-            disabled={loading || imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0}
-            onClick={async () => {
-              try {
-                if (imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0) {
-                  return;
+
+              <DynamicUI />
+            </div>
+          )}
+        </fieldset>
+
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              form="insert-image-form"
+              disabled={loading || !file}
+              onClick={async () => {
+                try {
+                  if (!file) {
+                    return;
+                  }
+                  setLoading(true);
+                  insertImage({
+                    file,
+                    title: file.name,
+                    altText: file.name,
+                  });
+                  setLoading(false);
+                } catch {
+                  setLoading(false);
+                  toast({ title: "Can't Add your Image, try again." });
+                } finally {
+                  setFile(undefined);
                 }
-                setLoading(true);
-                await insertImage({
-                  src: imgUrl.src,
-                  altText: imgUrl.alt,
-                  title: imgUrl.alt,
-                });
-                setLoading(false);
-                seOpenImageDialog(false);
-              } catch {
-                setLoading(false);
-                toast({ title: "Can't Add your Image, try again." });
-              }
-            }}
-          >
-            {loading ? <>Saving</> : <>Save</>}
-          </Button>
-        ),
-      }}
-    />
+              }}
+            >
+              {loading ? <>Saving</> : <>Save</>}
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 
+interface InitializedMDXEditorProps extends MDXEditorProps {
+  editorRef: ForwardedRef<MDXEditorMethods> | null;
+  blobUrls: Array<string>;
+  setBlobUrls: Dispatch<SetStateAction<Array<string>>>;
+}
+
 export default function InitializedMDXEditor({
   editorRef,
+  blobUrls,
+  setBlobUrls,
   ...props
-}: { editorRef: ForwardedRef<MDXEditorMethods> | null } & MDXEditorProps) {
+}: InitializedMDXEditorProps) {
+  // const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
+  // const [markdown, setMarkdown] = useState<string>(props.markdown);
+
   return (
     <MDXEditor
       plugins={[
@@ -226,8 +219,11 @@ export default function InitializedMDXEditor({
         quotePlugin(),
         listsPlugin(),
         imagePlugin({
-          imageUploadHandler: () => {
-            return Promise.resolve("https://picsum.photos/200/300");
+          disableImageSettingsButton: true,
+          imageUploadHandler: async (file) => {
+            const url = URL.createObjectURL(file);
+            setBlobUrls([...blobUrls, url]);
+            return Promise.resolve(url);
           },
         }),
         headingsPlugin(),
@@ -279,6 +275,17 @@ export default function InitializedMDXEditor({
                   <InsertAdmonition />
                 </div>
               </div>
+
+              <ul className="flex w-full flex-col gap-2">
+                <Mapper
+                  data={blobUrls}
+                  render={(url) => <li className="w-fit rounded bg-blue-600 px-2 py-1 text-slate-100">{url}</li>}
+                />
+              </ul>
+
+              <Button size={"icon"} variant={"ghost"}>
+                <Menu />
+              </Button>
             </>
           ),
         }),
@@ -287,6 +294,18 @@ export default function InitializedMDXEditor({
         "mt-2 min-h-96 border border-slate-100 bg-slate-50 leading-normal text-slate-800 [&_*]:list-inside [&_blockquote]:border-l-4 [&_blockquote]:bg-slate-100 [&_blockquote]:py-1 [&_blockquote]:pl-2.5 [&_blockquote]:text-base [&_blockquote]:text-slate-600 [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg [&_ol]:list-decimal [&_ul]:list-disc",
         props.contentEditableClassName,
       )}
+      // onChange={(content) => {
+      //   setMarkdown(content);
+      //   setBlobUrls([
+      //     ...blobUrls.filter((url) => {
+      //       if (content.includes(refineBlobStr(url))) {
+      //         return content.includes(refineBlobStr(url));
+      //       } else {
+      //         URL.revokeObjectURL(url);
+      //       }
+      //     }),
+      //   ]);
+      // }}
       {...props}
       ref={editorRef}
     />
