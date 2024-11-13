@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog as DialogRoot,
   DialogClose,
@@ -20,10 +19,12 @@ interface DialogProps {
     trigger: React.JSX.Element;
     body: React.JSX.Element;
   };
-  footer?: boolean;
+  footer?: {
+    button: React.JSX.Element;
+  };
 }
 
-export function Dialog({ header, element, footer = false }: DialogProps) {
+export function Dialog({ header, element, footer }: DialogProps) {
   return (
     <DialogRoot>
       <DialogTrigger asChild>{element.trigger}</DialogTrigger>
@@ -36,12 +37,8 @@ export function Dialog({ header, element, footer = false }: DialogProps) {
         {element.body}
 
         {footer && (
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
+          <DialogFooter>
+            <DialogClose asChild>{footer.button}</DialogClose>
           </DialogFooter>
         )}
       </DialogContent>
