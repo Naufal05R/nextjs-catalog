@@ -1,6 +1,7 @@
 "use client";
 
 import "@mdxeditor/editor/style.css";
+import Mapper from "../server/Mapper";
 import { Dispatch, SetStateAction, useCallback, useState, type ForwardedRef } from "react";
 import {
   type MDXEditorMethods,
@@ -33,7 +34,7 @@ import {
   ButtonWithTooltip,
   StrikeThroughSupSubToggles,
 } from "@mdxeditor/editor";
-import { cn, refineBlobStr } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { CloudUpload, HardDriveUpload, ImagePlus, Menu, ShieldAlert } from "lucide-react";
 import { Input } from "../ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -47,14 +48,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useDropzone } from "react-dropzone";
-import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
-import { InsertImageDialog } from "../client/Dialog";
+import { ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
 import { Image } from "../server/Media";
-import Mapper from "../server/Mapper";
 
 const InsertImage = () => {
   const insertImage = usePublisher(insertImage$);
@@ -69,11 +66,10 @@ const InsertImage = () => {
     }
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, acceptedFiles, open } =
-    useDropzone({
-      onDrop,
-      accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
-    });
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, open } = useDropzone({
+    onDrop,
+    accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
+  });
 
   const DynamicUI = () => (
     <div className="line-clamp-2 text-center">
@@ -209,9 +205,6 @@ export default function InitializedMDXEditor({
   setBlobUrls,
   ...props
 }: InitializedMDXEditorProps) {
-  // const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
-  // const [markdown, setMarkdown] = useState<string>(props.markdown);
-
   return (
     <MDXEditor
       plugins={[
@@ -264,8 +257,7 @@ export default function InitializedMDXEditor({
               </div>
               <div className="flex flex-wrap items-center gap-y-2">
                 <div className="flex flex-wrap items-center">
-                  {/* <InsertImage /> */}
-                  <InsertImage /> {/* Add it here */}
+                  <InsertImage />
                   <CodeToggle />
                   <CreateLink />
                   <InsertThematicBreak />
@@ -294,18 +286,6 @@ export default function InitializedMDXEditor({
         "mt-2 min-h-96 border border-slate-100 bg-slate-50 leading-normal text-slate-800 [&_*]:list-inside [&_blockquote]:border-l-4 [&_blockquote]:bg-slate-100 [&_blockquote]:py-1 [&_blockquote]:pl-2.5 [&_blockquote]:text-base [&_blockquote]:text-slate-600 [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg [&_ol]:list-decimal [&_ul]:list-disc",
         props.contentEditableClassName,
       )}
-      // onChange={(content) => {
-      //   setMarkdown(content);
-      //   setBlobUrls([
-      //     ...blobUrls.filter((url) => {
-      //       if (content.includes(refineBlobStr(url))) {
-      //         return content.includes(refineBlobStr(url));
-      //       } else {
-      //         URL.revokeObjectURL(url);
-      //       }
-      //     }),
-      //   ]);
-      // }}
       {...props}
       ref={editorRef}
     />
