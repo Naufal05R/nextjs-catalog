@@ -108,7 +108,7 @@ export function initRawData(formData: FormData) {
     }
   });
 
-  rawData["medias"] = medias;
+  if (!!medias.length) rawData["medias"] = medias;
 
   return rawData;
 }
