@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { cn, getFileDetails, getFileMimeTypes, removeUnwantedChars } from "@/lib/utils";
+import { cn, getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -37,6 +37,7 @@ import { InputFieldMessage } from "../server/Message";
 import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
+import { createNews } from "@/lib/actions/news.action";
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
@@ -588,7 +589,40 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 }
 
 export function CreateNewsForm() {
+  const MARKDOWN = "**Hello,** world!" as const;
+
+  const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
+  const [markdown, setMarkdown] = useState<string>(MARKDOWN);
+
+  const changeOriginalImgSouce = () => {
+    function changeSrc(content: string, index: number = 0) {
+      const result = content.replace(refineBlobStr(blobUrls[index]), `custom-url-${index}`);
+
+      if (++index < blobUrls.length) {
+        return changeSrc(result, index);
+      } else {
+        return result;
+      }
+    }
+
+    if (!!blobUrls.length) {
+      const newSrc = changeSrc(markdown);
+      return newSrc;
+    } else {
+      return markdown;
+    }
+  };
+
   const actionHanlder = async (formData: FormData) => {
+    formData.append("content", changeOriginalImgSouce());
+
+    for (const blobUrl of blobUrls) {
+      const blob = await fetch(blobUrl).then((r) => r.blob());
+      formData.append("image", blob);
+    }
+
+    await createNews(formData);
+
     toast({
       title: "You submitted the following values:",
       description: (
@@ -606,8 +640,8 @@ export function CreateNewsForm() {
       <form id="create-news-form" action={actionHanlder} className="hidden" />
 
       <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
-        <h6 className="mb-1 text-lg font-medium">News Title</h6>
-        <Label htmlFor="title" className="order-1">
+        <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
+        <Label htmlFor="title" className="col-span-4 mb-4 lg:order-1 lg:col-span-1">
           <Input
             id="title"
             name="title"
@@ -618,8 +652,8 @@ export function CreateNewsForm() {
           {/* <ErrorMessage name="title" /> */}
         </Label>
 
-        <h6 className="col-span-3 mb-1 text-lg font-medium">News Description</h6>
-        <Label htmlFor="description" className="order-2 col-span-3">
+        <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-3">News Description</h6>
+        <Label htmlFor="description" className="col-span-4 lg:order-2 lg:col-span-3">
           <Input
             id="description"
             name="description"
@@ -634,7 +668,23 @@ export function CreateNewsForm() {
       <fieldset className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">News Content</h6>
         <Label htmlFor="content">
-          <RichText markdown={"**Hello,** world!"} />
+          <RichText
+            blobUrls={blobUrls}
+            setBlobUrls={setBlobUrls}
+            markdown={markdown}
+            onChange={(content) => {
+              setMarkdown(content);
+              setBlobUrls([
+                ...blobUrls.filter((url) => {
+                  if (content.includes(refineBlobStr(url))) {
+                    return content.includes(refineBlobStr(url));
+                  } else {
+                    URL.revokeObjectURL(url);
+                  }
+                }),
+              ]);
+            }}
+          />
           {/* <ErrorMessage name="description" /> */}
         </Label>
       </fieldset>
