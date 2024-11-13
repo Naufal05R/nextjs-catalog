@@ -1,7 +1,8 @@
 "use client";
 
 import "@mdxeditor/editor/style.css";
-import { useState, type ForwardedRef } from "react";
+import Image from "next/image";
+import { useCallback, useState, type ForwardedRef } from "react";
 import {
   type MDXEditorMethods,
   type MDXEditorProps,
@@ -23,7 +24,6 @@ import {
   diffSourcePlugin,
   InsertAdmonition,
   imagePlugin,
-  InsertImage,
   ListsToggle,
   InsertThematicBreak,
   linkDialogPlugin,
@@ -31,20 +31,23 @@ import {
   CodeToggle,
   usePublisher,
   insertImage$,
-  Button,
   ButtonWithTooltip,
-  SingleChoiceToggleGroup,
   StrikeThroughSupSubToggles,
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
-import { ImageIcon, ImagePlus } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { CloudUpload, HardDriveUpload, ImagePlus, ShieldAlert } from "lucide-react";
 import { Input } from "../ui/input";
-import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog } from "../server/Dialog";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+import { useDropzone } from "react-dropzone";
+import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
 
-const AddImage = () => {
+const InsertImage = () => {
   const insertImage = usePublisher(insertImage$);
+  const [files, setFiles] = useState<Array<Record<string, unknown>>>([]);
   const [openImageDialog, seOpenImageDialog] = useState(false);
   const [imgUrl, setImgUrl] = useState({
     src: "",
@@ -53,125 +56,162 @@ const AddImage = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  return (
-    <>
-      <Dialog
-        open={openImageDialog}
-        onOpenChange={() => seOpenImageDialog(false)}
-        aria-labelledby="Create Note"
-        aria-describedby="Dialog to create new note"
-      >
-        <ButtonWithTooltip title="Insert image" className="!size-7 !p-1" onClick={() => seOpenImageDialog(true)}>
-          <DialogTrigger>
-            <ImagePlus size={20} />
-          </DialogTrigger>
-        </ButtonWithTooltip>
-        <DialogContent
-          aria-labelledby="Create Note"
-          aria-describedby="Dialog to create new note"
-          className="flex w-full max-w-screen-xs flex-col gap-6 border-none bg-slate-100 px-6 py-9 shadow-md"
-        >
-          <div className="flex flex-col gap-2">
-            <div className="my-2 flex w-full flex-col items-center justify-center">
-              <ImagePlus />
-              <p className="mt-1 text-2xl font-semibold">Add Image</p>
-            </div>
-            {/* <UploadDropzone
-              appearance={{
-                button: "bg-ui-yellow px-4 py-2 text-light-text-primary my-2 font-medium cursor-pointer text-base",
-                allowedContent: "my-2 text-sm",
-              }}
-              className="dark:border-dark-border border-light-border"
-              endpoint="imageUploader"
-              config={{
-                appendOnPaste: true,
-              }}
-              onClientUploadComplete={(res) => {
-                res.forEach((file) => {
-                  insertImage({
-                    src: file.url,
-                    altText: file.name,
-                    title: file.name,
-                  });
-                });
-                toast({ title: `Upload Complete` });
-                seOpenImageDialog(false);
-              }}
-              onUploadError={(error) => {
-                toast({ title: `ERROR! ${error.message}` });
-              }}
-            /> */}
-            <div className="flex w-full justify-center">
-              <Separator className="bg-light-border dark:bg-dark-border my-4 h-[2px] w-[80%]" />
-            </div>
+  const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
+    if (!!acceptedFiles.length) {
+      // setFiles(
+      //   Array.from(acceptedFiles)
+      //     .filter((acceptedFile) => new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(acceptedFile.type))
+      //     .map((file, index) => {
+      //       return {
+      //         title: file.name,
+      //         order: index,
+      //         media: file,
+      //       };
+      //     }),
+      // );
+    }
+  }, []);
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="image_source" className="font-semibold">
-                Source link:
-              </label>
-              <Input
-                value={imgUrl.src}
-                id="image_source"
-                placeholder="Image Link"
-                className="dark:bg-dark-2 bg-light-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                onChange={(e) => setImgUrl({ ...imgUrl, src: e.target.value })}
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
+    onDrop,
+    accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
+  });
+
+  const DynamicUI = () => (
+    <div className="line-clamp-2 text-center">
+      {isDragActive ? (
+        isDragAccept ? (
+          <>
+            <HardDriveUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
+            Drag files or click to upload
+          </>
+        ) : isDragReject ? (
+          <>
+            <ShieldAlert className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
+            One or more files not allowed or not supported
+          </>
+        ) : (
+          <>
+            <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
+            Drag files or click to upload
+          </>
+        )
+      ) : (
+        <>
+          <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
+          Drag files or click to upload
+        </>
+      )}
+    </div>
+  );
+
+  return (
+    <Dialog
+      header={{
+        title: "Insert Image",
+      }}
+      element={{
+        trigger: (
+          <ButtonWithTooltip title="Insert image" className="!size-7 !p-1">
+            <ImagePlus size={20} />
+          </ButtonWithTooltip>
+        ),
+        body: (
+          <>
+            <fieldset className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor={"title"} className="text-left">
+                Title
+              </Label>
+              <Input id={"title"} name="title" className="col-span-3" form="create-collection-form" />
+            </fieldset>
+            <fieldset className="grid grid-cols-4 items-start gap-4">
+              <Label htmlFor="description" className="py-[11px] text-left">
+                Description
+              </Label>
+              <Textarea
+                rows={3}
+                id="description"
+                name="description"
+                className="col-span-3"
+                form="create-collection-form"
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="image_alt" className="font-semibold">
-                Image title:
-              </label>
-              <Input
-                value={imgUrl.alt}
-                id="image_alt"
-                placeholder="Image Title"
-                className="dark:bg-dark-2 bg-light-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                onChange={(e) => setImgUrl({ ...imgUrl, alt: e.target.value })}
-              />
-            </div>
-            <div className="flex w-full items-center justify-end gap-2">
-              <Button
-                className="dark:disabled:bg-dark-2/90 dark:bg-dark-2 disabled:bg-light-3 bg-gray-300/90 hover:opacity-90 focus-visible:ring-0 focus-visible:ring-offset-0"
-                onClick={() => seOpenImageDialog(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                disabled={loading || imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0}
-                className="text-dark-text-primary disabled:bg-green-1/90 bg-green-1 hover:opacity-90 focus-visible:ring-0 focus-visible:ring-offset-0"
-                onClick={async () => {
-                  try {
-                    if (imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0) {
-                      return;
-                    }
-                    setLoading(true);
-                    await insertImage({
-                      src: imgUrl.src,
-                      altText: imgUrl.alt,
-                      title: imgUrl.alt,
-                    });
-                    setLoading(false);
-                    seOpenImageDialog(false);
-                  } catch {
-                    setLoading(false);
-                    toast({ title: "Can't Add your Image, try again." });
-                  }
-                }}
-              >
-                {loading ? (
-                  <>
-                    {/* <Image width={28} height={28} src="/icons/loading-circle.svg" alt="Loading" className="mr-2" /> */}
-                    Saving
-                  </>
-                ) : (
-                  <>Save</>
+            </fieldset>
+            <fieldset>
+              <div
+                className={cn(
+                  "relative flex h-40 w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
+                  {
+                    "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
+                    "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
+                  },
                 )}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+              >
+                <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
+                  <Input
+                    {...getInputProps()}
+                    // form="create-product-form"
+                    className="hidden"
+                    type="file"
+                    onChange={(e) => {
+                      const files = e.target.files;
+                      if (files) {
+                        setFiles(
+                          Array.from(files)
+                            .filter((file) => {
+                              if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(file.type)) {
+                                return true;
+                              } else {
+                                alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                                return false;
+                              }
+                            })
+                            .map((file, index) => {
+                              return {
+                                title: file.name,
+                                order: index,
+                                media: file,
+                              };
+                            }),
+                        );
+                      }
+                    }}
+                  />
+                </div>
+
+                <DynamicUI />
+              </div>
+            </fieldset>
+          </>
+        ),
+      }}
+      footer={{
+        button: (
+          <Button
+            disabled={loading || imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0}
+            onClick={async () => {
+              try {
+                if (imgUrl.alt.trim().length === 0 || imgUrl.src.trim().length === 0) {
+                  return;
+                }
+                setLoading(true);
+                await insertImage({
+                  src: imgUrl.src,
+                  altText: imgUrl.alt,
+                  title: imgUrl.alt,
+                });
+                setLoading(false);
+                seOpenImageDialog(false);
+              } catch {
+                setLoading(false);
+                toast({ title: "Can't Add your Image, try again." });
+              }
+            }}
+          >
+            {loading ? <>Saving</> : <>Save</>}
+          </Button>
+        ),
+      }}
+    />
   );
 };
 
@@ -229,7 +269,7 @@ export default function InitializedMDXEditor({
               <div className="flex flex-wrap items-center gap-y-2">
                 <div className="flex flex-wrap items-center">
                   {/* <InsertImage /> */}
-                  <AddImage /> {/* Add it here */}
+                  <InsertImage /> {/* Add it here */}
                   <CodeToggle />
                   <CreateLink />
                   <InsertThematicBreak />
