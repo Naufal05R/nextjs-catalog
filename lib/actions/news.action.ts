@@ -6,9 +6,28 @@ import { createObject } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Prisma } from "@prisma/client";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
+
+interface GetAllNews {
+  where?: Prisma.NewsWhereInput;
+}
+
+export const getAllNews = async (params: GetAllNews | undefined = undefined) => {
+  const { where } = params ?? {};
+
+  try {
+    const allNews = await prisma.news.findMany({
+      where,
+    });
+
+    return allNews;
+  } catch (error) {
+    handlingError(error);
+  }
+};
 
 export const createNews = async (formData: FormData) => {
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
