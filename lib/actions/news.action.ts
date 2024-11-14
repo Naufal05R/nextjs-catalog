@@ -4,6 +4,8 @@ import { NewsFormSchema } from "@/schema/news";
 import { getFileMimeTypes, handlingError, initRawData, slugify } from "../utils";
 import { createObject } from "../service";
 import { prisma } from "../prisma";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -13,6 +15,7 @@ export const createNews = async (formData: FormData) => {
 
   if (success) {
     const { title, description, content } = data;
+    let pathname = "/dashboard/news/add";
 
     try {
       const imagesFile = data["images.file"];
@@ -53,8 +56,13 @@ export const createNews = async (formData: FormData) => {
           },
         });
       });
+
+      revalidatePath("/", "layout");
+      pathname = "/dashboard";
     } catch (error) {
       handlingError(error);
+    } finally {
+      redirect(pathname);
     }
   } else {
     console.log(error);
