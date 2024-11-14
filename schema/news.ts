@@ -1,5 +1,6 @@
 import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
+import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS, MAX_FILE_SIZE } from "./media";
 
 export const NewsSchema = z.object({
   id: z.string().cuid(),
@@ -39,6 +40,17 @@ export const NewsFormSchema = NewsSchema.pick({
     content: z
       .string()
       .min(1024, { message: "Minimum content size is 1kb" })
-      .min(1048576, { message: "Maximum content size is 1mb" }),
+      .max(1048576, { message: "Maximum content size is 1mb" }),
+    "images.file": z
+      .array(
+        z
+          .instanceof(File)
+          .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
+          .refine((file) => file && Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
+            message: `Only "${ACCEPTED_IMAGE_EXTS.join('", "')}" formats are supported.`,
+          }),
+      )
+      .optional(),
+    "images.id": z.array(z.string()).optional(),
   }),
 );
