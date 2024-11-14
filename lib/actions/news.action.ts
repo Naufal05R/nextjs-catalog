@@ -62,7 +62,7 @@ export const createNews = async (formData: FormData) => {
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/index.md`,
+            objectName: `news/${slugify(title)}/article.md`,
             objectStream: markdown,
           });
         }
