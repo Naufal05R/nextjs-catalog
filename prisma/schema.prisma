@@ -85,8 +85,10 @@ model Gallery {
 }
 
 model News {
-  id          String @id @default(cuid())
-  title       String @unique @db.VarChar(64)
-  slug        String @unique @db.VarChar(64)
-  description String @db.VarChar(256)
+  id          String   @id @default(cuid())
+  title       String   @unique @db.VarChar(64)
+  slug        String   @unique @db.VarChar(64)
+  description String   @db.VarChar(256)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
