@@ -13,28 +13,7 @@ export const createNews = async (formData: FormData) => {
   if (success) {
     const { title, description, content } = data;
 
-    // const insertServerUrl = () => {
-    //   if (!!data["images.id"].length) {
-    //     function changeSrc(content: string, index: number = 0) {
-    //       const imageId = data?.["images.id"][index];
-    //       if (typeof imageId === "string") {
-    //         const result = content.replace(imageId, `${S3_ENDPOINT}/news/`);
-
-    //         if (++index < blobUrls.length) {
-    //           return changeSrc(result, [...ids, id], index);
-    //         } else {
-    //           return [result, [...ids, id]];
-    //         }
-    //       }
-    //     }
-    //   }
-    // };
-
     try {
-      // for (const imageId of data["images.id"]) {
-      //   const result = content.replace(imageId, `${id}`);
-      // }
-
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
       let markdown = content;
