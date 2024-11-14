@@ -628,7 +628,7 @@ export function CreateNewsForm() {
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">
-            <Mapper data={formData.entries().toArray()} render={([key, value]) => `${key}: ${value}\n`} />
+            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
           </code>
         </pre>
       ),
