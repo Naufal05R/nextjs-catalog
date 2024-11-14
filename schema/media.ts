@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { capitalize, slugify } from "@/lib/utils";
 
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
+export const MAX_FILE_SIZE = 1024 * 1024 * 5;
 
 export const ACCEPTED_IMAGE_MIME_EXTS = ["image/jpeg", "image/jpg", "image/png", "image/webp"] as const;
 export const ACCEPTED_VIDEO_MIME_EXTS = ["video/mp4", "video/mpeg", "video/avi", "video/wmv"] as const;
