@@ -594,31 +594,46 @@ export function CreateNewsForm() {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(MARKDOWN);
 
-  const changeOriginalImgSouce = () => {
-    function changeSrc(content: string, index: number = 0) {
-      const result = content.replace(refineBlobStr(blobUrls[index]), `custom-url-${index}`);
+  const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
+    const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
+
+    function changeSrc(
+      content: string,
+      ids: Array<ReturnType<typeof getId>> = [],
+      index: number = 0,
+    ): [string, Array<`image_${string}`>] {
+      const id = getId();
+      const result = content.replace(refineBlobStr(blobUrls[index]), `${id}`);
 
       if (++index < blobUrls.length) {
-        return changeSrc(result, index);
+        return changeSrc(result, [...ids, id], index);
       } else {
-        return result;
+        return [result, [...ids, id]];
       }
     }
 
     if (!!blobUrls.length) {
-      const newSrc = changeSrc(markdown);
-      return newSrc;
+      const [content, ids] = changeSrc(markdown);
+      return [content, ids];
     } else {
-      return markdown;
+      return [markdown];
     }
   };
 
   const actionHanlder = async (formData: FormData) => {
-    formData.append("content", changeOriginalImgSouce());
+    const [content, ids] = changeOriginalImgSouce();
+
+    formData.append("content", content);
 
     for (const blobUrl of blobUrls) {
       const blob = await fetch(blobUrl).then((r) => r.blob());
-      formData.append("image", blob);
+      formData.append("images.file", blob);
+    }
+
+    if (ids) {
+      for (const id of ids) {
+        formData.append("images.id", id);
+      }
     }
 
     await createNews(formData);
@@ -671,9 +686,9 @@ export function CreateNewsForm() {
           <RichText
             blobUrls={blobUrls}
             setBlobUrls={setBlobUrls}
-            markdown={markdown}
+            markdown={markdown.slice(0, 1048576)}
             onChange={(content) => {
-              setMarkdown(content);
+              setMarkdown(content.slice(0, 1048576));
               setBlobUrls([
                 ...blobUrls.filter((url) => {
                   if (content.includes(refineBlobStr(url))) {
