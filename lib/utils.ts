@@ -90,8 +90,14 @@ export function initRawData(formData: FormData) {
   const medias_image = formData.getAll("media.image");
 
   for (const [key, value] of formData.entries()) {
-    if (!key.includes("media")) {
+    if (!key.includes("media") && !key.includes(".")) {
       rawData[key] = value;
+    } else if (!key.includes("media") && key.includes(".")) {
+      if (rawData[key] instanceof Array) {
+        rawData[key] = [...rawData[key], value];
+      } else {
+        rawData[key] = [value];
+      }
     }
   }
 
