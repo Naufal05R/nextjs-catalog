@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Mapper from "@/components/server/Mapper";
-import { useDropzone } from "react-dropzone";
 import { z } from "zod";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -10,23 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { toast as sonner } from "sonner";
 
 import { Image, Video } from "@/components/server/Media";
-import {
-  CloudUpload,
-  Eye,
-  EyeOff,
-  GripVertical,
-  HardDriveUpload,
-  ImageUp,
-  Plus,
-  ShieldAlert,
-  Trash2,
-} from "lucide-react";
+import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { cn, getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
+import { getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -174,34 +162,6 @@ export function CreateProductForm({ collection, categories }: { collection: stri
       );
     }
   }, []);
-
-  // const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
-  //   onDrop,
-  //   accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
-  // });
-
-  // useEffect(() => {
-  //   if (!!fileRejections.length) {
-  //     fileRejections.forEach((fileRejection, index) => {
-  //       const { file, errors } = fileRejection;
-
-  //       setTimeout(() => {
-  //         sonner.error(
-  //           <blockquote>
-  //             <h5 className="break-all text-sm">
-  //               <strong>Error: </strong>Invalid File <strong>{file.name}</strong>
-  //             </h5>
-  //             <br />
-  //             <ul>
-  //               <Mapper data={Array.from(errors)} render={({ message }) => <li>{message}</li>} />
-  //             </ul>
-  //           </blockquote>,
-  //           { duration: 10000 },
-  //         );
-  //       }, 2000 * index);
-  //     });
-  //   }
-  // }, [fileRejections]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof ProductFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
@@ -509,72 +469,6 @@ export function CreateProductForm({ collection, categories }: { collection: stri
             </Button>
           </ul>
         ) : (
-          // <div
-          //   className={cn(
-          //     "relative flex w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
-          //     {
-          //       "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
-          //       "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
-          //     },
-          //   )}
-          // >
-          //   <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
-          //     <Input
-          //       {...getInputProps()}
-          //       form="create-product-form"
-          //       className="hidden"
-          //       type="file"
-          //       multiple
-          //       onChange={(e) => {
-          //         const files = e.target.files;
-          //         if (files) {
-          //           setFiles(
-          //             Array.from(files)
-          //               .filter((file) => {
-          //                 if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
-          //                   return true;
-          //                 } else {
-          //                   alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
-          //                   return false;
-          //                 }
-          //               })
-          //               .map((file, index) => {
-          //                 return {
-          //                   title: file.name,
-          //                   order: index,
-          //                   media: file,
-          //                 };
-          //               }),
-          //           );
-          //         }
-          //       }}
-          //     />
-          //   </div>
-
-          //   {isDragActive ? (
-          //     isDragAccept ? (
-          //       <>
-          //         <HardDriveUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-          //         Drag files or click to upload
-          //       </>
-          //     ) : isDragReject ? (
-          //       <>
-          //         <ShieldAlert className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-          //         One or more files not allowed or not supported
-          //       </>
-          //     ) : (
-          //       <>
-          //         <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-          //         Drag files or click to upload
-          //       </>
-          //     )
-          //   ) : (
-          //     <>
-          //       <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-          //       Drag files or click to upload
-          //     </>
-          //   )}
-          // </div>
           <Uploader
             inputProps={{
               form: "create-product-form",
