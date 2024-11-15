@@ -11,15 +11,29 @@ import { Prisma } from "@prisma/client";
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
 
-interface GetAllNews {
+interface GetNewsProps {
   where?: Prisma.NewsWhereInput;
 }
 
-export const getAllNews = async (params: GetAllNews | undefined = undefined) => {
+export const getAllNews = async (params: GetNewsProps | undefined = undefined) => {
   const { where } = params ?? {};
 
   try {
     const allNews = await prisma.news.findMany({
+      where,
+    });
+
+    return allNews;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getNews = async (params: GetNewsProps) => {
+  const { where } = params;
+
+  try {
+    const allNews = await prisma.news.findFirst({
       where,
     });
 
@@ -62,7 +76,7 @@ export const createNews = async (formData: FormData) => {
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/article.md`,
+            objectName: `news/${slugify(title)}/article.mdx`,
             objectStream: markdown,
           });
         }
