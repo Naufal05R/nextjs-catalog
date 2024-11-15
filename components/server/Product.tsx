@@ -72,7 +72,6 @@ export const DashbaordProductCard = ({
       <CardHeader>
         <Image
           src={src}
-          unoptimized
           alt="dummy_image"
           fill
           sizes="25vw"
