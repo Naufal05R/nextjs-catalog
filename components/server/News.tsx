@@ -2,7 +2,7 @@ import Link from "next/link";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { archiveNews, deleteNews, getAllNews, unarchiveNews } from "@/lib/actions/news.action";
-import { EmptyState } from "./Empty";
+import { EmptyState, EmptyStateWithButton, EmptyStateWithButtonProps } from "./Empty";
 import { News } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
@@ -52,13 +52,19 @@ export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) 
 
 export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: boolean }) => {
   const allNews = await getAllNews({ where: { isRelevant } });
+  const emptyProps: Pick<EmptyStateWithButtonProps, "href" | "alt"> = {
+    href: "/dashboard/news/add",
+    alt: "Write News",
+  };
 
   return allNews && !!allNews.length ? (
     <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
       <Mapper data={allNews} render={(news) => <BackEndNewsCard {...news} />} />
     </ul>
+  ) : isRelevant ? (
+    <EmptyStateWithButton title="News is empty, Please Create a new one!" {...emptyProps} />
   ) : (
-    <EmptyState title="News is empty, Please Create a new one!" href="/dashboard/news/add" alt="Write News" />
+    <EmptyState title={"Archived News is empty!"} />
   );
 };
 
