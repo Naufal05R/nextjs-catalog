@@ -23,7 +23,7 @@ interface CatalogProductCardProps extends Product {
   src: string;
 }
 
-export const DashboardProductDisplay = async ({ isReady, collection }: { isReady: boolean; collection: string }) => {
+export const DashboardProductDisplay = async ({ isReady, collection }: { isReady: boolean; collection?: string }) => {
   const deprecatedProducts = await getAllProduct({ where: { isReady, collection: { slug: collection } } });
 
   return deprecatedProducts && !!deprecatedProducts.length ? (
