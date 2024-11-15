@@ -78,8 +78,6 @@ export const BackEndNewsCard = async () => {
       />
     </ul>
   ) : (
-    <div className="grid size-full place-items-center py-8">
-      <h4 className="text-4xl font-semibold">News is&apos;nt available!</h4>
-    </div>
+    <EmptyState title="News is empty, Please Create a new one!" href="/dashboard/news/add" alt="Write News" />
   );
 };
