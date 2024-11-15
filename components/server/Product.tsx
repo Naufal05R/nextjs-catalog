@@ -1,9 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
+import Mapper from "./Mapper";
 import { Archive, ArchiveRestore, Grid2x2Plus, Pencil, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { archiveProduct, deleteProduct, unarchiveProduct } from "@/lib/actions/product.action";
+import { archiveProduct, deleteProduct, getAllProduct, unarchiveProduct } from "@/lib/actions/product.action";
+import { EmptyState, EmptyStateWithButton } from "@/components/server/Empty";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
@@ -20,6 +22,36 @@ interface CatalogProductCardProps extends Product {
   category: string;
   src: string;
 }
+
+export const DashboardProductDisplay = async ({ isReady }: { isReady: boolean }) => {
+  const deprecatedProducts = await getAllProduct({ where: { isReady } });
+
+  return deprecatedProducts && !!deprecatedProducts.length ? (
+    <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
+      <Mapper
+        data={deprecatedProducts}
+        render={({ gallery, collection: { slug }, ...product }) => {
+          return (
+            !!gallery &&
+            !!gallery.medias.length && (
+              <DashbaordProductCard {...product} collection={slug} thumbnail={gallery.medias[0].name} />
+            )
+          );
+        }}
+      />
+
+      <CreateProductCard />
+    </ul>
+  ) : isReady ? (
+    <EmptyStateWithButton
+      title="Products is empty, Please Create a new one!"
+      href="/dashboard/products"
+      alt="Back to collection"
+    />
+  ) : (
+    <EmptyState title="Archived Products is empty!" />
+  );
+};
 
 export const DashbaordProductCard = ({
   id,
