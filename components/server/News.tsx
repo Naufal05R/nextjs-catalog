@@ -40,7 +40,7 @@ export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) 
         </blockquote>
 
         <blockquote className="mt-4 text-right text-xs text-rose-400">
-          <time>{timestamp.substring(0, timestamp.indexOf(","))}</time>
+          <time>{timestamp}</time>
         </blockquote>
       </article>
     </Link>
@@ -82,7 +82,7 @@ export const BackEndNewsCard = ({ title, description, slug, updatedAt }: News) =
         </blockquote>
 
         <blockquote className="mt-4 text-right text-xs text-rose-400">
-          <time>{timestamp.substring(0, timestamp.indexOf(","))}</time>
+          <time>{timestamp}</time>
         </blockquote>
       </article>
     </Link>
