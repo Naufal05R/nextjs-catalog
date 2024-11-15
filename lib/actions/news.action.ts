@@ -101,3 +101,24 @@ export const createNews = async (formData: FormData) => {
     console.log(error);
   }
 };
+
+export const archiveNews = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+      await prisma.news.update({
+        where: {
+          id,
+        },
+        data: {
+          isRelevant: false,
+        },
+      });
+
+      revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
