@@ -22,8 +22,7 @@ interface CarouselDetailVariantProps extends DynamicCarouselBaseProps {
   props: Parameters<typeof CarouselDetail>[0];
 }
 
-type DynamicCarouselProps = DynamicCarouselBaseProps &
-  (CarouselDetailVariantProps | CarouselFeaturedVariantProps | CarouselThumbnailVariantProps);
+type DynamicCarouselProps = CarouselDetailVariantProps | CarouselFeaturedVariantProps | CarouselThumbnailVariantProps;
 
 const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
   if (variant === "featured") {
