@@ -89,6 +89,7 @@ model News {
   title       String   @unique @db.VarChar(64)
   slug        String   @unique @db.VarChar(64)
   description String   @db.VarChar(256)
+  isRelevant  Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
