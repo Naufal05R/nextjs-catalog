@@ -2,7 +2,7 @@
 
 import { NewsFormSchema } from "@/schema/news";
 import { getFileMimeTypes, handlingError, initRawData, slugify } from "../utils";
-import { createObject } from "../service";
+import { createObject, deleteObjects } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -138,6 +138,44 @@ export const unarchiveNews = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
+
+export const deleteProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+      const selectedNews = await prisma.news.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          slug: true,
+        },
+      });
+
+      if (selectedNews) {
+        await prisma.$transaction(async (_prisma) => {
+          await _prisma.product.delete({
+            where: {
+              id,
+            },
+          });
+
+          deleteObjects({
+            bucketName: APP_NAME,
+            prefix: `news/${selectedNews.slug}/`,
+          });
+        });
+
+        revalidatePath("/", "layout");
+      } else {
+        throw new Error("News not found!");
+      }
     } catch (error) {
       handlingError(error);
     }
