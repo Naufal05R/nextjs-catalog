@@ -46,11 +46,11 @@ import {
   Dialog as DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
-import { Image } from "../server/Media";
-import { Uploader } from "../client/Uploader";
+import { Image } from "@/components/server/Media";
+import { Uploader } from "@/components/client/Uploader";
 
 const InsertImage = () => {
   const insertImage = usePublisher(insertImage$);
