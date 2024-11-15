@@ -16,6 +16,11 @@ interface DashbaordProductCardProps extends Product {
   thumbnail: string;
 }
 
+interface CatalogProductCardProps extends Product {
+  category: string;
+  src: string;
+}
+
 export const DashbaordProductCard = ({
   id,
   title,
@@ -150,11 +155,6 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
     </Card>
   );
 };
-
-interface CatalogProductCardProps extends Pick<Product, "title" | "slug" | "description" | "price" | "discount"> {
-  category: string;
-  src: string;
-}
 
 export const CatalogProductCard = ({
   title,
