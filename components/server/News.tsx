@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
-import { getAllNews } from "@/lib/actions/news.action";
+import { archiveNews, deleteNews, getAllNews, unarchiveNews } from "@/lib/actions/news.action";
 import { EmptyState } from "./Empty";
 import { News } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { Archive, ArchiveRestore, Pencil } from "lucide-react";
+import { Archive, ArchiveRestore, Pencil, Trash2 } from "lucide-react";
 
 export const FrontEndNewsDisplay = async () => {
   const allNews = await getAllNews();
@@ -62,7 +62,7 @@ export const BackEndNewsDisplay = async () => {
   );
 };
 
-export const BackEndNewsCard = ({ title, description, updatedAt }: News) => {
+export const BackEndNewsCard = ({ id, title, description, isRelevant, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
 
   return (
@@ -90,30 +90,26 @@ export const BackEndNewsCard = ({ title, description, updatedAt }: News) => {
 
       <CardFooter className="mt-auto gap-4">
         <Button className="flex-1" form="archive-news">
-          {/* <form id="archive-news" action={isReady ? archiveNews : unarchiveNews} className="hidden" /> */}
-          {/* <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-news" /> */}
-          {/* {isReady ? <Archive /> : <ArchiveRestore />} */}
-          {/* {isReady ? "Archive" : "Unarchive"} */}
-          <Archive />
-          Archive
+          <form id="archive-news" action={isRelevant ? archiveNews : unarchiveNews} className="hidden" />
+          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-news" />
+          {isRelevant ? <Archive /> : <ArchiveRestore />}
+          {isRelevant ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button /* asChild={isReady} */ className="flex-1" form="delete-product">
-          {/* {isReady ? (
-            <Link href={`/dashboard/products/${collection}/${slug}`}>
+        <Button asChild={isRelevant} className="flex-1" form="delete-news">
+          {isRelevant ? (
+            <Link href={`/dashboard/news/${slug}`}>
               <Pencil />
               Edit
             </Link>
           ) : (
             <>
-              <form id="delete-product" action={deleteProduct} className="hidden" />
-              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="delete-product" />
+              <form id="delete-news" action={deleteNews} className="hidden" />
+              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="delete-news" />
               <Trash2 />
               Delete
             </>
-          )} */}
-          <Pencil />
-          Edit
+          )}
         </Button>
       </CardFooter>
     </Card>
