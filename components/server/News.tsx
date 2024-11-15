@@ -62,7 +62,7 @@ export const BackEndNewsDisplay = async () => {
   );
 };
 
-export const BackEndNewsCard = ({ id, title, description, isRelevant, updatedAt }: News) => {
+export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
 
   return (
