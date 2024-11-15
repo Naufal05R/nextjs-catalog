@@ -9,6 +9,7 @@ import { getImageSrc } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 import { getAllCollection } from "@/lib/actions/collection.action";
 import { collections } from "@/constants";
+import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 
 interface CollectionProps {
   title: string;
@@ -34,12 +35,15 @@ const CollectionPlaceholder = async ({
   index: number;
 }) => {
   const src = getImageSrc({ product, name, collection });
+  const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
     <Image
       src={src || "/"}
       alt={name}
       fill
+      placeholder="blur"
+      blurDataURL={blurDataURL}
       classNames={{
         figure: cn("aspect-square row-span-2 col-span-2", {
           "row-span-1 col-span-1": index,
