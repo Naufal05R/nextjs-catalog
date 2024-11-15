@@ -50,8 +50,8 @@ export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) 
   );
 };
 
-export const BackEndNewsDisplay = async () => {
-  const allNews = await getAllNews();
+export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: boolean }) => {
+  const allNews = await getAllNews({ where: { isRelevant } });
 
   return allNews && !!allNews.length ? (
     <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
