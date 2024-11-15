@@ -1,7 +1,10 @@
+import Mapper from "../server/Mapper";
 import { cn } from "@/lib/utils";
 import { CloudUpload, HardDriveUpload, ShieldAlert } from "lucide-react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { Input, InputProps } from "../ui/input";
+import { toast as sonner } from "sonner";
+import { useEffect } from "react";
 
 interface UploaderProps {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> & InputProps;
@@ -9,7 +12,7 @@ interface UploaderProps {
 }
 
 export const Uploader = ({ inputProps, options }: UploaderProps) => {
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, open } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
     ...options,
   });
 
@@ -40,6 +43,29 @@ export const Uploader = ({ inputProps, options }: UploaderProps) => {
       )}
     </div>
   );
+
+  useEffect(() => {
+    if (!!fileRejections.length) {
+      fileRejections.forEach((fileRejection, index) => {
+        const { file, errors } = fileRejection;
+
+        setTimeout(() => {
+          sonner.error(
+            <blockquote>
+              <h5 className="break-all text-sm">
+                <strong>Error: </strong>Invalid File <strong>{file.name}</strong>
+              </h5>
+              <br />
+              <ul>
+                <Mapper data={Array.from(errors)} render={({ message }) => <li>{message}</li>} />
+              </ul>
+            </blockquote>,
+            { duration: 10000 },
+          );
+        }, 2000 * index);
+      });
+    }
+  }, [fileRejections]);
 
   return (
     <div
