@@ -2,11 +2,11 @@ import Link from "next/link";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { archiveNews, deleteNews, getAllNews, unarchiveNews } from "@/lib/actions/news.action";
-import { EmptyState, EmptyStateWithButton, EmptyStateWithButtonProps } from "./Empty";
+import { EmptyState, EmptyStateWithButton } from "./Empty";
 import { News } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { Archive, ArchiveRestore, Pencil, Trash2 } from "lucide-react";
+import { Archive, ArchiveRestore, FilePlus, Pencil, Trash2 } from "lucide-react";
 
 export const FrontEndNewsDisplay = async () => {
   const allNews = await getAllNews();
@@ -56,6 +56,8 @@ export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: b
   return allNews && !!allNews.length ? (
     <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
       <Mapper data={allNews} render={(news) => <BackEndNewsCard {...news} />} />
+
+      <CreateNewsCard />
     </ul>
   ) : isRelevant ? (
     <EmptyStateWithButton title="News is empty, Please Create a new one!" href="/dashboard/news/add" alt="Write News" />
@@ -114,6 +116,38 @@ export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, upda
           )}
         </Button>
       </CardFooter>
+    </Card>
+  );
+};
+
+export const CreateNewsCard = () => {
+  return (
+    <Card className="group relative col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
+      <CardHeader className="invisible">
+        <figure className="aspect-video w-full" />
+      </CardHeader>
+
+      <CardContent className="invisible">
+        <CardTitle className="line-clamp-1 text-lg font-semibold">Invisible Title</CardTitle>
+        <CardDescription className="mb-2 line-clamp-3">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur unde, quidem amet labore quasi
+          laboriosam placeat ut repellendus. Voluptatum velit optio repellat, cum tempora fuga harum aperiam provident
+          voluptate dolorum! Architecto, harum?
+        </CardDescription>
+        <blockquote className="mt-4 text-xs">
+          <time>Invisible Date</time>
+        </blockquote>
+      </CardContent>
+
+      <CardFooter className="invisible mt-auto gap-4">
+        <Button className="flex-1" />
+        <Button className="flex-1" />
+      </CardFooter>
+
+      <Link href="/dashboard/news/add" className="absolute inset-0 flex size-full flex-col items-center justify-center">
+        <FilePlus className="mx-auto" size={64} />
+        <CardTitle className="mt-4 line-clamp-1 whitespace-nowrap text-xl font-semibold">Create News</CardTitle>
+      </Link>
     </Card>
   );
 };
