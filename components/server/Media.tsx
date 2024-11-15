@@ -2,7 +2,6 @@ import React from "react";
 import NextImage from "next/image";
 import { cn } from "@/lib/utils";
 import { Bag } from "../svg";
-import { getDynamicBlurDataUrl } from "@/lib/actions/image.action";
 
 interface ComponentBaseProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
