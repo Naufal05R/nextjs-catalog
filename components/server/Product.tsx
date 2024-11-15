@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
+import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -53,7 +54,7 @@ export const DashboardProductDisplay = async ({ isReady, collection }: { isReady
   );
 };
 
-export const DashbaordProductCard = ({
+export const DashbaordProductCard = async ({
   id,
   title,
   slug,
@@ -66,15 +67,18 @@ export const DashbaordProductCard = ({
   thumbnail,
 }: DashbaordProductCardProps) => {
   const src = getImageSrc({ collection, product: slug, name: thumbnail });
+  const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
     <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
       <CardHeader>
         <Image
           src={src}
-          alt="dummy_image"
+          alt={slug}
           fill
           sizes="25vw"
+          placeholder="blur"
+          blurDataURL={blurDataURL}
           classNames={{ figure: "w-full aspect-video rounded-md" }}
         />
       </CardHeader>
@@ -187,7 +191,7 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
   );
 };
 
-export const CatalogProductCard = ({
+export const CatalogProductCard = async ({
   title,
   slug,
   description,
@@ -196,6 +200,8 @@ export const CatalogProductCard = ({
   discount,
   src,
 }: CatalogProductCardProps) => {
+  const blurDataURL = await getDynamicBlurDataURL(src);
+
   return (
     <Link
       href={`/products/${slug}`}
@@ -207,6 +213,8 @@ export const CatalogProductCard = ({
         alt={slug}
         fill
         sizes="25vw"
+        placeholder="blur"
+        blurDataURL={blurDataURL}
         classNames={{
           figure: "w-full aspect-[4/3] rounded overflow-hidden transition-all",
           image: "group-hover:scale-110 transition-transform duration-500",
