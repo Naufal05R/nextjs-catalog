@@ -35,8 +35,7 @@ import {
   StrikeThroughSupSubToggles,
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
-import { CloudUpload, HardDriveUpload, ImagePlus, Menu, ShieldAlert } from "lucide-react";
-import { Input } from "../ui/input";
+import { ImagePlus, Menu } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   DialogClose,
@@ -49,9 +48,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { useDropzone } from "react-dropzone";
 import { ACCEPTED_IMAGE_MIME_EXTS } from "@/schema/media";
 import { Image } from "../server/Media";
+import { Uploader } from "../client/Uploader";
 
 const InsertImage = () => {
   const insertImage = usePublisher(insertImage$);
@@ -65,39 +64,6 @@ const InsertImage = () => {
       if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(selectedFile.type)) setFile(selectedFile);
     }
   }, []);
-
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, open } = useDropzone({
-    onDrop,
-    accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
-  });
-
-  const DynamicUI = () => (
-    <div className="line-clamp-2 text-center">
-      {isDragActive ? (
-        isDragAccept ? (
-          <>
-            <HardDriveUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-            Drag files or click to upload
-          </>
-        ) : isDragReject ? (
-          <>
-            <ShieldAlert className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-            One or more files not allowed or not supported
-          </>
-        ) : (
-          <>
-            <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-            Drag files or click to upload
-          </>
-        )
-      ) : (
-        <>
-          <CloudUpload className="mx-auto mb-3.5 size-8" strokeWidth={1.5} />
-          Drag files or click to upload
-        </>
-      )}
-    </div>
-  );
 
   return (
     <DialogRoot onOpenChange={() => setTimeout(setFile, 500)}>
@@ -128,34 +94,23 @@ const InsertImage = () => {
               onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => (e.target as HTMLElement).requestFullscreen()}
             />
           ) : (
-            <div
-              className={cn(
-                "relative flex h-40 w-full flex-col items-center justify-center border-[1.5px] border-dashed border-slate-300 bg-slate-50 p-7 text-slate-400",
-                {
-                  "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
-                  "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
+            <Uploader
+              inputProps={{
+                form: "insert-image-form",
+                onChange: (e) => {
+                  const file = e.target.files?.[0];
+                  if (file && new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(file.type)) {
+                    setFile(file);
+                  } else {
+                    alert("filetype not allowed!");
+                  }
                 },
-              )}
-            >
-              <div {...getRootProps()} className="absolute size-full hover:cursor-pointer" onClick={open}>
-                <Input
-                  {...getInputProps()}
-                  form="insert-image-form"
-                  className="hidden"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file && new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(file.type)) {
-                      setFile(file);
-                    } else {
-                      alert("filetype not allowed!");
-                    }
-                  }}
-                />
-              </div>
-
-              <DynamicUI />
-            </div>
+              }}
+              options={{
+                onDrop,
+                accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
+              }}
+            />
           )}
         </fieldset>
 
