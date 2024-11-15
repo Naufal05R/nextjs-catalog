@@ -30,11 +30,13 @@ export const NewsSchema = z.object({
     .max(255, {
       message: "Description must be less than 255 characters",
     }),
+  isRelevant: z.boolean().default(true),
 });
 
 export const NewsFormSchema = NewsSchema.pick({
   title: true,
   description: true,
+  isRelevant: true,
 }).merge(
   z.object({
     content: z
