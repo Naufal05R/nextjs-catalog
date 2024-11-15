@@ -2,6 +2,7 @@ import Link from "next/link";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { getAllNews } from "@/lib/actions/news.action";
+import { EmptyState } from "./Empty";
 
 export const FrontEndNewsCard = async () => {
   const allNews = await getAllNews();
@@ -38,9 +39,7 @@ export const FrontEndNewsCard = async () => {
       />
     </ul>
   ) : (
-    <div className="grid size-full place-items-center py-8">
-      <h4 className="text-4xl font-semibold">News is&apos;nt available!</h4>
-    </div>
+    <EmptyState title="News isn't availale!" />
   );
 };
 
