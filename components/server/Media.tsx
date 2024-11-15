@@ -54,17 +54,13 @@ export const Media = ({ FallbackComponent = Bag, classNames, children }: Compone
   );
 };
 
-export const Image = async ({ FallbackComponent = Bag, classNames, ...props }: ImageComponentProps) => {
+export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageComponentProps) => {
   const { figure, image, fallback } = classNames ?? {};
-  const blurDataURL = await getDynamicBlurDataUrl(props.src as string);
-
   return (
     <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
       {props.src && (
         <NextImage
           {...props}
-          placeholder="blur"
-          blurDataURL={blurDataURL}
           draggable={false}
           className={cn("z-20 size-full object-cover object-center before:hidden", image)}
         />
