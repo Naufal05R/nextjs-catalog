@@ -51,7 +51,7 @@ export const BackEndNewsDisplay = async () => {
   const allNews = await getAllNews();
 
   return allNews && !!allNews.length ? (
-    <ul className="mt-8 grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-12">
+    <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
       <Mapper data={allNews} render={(news) => <BackEndNewsCard {...news} />} />
     </ul>
   ) : (
