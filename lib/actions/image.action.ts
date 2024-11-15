@@ -2,7 +2,7 @@
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
 
-export const getDynamicBlurDataUrl = async (url: string) => {
+export const getDynamicBlurDataURL = async (url: string) => {
   const base64str = await fetch(`${SERVER_URL}/_next/image?url=${url}&w=16&q=75`).then(async (res) =>
     Buffer.from(await res.arrayBuffer()).toString("base64"),
   );
