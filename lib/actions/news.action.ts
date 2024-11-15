@@ -122,3 +122,24 @@ export const archiveNews = async (formData: FormData) => {
     }
   }
 };
+
+export const unarchiveNews = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+      await prisma.news.update({
+        where: {
+          id,
+        },
+        data: {
+          isRelevant: true,
+        },
+      });
+
+      revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
