@@ -2,7 +2,7 @@ import React from "react";
 import Mapper from "@/components/server/Mapper";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CreateProductCard, DashbaordProductCard } from "@/components/server/Product";
-import { EmptyState } from "../server/Empty";
+import { EmptyStateWithButton } from "../server/Empty";
 
 const DeprecatedProducts = async () => {
   const deprecatedProducts = await getAllProduct({ where: { isReady: false } });
@@ -25,7 +25,11 @@ const DeprecatedProducts = async () => {
           <CreateProductCard />
         </ul>
       ) : (
-        <EmptyState title="There's no archived products" href="/dashboard/products" alt="Back to collection" />
+        <EmptyStateWithButton
+          title="There's no archived products"
+          href="/dashboard/products"
+          alt="Back to collection"
+        />
       )}
     </section>
   );
