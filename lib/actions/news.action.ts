@@ -144,7 +144,7 @@ export const unarchiveNews = async (formData: FormData) => {
   }
 };
 
-export const deleteProduct = async (formData: FormData) => {
+export const deleteNews = async (formData: FormData) => {
   const id = formData.get("id") as string;
 
   if (id) {
