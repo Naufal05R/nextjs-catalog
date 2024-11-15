@@ -40,7 +40,7 @@ export const DashboardProductDisplay = async ({ isReady, collection }: { isReady
         }}
       />
 
-      <CreateProductCard />
+      <CreateProductCard collection={collection} />
     </ul>
   ) : isReady ? (
     <EmptyStateWithButton
