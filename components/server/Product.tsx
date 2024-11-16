@@ -191,7 +191,7 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
   );
 };
 
-export const CatalogProductCard = async ({
+export const CatalogProductCard = ({
   title,
   slug,
   description,
@@ -200,8 +200,6 @@ export const CatalogProductCard = async ({
   discount,
   src,
 }: CatalogProductCardProps) => {
-  const blurDataURL = await getDynamicBlurDataURL(src);
-
   return (
     <Link
       href={`/products/${slug}`}
@@ -213,8 +211,6 @@ export const CatalogProductCard = async ({
         alt={slug}
         fill
         sizes="25vw"
-        placeholder="blur"
-        blurDataURL={blurDataURL}
         classNames={{
           figure: "w-full aspect-[4/3] rounded overflow-hidden transition-all",
           image: "group-hover:scale-110 transition-transform duration-500",
