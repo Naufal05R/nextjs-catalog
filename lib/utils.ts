@@ -23,6 +23,9 @@ export function slugify(str: string) {
     .replace(/\s+/g, "-");
 }
 
+export const toBase64 = (str: string) =>
+  typeof window === "undefined" ? Buffer.from(str).toString("base64") : window.btoa(str);
+
 export function padValue(value: number) {
   return String(value).padStart(3, "0");
 }
