@@ -160,11 +160,13 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
               <CatalogProductCard
                 {...product}
                 category={category.title}
-                src={getImageSrc({
-                  product: product.slug,
-                  collection: collection.slug,
-                  name: gallery!.medias[0].name,
-                })}
+                imageProps={{
+                  src: getImageSrc({
+                    product: product.slug,
+                    collection: collection.slug,
+                    name: gallery!.medias[0].name,
+                  }),
+                }}
               />
             </CarouselItem>
           )}
