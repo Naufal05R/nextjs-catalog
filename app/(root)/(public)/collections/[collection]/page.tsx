@@ -46,7 +46,7 @@ export default async function CollectionPage({ params }: { params: { collection:
               });
               return (
                 <li className="col-span-3">
-                  <CatalogProductCard {...product} category={category.title} src={src} />
+                  <CatalogProductCard {...product} category={category.title} imageProps={{ src }} />
                 </li>
               );
             }}
