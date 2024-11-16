@@ -42,6 +42,7 @@ const CollectionPlaceholder = async ({
       src={src || "/"}
       alt={name}
       fill
+      sizes="50vw"
       placeholder="blur"
       blurDataURL={blurDataURL}
       classNames={{
