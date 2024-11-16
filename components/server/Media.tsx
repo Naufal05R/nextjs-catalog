@@ -1,6 +1,6 @@
 import React from "react";
 import NextImage from "next/image";
-import { cn } from "@/lib/utils";
+import { cn, toBase64 } from "@/lib/utils";
 import { Bag } from "../svg";
 
 interface ComponentBaseProps {
@@ -31,6 +31,20 @@ export interface VideoComponentProps
   };
 }
 
+const shimmer = (width: number, height: number) => `
+<svg width="${width}" height="${height}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#94a3b8" offset="20%" />
+      <stop stop-color="#64748b7f" offset="50%" />
+      <stop stop-color="#94a3b8" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${width}" height="${height}" fill="#94a3b8" />
+  <rect id="r" width="${width}" height="${height}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${width}" to="${width}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
 export const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
   const { figure, fallback } = classNames ?? {};
 
@@ -57,6 +71,7 @@ export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageCo
     <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
       {props.src && (
         <NextImage
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(10, 10))}`}
           {...props}
           draggable={false}
           className={cn("z-20 size-full object-cover object-center before:hidden", image)}
