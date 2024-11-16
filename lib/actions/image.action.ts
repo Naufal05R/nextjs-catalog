@@ -1,5 +1,7 @@
 "use server";
 
+import { toBase64 } from "../utils";
+
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
 
 export const getDynamicBlurDataURL = async (url: string) => {
@@ -17,9 +19,6 @@ export const getDynamicBlurDataURL = async (url: string) => {
       href='data:image/avif;base64,${base64str}' />
     </svg>
   `;
-
-  const toBase64 = (str: string) =>
-    typeof window === "undefined" ? Buffer.from(str).toString("base64") : window.btoa(str);
 
   return `data:image/svg+xml;base64,${toBase64(blurSvg)}`;
 };
