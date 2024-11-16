@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { archiveProduct, deleteProduct, getAllProduct, unarchiveProduct } from "@/lib/actions/product.action";
 import { EmptyState, EmptyStateWithButton } from "@/components/server/Empty";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
-import { Image } from "@/components/server/Media";
+import { Image, ImageComponentProps } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
@@ -21,7 +21,7 @@ interface DashbaordProductCardProps extends Product {
 
 interface CatalogProductCardProps extends Product {
   category: string;
-  src: string;
+  imageProps: WithRequired<Partial<ImageComponentProps>, "src">;
 }
 
 export const DashboardProductDisplay = async ({ isReady, collection }: { isReady: boolean; collection?: string }) => {
@@ -198,7 +198,7 @@ export const CatalogProductCard = ({
   category,
   price,
   discount,
-  src,
+  imageProps,
 }: CatalogProductCardProps) => {
   return (
     <Link
@@ -207,10 +207,10 @@ export const CatalogProductCard = ({
       className="group flex select-none flex-col rounded-md p-4 transition-shadow duration-300 card-shadow"
     >
       <Image
-        src={src}
-        alt={slug}
         fill
         sizes="25vw"
+        alt={slug}
+        {...imageProps}
         classNames={{
           figure: "w-full aspect-[4/3] rounded overflow-hidden transition-all",
           image: "group-hover:scale-110 transition-transform duration-500",
