@@ -15,23 +15,21 @@ interface ComponentBaseProps {
   };
 }
 
-interface ImageComponentProps extends ImageProps, Pick<ComponentBaseProps, "FallbackComponent"> {
+export interface ImageComponentProps
+  extends Omit<React.ComponentProps<typeof NextImage>, "className">,
+    Pick<ComponentBaseProps, "FallbackComponent"> {
   classNames?: ComponentBaseProps["classNames"] & {
     image?: string;
   };
 }
 
-interface VideoComponentProps extends VideoProps, Pick<ComponentBaseProps, "FallbackComponent"> {
+export interface VideoComponentProps
+  extends Omit<React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>, "className">,
+    Pick<ComponentBaseProps, "FallbackComponent"> {
   classNames?: ComponentBaseProps["classNames"] & {
     video?: string;
   };
 }
-
-type ImageProps = Omit<React.ComponentProps<typeof NextImage>, "className">;
-type VideoProps = Omit<
-  React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
-  "className"
->;
 
 export const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
   const { figure, fallback } = classNames ?? {};
