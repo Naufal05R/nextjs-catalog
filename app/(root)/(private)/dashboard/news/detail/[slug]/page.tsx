@@ -1,3 +1,4 @@
+import { CreateNewsForm } from "@/components/client/Form";
 import { getNews } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
 
@@ -9,9 +10,10 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
   console.log(news);
 
   return (
-    <>
-      Detail News Page
-      {JSON.stringify(news)}
-    </>
+    <section className="size-full p-4">
+      <h4 className="text-2xl font-semibold capitalize">Update {news.title}</h4>
+
+      <CreateNewsForm />
+    </section>
   );
 }
