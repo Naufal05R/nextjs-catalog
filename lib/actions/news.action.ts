@@ -33,11 +33,11 @@ export const getNews = async (params: GetNewsProps) => {
   const { where } = params;
 
   try {
-    const allNews = await prisma.news.findFirst({
+    const news = await prisma.news.findFirst({
       where,
     });
 
-    return allNews;
+    return news;
   } catch (error) {
     handlingError(error);
   }
