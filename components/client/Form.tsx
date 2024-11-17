@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import Mapper from "@/components/server/Mapper";
-import { z } from "zod";
+import { string, z } from "zod";
 
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,12 @@ import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
 import { createNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
+
+interface BaseFormProps<K extends string> {
+  defaultValue?: {
+    [key in K]: string;
+  };
+}
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
