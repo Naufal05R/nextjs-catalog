@@ -121,11 +121,11 @@ export const PrivatePathname = () => {
       <BreadcrumbList>
         {!!breadcrumbs.length && (
           <>
-            <BreadcrumbItem>
+            {/* <BreadcrumbItem>
               <BreadcrumbLink href="/dashboard" className="py-4">
                 Dashboard
               </BreadcrumbLink>
-            </BreadcrumbItem>
+            </BreadcrumbItem> */}
 
             <Mapper
               data={breadcrumbs}
@@ -134,7 +134,7 @@ export const PrivatePathname = () => {
 
                 return (
                   <>
-                    <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                    <BreadcrumbSeparator hidden={!index}>/</BreadcrumbSeparator>
                     <Route title={breadcrumb} href={href} />
                   </>
                 );
