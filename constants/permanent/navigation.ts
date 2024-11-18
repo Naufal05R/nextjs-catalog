@@ -11,11 +11,11 @@ const navigations = defineConst([
     label: "Shop",
     href: "/collections",
   },
-  {
-    key: "guestbook",
-    label: "Guestbook",
-    href: "/guestbook",
-  },
+  // {
+  //   key: "guestbook",
+  //   label: "Guestbook",
+  //   href: "/guestbook",
+  // },
   {
     key: "about",
     label: "About",
