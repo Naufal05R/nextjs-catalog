@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Mapper from "@/components/server/Mapper";
 import { z } from "zod";
 
@@ -14,11 +14,11 @@ import { Image, Video } from "@/components/server/Media";
 import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
-import { createProduct } from "@/lib/actions/product.action";
+import { getFileDetails, getFileMimeTypes, getImageSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
+import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category, News, Product } from "@prisma/client";
+import { Category, Gallery, Media, News, Product } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -34,7 +34,17 @@ interface CreateProductFormProps {
 }
 
 interface EditProductFormProps extends CreateProductFormProps {
-  product: Product;
+  defaultFiles: Array<{
+    title: string;
+    name: string;
+    order: number;
+    media: File | null;
+  }>;
+  product: Product & {
+    gallery: {
+      medias: Media[];
+    } | null;
+  };
 }
 
 interface EditNewsFormProps {
@@ -662,10 +672,10 @@ export function CreateNewsForm() {
   );
 }
 
-export function EditProductForm({ product, collection, categories }: EditProductFormProps) {
-  const [errors, formAction, isPending] = useFormState(createProduct, undefined);
+export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
+  const [errors, formAction, isPending] = useFormState(updateProduct, undefined);
 
-  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
+  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
 
   const actionHandler = async (formData: FormData) => {
     files
@@ -678,7 +688,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
         }
       });
 
-    formAction({ formData, collection });
+    formAction({ formData, collection, id: product.id });
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -701,6 +711,23 @@ export function EditProductForm({ product, collection, categories }: EditProduct
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
+  useEffect(() => {
+    return () => {
+      (async () => {
+        const _files = defaultFiles.map(async ({ title, name, order }) => {
+          const src = getImageSrc({ name, product: product.slug, collection });
+          const blob = await fetch(src).then((r) => r.blob());
+          const media = new File([blob], name, { type: blob.type });
+          console.log(blob, src);
+
+          return { title, order, media };
+        });
+        const files = await Promise.all(_files);
+        setFiles(files);
+      })();
+    };
+  }, []);
+
   return (
     <article className="mt-8 grid w-full grid-cols-12 gap-4">
       <form id="create-product-form" action={actionHandler} className="hidden" />
@@ -714,6 +741,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Title"
+            defaultValue={product.title}
           />
           <ErrorMessage name="title" />
         </Label>
@@ -722,7 +750,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
       <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
         <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
         <Label htmlFor="categoryId" className="flex flex-col">
-          <ComboboxDropdownCategory data={categories} form="create-product-form" />
+          <ComboboxDropdownCategory data={categories} form="create-product-form" defaultSelected={product.categoryId} />
           <ErrorMessage name="categoryId" />
         </Label>
 
@@ -733,6 +761,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Origin"
+            defaultValue={product.state}
           />
           <ErrorMessage name="state" />
         </Label>
@@ -744,6 +773,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Color"
+            defaultValue={product.color}
           />
           <ErrorMessage name="color" />
         </Label>
@@ -758,6 +788,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Width"
+            defaultValue={product.width}
           />
           <ErrorMessage name="width" />
         </Label>
@@ -769,6 +800,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Height"
+            defaultValue={product.height}
           />
           <ErrorMessage name="height" />
         </Label>
@@ -780,6 +812,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Length"
+            defaultValue={product.length}
           />
           <ErrorMessage name="length" />
         </Label>
@@ -792,6 +825,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Weight"
+            defaultValue={product.weight}
           />
           <ErrorMessage name="weight" />
         </Label>
@@ -806,6 +840,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Price"
+            defaultValue={product.price}
           />
           <ErrorMessage name="price" />
         </Label>
@@ -817,6 +852,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             form="create-product-form"
             className="rounded-none shadow-none"
             placeholder="Discount"
+            defaultValue={product.discount ?? 0}
           />
           <ErrorMessage name="discount" />
         </Label>
@@ -832,6 +868,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
             className="rounded-none shadow-none"
             placeholder="Description"
             rows={10}
+            defaultValue={product.description}
           />
           <ErrorMessage name="description" />
         </Label>
