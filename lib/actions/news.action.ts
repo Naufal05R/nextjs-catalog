@@ -29,9 +29,7 @@ export const getAllNews = async (params: GetNewsProps | undefined = undefined) =
   }
 };
 
-export const getNews = async (params: GetNewsProps) => {
-  const { where } = params;
-
+export const getNews = async ({ where }: GetNewsProps) => {
   try {
     const news = await prisma.news.findFirst({
       where,
