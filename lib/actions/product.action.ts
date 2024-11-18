@@ -265,6 +265,27 @@ export const updateProduct = async (
   }
 };
 
+export const favoriteProduct = async (formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+      await prisma.product.update({
+        where: {
+          id,
+        },
+        data: {
+          isFavorite: true,
+        },
+      });
+
+      revalidatePath("/", "layout");
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
+
 export const archiveProduct = async (formData: FormData) => {
   const id = formData.get("id") as string;
 
