@@ -685,7 +685,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   const actionHanlder = async (formData: FormData) => {
     if (markdown === text) {
-      updateNews({ news }, formData);
+      await updateNews({ news }, formData);
     } else {
       const [content, ids] = changeOriginalImgSouce();
 
@@ -702,7 +702,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
         }
       }
 
-      updateNews({ news }, formData);
+      await updateNews({ news }, formData);
     }
 
     // await createNews(formData);
@@ -721,7 +721,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   return (
     <article className="mt-8 grid w-full grid-cols-12 gap-4">
-      <form id="create-news-form" action={actionHanlder} className="hidden" />
+      <form id="edit-news-form" action={actionHanlder} className="hidden" />
 
       <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
@@ -729,7 +729,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
           <Input
             id="title"
             name="title"
-            form="create-news-form"
+            form="edit-news-form"
             className="rounded-none shadow-none"
             placeholder="Title"
             defaultValue={news.title}
@@ -742,7 +742,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
           <Input
             id="description"
             name="description"
-            form="create-news-form"
+            form="edit-news-form"
             className="rounded-none shadow-none"
             placeholder="Description"
             defaultValue={news.description}
@@ -779,7 +779,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
         type="submit"
         // disabled={isPending}
         className="col-span-12 mt-8 flex w-full rounded-none"
-        form="create-news-form"
+        form="edit-news-form"
         size="lg"
       >
         Save
