@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import Mapper from "@/components/server/Mapper";
-import { string, z } from "zod";
+import { z } from "zod";
 
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -25,10 +25,12 @@ import { InputFieldMessage } from "../server/Message";
 import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
-import { createNews } from "@/lib/actions/news.action";
+import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 
-interface EditNewsFormProps {}
+interface EditNewsFormProps {
+  text: string;
+}
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
@@ -650,11 +652,9 @@ export function CreateNewsForm() {
   );
 }
 
-export function EditNewsForm({}: EditNewsFormProps) {
-  const MARKDOWN = "**Hello,** world!" as const;
-
+export function EditNewsForm({ text }: EditNewsFormProps) {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
-  const [markdown, setMarkdown] = useState<string>(MARKDOWN);
+  const [markdown, setMarkdown] = useState<string>(text);
 
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
@@ -683,22 +683,28 @@ export function EditNewsForm({}: EditNewsFormProps) {
   };
 
   const actionHanlder = async (formData: FormData) => {
-    const [content, ids] = changeOriginalImgSouce();
+    if (markdown === text) {
+      updateNews(formData);
+    } else {
+      const [content, ids] = changeOriginalImgSouce();
 
-    formData.append("content", content);
+      formData.append("content", content);
 
-    for (const blobUrl of blobUrls) {
-      const blob = await fetch(blobUrl).then((r) => r.blob());
-      formData.append("images.file", blob);
-    }
-
-    if (ids) {
-      for (const id of ids) {
-        formData.append("images.id", id);
+      for (const blobUrl of blobUrls) {
+        const blob = await fetch(blobUrl).then((r) => r.blob());
+        formData.append("images.file", blob);
       }
+
+      if (ids) {
+        for (const id of ids) {
+          formData.append("images.id", id);
+        }
+      }
+
+      updateNews(formData);
     }
 
-    await createNews(formData);
+    // await createNews(formData);
 
     toast({
       title: "You submitted the following values:",
