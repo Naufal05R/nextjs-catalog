@@ -108,7 +108,7 @@ export const updateNews = async (prevState: { news: News }, formData: FormData) 
 
   if (success) {
     const { title, description, content } = data;
-    let pathname = `/dashboard/news/edit/${news.id}`;
+    let pathname = `/dashboard/news/edit/${news.slug}`;
 
     try {
       const imagesFile = data["images.file"];
@@ -152,7 +152,7 @@ export const updateNews = async (prevState: { news: News }, formData: FormData) 
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${news.id}`;
+      pathname = `/dashboard/news/detail/${news.slug}`;
     } catch (error) {
       handlingError(error);
     } finally {
