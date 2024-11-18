@@ -221,7 +221,7 @@ export const deleteNews = async (formData: FormData) => {
 
       if (selectedNews) {
         await prisma.$transaction(async (_prisma) => {
-          await _prisma.product.delete({
+          await _prisma.news.delete({
             where: {
               id,
             },
