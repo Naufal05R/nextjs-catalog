@@ -28,11 +28,7 @@ import { RichText } from "./Editor";
 import { createNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 
-interface BaseFormProps<K extends string> {
-  defaultValue?: {
-    [key in K]: string;
-  };
-}
+interface EditNewsFormProps {}
 
 export function GuestbookForm() {
   const actionHanlder = async (formData: FormData) => {
@@ -526,6 +522,135 @@ export function CreateProductForm({ collection, categories }: { collection: stri
 }
 
 export function CreateNewsForm() {
+  const MARKDOWN = "**Hello,** world!" as const;
+
+  const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
+  const [markdown, setMarkdown] = useState<string>(MARKDOWN);
+
+  const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
+    const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
+
+    function changeSrc(
+      content: string,
+      ids: Array<ReturnType<typeof getId>> = [],
+      index: number = 0,
+    ): [string, Array<`image_${string}`>] {
+      const id = getId();
+      const result = content.replace(refineBlobStr(blobUrls[index]), `${id}`);
+
+      if (++index < blobUrls.length) {
+        return changeSrc(result, [...ids, id], index);
+      } else {
+        return [result, [...ids, id]];
+      }
+    }
+
+    if (!!blobUrls.length) {
+      const [content, ids] = changeSrc(markdown);
+      return [content, ids];
+    } else {
+      return [markdown];
+    }
+  };
+
+  const actionHanlder = async (formData: FormData) => {
+    const [content, ids] = changeOriginalImgSouce();
+
+    formData.append("content", content);
+
+    for (const blobUrl of blobUrls) {
+      const blob = await fetch(blobUrl).then((r) => r.blob());
+      formData.append("images.file", blob);
+    }
+
+    if (ids) {
+      for (const id of ids) {
+        formData.append("images.id", id);
+      }
+    }
+
+    await createNews(formData);
+
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">
+            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
+          </code>
+        </pre>
+      ),
+    });
+  };
+
+  return (
+    <article className="mt-8 grid w-full grid-cols-12 gap-4">
+      <form id="create-news-form" action={actionHanlder} className="hidden" />
+
+      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
+        <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
+        <Label htmlFor="title" className="col-span-4 mb-4 lg:order-1 lg:col-span-1">
+          <Input
+            id="title"
+            name="title"
+            form="create-news-form"
+            className="rounded-none shadow-none"
+            placeholder="Title"
+          />
+          {/* <ErrorMessage name="title" /> */}
+        </Label>
+
+        <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-3">News Description</h6>
+        <Label htmlFor="description" className="col-span-4 lg:order-2 lg:col-span-3">
+          <Input
+            id="description"
+            name="description"
+            form="create-news-form"
+            className="rounded-none shadow-none"
+            placeholder="Description"
+          />
+          {/* <ErrorMessage name="description" /> */}
+        </Label>
+      </fieldset>
+
+      <fieldset className="col-span-12">
+        <h6 className="mb-1 text-lg font-medium">News Content</h6>
+        <Label htmlFor="content">
+          <RichText
+            blobUrls={blobUrls}
+            setBlobUrls={setBlobUrls}
+            markdown={markdown.slice(0, 1048576)}
+            onChange={(content) => {
+              setMarkdown(content.slice(0, 1048576));
+              setBlobUrls([
+                ...blobUrls.filter((url) => {
+                  if (content.includes(refineBlobStr(url))) {
+                    return content.includes(refineBlobStr(url));
+                  } else {
+                    URL.revokeObjectURL(url);
+                  }
+                }),
+              ]);
+            }}
+          />
+          {/* <ErrorMessage name="description" /> */}
+        </Label>
+      </fieldset>
+
+      <Button
+        type="submit"
+        // disabled={isPending}
+        className="col-span-12 mt-8 flex w-full rounded-none"
+        form="create-news-form"
+        size="lg"
+      >
+        Save
+      </Button>
+    </article>
+  );
+}
+
+export function EditNewsForm({}: EditNewsFormProps) {
   const MARKDOWN = "**Hello,** world!" as const;
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
