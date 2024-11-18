@@ -222,17 +222,6 @@ export default function InitializedMDXEditor({
                   <InsertAdmonition />
                 </div>
               </div>
-
-              <ul className="flex w-full flex-col gap-2">
-                <Mapper
-                  data={blobUrls}
-                  render={(url) => <li className="w-fit rounded bg-blue-600 px-2 py-1 text-slate-100">{url}</li>}
-                />
-              </ul>
-
-              <Button size={"icon"} variant={"ghost"}>
-                <Menu />
-              </Button>
             </>
           ),
         }),
