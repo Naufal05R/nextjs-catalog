@@ -13,8 +13,11 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { NavClient } from "@/components/nav-client";
 import { PrivatePathname } from "@/components/client/Pathname";
+import { getNews } from "@/lib/actions/news.action";
 
-export const PublicHeader = () => {
+export const PublicHeader = async () => {
+  const news = await getNews();
+
   return (
     <header className="w-full">
       <p className="bg-slate-300 py-2 text-center text-xs font-normal max-sm:hidden">
@@ -60,11 +63,19 @@ export const PublicHeader = () => {
         <ul className="col-span-12 flex flex-row items-center justify-center max-lg:hidden">
           <Mapper
             data={navigations}
-            render={({ label, href }) => (
-              <Link href={href} className="px-4 py-2 font-light text-slate-600 hover:underline">
-                {label}
-              </Link>
-            )}
+            render={({ label, href }) =>
+              label === "News" ? (
+                news && (
+                  <Link href={href} className="px-4 py-2 font-light text-slate-600 hover:underline">
+                    {label}
+                  </Link>
+                )
+              ) : (
+                <Link href={href} className="px-4 py-2 font-light text-slate-600 hover:underline">
+                  {label}
+                </Link>
+              )
+            }
           />
         </ul>
       </nav>
