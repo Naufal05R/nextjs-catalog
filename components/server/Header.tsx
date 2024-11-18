@@ -1,24 +1,18 @@
 import React from "react";
 import Link from "next/link";
+import Mapper from "@/components/server/Mapper";
+
 import { Mail, Search, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
-import { Select } from "./Select";
+import { Select } from "@/components/server/Select";
 import { languages, navigations } from "@/constants";
-import { currencies } from "@/constants";
-import Mapper from "@/components/server/Mapper";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { currencies } from "@/constants";
 import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { NavClient } from "@/components/nav-client";
+import { PrivatePathname } from "@/components/client/Pathname";
 
 export const PublicHeader = () => {
   return (
@@ -88,17 +82,7 @@ export const PrivateHeader = () => {
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">Building Your Application</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <PrivatePathname />
       </div>
     </header>
   );
