@@ -1,20 +1,32 @@
-import { EditNewsForm } from "@/components/client/Form";
 import { getNews } from "@/lib/actions/news.action";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
 
 export default async function DetailNewsPage({ params }: { params: { slug: string } }) {
-  const news = await getNews({ where: { slug: params.slug } });
+  const news = await getNews({
+    where: params,
+  });
+
+  if (!news) return notFound();
+
+  const { title, description, updatedAt } = news;
   const markdown = await fetch(`${S3_ENDPOINT}/news/${params.slug}/article.mdx`).then((r) => r.text());
 
   if (!news || !markdown) return notFound();
 
   return (
     <section className="size-full p-4">
-      <h4 className="text-2xl font-semibold capitalize">Update {news.title}</h4>
+      <h4 className="mb-2 text-4xl">{title}</h4>
+      <p className="mb-4 text-base font-light text-slate-500">{description}</p>
+      <p className="mb-8 text-xs font-light uppercase text-slate-500">
+        AUTHOR · {new Date(updatedAt).toLocaleString().substring(0, new Date(updatedAt).toLocaleString().indexOf(","))}
+      </p>
 
-      <EditNewsForm news={news} text={markdown} />
+      <article className="leading-normal text-slate-800 [&_*]:list-inside [&_blockquote]:border-l-4 [&_blockquote]:bg-slate-100 [&_blockquote]:py-1 [&_blockquote]:pl-2.5 [&_blockquote]:text-base [&_blockquote]:text-slate-600 [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg [&_ol]:list-decimal [&_ul]:list-disc">
+        <MDXRemote source={markdown} />
+      </article>
     </section>
   );
 }
