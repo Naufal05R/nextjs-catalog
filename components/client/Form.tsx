@@ -18,7 +18,7 @@ import { getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } 
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category } from "@prisma/client";
+import { Category, News } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -29,6 +29,7 @@ import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 
 interface EditNewsFormProps {
+  news: News;
   text: string;
 }
 
@@ -652,7 +653,7 @@ export function CreateNewsForm() {
   );
 }
 
-export function EditNewsForm({ text }: EditNewsFormProps) {
+export function EditNewsForm({ news, text }: EditNewsFormProps) {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(text);
 
@@ -684,7 +685,7 @@ export function EditNewsForm({ text }: EditNewsFormProps) {
 
   const actionHanlder = async (formData: FormData) => {
     if (markdown === text) {
-      updateNews(formData);
+      updateNews({ news }, formData);
     } else {
       const [content, ids] = changeOriginalImgSouce();
 
@@ -701,7 +702,7 @@ export function EditNewsForm({ text }: EditNewsFormProps) {
         }
       }
 
-      updateNews(formData);
+      updateNews({ news }, formData);
     }
 
     // await createNews(formData);
@@ -731,6 +732,7 @@ export function EditNewsForm({ text }: EditNewsFormProps) {
             form="create-news-form"
             className="rounded-none shadow-none"
             placeholder="Title"
+            defaultValue={news.title}
           />
           {/* <ErrorMessage name="title" /> */}
         </Label>
@@ -743,6 +745,7 @@ export function EditNewsForm({ text }: EditNewsFormProps) {
             form="create-news-form"
             className="rounded-none shadow-none"
             placeholder="Description"
+            defaultValue={news.description}
           />
           {/* <ErrorMessage name="description" /> */}
         </Label>
