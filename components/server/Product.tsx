@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
+import { ToggleButton } from "../client/Button";
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -79,20 +80,13 @@ export const DashbaordProductCard = async ({
 
   return (
     <Card className="relative col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
-      <Button
-        variant="secondary"
-        size="icon"
-        className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
-        form="favorite-product-toggle"
-      >
-        <form
-          id="favorite-product-toggle"
-          action={isFavorite ? unfavoriteProduct : favoriteProduct}
-          className="hidden"
-        />
-        <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="favorite-product-toggle" />
-        <Star fill={isFavorite ? "#f59e0b" : "#fff"} />
-      </Button>
+      <ToggleButton
+        icon={<Star fill={isFavorite ? "#f59e0b" : "#fff"} />}
+        identifier={id}
+        doAction={favoriteProduct}
+        undoAction={unfavoriteProduct}
+        isActive={isFavorite}
+      />
 
       <CardHeader>
         <Image
