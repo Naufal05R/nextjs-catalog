@@ -267,9 +267,20 @@ export const updateProduct = async (
 
 export const favoriteProduct = async (prevState: void | string, formData: FormData) => {
   const id = formData.get("id") as string;
+  const max = 7 as const;
 
   if (id) {
     try {
+      const totalFavoriteProduct = await prisma.product.count({
+        where: {
+          isFavorite: true,
+        },
+      });
+
+      if (totalFavoriteProduct >= max) {
+        return `Can't add product from favorite! Max product to be favorited is ${max}`;
+      }
+
       await prisma.product.update({
         where: {
           id,
@@ -280,6 +291,8 @@ export const favoriteProduct = async (prevState: void | string, formData: FormDa
       });
 
       revalidatePath("/", "layout");
+
+      return "Product have been successfully added to favorite!";
     } catch (error) {
       handlingError(error);
     }
