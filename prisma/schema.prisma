@@ -27,6 +27,7 @@ model Product {
   discount        Float?         @db.Real
   description     String         @db.Text
   isReady         Boolean        @default(true)
+  isFavorite      Boolean        @default(false)
   collectionId    String
   collection      Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   categoryId      String
