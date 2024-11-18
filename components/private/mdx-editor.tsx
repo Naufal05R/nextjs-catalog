@@ -1,7 +1,6 @@
 "use client";
 
 import "@mdxeditor/editor/style.css";
-import Mapper from "../server/Mapper";
 import { Dispatch, SetStateAction, useCallback, useState, type ForwardedRef } from "react";
 import {
   type MDXEditorMethods,
@@ -35,7 +34,7 @@ import {
   StrikeThroughSupSubToggles,
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
-import { ImagePlus, Menu } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   DialogClose,
