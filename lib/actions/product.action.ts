@@ -1,6 +1,6 @@
 "use server";
 
-import { ProductFormSchema, ProductSchema } from "@/schema/product";
+import { ProductFormSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { getFileMimeTypes, handlingError, initRawData, padValue, slugify } from "../utils";
 import { z } from "zod";
@@ -12,6 +12,8 @@ import { Prisma } from "@prisma/client";
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
 };
+
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 
 export const getAllProduct = async ({ where }: GetAllProductProps) => {
   try {
@@ -47,24 +49,14 @@ export const getAllProduct = async ({ where }: GetAllProductProps) => {
   }
 };
 
-export const getProducts = async (identifier: string, field: keyof z.infer<typeof ProductSchema>) => {
+export const getProduct = async ({ where }: GetAllProductProps) => {
   try {
-    const product = await prisma.product.findMany({
-      where: {
-        [field]: identifier,
-      },
+    const product = await prisma.product.findFirst({
+      where,
       include: {
         gallery: {
           select: {
-            medias: {
-              take: 1,
-              where: {
-                order: 0,
-              },
-              select: {
-                name: true,
-              },
-            },
+            medias: true,
           },
         },
       },
@@ -75,8 +67,6 @@ export const getProducts = async (identifier: string, field: keyof z.infer<typeo
     handlingError(error);
   }
 };
-
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 
 export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
@@ -150,6 +140,110 @@ export const createProduct = async (
               };
             }),
           });
+        } else throw new Error("Collection not found");
+      });
+
+      pathname = `/dashboard/products/${collection}`;
+      revalidatePath("/", "layout");
+
+      return newProduct;
+    } catch (error) {
+      handlingError(error);
+    } finally {
+      redirect(pathname);
+    }
+  } else {
+    return error.errors;
+  }
+};
+
+export const updateProduct = async (
+  prevstate: string[] | z.ZodIssue[] | void,
+  { formData, collection, id }: { formData: FormData; collection: string; id: string },
+) => {
+  const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
+
+  if (success) {
+    const { medias, ...product } = data;
+    let pathname: string = `/dashboard/products/${collection}/edit/${slugify(product.title)}`;
+
+    try {
+      for (const { title, order, media } of medias) {
+        if (media) {
+          const { fileMime } = getFileMimeTypes(media.type);
+          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
+          const previewFile = new File([media], fileName, { type: media.type });
+          const arrayBuffer = await previewFile.arrayBuffer();
+          const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
+          const objectParams: Parameters<typeof createObject>[0] = {
+            bucketName: APP_NAME,
+            objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
+            objectStream: imageBuffer,
+            objectMetaData: {
+              "Content-Type": media.type,
+              title,
+              order,
+            },
+          };
+
+          await createObject(objectParams);
+        }
+      }
+
+      const files = medias
+        .sort((a, b) => a.order - b.order)
+        .map(({ title, order, media }) => {
+          const { fileMime } = getFileMimeTypes(media!.type);
+          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
+          return { title, slug: slugify(title), order, name: fileName };
+        });
+
+      console.log(files);
+
+      const newProduct = await prisma.$transaction(async (_prisma) => {
+        const _collection = await _prisma.collection.findFirst({
+          where: {
+            slug: collection,
+          },
+        });
+
+        if (_collection) {
+          const _newProduct = await _prisma.product.update({
+            where: { id },
+            data: {
+              ...product,
+              slug: slugify(product.title),
+              collectionId: _collection.id,
+            },
+          });
+
+          const _gallery = await _prisma.gallery.update({
+            where: { slug: slugify(product.title) },
+            data: {
+              title: product.title,
+              slug: slugify(product.title),
+              productId: _newProduct.id,
+            },
+          });
+
+          await _prisma.media.deleteMany({
+            where: {
+              galleryId: _gallery.id,
+            },
+          });
+
+          for (const file of files) {
+            await _prisma.media.upsert({
+              where: {
+                slug: file.slug,
+              },
+              update: {},
+              create: {
+                ...file,
+                galleryId: _gallery.id,
+              },
+            });
+          }
         } else throw new Error("Collection not found");
       });
 
