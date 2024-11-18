@@ -18,7 +18,7 @@ import { getFileDetails, getFileMimeTypes, refineBlobStr, removeUnwantedChars } 
 import { createProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category, News } from "@prisma/client";
+import { Category, News, Product } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -27,6 +27,10 @@ import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
 import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
+
+interface EditProductFormProps {
+  product: Product;
+}
 
 interface EditNewsFormProps {
   news: News;
