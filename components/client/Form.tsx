@@ -18,7 +18,7 @@ import { getFileDetails, getFileMimeTypes, getImageSrc, refineBlobStr, removeUnw
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category, Gallery, Media, News, Product } from "@prisma/client";
+import { Category, Media, News, Product } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -726,7 +726,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         setFiles(files);
       })();
     };
-  }, []);
+  }, [collection, defaultFiles, product.slug]);
 
   return (
     <article className="mt-8 grid w-full grid-cols-12 gap-4">
