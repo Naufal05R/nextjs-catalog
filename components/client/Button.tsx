@@ -72,7 +72,6 @@ export const ToggleButton = ({
             <strong>Error: </strong> <strong>{beforeState}</strong>
           </h5>
         </blockquote>,
-        { duration: 10000 },
       );
     }
     if (!!afterState) {
@@ -82,7 +81,6 @@ export const ToggleButton = ({
             <strong>Error: </strong> <strong>{afterState}</strong>
           </h5>
         </blockquote>,
-        { duration: 10000 },
       );
     }
   }, [beforeState, afterState]);
