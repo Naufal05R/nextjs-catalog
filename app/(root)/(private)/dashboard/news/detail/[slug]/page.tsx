@@ -10,13 +10,11 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
 
   if (!news || !markdown) return notFound();
 
-  console.log(news);
-
   return (
     <section className="size-full p-4">
       <h4 className="text-2xl font-semibold capitalize">Update {news.title}</h4>
 
-      <EditNewsForm text={markdown} />
+      <EditNewsForm news={news} text={markdown} />
     </section>
   );
 }
