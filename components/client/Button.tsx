@@ -48,13 +48,13 @@ export const CopyButton = ({ title }: { title: string }) => {
 };
 
 export const ToggleButton = ({
-  Icon,
+  icon,
   isActive,
   doAction,
   undoAction,
   identifier,
 }: {
-  Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+  icon: React.ReactNode;
   isActive: boolean;
   doAction: (prevState: void | undefined, formData: FormData) => Promise<void>;
   undoAction: (prevState: void | undefined, formData: FormData) => Promise<void>;
@@ -79,7 +79,7 @@ export const ToggleButton = ({
         form="toggle-action-button"
         readOnly
       />
-      <Icon fill={isActive ? "#f59e0b" : "#fff"} />
+      {icon}
     </Button>
   );
 };
