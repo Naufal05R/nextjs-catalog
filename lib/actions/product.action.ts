@@ -265,7 +265,7 @@ export const updateProduct = async (
   }
 };
 
-export const favoriteProduct = async (prevState: void | string, formData: FormData) => {
+export const favoriteProduct = async (prevState: string | undefined, formData: FormData) => {
   const id = formData.get("id") as string;
   const max = 7 as const;
 
@@ -291,15 +291,13 @@ export const favoriteProduct = async (prevState: void | string, formData: FormDa
       });
 
       revalidatePath("/", "layout");
-
-      return "Product have been successfully added to favorite!";
     } catch (error) {
       handlingError(error);
     }
   }
 };
 
-export const unfavoriteProduct = async (prevState: void | string, formData: FormData) => {
+export const unfavoriteProduct = async (prevState: string | undefined, formData: FormData) => {
   const id = formData.get("id") as string;
   const min = 3 as const;
 
@@ -325,8 +323,6 @@ export const unfavoriteProduct = async (prevState: void | string, formData: Form
       });
 
       revalidatePath("/", "layout");
-
-      return "Product have been successfully removed from favorite!";
     } catch (error) {
       handlingError(error);
     }
