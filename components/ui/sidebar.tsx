@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { Archive, AudioWaveform, Boxes, Command, GalleryVerticalEnd, Newspaper, PanelLeft, Radio } from "lucide-react";
+import { Archive, Boxes, GalleryVerticalEnd, Newspaper, PanelLeft, Radio } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn, handlingError } from "@/lib/utils";
@@ -23,19 +23,9 @@ const initialNavigations = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Legenda Permata",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
     },
   ],
   navMain: [
