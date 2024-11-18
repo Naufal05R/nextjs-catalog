@@ -23,9 +23,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { getAllCollection } from "@/lib/actions/collection.action";
-import { readSlug } from "@/lib/utils";
+import { cn, readSlug } from "@/lib/utils";
 
-const Route = ({ title, href }: { title: string; href: string }) => {
+const Route = ({ title, href, className }: { title: string; href: string; className?: string }) => {
   const [collections, setCollections] = useState<Array<string>>([]);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Route = ({ title, href }: { title: string; href: string }) => {
       return (
         <BreadcrumbItem>
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 py-4 capitalize hover:text-rose-600">
+            <DropdownMenuTrigger className={cn("flex items-center gap-1 py-4", className)}>
               {title}
               <ChevronDown className="size-4" />
             </DropdownMenuTrigger>
@@ -67,7 +67,7 @@ const Route = ({ title, href }: { title: string; href: string }) => {
     default:
       return (
         <BreadcrumbItem>
-          <BreadcrumbLink href={href} className="py-4 capitalize hover:text-rose-600">
+          <BreadcrumbLink href={href} className={cn("py-4", className)}>
             {readSlug(title)}
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -99,7 +99,7 @@ export const PublicPathname = () => {
                 return (
                   <>
                     <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                    <Route title={breadcrumb} href={href} />
+                    <Route title={breadcrumb} href={href} className="capitalize hover:text-rose-600" />
                   </>
                 );
               }}
@@ -118,12 +118,12 @@ export const PrivatePathname = () => {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList className="text-xs text-rose-400">
+      <BreadcrumbList>
         {!!breadcrumbs.length && (
           <>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="py-4 hover:text-rose-600">
-                Home
+              <BreadcrumbLink href="/dashboard" className="py-4">
+                Dashboard
               </BreadcrumbLink>
             </BreadcrumbItem>
 
