@@ -17,9 +17,9 @@ import { CollectionsSchema } from "@/schema/collection";
 
 const initialNavigations = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "username",
+    email: "me@example.com",
+    avatar: "/avatars/username.jpg",
   },
   teams: [
     {
