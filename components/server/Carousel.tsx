@@ -43,7 +43,7 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
 
 export const DynamicCarouselThumbnail = async () => {
   const Component = async () => {
-    const allProducts = await getAllProduct({});
+    const allProducts = await getAllProduct();
 
     return (
       allProducts && (
@@ -68,7 +68,7 @@ export const DynamicCarouselThumbnail = async () => {
 
 export const DynamicCarouselFeatured = () => {
   const Component = async () => {
-    const allProducts = await getAllProduct({});
+    const allProducts = await getAllProduct();
 
     return (
       allProducts && (
