@@ -75,7 +75,43 @@ const Route = ({ title, href }: { title: string; href: string }) => {
   }
 };
 
-export const Pathname = () => {
+export const PublicPathname = () => {
+  const pathname = usePathname();
+
+  const breadcrumbs = pathname.split("/").filter((path) => path !== "");
+
+  return (
+    <Breadcrumb>
+      <BreadcrumbList className="text-xs text-rose-400">
+        {!!breadcrumbs.length && (
+          <>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/" className="py-4 hover:text-rose-600">
+                Home
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <Mapper
+              data={breadcrumbs}
+              render={(breadcrumb, index) => {
+                const href = `/${breadcrumbs.slice(0, index + 1).join("/")}`;
+
+                return (
+                  <>
+                    <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                    <Route title={breadcrumb} href={href} />
+                  </>
+                );
+              }}
+            />
+          </>
+        )}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};
+
+export const PrivatePathname = () => {
   const pathname = usePathname();
 
   const breadcrumbs = pathname.split("/").filter((path) => path !== "");
