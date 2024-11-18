@@ -134,13 +134,14 @@ ComboboxDropdownMenu.displayName = "ComboboxDropdownMenu";
 interface ComboboxDropdownCategoryProps<T extends Dataset> extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
   data: T;
   form: string;
+  defaultSelected?: string;
 }
 
 export const ComboboxDropdownCategory = React.forwardRef<
   React.ElementRef<typeof DropdownMenu>,
   ComboboxDropdownCategoryProps<Array<Category>>
->(({ data, form }, ref) => {
-  const [selected, setSelected] = useState<string>();
+>(({ data, form, defaultSelected }, ref) => {
+  const [selected, setSelected] = useState<string | undefined>(defaultSelected);
 
   return (
     <ComboboxDropdownMenu
