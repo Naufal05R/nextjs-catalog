@@ -265,7 +265,7 @@ export const updateProduct = async (
   }
 };
 
-export const favoriteProduct = async (formData: FormData) => {
+export const favoriteProduct = async (prevState: void | undefined, formData: FormData) => {
   const id = formData.get("id") as string;
 
   if (id) {
@@ -286,7 +286,7 @@ export const favoriteProduct = async (formData: FormData) => {
   }
 };
 
-export const unfavoriteProduct = async (formData: FormData) => {
+export const unfavoriteProduct = async (prevState: void | undefined, formData: FormData) => {
   const id = formData.get("id") as string;
 
   if (id) {
