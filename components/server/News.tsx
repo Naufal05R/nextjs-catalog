@@ -102,7 +102,7 @@ export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, upda
 
         <Button asChild={isRelevant} className="flex-1" form="delete-news">
           {isRelevant ? (
-            <Link href={`/dashboard/news/detail/${slug}`}>
+            <Link href={`/dashboard/news/edit/${slug}`}>
               <Pencil />
               Edit
             </Link>
