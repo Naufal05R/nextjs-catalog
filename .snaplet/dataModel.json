@@ -864,6 +864,20 @@
           "maxLength": null
         },
         {
+          "id": "public.Product.isFavorite",
+          "name": "isFavorite",
+          "columnName": "isFavorite",
+          "type": "bool",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
           "name": "Category",
           "type": "Category",
           "isRequired": true,
