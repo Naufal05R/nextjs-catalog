@@ -128,7 +128,7 @@ export const DashbaordProductCard = async ({
 
         <Button asChild={isReady} className="flex-1" form="delete-product">
           {isReady ? (
-            <Link href={`/dashboard/products/${collection}/${slug}`}>
+            <Link href={`/dashboard/products/${collection}/edit/${slug}`}>
               <Pencil />
               Edit
             </Link>
