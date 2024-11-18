@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Copy, CopyCheck, LucideProps, Star } from "lucide-react";
+import { Copy, CopyCheck, LucideProps } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useFormState } from "react-dom";
+import { toast as sonner } from "sonner";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -56,12 +57,35 @@ export const ToggleButton = ({
 }: {
   icon: React.ReactNode;
   isActive: boolean;
-  doAction: (prevState: void | undefined, formData: FormData) => Promise<void>;
-  undoAction: (prevState: void | undefined, formData: FormData) => Promise<void>;
+  doAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
+  undoAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
   identifier: string | number;
 }) => {
   const [beforeState, beforeAction, beforePending] = useFormState(undoAction, undefined);
   const [afterState, afterAction, afterPending] = useFormState(doAction, undefined);
+
+  useEffect(() => {
+    if (!!beforeState) {
+      sonner.error(
+        <blockquote>
+          <h5 className="break-all text-sm">
+            <strong>Error: </strong> <strong>{beforeState}</strong>
+          </h5>
+        </blockquote>,
+        { duration: 10000 },
+      );
+    }
+    if (!!afterState) {
+      sonner.error(
+        <blockquote>
+          <h5 className="break-all text-sm">
+            <strong>Error: </strong> <strong>{afterState}</strong>
+          </h5>
+        </blockquote>,
+        { duration: 10000 },
+      );
+    }
+  }, [beforeState, afterState]);
 
   return (
     <Button
@@ -69,6 +93,7 @@ export const ToggleButton = ({
       size="icon"
       className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
       form="toggle-action-button"
+      disabled={beforePending || afterPending}
     >
       <form id="toggle-action-button" action={isActive ? beforeAction : afterAction} className="hidden" />
       <input
