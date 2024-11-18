@@ -15,7 +15,9 @@ type GetAllProductProps = {
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 
-export const getAllProduct = async ({ where }: GetAllProductProps) => {
+export const getAllProduct = async (params: GetAllProductProps | undefined = undefined) => {
+  const { where } = params ?? {};
+
   try {
     const allProducts = await prisma.product.findMany({
       where,
@@ -49,7 +51,9 @@ export const getAllProduct = async ({ where }: GetAllProductProps) => {
   }
 };
 
-export const getProduct = async ({ where }: GetAllProductProps) => {
+export const getProduct = async (params: GetAllProductProps | undefined = undefined) => {
+  const { where } = params ?? {};
+
   try {
     const product = await prisma.product.findFirst({
       where,
