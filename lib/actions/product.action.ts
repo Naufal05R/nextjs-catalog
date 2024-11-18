@@ -265,7 +265,7 @@ export const updateProduct = async (
   }
 };
 
-export const favoriteProduct = async (prevState: void | undefined, formData: FormData) => {
+export const favoriteProduct = async (prevState: void | string, formData: FormData) => {
   const id = formData.get("id") as string;
 
   if (id) {
@@ -286,11 +286,22 @@ export const favoriteProduct = async (prevState: void | undefined, formData: For
   }
 };
 
-export const unfavoriteProduct = async (prevState: void | undefined, formData: FormData) => {
+export const unfavoriteProduct = async (prevState: void | string, formData: FormData) => {
   const id = formData.get("id") as string;
+  const min = 3 as const;
 
   if (id) {
     try {
+      const totalFavoriteProduct = await prisma.product.count({
+        where: {
+          isFavorite: true,
+        },
+      });
+
+      if (totalFavoriteProduct <= min) {
+        return `Can't remove product from favorite! Min product to be favorited is ${min}`;
+      }
+
       await prisma.product.update({
         where: {
           id,
@@ -301,6 +312,8 @@ export const unfavoriteProduct = async (prevState: void | undefined, formData: F
       });
 
       revalidatePath("/", "layout");
+
+      return "Product have been successfully removed from favorite!";
     } catch (error) {
       handlingError(error);
     }
