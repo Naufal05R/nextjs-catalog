@@ -2,9 +2,16 @@ import React from "react";
 import Link from "next/link";
 
 import Mapper from "./Mapper";
-import { Archive, ArchiveRestore, Grid2x2Plus, Pencil, Trash2 } from "lucide-react";
+import { Archive, ArchiveRestore, Grid2x2Plus, Pencil, Star, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { archiveProduct, deleteProduct, getAllProduct, unarchiveProduct } from "@/lib/actions/product.action";
+import {
+  archiveProduct,
+  deleteProduct,
+  favoriteProduct,
+  getAllProduct,
+  unarchiveProduct,
+  unfavoriteProduct,
+} from "@/lib/actions/product.action";
 import { EmptyState, EmptyStateWithButton } from "@/components/server/Empty";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image, ImageComponentProps } from "@/components/server/Media";
@@ -61,6 +68,7 @@ export const DashbaordProductCard = async ({
   price,
   state,
   isReady,
+  isFavorite,
   discount,
   description,
   collection,
@@ -70,7 +78,22 @@ export const DashbaordProductCard = async ({
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
-    <Card className="col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
+    <Card className="relative col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
+      <Button
+        variant="secondary"
+        size="icon"
+        className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
+        form="favorite-product-toggle"
+      >
+        <form
+          id="favorite-product-toggle"
+          action={isFavorite ? unfavoriteProduct : favoriteProduct}
+          className="hidden"
+        />
+        <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="favorite-product-toggle" />
+        <Star fill={isFavorite ? "#f59e0b" : "#fff"} />
+      </Button>
+
       <CardHeader>
         <Image
           src={src}
