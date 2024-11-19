@@ -2,6 +2,7 @@ import React from "react";
 import NextImage from "next/image";
 import { cn, toBase64 } from "@/lib/utils";
 import { Bag } from "../svg";
+import { ACCEPTED_IMAGE_MIME_EXTS, ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_VIDEO_MIME_EXTS } from "@/schema/media";
 
 interface ComponentBaseProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -13,6 +14,12 @@ interface ComponentBaseProps {
       icon?: string;
     };
   };
+}
+
+interface MediaComponentProps {
+  mimeType: (typeof ACCEPTED_MEDIA_MIME_TYPES)[number] | (string & {});
+  imageProps?: ImageComponentProps;
+  videoProps?: VideoComponentProps;
 }
 
 export interface ImageComponentProps
@@ -64,6 +71,16 @@ export const Figure = ({ FallbackComponent = Bag, classNames, children }: Compon
       </div>
     </figure>
   );
+};
+
+export const Media = ({ mimeType, imageProps, videoProps }: MediaComponentProps) => {
+  if (new Set<typeof mimeType>(ACCEPTED_IMAGE_MIME_EXTS).has(mimeType)) {
+    return imageProps && <Image {...imageProps} />;
+  }
+
+  if (new Set<typeof mimeType>(ACCEPTED_VIDEO_MIME_EXTS).has(mimeType)) {
+    return videoProps && <Video {...videoProps} />;
+  }
 };
 
 export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...props }: ImageComponentProps) => {
