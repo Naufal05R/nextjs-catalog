@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/carousel";
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
-import { Media, Product } from "@prisma/client";
+import { Media } from "@prisma/client";
 import { getImageSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
@@ -127,6 +127,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                   })}
                   alt="dummy_image"
                   fill
+                  filter
                   sizes="(max-width: 1024px) 75vw, 100vw"
                   classNames={{
                     figure:
