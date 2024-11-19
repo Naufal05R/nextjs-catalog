@@ -14,7 +14,7 @@ import {
   Venmo,
   Visa,
 } from "@/components/svg";
-import { Dot, Mail } from "lucide-react";
+import { /* Dot, */ Mail } from "lucide-react";
 import { currencies, footers } from "@/constants";
 import { Select } from "./Select";
 import { languages } from "@/constants";
@@ -75,7 +75,7 @@ const Footer = () => {
 
         <blockquote className="col-span-12 flex flex-col gap-x-1 text-xs text-slate-500 xs:flex-row xs:items-center md:col-span-4 md:flex-col md:items-start">
           <p className="w-fit">Copyright © {new Date().getFullYear()} LEGENDA PERMATA </p>{" "}
-          <Dot className="max-xs:hidden md:hidden" />
+          {/* <Dot className="max-xs:hidden md:hidden" />
           <Link
             href="https://naufalrabbani.com"
             target="_blank"
@@ -83,7 +83,7 @@ const Footer = () => {
             className="w-fit hover:underline"
           >
             Developed by Naufal Rabbani
-          </Link>
+          </Link> */}
         </blockquote>
 
         <ul className="col-span-12 flex flex-row flex-wrap items-center gap-2 md:col-span-8 md:justify-end">
