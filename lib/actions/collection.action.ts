@@ -73,16 +73,19 @@ export const toggleFavoriteCollection = async (prevState: Collection | undefined
   if (id) {
     try {
       const collection = await prisma.$transaction(async (_prisma) => {
-        const selectedCollection = await _prisma.collection.findFirst({
+        await _prisma.collection.updateMany({
           where: {
-            id,
+            isFavorite: true,
+          },
+          data: {
+            isFavorite: false,
           },
         });
 
         const toggledCollection = await _prisma.collection.update({
           where: { id },
           data: {
-            isFavorite: !selectedCollection?.isFavorite,
+            isFavorite: true,
           },
         });
 
