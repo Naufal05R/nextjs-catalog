@@ -17,15 +17,17 @@ import { CreateCollectionDialog } from "./client/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { ToggleButton } from "./client/Button";
-import { handlingError, slugify } from "@/lib/utils";
+import { handlingError } from "@/lib/utils";
 import { toggleFavoriteCollection } from "@/lib/actions/collection.action";
 import { useEffect, useState } from "react";
 import { CollectionsSchema } from "@/schema/collection";
 import { Collection } from "@prisma/client";
 import Mapper from "./server/Mapper";
+import { Button } from "./ui/button";
+import { useFormState } from "react-dom";
 
 export function NavMain() {
+  const [state, formAction, isLoading] = useFormState(toggleFavoriteCollection, undefined);
   const [collections, setCollections] = useState<Array<Collection>>([]);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export function NavMain() {
         }
       })();
     };
-  }, []);
+  }, [state]);
 
   return (
     <SidebarGroup>
@@ -61,7 +63,7 @@ export function NavMain() {
               <SidebarMenuSub>
                 <Mapper
                   data={collections}
-                  render={({ title, slug }) => (
+                  render={({ title, slug, isFavorite }) => (
                     <SidebarMenuSubItem key={title} className="relative flex items-center justify-between">
                       <SidebarMenuSubButton asChild className="flex-1">
                         <Link href={`/dashboard/products/${slug}`}>
@@ -69,12 +71,24 @@ export function NavMain() {
                         </Link>
                       </SidebarMenuSubButton>
 
-                      <ToggleButton
-                        icon={<Star size={16} className="size-4 opacity-50" />}
-                        identifier={slugify(title)}
-                        toggleAction={toggleFavoriteCollection}
-                        className="ml-2 mr-[-0.5px] size-fit"
-                      />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full text-amber-500 shadow-none hover:text-amber-500"
+                        form={`toggle-favorite-collection-${slug}`}
+                        disabled={isLoading}
+                      >
+                        <form id={`toggle-favorite-collection-${slug}`} action={formAction} className="hidden" />
+                        <input
+                          name="id"
+                          type="hidden"
+                          className="hidden"
+                          defaultValue={slug}
+                          form={`toggle-favorite-collection-${slug}`}
+                          readOnly
+                        />
+                        <Star fill={isFavorite ? "#f59e0b" : "transparent"} />
+                      </Button>
                     </SidebarMenuSubItem>
                   )}
                 />
