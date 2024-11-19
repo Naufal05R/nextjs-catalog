@@ -74,9 +74,9 @@ export function NavMain() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full text-amber-500 shadow-none hover:text-amber-500"
+                        className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full text-amber-500 shadow-none hover:text-amber-500 disabled:opacity-100"
                         form={`toggle-favorite-collection-${id}`}
-                        disabled={isLoading}
+                        disabled={isLoading || isFavorite}
                       >
                         <form id={`toggle-favorite-collection-${id}`} action={formAction} className="hidden" />
                         <input
