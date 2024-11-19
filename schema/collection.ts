@@ -34,6 +34,8 @@ export const CollectionSchema = z.object({
   isFavorite: z.boolean().default(true),
   products: z.array(ProductSchema.required()).optional(),
   subcollections: z.array(SubcollectionSchema.required()).optional(),
+  createdAt: z.date().default(new Date()),
+  updatedAt: z.date().default(new Date()),
 });
 
 export const CollectionFormSchema = CollectionSchema.pick({
