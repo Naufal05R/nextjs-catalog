@@ -72,9 +72,9 @@ export function NavMain() {
                       </SidebarMenuSubButton>
 
                       <Button
-                        variant="ghost"
+                        variant={null}
                         size="icon"
-                        className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full text-amber-500 shadow-none hover:text-amber-500 disabled:opacity-100"
+                        className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full shadow-none hover:bg-transparent disabled:opacity-100"
                         form={`toggle-favorite-collection-${id}`}
                         disabled={isLoading || isFavorite}
                       >
@@ -87,7 +87,7 @@ export function NavMain() {
                           form={`toggle-favorite-collection-${id}`}
                           readOnly
                         />
-                        <Star fill={isFavorite ? "#f59e0b" : "transparent"} />
+                        <Star fill={isFavorite ? "#f59e0b" : "transparent"} className="text-amber-500" />
                       </Button>
                     </SidebarMenuSubItem>
                   )}
