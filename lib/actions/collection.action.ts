@@ -4,19 +4,10 @@ import { CollectionFormSchema, CollectionSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
-export const getCollection = async (identifier: string, field: keyof z.infer<typeof CollectionSchema>) => {
-  try {
-    const collection = await prisma.collection.findFirst({
-      where: {
-        [field]: identifier,
-      },
-    });
-
-    return collection;
-  } catch (error) {
-    handlingError(error);
-  }
+type GetAllCollectionProps = {
+  where?: Prisma.CollectionWhereInput;
 };
 
 export const getAllCollection = async () => {
@@ -24,6 +15,20 @@ export const getAllCollection = async () => {
     const allCollections = await prisma.collection.findMany();
 
     return allCollections;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getCollection = async (params: GetAllCollectionProps | undefined = undefined) => {
+  const { where } = params ?? {};
+
+  try {
+    const collection = await prisma.collection.findFirst({
+      where,
+    });
+
+    return collection;
   } catch (error) {
     handlingError(error);
   }
