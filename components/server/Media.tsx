@@ -46,7 +46,7 @@ const shimmer = (width: number, height: number) => `
   <animate xlink:href="#r" attributeName="x" from="-${width}" to="${width}" dur="1s" repeatCount="indefinite"  />
 </svg>`;
 
-export const Media = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
+export const Figure = ({ FallbackComponent = Bag, classNames, children }: ComponentBaseProps) => {
   const { figure, fallback } = classNames ?? {};
 
   return (
@@ -69,7 +69,7 @@ export const Media = ({ FallbackComponent = Bag, classNames, children }: Compone
 export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...props }: ImageComponentProps) => {
   const { figure, image, fallback } = classNames ?? {};
   return (
-    <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
+    <Figure classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
       {props.src && (
         <NextImage
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(10, 10))}`}
@@ -82,7 +82,7 @@ export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...
       {filter && (
         <div className="absolute z-20 size-full bg-gradient-to-b from-neutral-800/0 via-neutral-800/0 to-neutral-800/90" />
       )}
-    </Media>
+    </Figure>
   );
 };
 
@@ -90,8 +90,8 @@ export const Video = ({ FallbackComponent = Bag, classNames, ...props }: VideoCo
   const { figure, video, fallback } = classNames ?? {};
 
   return (
-    <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
+    <Figure classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
       {props.src && <video {...props} className={cn("z-20 size-full object-cover object-center", video)} />}
-    </Media>
+    </Figure>
   );
 };

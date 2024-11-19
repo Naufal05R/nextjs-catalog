@@ -4,7 +4,7 @@ import Mapper from "./Mapper";
 
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
-import { Image, Media } from "./Media";
+import { Image, Figure } from "./Media";
 import { getMediaSrc } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 import { getAllCollection } from "@/lib/actions/collection.action";
@@ -99,7 +99,7 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
           render={(_, pictureIndex) => {
             if (!products[pictureIndex]) {
               return (
-                <Media
+                <Figure
                   classNames={{
                     figure: cn("aspect-square row-span-2 col-span-2", {
                       "row-span-1 col-span-1": pictureIndex,
