@@ -24,7 +24,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={navigations.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navigations.navMain} />
+        <NavMain />
         <NavProjectsPromotions projects={navigations.projects.slice(0, 2)} />
         <NavProjectsDeprecated projects={navigations.projects.slice(2, 4)} />
       </SidebarContent>
