@@ -54,7 +54,7 @@ export const CopyButton = ({ title }: { title: string }) => {
   );
 };
 
-export const ToggleButton = ({ icon, toggleAction, identifier }: ToggleButtonProps) => {
+export const ToggleButton = ({ icon, toggleAction, identifier, ...props }: ToggleButtonProps) => {
   const [message, formAction, isLoading] = useFormState(toggleAction, undefined);
 
   useEffect(() => {
@@ -76,6 +76,7 @@ export const ToggleButton = ({ icon, toggleAction, identifier }: ToggleButtonPro
       className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
       form="toggle-action-button"
       disabled={isLoading}
+      {...props}
     >
       <form id="toggle-action-button" action={formAction} className="hidden" />
       <input
