@@ -44,6 +44,7 @@ model Collection {
   title          String          @unique @db.VarChar(16)
   slug           String          @unique @db.VarChar(16)
   description    String          @db.VarChar(64)
+  isFavorite     Boolean         @default(false)
   products       Product[]
   subcollections Subcollection[]
 }
