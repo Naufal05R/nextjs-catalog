@@ -63,7 +63,7 @@ export function NavMain() {
               <SidebarMenuSub>
                 <Mapper
                   data={collections}
-                  render={({ title, slug, isFavorite }) => (
+                  render={({ id, title, slug, isFavorite }) => (
                     <SidebarMenuSubItem key={title} className="relative flex items-center justify-between">
                       <SidebarMenuSubButton asChild className="flex-1">
                         <Link href={`/dashboard/products/${slug}`}>
@@ -75,16 +75,16 @@ export function NavMain() {
                         variant="ghost"
                         size="icon"
                         className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full text-amber-500 shadow-none hover:text-amber-500"
-                        form={`toggle-favorite-collection-${slug}`}
+                        form={`toggle-favorite-collection-${id}`}
                         disabled={isLoading}
                       >
-                        <form id={`toggle-favorite-collection-${slug}`} action={formAction} className="hidden" />
+                        <form id={`toggle-favorite-collection-${id}`} action={formAction} className="hidden" />
                         <input
                           name="id"
                           type="hidden"
                           className="hidden"
-                          defaultValue={slug}
-                          form={`toggle-favorite-collection-${slug}`}
+                          defaultValue={id}
+                          form={`toggle-favorite-collection-${id}`}
                           readOnly
                         />
                         <Star fill={isFavorite ? "#f59e0b" : "transparent"} />
