@@ -1,6 +1,6 @@
 "use server";
 
-import { CollectionFormSchema, CollectionSchema } from "@/schema/collection";
+import { CollectionFormSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
@@ -10,9 +10,12 @@ type GetAllCollectionProps = {
   where?: Prisma.CollectionWhereInput;
 };
 
-export const getAllCollection = async () => {
+export const getAllCollection = async (params: GetAllCollectionProps | undefined = undefined) => {
+  const { where } = params ?? {};
   try {
-    const allCollections = await prisma.collection.findMany();
+    const allCollections = await prisma.collection.findMany({
+      where,
+    });
 
     return allCollections;
   } catch (error) {
