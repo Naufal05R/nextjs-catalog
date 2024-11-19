@@ -129,7 +129,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                     collection: collection.slug,
                     name: gallery!.medias[0].name,
                   })}
-                  alt="dummy_image"
+                  alt={slug}
                   fill
                   filter
                   sizes="(max-width: 1024px) 75vw, 100vw"
