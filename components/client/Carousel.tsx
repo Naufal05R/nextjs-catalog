@@ -116,9 +116,13 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
       slidesElement={
         <Mapper
           data={data}
-          render={({ slug, gallery, collection }) => (
+          render={({ description, slug, gallery, collection }) => (
             <CarouselItem>
-              <Link href={`/products/${slug}`} draggable={false} className="select-none">
+              <Link
+                href={`/products/${slug}`}
+                draggable={false}
+                className="relative flex select-none flex-col items-center"
+              >
                 <Image
                   src={getImageSrc({
                     product: slug,
@@ -131,9 +135,11 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                   sizes="(max-width: 1024px) 75vw, 100vw"
                   classNames={{
                     figure:
-                      "aspect-video rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
+                      "aspect-video w-full rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
                   }}
                 />
+
+                <h4 className="absolute bottom-16 z-20 max-w-[80%] text-center text-xl text-slate-50">{description}</h4>
               </Link>
             </CarouselItem>
           )}
