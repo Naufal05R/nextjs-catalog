@@ -50,40 +50,26 @@ export const CopyButton = ({ title }: { title: string }) => {
 
 export const ToggleButton = ({
   icon,
-  isActive,
-  doAction,
-  undoAction,
+  toggleAction,
   identifier,
 }: {
   icon: React.ReactNode;
-  isActive: boolean;
-  doAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
-  undoAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
+  toggleAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
   identifier: string | number;
 }) => {
-  const [beforeState, beforeAction, beforePending] = useFormState(undoAction, undefined);
-  const [afterState, afterAction, afterPending] = useFormState(doAction, undefined);
+  const [message, formAction, isLoading] = useFormState(toggleAction, undefined);
 
   useEffect(() => {
-    if (!!beforeState) {
+    if (!!message) {
       sonner.error(
         <blockquote>
           <h5 className="break-all text-sm">
-            <strong>Error: </strong> <strong>{beforeState}</strong>
+            <strong>Error: </strong> <strong>{message}</strong>
           </h5>
         </blockquote>,
       );
     }
-    if (!!afterState) {
-      sonner.error(
-        <blockquote>
-          <h5 className="break-all text-sm">
-            <strong>Error: </strong> <strong>{afterState}</strong>
-          </h5>
-        </blockquote>,
-      );
-    }
-  }, [beforeState, afterState]);
+  }, [message]);
 
   return (
     <Button
@@ -91,9 +77,9 @@ export const ToggleButton = ({
       size="icon"
       className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
       form="toggle-action-button"
-      disabled={beforePending || afterPending}
+      disabled={isLoading}
     >
-      <form id="toggle-action-button" action={isActive ? beforeAction : afterAction} className="hidden" />
+      <form id="toggle-action-button" action={formAction} className="hidden" />
       <input
         name="id"
         type="hidden"
