@@ -12,11 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Boxes, CircleCheck } from "lucide-react";
-import { useSidebar } from "../ui/sidebar";
-import { slugify } from "@/lib/utils";
+import { CircleCheck } from "lucide-react";
 import { createCollection } from "@/lib/actions/collection.action";
 import { createCategory } from "@/lib/actions/category.action";
+import { Collection } from "@prisma/client";
 
 interface DialogProps {
   content: {
@@ -27,39 +26,25 @@ interface DialogProps {
 }
 
 interface CreateCollectionDialogProps extends DialogProps {
+  list?: Array<Collection>;
+  setList?: React.Dispatch<React.SetStateAction<Array<Collection>>>;
   trigger: {
     title: string;
     element: React.ElementType;
   };
 }
 
-export const CreateCollectionDialog = ({ trigger, content }: CreateCollectionDialogProps) => {
+export const CreateCollectionDialog = ({ trigger, content, setList }: CreateCollectionDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [collection, formAction, isLoading] = useFormState(createCollection, "");
-  const [temporaryState, setTemporaryState] = useState<typeof collection>("");
-  const { setNavigations } = useSidebar();
+  const [collection, formAction, isLoading] = useFormState(createCollection, undefined);
+  const [temporaryState, setTemporaryState] = useState<string>();
 
   useEffect(() => {
     if (collection) {
-      setTemporaryState(collection);
-      setNavigations((prevState) => ({
-        ...prevState,
-        navMain: [
-          {
-            title: "Collections",
-            url: `/dashboard/products`,
-            icon: Boxes,
-            isActive: true,
-            items: [
-              ...prevState.navMain[0].items,
-              { title: collection, url: `/dashboard/products/${slugify(collection)}` },
-            ],
-          },
-          ...prevState.navMain.filter((item) => item.title !== "Collections"),
-        ],
-      }));
+      setTemporaryState(collection.title);
+      if (setList) setList((prevState) => [...prevState, collection]);
     }
-  }, [collection, setNavigations]);
+  }, [collection, setList]);
 
   return (
     <DialogRoot
