@@ -4,5 +4,15 @@
     "next/typescript",
     "plugin:tailwindcss/recommended",
     "prettier"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.{jsx,tsx}"
+      ],
+      "rules": {
+        "jsx-a11y/alt-text": "off"
+      }
+    }
   ]
 }
