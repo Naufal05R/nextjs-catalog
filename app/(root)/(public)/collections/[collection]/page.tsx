@@ -7,7 +7,11 @@ import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
 export default async function CollectionPage({ params }: { params: { collection: string } }) {
-  const { id, title, slug, description } = await getCollection(params.collection, "slug").then((collection) => {
+  const { id, title, slug, description } = await getCollection({
+    where: {
+      slug: params.collection,
+    },
+  }).then((collection) => {
     if (collection) {
       return collection;
     } else {
