@@ -1,6 +1,6 @@
 import React from "react";
 import { CarouselDetail, CarouselFeatured, CarouselThumbnail } from "../client/Carousel";
-import { getAllProduct, getProduct } from "@/lib/actions/product.action";
+import { getAllProduct } from "@/lib/actions/product.action";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { getImageSrc } from "@/lib/utils";
@@ -46,9 +46,10 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
 export const DynamicCarouselThumbnail = async () => {
   const Component = async () => {
     const allProducts = await getAllProduct({ where: { isFavorite: true } });
-    const selectedProduct = await getProduct({ where: { isFavorite: true } });
 
-    if (!selectedProduct) return;
+    if (!allProducts || !allProducts[1]) return;
+
+    const selectedProduct = allProducts[1];
 
     return (
       allProducts && (
