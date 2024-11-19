@@ -2,7 +2,7 @@ import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
 import { getCollection } from "@/lib/actions/collection.action";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
@@ -39,7 +39,7 @@ export default async function CollectionPage({ params }: { params: { collection:
           <Mapper
             data={allProducts}
             render={({ category, gallery, ...product }) => {
-              const src = getImageSrc({
+              const src = getMediaSrc({
                 product: product.slug,
                 collection: slug,
                 name: gallery!.medias[0].name,

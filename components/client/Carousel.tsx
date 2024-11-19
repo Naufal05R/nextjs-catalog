@@ -20,7 +20,7 @@ import {
 import { Dataset } from "@/types/data";
 import { ResponsiveArgs } from "@/types/carousel";
 import { Media } from "@prisma/client";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
@@ -124,7 +124,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                 className="relative flex select-none flex-col items-center"
               >
                 <Image
-                  src={getImageSrc({
+                  src={getMediaSrc({
                     product: slug,
                     collection: collection.slug,
                     name: gallery!.medias[0].name,
@@ -172,7 +172,7 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
                 {...product}
                 category={category.title}
                 imageProps={{
-                  src: getImageSrc({
+                  src: getMediaSrc({
                     product: product.slug,
                     collection: collection.slug,
                     name: gallery!.medias[0].name,
@@ -211,7 +211,7 @@ export const CarouselDetail = ({
           render={({ title, name }) => (
             <CarouselItem>
               <Image
-                src={getImageSrc({ product, collection, name })}
+                src={getMediaSrc({ product, collection, name })}
                 alt={title}
                 fill
                 sizes="50vw"
@@ -227,7 +227,7 @@ export const CarouselDetail = ({
           render={({ title, name }, index) => (
             <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
               <Image
-                src={getImageSrc({ product, collection, name })}
+                src={getMediaSrc({ product, collection, name })}
                 alt={title}
                 fill
                 sizes="10vw"

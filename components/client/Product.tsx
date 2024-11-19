@@ -3,7 +3,7 @@ import React from "react";
 import { Image } from "../server/Media";
 import { cn, formatPrice } from "@/lib/utils";
 import { Product as ProductType } from "@prisma/client";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 
 interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "discount"> {
@@ -17,7 +17,7 @@ interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "d
 const Product = async ({ title, slug, price, discount, collection, thumbnail, classNames }: ProductProps) => {
   const { wrapper } = classNames ?? {};
 
-  const src = getImageSrc({ collection, product: slug, name: thumbnail });
+  const src = getMediaSrc({ collection, product: slug, name: thumbnail });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (

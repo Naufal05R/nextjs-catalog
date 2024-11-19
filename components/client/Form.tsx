@@ -14,7 +14,7 @@ import { Image, Video } from "@/components/server/Media";
 import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { getFileDetails, getFileMimeTypes, getImageSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
+import { getFileDetails, getFileMimeTypes, getMediaSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -715,7 +715,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return () => {
       (async () => {
         const _files = defaultFiles.map(async ({ title, name, order }) => {
-          const src = getImageSrc({ name, product: product.slug, collection });
+          const src = getMediaSrc({ name, product: product.slug, collection });
           const blob = await fetch(src).then((r) => r.blob());
           const media = new File([blob], name, { type: blob.type });
           console.log(blob, src);

@@ -1,7 +1,7 @@
 import { EditProductForm } from "@/components/client/Form";
 import { getAllCategory } from "@/lib/actions/category.action";
 import { getProduct } from "@/lib/actions/product.action";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 export default async function EditProductPage({ params }: { params: { collection: string; product: string } }) {

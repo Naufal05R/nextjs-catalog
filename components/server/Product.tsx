@@ -18,7 +18,7 @@ import { Image, ImageComponentProps } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@prisma/client";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 import { ToggleButton } from "../client/Button";
 
@@ -75,7 +75,7 @@ export const DashbaordProductCard = async ({
   collection,
   thumbnail,
 }: DashbaordProductCardProps) => {
-  const src = getImageSrc({ collection, product: slug, name: thumbnail });
+  const src = getMediaSrc({ collection, product: slug, name: thumbnail });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (

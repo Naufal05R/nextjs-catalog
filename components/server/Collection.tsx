@@ -5,7 +5,7 @@ import Mapper from "./Mapper";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import { Image, Media } from "./Media";
-import { getImageSrc } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { Collection as Placeholder } from "../svg";
 import { getAllCollection } from "@/lib/actions/collection.action";
 import { collections } from "@/constants";
@@ -34,7 +34,7 @@ const CollectionPlaceholder = async ({
   collection: string;
   index: number;
 }) => {
-  const src = getImageSrc({ product, name, collection });
+  const src = getMediaSrc({ product, name, collection });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
