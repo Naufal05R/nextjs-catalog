@@ -47,6 +47,8 @@ model Collection {
   isFavorite     Boolean         @default(false)
   products       Product[]
   subcollections Subcollection[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Subcollection {
