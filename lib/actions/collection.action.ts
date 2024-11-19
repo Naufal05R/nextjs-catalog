@@ -15,6 +15,9 @@ export const getAllCollection = async (params: GetAllCollectionProps | undefined
   try {
     const allCollections = await prisma.collection.findMany({
       where,
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return allCollections;
@@ -64,32 +67,31 @@ export const createCollection = async (prevState: Collection | undefined, formDa
   }
 };
 
-export const toggleFavoriteCollection = async (prevState: string | undefined, formData: FormData) => {
+export const toggleFavoriteCollection = async (prevState: Collection | undefined, formData: FormData) => {
   const id = formData.get("id") as string;
 
   if (id) {
     try {
-      await prisma.$transaction(async (_prisma) => {
-        await _prisma.collection.updateMany({
+      const collection = await prisma.$transaction(async (_prisma) => {
+        const selectedCollection = await _prisma.collection.findFirst({
           where: {
-            isFavorite: true,
-          },
-          data: {
-            isFavorite: false,
+            slug: id,
           },
         });
 
-        await _prisma.collection.update({
+        const toggledCollection = await _prisma.collection.update({
           where: { slug: id },
           data: {
-            isFavorite: true,
+            isFavorite: !selectedCollection?.isFavorite,
           },
         });
+
+        return toggledCollection;
       });
 
       revalidatePath("/", "layout");
 
-      return undefined;
+      return collection;
     } catch (error) {
       handlingError(error);
     }
