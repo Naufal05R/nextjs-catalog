@@ -56,4 +56,13 @@ export const createCollection = async (prevState: string | undefined, formData: 
   }
 };
 
-export const toggleFavoriteCollection = async (prevState: string | undefined, formData: FormData) => {};
+export const toggleFavoriteCollection = async (prevState: string | undefined, formData: FormData) => {
+  const id = formData.get("id") as string;
+
+  if (id) {
+    try {
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
