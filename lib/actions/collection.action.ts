@@ -3,7 +3,7 @@
 import { CollectionFormSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
-import { Prisma } from "@prisma/client";
+import { Collection, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 type GetAllCollectionProps = {
@@ -37,7 +37,7 @@ export const getCollection = async (params: GetAllCollectionProps | undefined = 
   }
 };
 
-export const createCollection = async (prevState: string | undefined, formData: FormData) => {
+export const createCollection = async (prevState: Collection | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
@@ -55,7 +55,7 @@ export const createCollection = async (prevState: string | undefined, formData: 
         },
       });
 
-      return newCollection.title;
+      return newCollection;
     } catch (error) {
       handlingError(error);
     }
