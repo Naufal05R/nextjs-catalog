@@ -3,8 +3,8 @@
 import { CollectionFormSchema } from "@/schema/collection";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
-import { z } from "zod";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 type GetAllCollectionProps = {
   where?: Prisma.CollectionWhereInput;
@@ -69,6 +69,27 @@ export const toggleFavoriteCollection = async (prevState: string | undefined, fo
 
   if (id) {
     try {
+      await prisma.$transaction(async (_prisma) => {
+        await _prisma.collection.updateMany({
+          where: {
+            isFavorite: true,
+          },
+          data: {
+            isFavorite: false,
+          },
+        });
+
+        await _prisma.collection.update({
+          where: { slug: id },
+          data: {
+            isFavorite: true,
+          },
+        });
+      });
+
+      revalidatePath("/", "layout");
+
+      return undefined;
     } catch (error) {
       handlingError(error);
     }
