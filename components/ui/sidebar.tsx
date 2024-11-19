@@ -3,17 +3,16 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { Archive, Boxes, Gem, Newspaper, PanelLeft, Radio } from "lucide-react";
+import { Archive, Gem, Newspaper, PanelLeft, Radio } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn, handlingError } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { CollectionsSchema } from "@/schema/collection";
 
 const initialNavigations = {
   user: {
@@ -26,15 +25,6 @@ const initialNavigations = {
       name: "Legenda Permata",
       logo: Gem,
       plan: "Enterprise",
-    },
-  ],
-  navMain: [
-    {
-      title: "Collections",
-      url: "/dashboard",
-      icon: Boxes,
-      isActive: true,
-      items: Array.from([{ title: "", url: "" }]).slice(0, 0),
     },
   ],
   projects: [
@@ -133,39 +123,6 @@ const SidebarProvider = React.forwardRef<
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggleSidebar]);
-
-  React.useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch("/api/list/collection");
-        const { data: rawApiData } = await response.json();
-        const { success, error, data } = CollectionsSchema.safeParse(rawApiData);
-
-        if (success) {
-          setNavigations((prevState) => ({
-            ...prevState,
-            navMain: [
-              {
-                title: "Collections",
-                url: "/dashboard/products",
-                icon: Boxes,
-                isActive: true,
-                items: data.map(({ title, slug }) => ({
-                  title: title,
-                  url: `/dashboard/products/${slug}`,
-                })),
-              },
-              ...prevState.navMain.filter((item) => item.title !== "Collections"),
-            ],
-          }));
-        } else {
-          handlingError(error);
-        }
-      } catch (error) {
-        handlingError(error);
-      }
-    })();
-  }, []);
 
   const state = open ? "expanded" : "collapsed";
 
