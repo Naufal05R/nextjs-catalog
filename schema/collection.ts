@@ -31,6 +31,7 @@ export const CollectionSchema = z.object({
     .max(63, {
       message: "Description must be less than 63 characters",
     }),
+  isFavorite: z.boolean().default(true),
   products: z.array(ProductSchema.required()).optional(),
   subcollections: z.array(SubcollectionSchema.required()).optional(),
 });
@@ -40,4 +41,4 @@ export const CollectionFormSchema = CollectionSchema.pick({
   description: true,
 });
 
-export const CollectionsSchema = z.array(CollectionSchema);
+export const CollectionsSchema = z.array(CollectionSchema.pick({}));
