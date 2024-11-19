@@ -34,6 +34,7 @@ export interface ImageComponentProps
 export interface VideoComponentProps
   extends Omit<React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>, "className">,
     Pick<ComponentBaseProps, "FallbackComponent"> {
+  filter?: boolean;
   classNames?: ComponentBaseProps["classNames"] & {
     video?: string;
   };
@@ -103,12 +104,16 @@ export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...
   );
 };
 
-export const Video = ({ FallbackComponent = Bag, classNames, ...props }: VideoComponentProps) => {
+export const Video = ({ FallbackComponent = Bag, filter, classNames, ...props }: VideoComponentProps) => {
   const { figure, video, fallback } = classNames ?? {};
 
   return (
     <Figure classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
       {props.src && <video {...props} className={cn("z-20 size-full object-cover object-center", video)} />}
+
+      {filter && (
+        <div className="absolute z-20 size-full bg-gradient-to-b from-neutral-800/0 via-neutral-800/0 to-neutral-800/90" />
+      )}
     </Figure>
   );
 };
