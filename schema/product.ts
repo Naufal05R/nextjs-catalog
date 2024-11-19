@@ -87,6 +87,7 @@ export const ProductSchema = z.object({
     message: "Description must be at least 50 characters",
   }),
   isReady: z.boolean().default(true),
+  isFavorite: z.boolean().default(true),
   collectionId: z.string().cuid(),
   subcollectionId: z.string().cuid().optional(),
   categoryId: z.string().min(1, { message: "Please select a Category" }).cuid({ message: "Invalid Category" }),
