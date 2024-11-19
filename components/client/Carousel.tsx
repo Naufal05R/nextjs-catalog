@@ -146,6 +146,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                     }}
                     videoProps={{
                       src: `${src}#t=0.1`,
+                      filter: true,
                       autoPlay: false,
                       controls: false,
                       classNames: {
