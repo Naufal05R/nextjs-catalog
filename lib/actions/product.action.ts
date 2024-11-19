@@ -11,6 +11,7 @@ import { Prisma } from "@prisma/client";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
+  skip?: number;
 };
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
@@ -52,11 +53,12 @@ export const getAllProduct = async (params: GetAllProductProps | undefined = und
 };
 
 export const getProduct = async (params: GetAllProductProps | undefined = undefined) => {
-  const { where } = params ?? {};
+  const { where, skip } = params ?? {};
 
   try {
     const product = await prisma.product.findFirst({
       where,
+      skip,
       include: {
         collection: {
           select: {
