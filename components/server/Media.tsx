@@ -2,7 +2,7 @@ import React from "react";
 import NextImage from "next/image";
 import { cn, toBase64 } from "@/lib/utils";
 import { Bag } from "../svg";
-import { ACCEPTED_IMAGE_MIME_EXTS, ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_VIDEO_MIME_EXTS } from "@/schema/media";
+import { ACCEPTED_IMAGE_EXTS, ACCEPTED_MEDIA_TYPES, ACCEPTED_VIDEO_EXTS } from "@/schema/media";
 
 interface ComponentBaseProps {
   FallbackComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -17,7 +17,7 @@ interface ComponentBaseProps {
 }
 
 interface MediaComponentProps {
-  mimeType: (typeof ACCEPTED_MEDIA_MIME_TYPES)[number] | (string & {});
+  fileExt: (typeof ACCEPTED_MEDIA_TYPES)[number] | (string & {});
   imageProps?: ImageComponentProps;
   videoProps?: VideoComponentProps;
 }
@@ -73,12 +73,12 @@ export const Figure = ({ FallbackComponent = Bag, classNames, children }: Compon
   );
 };
 
-export const Media = ({ mimeType, imageProps, videoProps }: MediaComponentProps) => {
-  if (new Set<typeof mimeType>(ACCEPTED_IMAGE_MIME_EXTS).has(mimeType)) {
+export const Media = ({ fileExt, imageProps, videoProps }: MediaComponentProps) => {
+  if (new Set<typeof fileExt>(ACCEPTED_IMAGE_EXTS).has(fileExt)) {
     return imageProps && <Image {...imageProps} />;
   }
 
-  if (new Set<typeof mimeType>(ACCEPTED_VIDEO_MIME_EXTS).has(mimeType)) {
+  if (new Set<typeof fileExt>(ACCEPTED_VIDEO_EXTS).has(fileExt)) {
     return videoProps && <Video {...videoProps} />;
   }
 };
