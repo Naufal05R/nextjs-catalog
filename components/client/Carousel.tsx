@@ -5,8 +5,8 @@ import Link from "next/link";
 import Fade from "embla-carousel-fade";
 import Mapper from "@/components/server/Mapper";
 
-import { cn } from "@/lib/utils";
-import { Image } from "@/components/server/Media";
+import { cn, getFileDetails } from "@/lib/utils";
+import { Image, Media as MediaComponent } from "@/components/server/Media";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel as CarouselRoot,
@@ -116,33 +116,51 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
       slidesElement={
         <Mapper
           data={data}
-          render={({ description, slug, gallery, collection }) => (
-            <CarouselItem>
-              <Link
-                href={`/products/${slug}`}
-                draggable={false}
-                className="relative flex select-none flex-col items-center"
-              >
-                <Image
-                  src={getMediaSrc({
-                    product: slug,
-                    collection: collection.slug,
-                    name: gallery!.medias[0].name,
-                  })}
-                  alt={slug}
-                  fill
-                  filter
-                  sizes="(max-width: 1024px) 75vw, 100vw"
-                  classNames={{
-                    figure:
-                      "aspect-video w-full rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
-                  }}
-                />
+          render={({ description, slug, gallery, collection }) => {
+            const src = getMediaSrc({
+              product: slug,
+              collection: collection.slug,
+              name: gallery!.medias[0].name,
+            });
+            const { fileExt } = getFileDetails(src);
 
-                <h4 className="absolute bottom-16 z-20 max-w-[80%] text-center text-xl text-slate-50">{description}</h4>
-              </Link>
-            </CarouselItem>
-          )}
+            return (
+              <CarouselItem>
+                <Link
+                  href={`/products/${slug}`}
+                  draggable={false}
+                  className="relative flex select-none flex-col items-center"
+                >
+                  <MediaComponent
+                    fileExt={fileExt}
+                    imageProps={{
+                      src,
+                      alt: slug,
+                      fill: true,
+                      filter: true,
+                      sizes: "(max-width: 1024px) 75vw, 100vw",
+                      classNames: {
+                        figure:
+                          "aspect-video w-full rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
+                      },
+                    }}
+                    videoProps={{
+                      src,
+                      // filter: true,
+                      classNames: {
+                        figure:
+                          "aspect-video w-full rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
+                      },
+                    }}
+                  />
+
+                  <h4 className="absolute bottom-16 z-20 max-w-[80%] text-center text-xl text-slate-50">
+                    {description}
+                  </h4>
+                </Link>
+              </CarouselItem>
+            );
+          }}
         />
       }
       dotsElement={
