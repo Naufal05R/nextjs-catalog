@@ -145,8 +145,9 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                       },
                     }}
                     videoProps={{
-                      src,
-                      // filter: true,
+                      src: `${src}#t=0.1`,
+                      autoPlay: false,
+                      controls: false,
                       classNames: {
                         figure:
                           "aspect-video w-full rounded overflow-hidden transition-all max-md:aspect-video max-lg:aspect-[34/13]",
