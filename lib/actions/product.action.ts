@@ -207,8 +207,6 @@ export const updateProduct = async (
           return { title, slug: slugify(title), order, name: fileName };
         });
 
-      console.log(files);
-
       const newProduct = await prisma.$transaction(async (_prisma) => {
         const _collection = await _prisma.collection.findFirst({
           where: {
