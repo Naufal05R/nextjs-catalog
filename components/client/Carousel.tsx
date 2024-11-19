@@ -100,7 +100,7 @@ const Carousel = <T extends Dataset>({
   );
 };
 
-export const CarouselThumbnail = ({ data }: { data: Array<Product> }) => {
+export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnType<typeof getAllProduct>>> }) => {
   return (
     <Carousel
       data={data}
@@ -116,11 +116,15 @@ export const CarouselThumbnail = ({ data }: { data: Array<Product> }) => {
       slidesElement={
         <Mapper
           data={data}
-          render={(_, i) => (
+          render={({ slug, gallery, collection }) => (
             <CarouselItem>
-              <Link href={`/`} draggable={false} className="select-none">
+              <Link href={`/products/${slug}`} draggable={false} className="select-none">
                 <Image
-                  src={`/dummy_${(i % 3) + 1}.jpg`}
+                  src={getImageSrc({
+                    product: slug,
+                    collection: collection.slug,
+                    name: gallery!.medias[0].name,
+                  })}
                   alt="dummy_image"
                   fill
                   sizes="(max-width: 1024px) 75vw, 100vw"
