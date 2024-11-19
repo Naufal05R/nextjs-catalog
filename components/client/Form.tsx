@@ -718,7 +718,6 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           const src = getMediaSrc({ name, product: product.slug, collection });
           const blob = await fetch(src).then((r) => r.blob());
           const media = new File([blob], name, { type: blob.type });
-          console.log(blob, src);
 
           return { title, order, media };
         });
