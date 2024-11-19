@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { Button, ButtonProps } from "../ui/button";
 import { Copy, CopyCheck, LucideProps } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,12 @@ import { useFormState } from "react-dom";
 import { toast as sonner } from "sonner";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
+interface ToggleButtonProps extends ButtonProps {
+  icon: React.ReactNode;
+  toggleAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
+  identifier: string | number;
+}
 
 export const CopyButton = ({ title }: { title: string }) => {
   const [copied, setCopied] = useState(false);
@@ -48,15 +54,7 @@ export const CopyButton = ({ title }: { title: string }) => {
   );
 };
 
-export const ToggleButton = ({
-  icon,
-  toggleAction,
-  identifier,
-}: {
-  icon: React.ReactNode;
-  toggleAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
-  identifier: string | number;
-}) => {
+export const ToggleButton = ({ icon, toggleAction, identifier }: ToggleButtonProps) => {
   const [message, formAction, isLoading] = useFormState(toggleAction, undefined);
 
   useEffect(() => {
