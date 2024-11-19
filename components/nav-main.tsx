@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight, Star, type LucideIcon } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
@@ -49,12 +49,14 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
+                    <SidebarMenuSubItem key={subItem.title} className="flex items-center justify-between">
+                      <SidebarMenuSubButton asChild className="flex-1">
                         <Link href={subItem.url}>
                           <span>{subItem.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
+
+                      <Star size={16} className="ml-2 mr-[-0.5px] size-4 opacity-50" />
                     </SidebarMenuSubItem>
                   ))}
                   <SidebarMenuSubItem>
