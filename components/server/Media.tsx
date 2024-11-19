@@ -18,6 +18,7 @@ interface ComponentBaseProps {
 export interface ImageComponentProps
   extends Omit<React.ComponentProps<typeof NextImage>, "className">,
     Pick<ComponentBaseProps, "FallbackComponent"> {
+  filter?: boolean;
   classNames?: ComponentBaseProps["classNames"] & {
     image?: string;
   };
@@ -65,7 +66,7 @@ export const Media = ({ FallbackComponent = Bag, classNames, children }: Compone
   );
 };
 
-export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageComponentProps) => {
+export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...props }: ImageComponentProps) => {
   const { figure, image, fallback } = classNames ?? {};
   return (
     <Media classNames={{ figure, fallback }} FallbackComponent={FallbackComponent}>
@@ -76,6 +77,10 @@ export const Image = ({ FallbackComponent = Bag, classNames, ...props }: ImageCo
           draggable={false}
           className={cn("z-20 size-full object-cover object-center before:hidden", image)}
         />
+      )}
+
+      {filter && (
+        <div className="absolute z-20 size-full bg-gradient-to-b from-slate-800/0 via-slate-800/0 to-slate-800/100" />
       )}
     </Media>
   );
