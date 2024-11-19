@@ -55,3 +55,5 @@ export const createCollection = async (prevState: string | undefined, formData: 
     handlingError(validated.error);
   }
 };
+
+export const toggleFavoriteCollection = async (prevState: string | undefined, formData: FormData) => {};
