@@ -80,7 +80,7 @@ export const Image = ({ FallbackComponent = Bag, classNames, filter = false, ...
       )}
 
       {filter && (
-        <div className="absolute z-20 size-full bg-gradient-to-b from-slate-800/0 via-slate-800/0 to-slate-800/70" />
+        <div className="absolute z-20 size-full bg-gradient-to-b from-neutral-800/0 via-neutral-800/0 to-neutral-800/90" />
       )}
     </Media>
   );
