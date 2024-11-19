@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
 import { DynamicCollections } from "@/components/server/Collection";
-import { Image } from "@/components/server/Media";
 import { ChevronRight, Mail, Star } from "lucide-react";
 import { testimonials } from "@/constants";
 import { Button } from "@/components/ui/button";
@@ -12,14 +11,6 @@ export default function Home() {
     <>
       <section className="flex flex-nowrap items-stretch gap-px">
         <DynamicCarouselThumbnail />
-
-        <Image
-          src="/dummy_2.jpg"
-          alt="dummy_2"
-          fill
-          sizes="25vw"
-          classNames={{ figure: "min-h-full rounded max-lg:hidden shrink-0 basis-1/3" }}
-        />
       </section>
 
       <section className="mt-16">
