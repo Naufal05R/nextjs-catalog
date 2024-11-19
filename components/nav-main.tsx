@@ -17,6 +17,9 @@ import { CreateCollectionDialog } from "./client/Dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { ToggleButton } from "./client/Button";
+import { slugify } from "@/lib/utils";
+import { toggleFavoriteCollection } from "@/lib/actions/collection.action";
 
 export function NavMain({
   items,
@@ -49,14 +52,19 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title} className="flex items-center justify-between">
+                    <SidebarMenuSubItem key={subItem.title} className="relative flex items-center justify-between">
                       <SidebarMenuSubButton asChild className="flex-1">
                         <Link href={subItem.url}>
                           <span>{subItem.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
 
-                      <Star size={16} className="ml-2 mr-[-0.5px] size-4 opacity-50" />
+                      <ToggleButton
+                        icon={<Star size={16} className="size-4 opacity-50" />}
+                        identifier={slugify(subItem.title)}
+                        toggleAction={toggleFavoriteCollection}
+                        className="ml-2 mr-[-0.5px] size-fit"
+                      />
                     </SidebarMenuSubItem>
                   ))}
                   <SidebarMenuSubItem>
