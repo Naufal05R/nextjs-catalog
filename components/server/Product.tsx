@@ -7,10 +7,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import {
   archiveProduct,
   deleteProduct,
-  favoriteProduct,
   getAllProduct,
+  toggleFavoriteProduct,
   unarchiveProduct,
-  unfavoriteProduct,
 } from "@/lib/actions/product.action";
 import { EmptyState, EmptyStateWithButton } from "@/components/server/Empty";
 import { cn, countDiscount, formatPrice } from "@/lib/utils";
@@ -83,9 +82,7 @@ export const DashbaordProductCard = async ({
       <ToggleButton
         icon={<Star fill={isFavorite ? "#f59e0b" : "#fff"} />}
         identifier={id}
-        doAction={favoriteProduct}
-        undoAction={unfavoriteProduct}
-        isActive={isFavorite}
+        toggleAction={toggleFavoriteProduct}
       />
 
       <CardHeader>
