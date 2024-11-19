@@ -332,6 +332,46 @@ export const unfavoriteProduct = async (prevState: string | undefined, formData:
   }
 };
 
+export const toggleFavoriteProduct = async (prevState: string | undefined, formData: FormData) => {
+  const id = formData.get("id") as string;
+  const min = 3 as const;
+  const max = 7 as const;
+
+  if (id) {
+    try {
+      const message = await prisma.$transaction(async (_prisma) => {
+        const totalFavoriteProduct = await _prisma.product.count({
+          where: {
+            isFavorite: true,
+          },
+        });
+
+        if (totalFavoriteProduct >= max)
+          return `Can't add product from favorite! Max product to be favorited is ${max}`;
+        if (totalFavoriteProduct <= min)
+          return `Can't remove product from favorite! Min product to be favorited is ${min}`;
+
+        const selectedProduct = await _prisma.product.findUnique({
+          where: { id },
+        });
+
+        await _prisma.product.update({
+          where: { id },
+          data: {
+            isFavorite: !selectedProduct?.isFavorite,
+          },
+        });
+      });
+
+      revalidatePath("/", "layout");
+
+      return message;
+    } catch (error) {
+      handlingError(error);
+    }
+  }
+};
+
 export const archiveProduct = async (formData: FormData) => {
   const id = formData.get("id") as string;
 
