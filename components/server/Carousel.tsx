@@ -1,7 +1,9 @@
 import React from "react";
 import { CarouselDetail, CarouselFeatured, CarouselThumbnail } from "../client/Carousel";
-import { getAllProduct } from "@/lib/actions/product.action";
+import { getAllProduct, getProduct } from "@/lib/actions/product.action";
 import Mapper from "./Mapper";
+import { Image } from "./Media";
+import { getImageSrc } from "@/lib/utils";
 
 interface DynamicCarouselBaseProps {
   variant: "thumbnail" | "featured" | "detail";
@@ -44,15 +46,32 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
 export const DynamicCarouselThumbnail = async () => {
   const Component = async () => {
     const allProducts = await getAllProduct({ where: { isFavorite: true } });
+    const selectedProduct = await getProduct({ where: { isFavorite: true } });
+
+    if (!selectedProduct) return;
 
     return (
       allProducts && (
-        <DynamicCarousel
-          variant="thumbnail"
-          props={{
-            data: allProducts,
-          }}
-        />
+        <>
+          <DynamicCarousel
+            variant="thumbnail"
+            props={{
+              data: allProducts,
+            }}
+          />
+
+          <Image
+            src={getImageSrc({
+              product: selectedProduct.slug,
+              collection: selectedProduct.collection.slug,
+              name: selectedProduct.gallery!.medias[0].name,
+            })}
+            alt={selectedProduct.slug}
+            fill
+            sizes="25vw"
+            classNames={{ figure: "min-h-full rounded max-lg:hidden shrink-0 basis-1/3" }}
+          />
+        </>
       )
     );
   };
