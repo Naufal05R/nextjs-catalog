@@ -10,10 +10,13 @@ import { toast as sonner } from "sonner";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-interface ToggleButtonProps extends ButtonProps {
+interface BaseProps {
   icon: React.ReactNode;
-  toggleAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
   identifier: string | number;
+}
+
+interface ToggleButtonProps extends BaseProps, ButtonProps {
+  toggleAction: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>;
 }
 
 export const CopyButton = ({ title }: { title: string }) => {
@@ -74,17 +77,17 @@ export const ToggleButton = ({ icon, toggleAction, identifier, ...props }: Toggl
       variant="secondary"
       size="icon"
       className="absolute right-3 top-3 z-30 grid place-items-center rounded-full bg-white text-amber-500 shadow-none hover:bg-white hover:text-amber-500"
-      form="toggle-action-button"
+      form={`toggle-action-button-${identifier}`}
       disabled={isLoading}
       {...props}
     >
-      <form id="toggle-action-button" action={formAction} className="hidden" />
+      <form id={`toggle-action-button-${identifier}`} action={formAction} className="hidden" />
       <input
         name="id"
         type="hidden"
         className="hidden"
         defaultValue={identifier}
-        form="toggle-action-button"
+        form={`toggle-action-button-${identifier}`}
         readOnly
       />
       {icon}
