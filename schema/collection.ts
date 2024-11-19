@@ -41,4 +41,4 @@ export const CollectionFormSchema = CollectionSchema.pick({
   description: true,
 });
 
-export const CollectionsSchema = z.array(CollectionSchema.pick({}));
+export const CollectionsSchema = z.array(CollectionSchema);
