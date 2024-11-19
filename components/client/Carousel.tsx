@@ -6,7 +6,7 @@ import Fade from "embla-carousel-fade";
 import Mapper from "@/components/server/Mapper";
 
 import { cn, getFileDetails } from "@/lib/utils";
-import { Image, Media as MediaComponent } from "@/components/server/Media";
+import { Media as MediaComponent } from "@/components/server/Media";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel as CarouselRoot,
@@ -228,33 +228,74 @@ export const CarouselDetail = ({
       slidesElement={
         <Mapper
           data={data}
-          render={({ title, name }) => (
-            <CarouselItem>
-              <Image
-                src={getMediaSrc({ product, collection, name })}
-                alt={title}
-                fill
-                sizes="50vw"
-                classNames={{ figure: "aspect-square rounded w-full" }}
-              />
-            </CarouselItem>
-          )}
+          render={({ title, slug, name }) => {
+            const src = getMediaSrc({ product, collection, name });
+            const { fileExt } = getFileDetails(src);
+
+            return (
+              <CarouselItem>
+                <MediaComponent
+                  fileExt={fileExt}
+                  imageProps={{
+                    src,
+                    title,
+                    alt: slug,
+                    fill: true,
+                    sizes: "(max-width: 1024px) 25vw, 50vw",
+                    classNames: {
+                      figure: "aspect-square rounded w-full",
+                    },
+                  }}
+                  videoProps={{
+                    src,
+                    title,
+                    autoPlay: true,
+                    controls: true,
+                    loop: true,
+                    classNames: {
+                      figure: "aspect-square rounded w-full",
+                    },
+                  }}
+                />
+              </CarouselItem>
+            );
+          }}
         />
       }
       dotsElement={
         <Mapper
           data={data}
-          render={({ title, name }, index) => (
-            <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
-              <Image
-                src={getMediaSrc({ product, collection, name })}
-                alt={title}
-                fill
-                sizes="10vw"
-                classNames={{ figure: "aspect-square rounded w-full" }}
-              />
-            </CarouselDot>
-          )}
+          render={({ title, slug, name }, index) => {
+            const src = getMediaSrc({ product, collection, name });
+            const { fileExt } = getFileDetails(src);
+
+            return (
+              <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
+                <MediaComponent
+                  fileExt={fileExt}
+                  imageProps={{
+                    src,
+                    title,
+                    alt: slug,
+                    fill: true,
+                    sizes: "10vw",
+                    classNames: {
+                      figure: "aspect-square rounded w-full",
+                    },
+                  }}
+                  videoProps={{
+                    src: `${src}#t=0.1`,
+                    title,
+                    autoPlay: false,
+                    controls: false,
+                    classNames: {
+                      figure: "aspect-square rounded w-full",
+                    },
+                  }}
+                />
+              </CarouselDot>
+            );
+          }}
         />
       }
       classNames={{
