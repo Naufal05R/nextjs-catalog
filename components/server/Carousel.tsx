@@ -43,7 +43,7 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
 
 export const DynamicCarouselThumbnail = async () => {
   const Component = async () => {
-    const allProducts = await getAllProduct();
+    const allProducts = await getAllProduct({ where: { isFavorite: true } });
 
     return (
       allProducts && (
