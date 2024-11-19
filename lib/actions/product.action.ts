@@ -58,6 +58,11 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
     const product = await prisma.product.findFirst({
       where,
       include: {
+        collection: {
+          select: {
+            slug: true,
+          },
+        },
         gallery: {
           select: {
             medias: true,
