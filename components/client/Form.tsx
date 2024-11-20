@@ -196,7 +196,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       <form id="create-product-form" action={actionHandler} className="hidden" />
 
       <fieldset className="col-span-12">
-        <h6 className="mb-1 text-lg font-medium">Product Title</h6>
+        <h6 className="mb-1 line-clamp-1 text-lg font-medium">Product Title</h6>
         <Label htmlFor="title">
           <Input
             id="title"
@@ -210,7 +210,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
-        <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
+        <h6 className="col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Detail</h6>
         <Label htmlFor="categoryId" className="flex flex-col">
           <ComboboxDropdownCategory data={categories} form="create-product-form" />
           <ErrorMessage name="categoryId" />
@@ -240,7 +240,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
-        <h6 className="-order-2 col-span-3 mb-1 text-lg font-medium">Product Size</h6>
+        <h6 className="-order-2 col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Size</h6>
         <Label htmlFor="width">
           <Input
             id="width"
@@ -274,7 +274,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="length" />
         </Label>
 
-        <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
+        <h6 className="-order-1 col-span-1 mb-1 line-clamp-1 text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
             id="weight"
@@ -288,7 +288,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
-        <h6 className="col-span-2 mb-1 text-lg font-medium">Product Rate</h6>
+        <h6 className="col-span-2 mb-1 line-clamp-1 text-lg font-medium">Product Rate</h6>
         <Label htmlFor="price">
           <Input
             id="price"
@@ -313,7 +313,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
-        <h6 className="-order-2 mb-1 text-lg font-medium">Product Description</h6>
+        <h6 className="-order-2 mb-1 line-clamp-1 text-lg font-medium">Product Description</h6>
         <Label htmlFor="description">
           <Textarea
             id="description"
@@ -328,7 +328,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12">
-        <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
+        <h6 className="mb-1 line-clamp-1 text-lg font-medium">Uploaded Images</h6>
         {!!files.length ? (
           <ul className="flex flex-col gap-y-2.5">
             <Mapper
