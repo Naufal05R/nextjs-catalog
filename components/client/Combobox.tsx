@@ -73,7 +73,7 @@ const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMe
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className={cn(
-            "w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[200px] max-w-[240px] p-0",
+            "w-[calc(var(--radix-dropdown-menu-trigger-width)*3/4)] min-w-[240px] max-w-[240px] p-0",
             classNames?.menu?.content,
           )}
           align="start"
