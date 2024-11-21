@@ -298,7 +298,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 
       <fieldset className="col-span-12 grid grid-cols-2 gap-4">
         <h6 className="col-span-2 -mb-3 line-clamp-1 text-lg font-medium">Product Rate</h6>
-        <Label htmlFor="price" className="col-span-2 sm:col-span-1">
+        <Label htmlFor="price" className="col-span-2 xs:col-span-1">
           <Input
             id="price"
             name="price"
@@ -309,7 +309,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="price" />
         </Label>
 
-        <Label htmlFor="discount" className="col-span-2 sm:col-span-1">
+        <Label htmlFor="discount" className="col-span-2 xs:col-span-1">
           <Input
             id="discount"
             name="discount"
@@ -685,6 +685,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   const [errors, formAction, isPending] = useFormState(updateProduct, undefined);
 
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
+  const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
     files
@@ -755,14 +756,17 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
-        <h6 className="col-span-3 mb-1 text-lg font-medium">Product Detail</h6>
-        <Label htmlFor="categoryId" className="flex flex-col">
+      <fieldset className="col-span-12 grid grid-cols-6 gap-4">
+        <h6 className="col-span-6 -mb-3 line-clamp-1 text-lg font-medium">Product Detail</h6>
+        <Label
+          htmlFor="categoryId"
+          className={cn("col-span-6 flex flex-col lg:col-span-2", { "md:col-span-2": !open })}
+        >
           <ComboboxDropdownCategory data={categories} form="create-product-form" defaultSelected={product.categoryId} />
           <ErrorMessage name="categoryId" />
         </Label>
 
-        <Label htmlFor="state">
+        <Label htmlFor="state" className={cn("col-span-6 xs:col-span-3 lg:col-span-2", { "md:col-span-2": !open })}>
           <Input
             id="state"
             name="state"
@@ -774,7 +778,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           <ErrorMessage name="state" />
         </Label>
 
-        <Label htmlFor="color">
+        <Label htmlFor="color" className={cn("col-span-6 xs:col-span-3 lg:col-span-2", { "md:col-span-2": !open })}>
           <Input
             id="color"
             name="color"
@@ -787,9 +791,11 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
-        <h6 className="-order-2 col-span-3 mb-1 text-lg font-medium">Product Size</h6>
-        <Label htmlFor="width">
+      <fieldset
+        className={cn("col-span-12 grid grid-cols-3 gap-4 sm:col-span-9", { "md:col-span-6 lg:col-span-9": open })}
+      >
+        <h6 className="col-span-3 -mb-3 line-clamp-1 text-lg font-medium">Product Size</h6>
+        <Label htmlFor="width" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="width"
             name="width"
@@ -801,7 +807,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           <ErrorMessage name="width" />
         </Label>
 
-        <Label htmlFor="height">
+        <Label htmlFor="height" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="height"
             name="height"
@@ -813,7 +819,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           <ErrorMessage name="height" />
         </Label>
 
-        <Label htmlFor="length">
+        <Label htmlFor="length" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="length"
             name="length"
@@ -824,8 +830,10 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="length" />
         </Label>
+      </fieldset>
 
-        <h6 className="-order-1 col-span-1 mb-1 text-lg font-medium">Product Weight</h6>
+      <fieldset className={cn("col-span-12 flex flex-col sm:col-span-3", { "md:col-span-6 lg:col-span-3": open })}>
+        <h6 className="mb-1 line-clamp-1 h-fit text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
             id="weight"
@@ -839,9 +847,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
-        <h6 className="col-span-2 mb-1 text-lg font-medium">Product Rate</h6>
-        <Label htmlFor="price">
+      <fieldset className="col-span-12 grid grid-cols-2 gap-4">
+        <h6 className="col-span-2 -mb-3 line-clamp-1 text-lg font-medium">Product Rate</h6>
+        <Label htmlFor="price" className="col-span-2 xs:col-span-1">
           <Input
             id="price"
             name="price"
@@ -853,7 +861,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           <ErrorMessage name="price" />
         </Label>
 
-        <Label htmlFor="discount">
+        <Label htmlFor="discount" className="col-span-2 xs:col-span-1">
           <Input
             id="discount"
             name="discount"
@@ -967,13 +975,13 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
                       />
 
                       {fileType && (
-                        <Badge variant="secondary" className="text-slate-400">
+                        <Badge variant="secondary" className="text-slate-400 max-xs:hidden">
                           {fileType}
                         </Badge>
                       )}
 
                       {fileMime && (
-                        <Badge variant="secondary" className="text-slate-400">
+                        <Badge variant="secondary" className="text-slate-400 max-xs:hidden">
                           {fileMime}
                         </Badge>
                       )}
