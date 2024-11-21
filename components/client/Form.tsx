@@ -212,7 +212,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
       </fieldset>
 
       <fieldset className="col-span-12 grid grid-cols-6 gap-4">
-        <h6 className="col-span-6 -mb-2 line-clamp-1 text-lg font-medium">Product Detail</h6>
+        <h6 className="col-span-6 -mb-3 line-clamp-1 text-lg font-medium">Product Detail</h6>
         <Label htmlFor="categoryId" className={cn("col-span-6 flex flex-col", { "md:col-span-2": !open })}>
           <ComboboxDropdownCategory data={categories} form="create-product-form" />
           <ErrorMessage name="categoryId" />
@@ -241,8 +241,8 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
-        <h6 className="-order-2 col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Size</h6>
+      <fieldset className="col-span-9 grid grid-cols-3 gap-x-4">
+        <h6 className="col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Size</h6>
         <Label htmlFor="width">
           <Input
             id="width"
@@ -275,8 +275,10 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           />
           <ErrorMessage name="length" />
         </Label>
+      </fieldset>
 
-        <h6 className="-order-1 col-span-1 mb-1 line-clamp-1 text-lg font-medium">Product Weight</h6>
+      <fieldset className="col-span-3 grid gap-x-4">
+        <h6 className="mb-1 line-clamp-1 text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
             id="weight"
