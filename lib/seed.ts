@@ -1,5 +1,5 @@
 import { prisma } from "./prisma";
-import { category, collection, gallery, media, product, tag } from "./seeds";
+import { category, collection, gallery, media, product, tag, tags_on_products } from "./seeds";
 
 (async () => {
   try {
@@ -9,6 +9,7 @@ import { category, collection, gallery, media, product, tag } from "./seeds";
     await gallery();
     await media();
     await tag();
+    await tags_on_products();
 
     console.log("All scripts executed successfully!");
     await prisma.$disconnect();
