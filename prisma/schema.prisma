@@ -14,28 +14,29 @@ datasource db {
 }
 
 model Product {
-  id              String         @id @default(cuid())
-  title           String         @unique @db.VarChar(64)
-  slug            String         @unique @db.VarChar(64)
-  state           String         @db.VarChar(64)
-  width           Float          @db.Real
-  height          Float          @db.Real
-  length          Float          @db.Real
-  weight          Float          @db.Real
-  color           String         @db.VarChar(64)
-  price           Int            @db.Integer
-  discount        Float?         @db.Real
-  description     String         @db.Text
-  isReady         Boolean        @default(true)
-  isFavorite      Boolean        @default(false)
+  id              String           @id @default(cuid())
+  title           String           @unique @db.VarChar(64)
+  slug            String           @unique @db.VarChar(64)
+  state           String           @db.VarChar(64)
+  width           Float            @db.Real
+  height          Float            @db.Real
+  length          Float            @db.Real
+  weight          Float            @db.Real
+  color           String           @db.VarChar(64)
+  price           Int              @db.Integer
+  discount        Float?           @db.Real
+  description     String           @db.Text
+  tags            TagsOnProducts[]
+  isReady         Boolean          @default(true)
+  isFavorite      Boolean          @default(false)
   collectionId    String
-  collection      Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collection      Collection       @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   categoryId      String
-  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category        Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subcollectionId String?
-  subcollection   Subcollection? @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  subcollection   Subcollection?   @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   gallery         Gallery?
 }
 
@@ -96,4 +97,21 @@ model News {
   isRelevant  Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Tag {
+  id       String           @id @default(cuid())
+  title    String           @unique @db.VarChar(64)
+  slug     String           @unique @db.VarChar(64)
+  products TagsOnProducts[]
+}
+
+model TagsOnProducts {
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  String
+  tag        Tag      @relation(fields: [tagId], references: [id])
+  tagId      String
+  assignedAt DateTime @default(now())
+
+  @@id([productId, tagId])
 }
