@@ -213,12 +213,15 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 
       <fieldset className="col-span-12 grid grid-cols-6 gap-4">
         <h6 className="col-span-6 -mb-3 line-clamp-1 text-lg font-medium">Product Detail</h6>
-        <Label htmlFor="categoryId" className={cn("col-span-6 flex flex-col", { "md:col-span-2": !open })}>
+        <Label
+          htmlFor="categoryId"
+          className={cn("col-span-6 flex flex-col lg:col-span-2", { "md:col-span-2": !open })}
+        >
           <ComboboxDropdownCategory data={categories} form="create-product-form" />
           <ErrorMessage name="categoryId" />
         </Label>
 
-        <Label htmlFor="state" className={cn("col-span-6 xs:col-span-3", { "md:col-span-2": !open })}>
+        <Label htmlFor="state" className={cn("col-span-6 xs:col-span-3 lg:col-span-2", { "md:col-span-2": !open })}>
           <Input
             id="state"
             name="state"
@@ -229,7 +232,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="state" />
         </Label>
 
-        <Label htmlFor="color" className={cn("col-span-6 xs:col-span-3", { "md:col-span-2": !open })}>
+        <Label htmlFor="color" className={cn("col-span-6 xs:col-span-3 lg:col-span-2", { "md:col-span-2": !open })}>
           <Input
             id="color"
             name="color"
