@@ -421,13 +421,13 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
                       />
 
                       {fileType && (
-                        <Badge variant="secondary" className="text-slate-400">
+                        <Badge variant="secondary" className="text-slate-400 max-xs:hidden">
                           {fileType}
                         </Badge>
                       )}
 
                       {fileMime && (
-                        <Badge variant="secondary" className="text-slate-400">
+                        <Badge variant="secondary" className="text-slate-400 max-xs:hidden">
                           {fileMime}
                         </Badge>
                       )}
