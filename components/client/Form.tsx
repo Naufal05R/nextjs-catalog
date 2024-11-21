@@ -14,7 +14,7 @@ import { Image, Video } from "@/components/server/Media";
 import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { getFileDetails, getFileMimeTypes, getMediaSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
+import { cn, getFileDetails, getFileMimeTypes, getMediaSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -27,6 +27,7 @@ import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
 import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
+import { useSidebar } from "../ui/sidebar";
 
 interface CreateProductFormProps {
   collection: string;
@@ -156,6 +157,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
   const [errors, formAction, isPending] = useFormState(createProduct, undefined);
 
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
+  const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
     files
@@ -209,14 +211,14 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-3 gap-x-4">
-        <h6 className="col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Detail</h6>
-        <Label htmlFor="categoryId" className="flex flex-col">
+      <fieldset className="col-span-12 grid grid-cols-6 gap-4">
+        <h6 className="col-span-6 -mb-2 line-clamp-1 text-lg font-medium">Product Detail</h6>
+        <Label htmlFor="categoryId" className={cn("col-span-6 flex flex-col", { "md:col-span-2": !open })}>
           <ComboboxDropdownCategory data={categories} form="create-product-form" />
           <ErrorMessage name="categoryId" />
         </Label>
 
-        <Label htmlFor="state">
+        <Label htmlFor="state" className={cn("col-span-6 xs:col-span-3", { "md:col-span-2": !open })}>
           <Input
             id="state"
             name="state"
@@ -227,7 +229,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="state" />
         </Label>
 
-        <Label htmlFor="color">
+        <Label htmlFor="color" className={cn("col-span-6 xs:col-span-3", { "md:col-span-2": !open })}>
           <Input
             id="color"
             name="color"
