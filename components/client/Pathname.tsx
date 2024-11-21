@@ -118,7 +118,7 @@ export const PrivatePathname = () => {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="h-[52px] shrink overflow-hidden">
         {!!breadcrumbs.length && (
           <>
             {/* <BreadcrumbItem>
@@ -133,10 +133,10 @@ export const PrivatePathname = () => {
                 const href = `/${breadcrumbs.slice(0, index + 1).join("/")}`;
 
                 return (
-                  <>
+                  <div className="flex items-center gap-1.5 sm:gap-2.5">
                     <BreadcrumbSeparator hidden={!index}>/</BreadcrumbSeparator>
                     <Route title={breadcrumb} href={href} />
-                  </>
+                  </div>
                 );
               }}
             />
