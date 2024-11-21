@@ -42,6 +42,16 @@ export const getAllProduct = async (params: GetAllProductProps | undefined = und
             },
           },
         },
+        tags: {
+          select: {
+            tag: {
+              select: {
+                title: true,
+                slug: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -66,6 +76,16 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
         gallery: {
           select: {
             medias: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: {
+              select: {
+                title: true,
+                slug: true,
+              },
+            },
           },
         },
       },
