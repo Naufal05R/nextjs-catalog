@@ -244,9 +244,9 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-9 grid grid-cols-3 gap-x-4">
-        <h6 className="col-span-3 mb-1 line-clamp-1 text-lg font-medium">Product Size</h6>
-        <Label htmlFor="width">
+      <fieldset className="col-span-12 grid grid-cols-3 gap-4 sm:col-span-9">
+        <h6 className="col-span-3 -mb-3 line-clamp-1 text-lg font-medium">Product Size</h6>
+        <Label htmlFor="width" className="col-span-3 xs:col-span-1">
           <Input
             id="width"
             name="width"
@@ -257,7 +257,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="width" />
         </Label>
 
-        <Label htmlFor="height">
+        <Label htmlFor="height" className="col-span-3 xs:col-span-1">
           <Input
             id="height"
             name="height"
@@ -268,7 +268,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="height" />
         </Label>
 
-        <Label htmlFor="length">
+        <Label htmlFor="length" className="col-span-3 xs:col-span-1">
           <Input
             id="length"
             name="length"
@@ -280,7 +280,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-3 grid gap-x-4">
+      <fieldset className="col-span-12 grid gap-x-4 sm:col-span-3">
         <h6 className="mb-1 line-clamp-1 text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
