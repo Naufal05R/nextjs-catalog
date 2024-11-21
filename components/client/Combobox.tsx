@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Mapper from "@/components/server/Mapper";
 
 import { cn } from "@/lib/utils";
@@ -65,6 +65,21 @@ interface ComboboxDropdownMenuProps extends React.ComponentPropsWithoutRef<typeo
 const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMenu>, ComboboxDropdownMenuProps>(
   ({ element, classNames }, ref) => {
     const [open, setOpen] = React.useState(false);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 540);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 540);
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      handleResize();
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
 
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -91,7 +106,11 @@ const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMe
                     <DropdownMenuSubTrigger className={classNames?.menu?.sub?.trigger}>
                       {element.trigger}
                     </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent className={classNames?.menu?.sub?.content}>
+                    <DropdownMenuSubContent
+                      alignOffset={isMobile ? 100 : -5}
+                      sideOffset={isMobile ? -235 : 0}
+                      className={classNames?.menu?.sub?.content}
+                    >
                       {element.content}
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
