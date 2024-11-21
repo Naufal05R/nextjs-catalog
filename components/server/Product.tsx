@@ -53,8 +53,8 @@ export const DashboardProductDisplay = async ({ isReady, collection }: { isReady
   ) : isReady ? (
     <EmptyStateWithButton
       title="Products is empty, Please Create a new one!"
-      href="/dashboard/products"
-      alt="Back to collection"
+      href={`/dashboard/products/${collection}/add`}
+      alt="Create Product"
     />
   ) : (
     <EmptyState title="Archived Products is empty!" />
