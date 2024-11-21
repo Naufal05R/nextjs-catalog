@@ -244,9 +244,11 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-3 gap-4 sm:col-span-9">
+      <fieldset
+        className={cn("col-span-12 grid grid-cols-3 gap-4 sm:col-span-9", { "md:col-span-6 lg:col-span-9": open })}
+      >
         <h6 className="col-span-3 -mb-3 line-clamp-1 text-lg font-medium">Product Size</h6>
-        <Label htmlFor="width" className="col-span-3 xs:col-span-1">
+        <Label htmlFor="width" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="width"
             name="width"
@@ -257,7 +259,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="width" />
         </Label>
 
-        <Label htmlFor="height" className="col-span-3 xs:col-span-1">
+        <Label htmlFor="height" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="height"
             name="height"
@@ -268,7 +270,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="height" />
         </Label>
 
-        <Label htmlFor="length" className="col-span-3 xs:col-span-1">
+        <Label htmlFor="length" className={cn("col-span-3 xs:col-span-1", { "md:col-span-3 lg:col-span-1": open })}>
           <Input
             id="length"
             name="length"
@@ -280,8 +282,8 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid gap-x-4 sm:col-span-3">
-        <h6 className="mb-1 line-clamp-1 text-lg font-medium">Product Weight</h6>
+      <fieldset className={cn("col-span-12 flex flex-col sm:col-span-3", { "md:col-span-6 lg:col-span-3": open })}>
+        <h6 className="mb-1 line-clamp-1 h-fit text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
             id="weight"
