@@ -296,9 +296,9 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         </Label>
       </fieldset>
 
-      <fieldset className="col-span-12 grid grid-cols-2 gap-x-4">
-        <h6 className="col-span-2 mb-1 line-clamp-1 text-lg font-medium">Product Rate</h6>
-        <Label htmlFor="price">
+      <fieldset className="col-span-12 grid grid-cols-2 gap-4">
+        <h6 className="col-span-2 -mb-3 line-clamp-1 text-lg font-medium">Product Rate</h6>
+        <Label htmlFor="price" className="col-span-2 sm:col-span-1">
           <Input
             id="price"
             name="price"
@@ -309,7 +309,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
           <ErrorMessage name="price" />
         </Label>
 
-        <Label htmlFor="discount">
+        <Label htmlFor="discount" className="col-span-2 sm:col-span-1">
           <Input
             id="discount"
             name="discount"
