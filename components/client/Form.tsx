@@ -21,6 +21,7 @@ import {
   getMediaSrc,
   handlingError,
   refineBlobStr,
+  removeUnallowedChars,
   removeUnwantedChars,
 } from "@/lib/utils";
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
@@ -901,7 +902,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
             value={selectedTag}
             onChange={(e) => {
               const { value } = e.target;
-              const allowedValue = value.replace(/[^a-zA-Z0-9,\s]+/g, "");
+              const allowedValue = removeUnallowedChars(value);
 
               if (allowedValue.endsWith(",")) {
                 setSelectedTag("");
