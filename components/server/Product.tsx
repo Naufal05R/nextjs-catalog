@@ -20,7 +20,6 @@ import { Product } from "@prisma/client";
 import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 import { ToggleButton } from "../client/Button";
-import { getCollection } from "@/lib/actions/collection.action";
 
 interface ProductDisplay {
   isReady: boolean;
@@ -279,7 +278,7 @@ export const CatalogProductCard = ({
   );
 };
 
-export const SearchProductResult = async ({ query, currentPage }: ProductResult) => {
+export const SearchProductResult = async ({ query }: ProductResult) => {
   const allProducts = await getAllProduct({
     where: {
       isReady: true,
