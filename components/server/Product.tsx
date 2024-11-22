@@ -225,6 +225,7 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
 export const CatalogProductCard = ({
   title,
   slug,
+  state,
   description,
   category,
   price,
@@ -251,17 +252,25 @@ export const CatalogProductCard = ({
       <blockquote className="mt-4">
         <h5 className="mb-2 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
           <span className="line-clamp-1">{title}</span>
-          <Badge variant="outline" className="border-sky-200 text-sky-400 focus:ring-sky-400">
+          <Badge
+            variant="secondary"
+            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
+          >
             {category}
           </Badge>
         </h5>
+        <ul className="mb-2 flex flex-row-reverse">
+          <Badge
+            variant="secondary"
+            className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
+          >
+            {state}
+          </Badge>
+        </ul>
         <p className="mb-4 line-clamp-2 select-none text-sm text-slate-500">{description}</p>
 
         <div className="flex items-center justify-between">
-          <Badge
-            variant="secondary"
-            className="bg-rose-100 text-rose-400 hover:bg-rose-100/80 dark:bg-rose-800 dark:text-rose-50 dark:hover:bg-rose-800/80"
-          >
+          <Badge variant="outline" className="border-rose-200 text-rose-400 focus:ring-rose-400">
             %{discount} OFF!
           </Badge>
           <div>
