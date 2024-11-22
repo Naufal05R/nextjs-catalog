@@ -165,6 +165,7 @@ export const createProduct = async (
 
           await _prisma.tagsOnProducts.createManyAndReturn({
             data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
+            skipDuplicates: true,
           });
 
           const _gallery = await _prisma.gallery.create({
@@ -207,7 +208,7 @@ export const updateProduct = async (
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { medias, ...product } = data;
+    const { medias, tags, ...product } = data;
     let pathname: string = `/dashboard/products/${collection}/edit/${slugify(product.title)}`;
 
     try {
@@ -249,24 +250,27 @@ export const updateProduct = async (
         });
 
         if (_collection) {
-          const _tags = await _prisma.tag.createManyAndReturn({
-            data: product.tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
+          await _prisma.tag.createMany({
+            data: tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
             skipDuplicates: true,
           });
 
-          const _newProduct = await _prisma.product.update({
+          const _tags = await _prisma.tag.findMany({
+            where: { slug: { in: tags.map((tag) => slugify(tag)) } },
+          });
+
+          const _product = await _prisma.product.update({
             where: { id },
             data: {
               ...product,
               slug: slugify(product.title),
               collectionId: _collection.id,
-              tags: {
-                createMany: {
-                  data: _tags.map(({ id }) => ({ tagId: id })),
-                  skipDuplicates: true,
-                },
-              },
             },
+          });
+
+          await _prisma.tagsOnProducts.createManyAndReturn({
+            data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
+            skipDuplicates: true,
           });
 
           const _gallery = await _prisma.gallery.update({
@@ -274,7 +278,7 @@ export const updateProduct = async (
             data: {
               title: product.title,
               slug: slugify(product.title),
-              productId: _newProduct.id,
+              productId: _product.id,
             },
           });
 
