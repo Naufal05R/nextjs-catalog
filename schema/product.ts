@@ -86,6 +86,7 @@ export const ProductSchema = z.object({
   description: z.string().min(50, {
     message: "Description must be at least 50 characters",
   }),
+  tags: z.string().transform((val) => (val ? val.split(",") : [])),
   isReady: z.boolean().default(true),
   isFavorite: z.boolean().default(true),
   collectionId: z.string().cuid(),
@@ -106,5 +107,6 @@ export const ProductFormSchema = ProductSchema.pick({
   price: true,
   discount: true,
   description: true,
+  tags: true,
   categoryId: true,
 }).merge(GalleryFormSchema);
