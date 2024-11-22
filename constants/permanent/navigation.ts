@@ -31,6 +31,11 @@ const navigations = defineConst([
     label: "Contact",
     href: "/contact-us",
   },
+  {
+    key: "search",
+    label: "Search",
+    href: "/search",
+  },
 ] as const);
 
 export default navigations;
