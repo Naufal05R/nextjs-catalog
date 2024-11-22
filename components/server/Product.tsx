@@ -239,6 +239,8 @@ export const CatalogProductCard = ({
   discount,
   imageProps,
 }: CatalogProductCardProps) => {
+  const exceededTags = Math.max(tags.length - 5, 0);
+
   return (
     <Link
       href={`/products/${slug}`}
@@ -273,15 +275,19 @@ export const CatalogProductCard = ({
           >
             {category}
           </Badge>
-
           <Mapper
-            data={tags}
+            data={tags.slice(0, 5)}
             render={({ tag }) => (
               <Badge variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
                 {tag.title}
               </Badge>
             )}
           />
+          {!!exceededTags && (
+            <Badge variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
+              {exceededTags}+
+            </Badge>
+          )}
         </ul>
         <p className="mb-4 line-clamp-2 select-none text-sm text-slate-500">{description}</p>
 
