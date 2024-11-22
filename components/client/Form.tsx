@@ -171,8 +171,9 @@ export function ContactForm() {
 
 export function CreateProductForm({ collection, categories }: CreateProductFormProps) {
   const [errors, formAction, isPending] = useFormState(createProduct, undefined);
-
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
+  const [selectedTag, setSelectedTag] = useState("");
+  const [tags, setTags] = useState<Array<string>>([]);
   const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
@@ -334,6 +335,49 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
             placeholder="Discount"
           />
           <ErrorMessage name="discount" />
+        </Label>
+      </fieldset>
+
+      <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
+        <h6 className="-order-2 mb-1 text-lg font-medium">Product Tags</h6>
+        <Label htmlFor="tags">
+          <Input
+            id="tags"
+            className="rounded-none shadow-none"
+            placeholder="Tags"
+            value={selectedTag}
+            onChange={(e) => {
+              const { value } = e.target;
+              const allowedValue = removeUnallowedChars(value);
+
+              if (allowedValue.endsWith(",")) {
+                setSelectedTag("");
+                setTags(Array.from(new Set([...tags, allowedValue.slice(0, -1)])));
+              } else {
+                setSelectedTag(allowedValue);
+              }
+            }}
+          />
+          <Input hidden type="hidden" className="hidden" name="tags" form="create-product-form" readOnly value={tags} />
+          <ul className="flex flex-wrap gap-2 py-2">
+            <Mapper
+              data={tags}
+              render={(tag) => (
+                <Badge variant="secondary" className="flex items-center gap-2">
+                  {tag}
+                  <Button
+                    variant={null}
+                    customize="icon"
+                    className="size-3.5 p-0"
+                    onClick={() => setTags((prevState) => prevState.filter((prev) => prev !== tag))}
+                  >
+                    <X size={12} />
+                  </Button>
+                </Badge>
+              )}
+            />
+          </ul>
+          <ErrorMessage name="description" />
         </Label>
       </fieldset>
 
