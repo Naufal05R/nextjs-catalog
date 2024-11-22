@@ -34,6 +34,12 @@ interface ProductResult {
 interface DashbaordProductCardProps extends Product {
   collection: string;
   thumbnail: string;
+  tags: {
+    tag: {
+      title: string;
+      slug: string;
+    };
+  }[];
 }
 
 interface CatalogProductCardProps extends Product {
@@ -83,6 +89,7 @@ export const DashbaordProductCard = async ({
   slug,
   price,
   state,
+  tags,
   isReady,
   isFavorite,
   discount,
@@ -116,20 +123,22 @@ export const DashbaordProductCard = async ({
       <CardContent>
         <CardTitle className="line-clamp-1 whitespace-nowrap text-lg font-semibold">{title}</CardTitle>
         <CardDescription className="mb-2 line-clamp-3">{description}</CardDescription>
-        <div className="ml-auto flex w-fit gap-2">
+        <ul className="ml-auto flex w-fit flex-wrap gap-2">
           <Badge
-            variant={"secondary"}
+            variant="secondary"
             className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
           >
             Sapphire
           </Badge>
           <Badge
-            variant={"secondary"}
+            variant="secondary"
             className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
           >
             {state} Origin
           </Badge>
-        </div>
+
+          <Mapper data={tags} render={({ tag }) => <Badge variant="secondary">{tag.title}</Badge>} />
+        </ul>
       </CardContent>
 
       <CardFooter className={cn("flex-1 justify-end", { "justify-between": !!discount })}>
