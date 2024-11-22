@@ -54,6 +54,10 @@ export function removeUnwantedChars(str: string) {
   return str.replace(/[^a-zA-Z0-9\-\_\s]/g, "");
 }
 
+export function removeUnallowedChars(str: string) {
+  return str.replace(/[^a-zA-Z0-9,\s]+/g, "");
+}
+
 export function refineBlobStr(blobStr: "blob:" | (string & {})) {
   return blobStr.replace(/blob\:/, "blob\\:");
 }
