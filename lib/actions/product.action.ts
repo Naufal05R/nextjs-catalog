@@ -8,10 +8,16 @@ import { redirect } from "next/navigation";
 import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
+import { MAX_ITEM_PER_PAGE } from "@/constants";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
 };
+
+interface ProductResult {
+  query: string;
+  currentPage: number;
+}
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 
@@ -98,6 +104,56 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
     });
 
     return product;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getProductPages = async ({ query, currentPage }: ProductResult) => {
+  try {
+    const totalAnimals = await prisma.product.count({
+      skip: (currentPage - 1) * MAX_ITEM_PER_PAGE,
+      take: MAX_ITEM_PER_PAGE,
+      where: {
+        isReady: true,
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            slug: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            state: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            color: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+    });
+
+    const totalPages = Math.ceil(totalAnimals / MAX_ITEM_PER_PAGE);
+
+    return totalPages;
   } catch (error) {
     handlingError(error);
   }
