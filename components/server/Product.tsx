@@ -32,12 +32,12 @@ interface CatalogProductCardProps extends Product {
 }
 
 export const DashboardProductDisplay = async ({ isReady, collection }: { isReady: boolean; collection?: string }) => {
-  const deprecatedProducts = await getAllProduct({ where: { isReady, collection: { slug: collection } } });
+  const products = await getAllProduct({ where: { isReady, collection: { slug: collection } } });
 
-  return deprecatedProducts && !!deprecatedProducts.length ? (
+  return products && !!products.length ? (
     <ul className="grid w-full grid-cols-12 gap-4 px-4 pb-16">
       <Mapper
-        data={deprecatedProducts}
+        data={products}
         render={({ gallery, collection: { slug }, ...product }) => {
           return (
             !!gallery &&
@@ -133,14 +133,14 @@ export const DashbaordProductCard = async ({
       </CardFooter>
 
       <CardFooter className="mt-auto gap-4">
-        <Button className="flex-1" form="archive-product">
-          <form id="archive-product" action={isReady ? archiveProduct : unarchiveProduct} className="hidden" />
-          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-product" />
+        <Button className="flex-1" form={`archive-product-${id}`}>
+          <form id={`archive-product-${id}`} action={isReady ? archiveProduct : unarchiveProduct} className="hidden" />
+          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form={`archive-product-${id}`} />
           {isReady ? <Archive /> : <ArchiveRestore />}
           {isReady ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button asChild={isReady} className="flex-1" form="delete-product">
+        <Button asChild={isReady} className="flex-1" form={`delete-product-${id}`}>
           {isReady ? (
             <Link href={`/dashboard/products/${collection}/edit/${slug}`}>
               <Pencil />
@@ -148,8 +148,15 @@ export const DashbaordProductCard = async ({
             </Link>
           ) : (
             <>
-              <form id="delete-product" action={deleteProduct} className="hidden" />
-              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="delete-product" />
+              <form id={`delete-product-${id}`} action={deleteProduct} className="hidden" />
+              <input
+                type="hidden"
+                className="hidden"
+                name="id"
+                defaultValue={id}
+                readOnly
+                form={`delete-product-${id}`}
+              />
               <Trash2 />
               Delete
             </>
