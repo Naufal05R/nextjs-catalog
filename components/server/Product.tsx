@@ -39,6 +39,12 @@ interface DashbaordProductCardProps extends Product {
 interface CatalogProductCardProps extends Product {
   category: string;
   imageProps: WithRequired<Partial<ImageComponentProps>, "src">;
+  tags: {
+    tag: {
+      title: string;
+      slug: string;
+    };
+  }[];
 }
 
 export const DashboardProductDisplay = async ({ isReady, collection }: ProductDisplay) => {
@@ -226,6 +232,7 @@ export const CatalogProductCard = ({
   title,
   slug,
   state,
+  tags,
   description,
   category,
   price,
@@ -249,23 +256,32 @@ export const CatalogProductCard = ({
         }}
       />
 
-      <blockquote className="mt-4">
+      <blockquote className="mt-4 flex flex-col">
         <h5 className="mb-2 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
           <span className="line-clamp-1">{title}</span>
           <Badge
             variant="secondary"
             className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
           >
-            {category}
+            {state}
           </Badge>
         </h5>
-        <ul className="mb-2 flex flex-row-reverse">
+        <ul className="mb-4 flex h-[55px] flex-row flex-wrap gap-[11px] overflow-hidden [&>*]:h-fit">
           <Badge
             variant="secondary"
             className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
           >
-            {state}
+            {category}
           </Badge>
+
+          <Mapper
+            data={tags}
+            render={({ tag }) => (
+              <Badge variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
+                {tag.title}
+              </Badge>
+            )}
+          />
         </ul>
         <p className="mb-4 line-clamp-2 select-none text-sm text-slate-500">{description}</p>
 
