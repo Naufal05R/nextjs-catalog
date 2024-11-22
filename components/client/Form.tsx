@@ -11,10 +11,18 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
 import { Image, Video } from "@/components/server/Media";
-import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2 } from "lucide-react";
+import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2, X } from "lucide-react";
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
-import { cn, getFileDetails, getFileMimeTypes, getMediaSrc, refineBlobStr, removeUnwantedChars } from "@/lib/utils";
+import {
+  cn,
+  getFileDetails,
+  getFileMimeTypes,
+  getMediaSrc,
+  handlingError,
+  refineBlobStr,
+  removeUnwantedChars,
+} from "@/lib/utils";
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
@@ -45,6 +53,13 @@ interface EditProductFormProps extends CreateProductFormProps {
     gallery: {
       medias: Media[];
     } | null;
+  } & {
+    tags: {
+      tag: {
+        title: string;
+        slug: string;
+      };
+    }[];
   };
 }
 
@@ -683,8 +698,9 @@ export function CreateNewsForm() {
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
   const [errors, formAction, isPending] = useFormState(updateProduct, undefined);
-
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
+  const [selectedTag, setSelectedTag] = useState("");
+  const [tags, setTags] = useState(product.tags.map(({ tag }) => tag.title));
   const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
@@ -722,19 +738,20 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   };
 
   useEffect(() => {
-    return () => {
-      (async () => {
-        const _files = defaultFiles.map(async ({ title, name, order }) => {
+    (async () => {
+      try {
+        const files = [];
+        for (const { title, name, order } of defaultFiles) {
           const src = getMediaSrc({ name, product: product.slug, collection });
           const blob = await fetch(src).then((r) => r.blob());
           const media = new File([blob], name, { type: blob.type });
-
-          return { title, order, media };
-        });
-        const files = await Promise.all(_files);
+          files.push({ title, order, media });
+        }
         setFiles(files);
-      })();
-    };
+      } catch (error) {
+        handlingError(error);
+      }
+    })();
   }, [collection, defaultFiles, product.slug]);
 
   return (
@@ -871,6 +888,44 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
             defaultValue={product.discount ?? 0}
           />
           <ErrorMessage name="discount" />
+        </Label>
+      </fieldset>
+
+      <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
+        <h6 className="-order-2 mb-1 text-lg font-medium">Product Tags</h6>
+        <Label htmlFor="tags">
+          <Input
+            id="tags"
+            className="rounded-none shadow-none"
+            placeholder="Tags"
+            value={selectedTag}
+            onChange={(e) => {
+              const { value } = e.target;
+              const allowedValue = value.replace(/[^a-zA-Z0-9,\s]+/g, "");
+
+              if (allowedValue.endsWith(",")) {
+                setSelectedTag("");
+                setTags([...tags, allowedValue.slice(0, -1)]);
+              } else {
+                setSelectedTag(allowedValue);
+              }
+            }}
+          />
+          <Input hidden type="hidden" className="hidden" name="tags" form="create-product-form" readOnly value={tags} />
+          <ul className="flex flex-wrap gap-2 py-2">
+            <Mapper
+              data={tags}
+              render={(tag) => (
+                <Badge variant="secondary" className="flex items-center gap-2">
+                  {tag}
+                  <Button variant={null} customize="icon" className="size-3.5 p-0">
+                    <X size={12} />
+                  </Button>
+                </Badge>
+              )}
+            />
+          </ul>
+          <ErrorMessage name="description" />
         </Label>
       </fieldset>
 
