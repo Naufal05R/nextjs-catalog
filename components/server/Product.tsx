@@ -261,17 +261,17 @@ export const CatalogProductCard = ({
       <blockquote className="mt-4 flex flex-col">
         <h5 className="mb-2 flex select-none items-center justify-between text-lg font-semibold text-slate-800">
           <span className="line-clamp-1">{title}</span>
-          <Badge
-            variant="secondary"
-            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
-          >
-            {state}
-          </Badge>
         </h5>
         <ul className="mb-4 flex h-[55px] flex-row flex-wrap gap-[11px] overflow-hidden [&>*]:h-fit">
           <Badge
             variant="secondary"
             className="bg-teal-100 text-teal-900 hover:bg-teal-100/80 dark:bg-teal-800 dark:text-teal-50 dark:hover:bg-teal-800/80"
+          >
+            {state}
+          </Badge>
+          <Badge
+            variant="secondary"
+            className="bg-sky-100 text-sky-900 hover:bg-sky-100/80 dark:bg-sky-800 dark:text-sky-50 dark:hover:bg-sky-800/80"
           >
             {category}
           </Badge>
