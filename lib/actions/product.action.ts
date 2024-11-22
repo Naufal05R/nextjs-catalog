@@ -147,6 +147,28 @@ export const getProductPages = async ({ query, currentPage }: ProductResult) => 
               mode: "insensitive",
             },
           },
+          {
+            tags: {
+              some: {
+                tag: {
+                  OR: [
+                    {
+                      title: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
+                    {
+                      slug: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
         ],
       },
     });
