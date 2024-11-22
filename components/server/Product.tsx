@@ -313,6 +313,28 @@ export const SearchProductResult = async ({ query }: ProductResult) => {
             mode: "insensitive",
           },
         },
+        {
+          tags: {
+            some: {
+              tag: {
+                OR: [
+                  {
+                    title: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    slug: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
       ],
     },
   });
