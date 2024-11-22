@@ -104,7 +104,7 @@ export const createProduct = async (
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { medias, ...product } = data;
+    const { medias, tags, ...product } = data;
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
@@ -120,6 +120,7 @@ export const createProduct = async (
             objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
+              "Content-Type": media.type,
               title,
               order,
             },
@@ -145,30 +146,32 @@ export const createProduct = async (
         });
 
         if (_collection) {
-          const _tags = await _prisma.tag.createManyAndReturn({
-            data: product.tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
+          await _prisma.tag.createMany({
+            data: tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
             skipDuplicates: true,
           });
 
-          const _newProduct = await _prisma.product.create({
+          const _tags = await _prisma.tag.findMany({
+            where: { slug: { in: tags.map((tag) => slugify(tag)) } },
+          });
+
+          const _product = await _prisma.product.create({
             data: {
               ...product,
               slug: slugify(product.title),
               collectionId: _collection.id,
-              tags: {
-                createMany: {
-                  data: _tags.map(({ id }) => ({ tagId: id })),
-                  skipDuplicates: true,
-                },
-              },
             },
+          });
+
+          await _prisma.tagsOnProducts.createManyAndReturn({
+            data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
           });
 
           const _gallery = await _prisma.gallery.create({
             data: {
               title: product.title,
               slug: slugify(product.title),
-              productId: _newProduct.id,
+              productId: _product.id,
             },
           });
 
