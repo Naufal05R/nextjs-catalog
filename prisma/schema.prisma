@@ -27,6 +27,7 @@ model Product {
   discount        Float?           @db.Real
   description     String           @db.Text
   tags            TagsOnProducts[]
+  gallery         Gallery?
   isReady         Boolean          @default(true)
   isFavorite      Boolean          @default(false)
   collectionId    String
@@ -37,7 +38,6 @@ model Product {
   subcollection   Subcollection?   @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  gallery         Gallery?
 }
 
 model Collection {
