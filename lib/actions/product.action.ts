@@ -337,14 +337,15 @@ export const toggleFavoriteProduct = async (prevState: string | undefined, formD
           },
         });
 
-        if (totalFavoriteProduct >= max)
-          return `Can't add product from favorite! Max product to be favorited is ${max}`;
-        if (totalFavoriteProduct <= min)
-          return `Can't remove product from favorite! Min product to be favorited is ${min}`;
-
         const selectedProduct = await _prisma.product.findUnique({
           where: { id },
         });
+
+        if (!selectedProduct) throw Error("Error: Invalid Product");
+        if (selectedProduct.isFavorite === false && totalFavoriteProduct >= max)
+          return `Can't add product from favorite! Max product to be favorited is ${max}`;
+        if (selectedProduct.isFavorite === true && totalFavoriteProduct <= min)
+          return `Can't remove product from favorite! Min product to be favorited is ${min}`;
 
         await _prisma.product.update({
           where: { id },
