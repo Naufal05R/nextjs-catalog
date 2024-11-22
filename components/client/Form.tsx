@@ -905,7 +905,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 
               if (allowedValue.endsWith(",")) {
                 setSelectedTag("");
-                setTags([...tags, allowedValue.slice(0, -1)]);
+                setTags(Array.from(new Set([...tags, allowedValue.slice(0, -1)])));
               } else {
                 setSelectedTag(allowedValue);
               }
@@ -918,7 +918,12 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
               render={(tag) => (
                 <Badge variant="secondary" className="flex items-center gap-2">
                   {tag}
-                  <Button variant={null} customize="icon" className="size-3.5 p-0">
+                  <Button
+                    variant={null}
+                    customize="icon"
+                    className="size-3.5 p-0"
+                    onClick={() => setTags((prevState) => prevState.filter((prev) => prev !== tag))}
+                  >
                     <X size={12} />
                   </Button>
                 </Badge>
