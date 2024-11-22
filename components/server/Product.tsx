@@ -20,6 +20,17 @@ import { Product } from "@prisma/client";
 import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 import { ToggleButton } from "../client/Button";
+import { getCollection } from "@/lib/actions/collection.action";
+
+interface ProductDisplay {
+  isReady: boolean;
+  collection?: string;
+}
+
+interface ProductResult {
+  query: string;
+  currentPage: number;
+}
 
 interface DashbaordProductCardProps extends Product {
   collection: string;
@@ -31,7 +42,7 @@ interface CatalogProductCardProps extends Product {
   imageProps: WithRequired<Partial<ImageComponentProps>, "src">;
 }
 
-export const DashboardProductDisplay = async ({ isReady, collection }: { isReady: boolean; collection?: string }) => {
+export const DashboardProductDisplay = async ({ isReady, collection }: ProductDisplay) => {
   const products = await getAllProduct({ where: { isReady, collection: { slug: collection } } });
 
   return products && !!products.length ? (
@@ -265,5 +276,67 @@ export const CatalogProductCard = ({
         </div>
       </blockquote>
     </Link>
+  );
+};
+
+export const SearchProductResult = async ({ query, currentPage }: ProductResult) => {
+  const allProducts = await getAllProduct({
+    where: {
+      isReady: true,
+      OR: [
+        {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          slug: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          state: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          color: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
+
+  return (
+    <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
+      {!!allProducts?.length && (
+        <Mapper
+          data={allProducts}
+          render={({ category, gallery, ...product }) => {
+            const src = getMediaSrc({
+              product: product.slug,
+              collection: product.collection.slug,
+              name: gallery!.medias[0].name,
+            });
+            return (
+              <li className="col-span-3">
+                <CatalogProductCard {...product} category={category.title} imageProps={{ src }} />
+              </li>
+            );
+          }}
+        />
+      )}
+    </ul>
   );
 };
