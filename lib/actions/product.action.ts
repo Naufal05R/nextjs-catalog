@@ -145,11 +145,22 @@ export const createProduct = async (
         });
 
         if (_collection) {
+          const _tags = await _prisma.tag.createManyAndReturn({
+            data: product.tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
+            skipDuplicates: true,
+          });
+
           const _newProduct = await _prisma.product.create({
             data: {
               ...product,
               slug: slugify(product.title),
               collectionId: _collection.id,
+              tags: {
+                createMany: {
+                  data: _tags.map(({ id }) => ({ tagId: id })),
+                  skipDuplicates: true,
+                },
+              },
             },
           });
 
