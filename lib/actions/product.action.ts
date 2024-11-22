@@ -21,6 +21,9 @@ export const getAllProduct = async (params: GetAllProductProps | undefined = und
   try {
     const allProducts = await prisma.product.findMany({
       where,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         category: {
           select: {
@@ -67,6 +70,9 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
   try {
     const product = await prisma.product.findFirst({
       where,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         collection: {
           select: {
