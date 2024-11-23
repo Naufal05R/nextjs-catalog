@@ -349,13 +349,12 @@ export const updateProduct = async (
               ...product,
               slug: slugify(product.title),
               collectionId: _collection.id,
-              tags: {
-                updateMany: {
-                  where: { productId: id },
-                  data: _tags.map(({ id }) => ({ tagId: id })),
-                },
-              },
             },
+          });
+
+          await _prisma.tagsOnProducts.createManyAndReturn({
+            data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
+            skipDuplicates: true,
           });
 
           const _gallery = await _prisma.gallery.update({
