@@ -52,8 +52,10 @@ export const PublicHeader = async () => {
             defaultValue="IDR"
             classNames={{ trigger: "max-lg:hidden border-0" }}
           />
-          <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
-            <Search className="size-6" />
+          <Button asChild variant={null} size="icon" customize="icon" className="grid place-items-center">
+            <Link href="/search">
+              <Search className="size-6" />
+            </Link>
           </Button>
           <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
             <ShoppingBag className="size-6" />
