@@ -354,6 +354,7 @@ export const updateProduct = async (
 
           // TODO: Should fixing bug in here!
           // !Unexpected behavior when trying to adjust tags in product
+          // !Changing implementation
 
           await _prisma.tagsOnProducts.createManyAndReturn({
             data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
