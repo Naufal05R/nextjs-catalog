@@ -106,6 +106,8 @@ model Tag {
   products TagsOnProducts[]
 }
 
+// TODO: Deleting this Schema
+// Replace from explicit to implicit
 model TagsOnProducts {
   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId  String
