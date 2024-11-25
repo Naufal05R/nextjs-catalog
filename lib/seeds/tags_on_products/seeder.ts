@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
+// TODO: Should removing this file
+
 export const shine_on_batu_crystal = async () => {
   await prisma.tagsOnProducts.upsert({
     where: {
