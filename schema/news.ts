@@ -39,12 +39,12 @@ export const NewsFormSchema = NewsSchema.pick({
   isRelevant: true,
 }).merge(
   z.object({
-    thumbnail: z
-      .instanceof(File)
-      .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
-      .refine((file) => file && Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
-        message: `Only "${ACCEPTED_IMAGE_EXTS.join('", "')}" formats are supported.`,
-      }),
+    // thumbnail: z
+    //   .instanceof(File)
+    //   .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
+    //   .refine((file) => file && Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
+    //     message: `Only "${ACCEPTED_IMAGE_EXTS.join('", "')}" formats are supported.`,
+    //   }),
     content: z
       .string()
       .min(1024, { message: "Minimum content size is 1kb" })
