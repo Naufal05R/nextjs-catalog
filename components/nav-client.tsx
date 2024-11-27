@@ -2,15 +2,22 @@
 
 import { BaseSheet, BaseSheetProps } from "@/components/server/Sheet";
 import { Button } from "@/components/ui/button";
-import { currencies, languages, navigations } from "@/constants";
-import { Menu, Search } from "lucide-react";
+
+// TODO: Should implement Sidebar Search Feature
+// !OR NOT
+
+import { /* currencies, */ /* languages, */ navigations } from "@/constants";
+import { Menu /* Search */ } from "lucide-react";
+
+// TODO: Should implement Change Language Feature
+// TODO: Should implement Change Currency Feature
 
 import Mapper from "./server/Mapper";
 import Link from "next/link";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+// import { Input } from "./ui/input";
+// import { Label } from "./ui/label";
 import { useState } from "react";
-import { Select } from "./server/Select";
+// import { Select } from "./server/Select";
 
 interface NavClientProps extends Pick<BaseSheetProps, "side"> {
   title: string;
@@ -34,14 +41,14 @@ export function NavClient({ side, title, description }: NavClientProps) {
         ),
         content: (
           <article className="mt-2 flex flex-col">
-            <fieldset className="text-slate-400">
+            {/* <fieldset className="text-slate-400">
               <Label htmlFor="search" className="relative flex flex-row">
                 <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2" />
                 <Input id="search" className="rounded-none pl-9 shadow-none" customize="no-focus" />
               </Label>
-            </fieldset>
+            </fieldset> */}
 
-            <menu className="mt-4 flex w-full flex-row gap-4">
+            {/* <menu className="mt-4 flex w-full flex-row gap-4">
               <Select
                 data={languages}
                 label={["label"]}
@@ -58,7 +65,7 @@ export function NavClient({ side, title, description }: NavClientProps) {
                 side="bottom"
                 classNames={{ trigger: "flex-1" }}
               />
-            </menu>
+            </menu> */}
 
             <ul className="mt-4 flex w-full flex-col justify-center gap-px">
               <Mapper
