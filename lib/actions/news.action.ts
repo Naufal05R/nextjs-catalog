@@ -43,7 +43,7 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   }
 };
 
-export const createNews = async (formData: FormData) => {
+export const createNews = async (prevState: void | undefined, formData: FormData) => {
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
