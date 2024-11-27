@@ -988,11 +988,11 @@
           "hasDefaultValue": false
         },
         {
-          "name": "TagsOnProducts",
-          "type": "TagsOnProducts",
+          "name": "_ProductToTag",
+          "type": "_ProductToTag",
           "isRequired": false,
           "kind": "object",
-          "relationName": "TagsOnProductsToProduct",
+          "relationName": "_ProductToTagToProduct",
           "relationFromFields": [],
           "relationToFields": [],
           "isList": true,
@@ -1206,11 +1206,11 @@
           "maxLength": 64
         },
         {
-          "name": "TagsOnProducts",
-          "type": "TagsOnProducts",
+          "name": "_ProductToTag",
+          "type": "_ProductToTag",
           "isRequired": false,
           "kind": "object",
-          "relationName": "TagsOnProductsToTag",
+          "relationName": "_ProductToTagToTag",
           "relationFromFields": [],
           "relationToFields": [],
           "isList": true,
@@ -1244,15 +1244,15 @@
         }
       ]
     },
-    "TagsOnProducts": {
-      "id": "public.TagsOnProducts",
+    "_ProductToTag": {
+      "id": "public._ProductToTag",
       "schemaName": "public",
-      "tableName": "TagsOnProducts",
+      "tableName": "_ProductToTag",
       "fields": [
         {
-          "id": "public.TagsOnProducts.productId",
-          "name": "productId",
-          "columnName": "productId",
+          "id": "public._ProductToTag.A",
+          "name": "A",
+          "columnName": "A",
           "type": "text",
           "isRequired": true,
           "kind": "scalar",
@@ -1264,9 +1264,9 @@
           "maxLength": null
         },
         {
-          "id": "public.TagsOnProducts.tagId",
-          "name": "tagId",
-          "columnName": "tagId",
+          "id": "public._ProductToTag.B",
+          "name": "B",
+          "columnName": "B",
           "type": "text",
           "isRequired": true,
           "kind": "scalar",
@@ -1275,20 +1275,6 @@
           "sequence": false,
           "hasDefaultValue": false,
           "isId": true,
-          "maxLength": null
-        },
-        {
-          "id": "public.TagsOnProducts.assignedAt",
-          "name": "assignedAt",
-          "columnName": "assignedAt",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
           "maxLength": null
         },
         {
@@ -1296,9 +1282,9 @@
           "type": "Product",
           "isRequired": true,
           "kind": "object",
-          "relationName": "TagsOnProductsToProduct",
+          "relationName": "_ProductToTagToProduct",
           "relationFromFields": [
-            "productId"
+            "A"
           ],
           "relationToFields": [
             "id"
@@ -1314,9 +1300,9 @@
           "type": "Tag",
           "isRequired": true,
           "kind": "object",
-          "relationName": "TagsOnProductsToTag",
+          "relationName": "_ProductToTagToTag",
           "relationFromFields": [
-            "tagId"
+            "B"
           ],
           "relationToFields": [
             "id"
@@ -1330,10 +1316,10 @@
       ],
       "uniqueConstraints": [
         {
-          "name": "TagsOnProducts_pkey",
+          "name": "_ProductToTag_AB_unique",
           "fields": [
-            "productId",
-            "tagId"
+            "A",
+            "B"
           ],
           "nullNotDistinct": false
         }
