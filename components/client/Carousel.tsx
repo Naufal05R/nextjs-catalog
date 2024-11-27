@@ -156,7 +156,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                     }}
                   />
 
-                  <h4 className="absolute bottom-16 z-20 max-w-[80%] text-center text-xl text-slate-50">
+                  <h4 className="absolute bottom-16 z-20 line-clamp-2 max-w-[80%] text-center text-xl text-slate-50">
                     {description}
                   </h4>
                 </Link>
