@@ -37,6 +37,7 @@ import { RichText } from "./Editor";
 import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 import { useSidebar } from "../ui/sidebar";
+import { NewsFormSchema } from "@/schema/news";
 
 interface CreateProductFormProps {
   collection: string;
@@ -602,7 +603,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 }
 
 export function CreateNewsForm() {
-  const [state, formAction, isLoading] = useFormState(createNews, undefined);
+  const [errors, formAction, isLoading] = useFormState(createNews, undefined);
 
   const MARKDOWN = "**Hello,** world!" as const;
 
@@ -659,11 +660,15 @@ export function CreateNewsForm() {
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">
             {/* <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} /> */}
-            {JSON.stringify(state)}
+            {JSON.stringify(errors)}
           </code>
         </pre>
       ),
     });
+  };
+
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
+    return <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />;
   };
 
   return (
@@ -680,7 +685,7 @@ export function CreateNewsForm() {
             className="rounded-none shadow-none"
             placeholder="Title"
           />
-          {/* <ErrorMessage name="title" /> */}
+          <ErrorMessage name="title" />
         </Label>
 
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-3">News Description</h6>
@@ -692,7 +697,7 @@ export function CreateNewsForm() {
             className="rounded-none shadow-none"
             placeholder="Description"
           />
-          {/* <ErrorMessage name="description" /> */}
+          <ErrorMessage name="description" />
         </Label>
       </article>
 
@@ -716,7 +721,7 @@ export function CreateNewsForm() {
               ]);
             }}
           />
-          {/* <ErrorMessage name="description" /> */}
+          <ErrorMessage name="description" />
         </Label>
       </article>
 
