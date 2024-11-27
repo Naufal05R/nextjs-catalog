@@ -306,6 +306,11 @@ export const updateProduct = async (
         });
 
         if (_collection) {
+          await _prisma.tag.createMany({
+            data: tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
+            skipDuplicates: true,
+          });
+
           const _product = await _prisma.product.update({
             where: { id },
             data: {
