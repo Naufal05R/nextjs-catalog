@@ -210,11 +210,6 @@ export const createProduct = async (
         });
 
         if (_collection) {
-          await _prisma.tag.createMany({
-            data: tags.map((tag) => ({ title: tag, slug: slugify(tag) })),
-            skipDuplicates: true,
-          });
-
           const _product = await _prisma.product.create({
             data: {
               ...product,
@@ -316,10 +311,6 @@ export const updateProduct = async (
             skipDuplicates: true,
           });
 
-          const _tags = await _prisma.tag.findMany({
-            where: { slug: { in: tags.map((tag) => slugify(tag)) } },
-          });
-
           const _product = await _prisma.product.update({
             where: { id },
             data: {
@@ -327,15 +318,6 @@ export const updateProduct = async (
               slug: slugify(product.title),
               collectionId: _collection.id,
             },
-          });
-
-          // TODO: Should fixing bug in here!
-          // !Unexpected behavior when trying to adjust tags in product
-          // !Changing implementation
-
-          await _prisma.tagsOnProducts.createManyAndReturn({
-            data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
-            skipDuplicates: true,
           });
 
           const _gallery = await _prisma.gallery.update({
