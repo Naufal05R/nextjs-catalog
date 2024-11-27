@@ -1189,13 +1189,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         <ErrorMessage name="medias" />
       </article>
 
-      <Button
-        type="submit"
-        disabled={isLoading}
-        className="col-span-12 mt-8 flex w-full rounded-none"
-        form="create-product-form"
-        size="lg"
-      >
+      <Button type="submit" className="col-span-12 mt-8 flex w-full rounded-none" form="create-product-form" size="lg">
         Save
       </Button>
     </fieldset>
