@@ -14,10 +14,14 @@ import {
   Venmo,
   Visa,
 } from "@/components/svg";
+
+// TODO: Should implement Change Language Feature
+// TODO: Should implement Change Currency Feature
+
 import { /* Dot, */ Mail } from "lucide-react";
-import { currencies, footers } from "@/constants";
-import { Select } from "./Select";
-import { languages } from "@/constants";
+import { /* currencies, */ /* footers, */ navigations } from "@/constants";
+// import { Select } from "./Select";
+// import { languages } from "@/constants";
 import Mapper from "./Mapper";
 import { Button } from "../ui/button";
 
@@ -51,13 +55,13 @@ const Footer = () => {
 
           <ul className="grid w-full grid-cols-6 gap-x-8 max-sm:mt-8 max-sm:divide-y max-sm:border-y lg:flex-1">
             <Mapper
-              data={footers}
-              render={(link) => (
+              data={navigations}
+              render={({ label, href }) => (
                 <Link
-                  href="/"
+                  href={href}
                   className="col-span-6 py-4 text-sm max-sm:hover:text-slate-800/75 sm:col-span-3 sm:py-2 sm:hover:underline md:col-span-2"
                 >
-                  {link}
+                  {label}
                 </Link>
               )}
             />
@@ -68,13 +72,13 @@ const Footer = () => {
       <footer
         className={cn(padding.x, "grid grid-cols-12 items-center justify-between gap-y-8 pb-24 pt-8 md:gap-y-24")}
       >
-        <menu className="col-span-12 flex w-full flex-row gap-4">
+        {/* <menu className="col-span-12 flex w-full flex-row gap-4">
           <Select data={languages} label={["label"]} value={"key"} defaultValue="ID" />
           <Select data={currencies} label={["key", "symbol"]} value={"key"} defaultValue="IDR" />
-        </menu>
+        </menu> */}
 
         <blockquote className="col-span-12 flex flex-col gap-x-1 text-xs text-slate-500 xs:flex-row xs:items-center md:col-span-4 md:flex-col md:items-start">
-          <p className="w-fit">Copyright © {new Date().getFullYear()} LEGENDA PERMATA </p>{" "}
+          <p className="w-fit">Copyright © {new Date().getFullYear()} LEGENDA PERMATA </p>
           {/* <Dot className="max-xs:hidden md:hidden" />
           <Link
             href="https://naufalrabbani.com"
