@@ -613,8 +613,7 @@ export function CreateNewsForm() {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(MARKDOWN);
 
-  // TODO: Should implement dynamic form using useFormState hooks for handling server action
-  const [] = useFormState(() => {}, undefined);
+  const [state, formAction, isLoading] = useFormState(createNews, undefined);
 
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
@@ -658,7 +657,7 @@ export function CreateNewsForm() {
       }
     }
 
-    await createNews(formData);
+    await formAction(formData);
 
     toast({
       title: "You submitted the following values:",
