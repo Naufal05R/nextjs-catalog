@@ -659,17 +659,16 @@ export function CreateNewsForm() {
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">
-            {/* <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} /> */}
-            {JSON.stringify(errors)}
+            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
           </code>
         </pre>
       ),
     });
   };
 
-  const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
-    return <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />;
-  };
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => (
+    <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />
+  );
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
@@ -721,7 +720,7 @@ export function CreateNewsForm() {
               ]);
             }}
           />
-          <ErrorMessage name="description" />
+          <ErrorMessage name="content" />
         </Label>
       </article>
 
@@ -1197,11 +1196,10 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 }
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
+  const [state, formAction, isLoading] = useFormState(updateNews, news);
+
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(text);
-
-  // TODO: Should implement dynamic form using useFormState hooks for handling server action
-  const [] = useFormState(() => {}, undefined);
 
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
@@ -1231,7 +1229,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   const actionHanlder = async (formData: FormData) => {
     if (markdown === text) {
-      await updateNews({ news }, formData);
+      formAction(formData);
     } else {
       const [content, ids] = changeOriginalImgSouce();
 
@@ -1248,28 +1246,19 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
         }
       }
 
-      await updateNews({ news }, formData);
+      formAction(formData);
     }
+  };
 
-    // await createNews(formData);
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
-            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
-          </code>
-        </pre>
-      ),
-    });
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
+    return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
   };
 
   return (
-    <article className="mt-8 grid w-full grid-cols-12 gap-4">
+    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
       <form id="edit-news-form" action={actionHanlder} className="hidden" />
 
-      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
+      <article className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
         <Label htmlFor="title" className="col-span-4 mb-4 lg:order-1 lg:col-span-1">
           <Input
@@ -1280,7 +1269,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
             placeholder="Title"
             defaultValue={news.title}
           />
-          {/* <ErrorMessage name="title" /> */}
+          <ErrorMessage name="title" />
         </Label>
 
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-3">News Description</h6>
@@ -1293,11 +1282,11 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
             placeholder="Description"
             defaultValue={news.description}
           />
-          {/* <ErrorMessage name="description" /> */}
+          <ErrorMessage name="description" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12">
+      <article className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">News Content</h6>
         <Label htmlFor="content">
           <RichText
@@ -1317,19 +1306,13 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
               ]);
             }}
           />
-          {/* <ErrorMessage name="description" /> */}
+          <ErrorMessage name="content" />
         </Label>
-      </fieldset>
+      </article>
 
-      <Button
-        type="submit"
-        // disabled={isPending}
-        className="col-span-12 mt-8 flex w-full rounded-none"
-        form="edit-news-form"
-        size="lg"
-      >
+      <Button type="submit" className="col-span-12 mt-8 flex w-full rounded-none" form="edit-news-form" size="lg">
         Save
       </Button>
-    </article>
+    </fieldset>
   );
 }
