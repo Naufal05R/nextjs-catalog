@@ -8,6 +8,16 @@ export const shine = async () => {
       id: "cm3qzgdg900002e67s8w57ei5",
       title: "Shine",
       slug: "shine",
+      products: {
+        connect: [
+          {
+            id: "cm3ceev1q0002dr9fdnrukttj",
+          },
+          {
+            id: "cm3cerfco0002dgfuxcukhnko",
+          },
+        ],
+      },
     },
   });
 
@@ -22,6 +32,9 @@ export const sparkle = async () => {
       id: "cm3qzhgv900012e67m8q70ayu",
       title: "Sparkle",
       slug: "sparkle",
+      products: {
+        connect: [{ id: "cm3cerfco0002dgfuxcukhnko" }],
+      },
     },
   });
 
