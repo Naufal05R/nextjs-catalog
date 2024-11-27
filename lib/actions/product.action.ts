@@ -51,16 +51,7 @@ export const getAllProduct = async (params: GetAllProductProps | undefined = und
             },
           },
         },
-        tags: {
-          select: {
-            tag: {
-              select: {
-                title: true,
-                slug: true,
-              },
-            },
-          },
-        },
+        tags: true,
       },
     });
 
@@ -90,16 +81,7 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
             medias: true,
           },
         },
-        tags: {
-          select: {
-            tag: {
-              select: {
-                title: true,
-                slug: true,
-              },
-            },
-          },
-        },
+        tags: true,
       },
     });
 
@@ -150,22 +132,20 @@ export const getProductPages = async ({ query, currentPage }: ProductResult) => 
           {
             tags: {
               some: {
-                tag: {
-                  OR: [
-                    {
-                      title: {
-                        contains: query,
-                        mode: "insensitive",
-                      },
+                OR: [
+                  {
+                    title: {
+                      contains: query,
+                      mode: "insensitive",
                     },
-                    {
-                      slug: {
-                        contains: query,
-                        mode: "insensitive",
-                      },
+                  },
+                  {
+                    slug: {
+                      contains: query,
+                      mode: "insensitive",
                     },
-                  ],
-                },
+                  },
+                ],
               },
             },
           },
@@ -235,21 +215,18 @@ export const createProduct = async (
             skipDuplicates: true,
           });
 
-          const _tags = await _prisma.tag.findMany({
-            where: { slug: { in: tags.map((tag) => slugify(tag)) } },
-          });
-
           const _product = await _prisma.product.create({
             data: {
               ...product,
               slug: slugify(product.title),
               collectionId: _collection.id,
+              tags: {
+                connectOrCreate: tags.map((tag) => ({
+                  where: { slug: slugify(tag) },
+                  create: { title: tag, slug: slugify(tag) },
+                })),
+              },
             },
-          });
-
-          await _prisma.tagsOnProducts.createManyAndReturn({
-            data: _tags.map(({ id }) => ({ tagId: id, productId: _product.id })),
-            skipDuplicates: true,
           });
 
           const _gallery = await _prisma.gallery.create({
