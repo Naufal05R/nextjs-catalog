@@ -49,7 +49,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
   if (success) {
     const { title, description, content } = data;
-    let pathname = "/dashboard/news/add";
+    let pathname = "";
 
     try {
       const imagesFile = data["images.file"];
@@ -92,7 +92,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
       });
 
       revalidatePath("/", "layout");
-      pathname = "/dashboard";
+      pathname = `/dashboard/news/detail/${slugify(title)}`;
     } catch (error) {
       handlingError(error);
     } finally {
@@ -109,7 +109,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
 
   if (success) {
     const { title, description, content } = data;
-    let pathname = `/dashboard/news/edit/${prevState.slug}`;
+    let pathname = "";
 
     try {
       const imagesFile = data["images.file"];
