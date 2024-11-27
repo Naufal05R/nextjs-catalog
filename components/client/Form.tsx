@@ -673,7 +673,7 @@ export function CreateNewsForm() {
   };
 
   return (
-    <article className="mt-8 grid w-full grid-cols-12 gap-4">
+    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
       <form id="create-news-form" action={actionHanlder} className="hidden" />
 
       <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
@@ -735,12 +735,12 @@ export function CreateNewsForm() {
       >
         Save
       </Button>
-    </article>
+    </fieldset>
   );
 }
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
-  const [errors, formAction, isPending] = useFormState(updateProduct, undefined);
+  const [errors, formAction, isLoading] = useFormState(updateProduct, undefined);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
@@ -798,10 +798,10 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   }, [collection, defaultFiles, product.slug]);
 
   return (
-    <article className="mt-8 grid w-full grid-cols-12 gap-4">
+    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
       <form id="create-product-form" action={actionHandler} className="hidden" />
 
-      <fieldset className="col-span-12">
+      <article className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">Product Title</h6>
         <Label htmlFor="title">
           <Input
@@ -814,9 +814,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="title" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12 grid grid-cols-6 gap-4">
+      <article className="col-span-12 grid grid-cols-6 gap-4">
         <h6 className="col-span-6 -mb-3 line-clamp-1 text-lg font-medium">Product Detail</h6>
         <Label
           htmlFor="categoryId"
@@ -849,9 +849,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="color" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset
+      <article
         className={cn("col-span-12 grid grid-cols-3 gap-4 sm:col-span-9", { "md:col-span-6 lg:col-span-9": open })}
       >
         <h6 className="col-span-3 -mb-3 line-clamp-1 text-lg font-medium">Product Size</h6>
@@ -890,9 +890,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="length" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className={cn("col-span-12 flex flex-col sm:col-span-3", { "md:col-span-6 lg:col-span-3": open })}>
+      <article className={cn("col-span-12 flex flex-col sm:col-span-3", { "md:col-span-6 lg:col-span-3": open })}>
         <h6 className="mb-1 line-clamp-1 h-fit text-lg font-medium">Product Weight</h6>
         <Label htmlFor="weight">
           <Input
@@ -905,9 +905,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="weight" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12 grid grid-cols-2 gap-4">
+      <article className="col-span-12 grid grid-cols-2 gap-4">
         <h6 className="col-span-2 -mb-3 line-clamp-1 text-lg font-medium">Product Rate</h6>
         <Label htmlFor="price" className="col-span-2 xs:col-span-1">
           <Input
@@ -932,9 +932,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="discount" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
+      <article className="col-span-12 grid grid-cols-1 gap-x-4">
         <h6 className="-order-2 mb-1 text-lg font-medium">Product Tags</h6>
         <Label htmlFor="tags">
           <Input
@@ -975,9 +975,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           </ul>
           <ErrorMessage name="description" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12 grid grid-cols-1 gap-x-4">
+      <article className="col-span-12 grid grid-cols-1 gap-x-4">
         <h6 className="-order-2 mb-1 text-lg font-medium">Product Description</h6>
         <Label htmlFor="description">
           <Textarea
@@ -991,9 +991,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
           <ErrorMessage name="description" />
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12">
+      <article className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">Uploaded Images</h6>
         {!!files.length ? (
           <ul className="flex flex-col gap-y-2.5">
@@ -1194,18 +1194,18 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
           />
         )}
         <ErrorMessage name="medias" />
-      </fieldset>
+      </article>
 
       <Button
         type="submit"
-        disabled={isPending}
+        disabled={isLoading}
         className="col-span-12 mt-8 flex w-full rounded-none"
         form="create-product-form"
         size="lg"
       >
         Save
       </Button>
-    </article>
+    </fieldset>
   );
 }
 
