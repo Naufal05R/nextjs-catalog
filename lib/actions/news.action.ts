@@ -7,6 +7,7 @@ import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { News, Prisma } from "@prisma/client";
+import { z } from "zod";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -43,7 +44,7 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   }
 };
 
-export const createNews = async (prevState: void | undefined, formData: FormData) => {
+export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
@@ -98,24 +99,24 @@ export const createNews = async (prevState: void | undefined, formData: FormData
       redirect(pathname);
     }
   } else {
-    console.log(error);
+    return error.errors;
   }
 };
 
-export const updateNews = async (prevState: { news: News }, formData: FormData) => {
-  const { news } = prevState;
+export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormData) => {
+  if (prevState instanceof Array) return prevState;
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
     const { title, description, content } = data;
-    let pathname = `/dashboard/news/edit/${news.slug}`;
+    let pathname = `/dashboard/news/edit/${prevState.slug}`;
 
     try {
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
       let markdown = content;
 
-      await prisma.$transaction(async (_prisma) => {
+      const updatedNews = await prisma.$transaction(async (_prisma) => {
         if (imagesFile && imagesId) {
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
@@ -141,25 +142,29 @@ export const updateNews = async (prevState: { news: News }, formData: FormData) 
           });
         }
 
-        await _prisma.news.update({
-          where: news,
+        const _news = await _prisma.news.update({
+          where: prevState,
           data: {
             title,
             slug: slugify(title),
             description,
           },
         });
+
+        return _news;
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${news.slug}`;
+      pathname = `/dashboard/news/detail/${prevState.slug}`;
+
+      return updatedNews;
     } catch (error) {
       handlingError(error);
     } finally {
       redirect(pathname);
     }
   } else {
-    console.log(error);
+    return error.errors;
   }
 };
 
