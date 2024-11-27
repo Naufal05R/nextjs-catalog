@@ -30,28 +30,37 @@ const Footer = () => {
     <>
       <section className={cn(padding.x, "pb-4 pt-16")}>
         <div className="flex w-full flex-row flex-wrap items-center justify-between gap-4 py-12 sm:border-y lg:flex-nowrap lg:gap-8">
-          <form action="" className="w-full xs:w-3/4 lg:max-w-80">
+          <fieldset className="w-full xs:w-3/4 lg:max-w-80">
+            <form id="subscription-form" action=""></form>
+
             <h6 className="mb-2 text-lg">Get updates</h6>
-            <fieldset className="flex flex-row flex-wrap rounded border border-slate-200 p-1 xs:max-w-screen-xs xs:flex-nowrap">
+            <article className="flex flex-row flex-wrap rounded border border-slate-200 p-1 xs:max-w-screen-xs xs:flex-nowrap">
               <label htmlFor="footer_subscribe" className="flex flex-1 origin-center flex-row items-center">
                 <Mail className="mx-2 text-slate-500" />
                 <input
                   id="footer_subscribe"
                   placeholder="Your email"
+                  form="subscription-form"
                   type="text"
                   className="w-full appearance-none bg-transparent py-2 text-sm font-light placeholder:text-sm focus:outline-none focus:ring-0"
                 />
               </label>
 
-              <Button className="w-fit rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50 max-xs:hidden">
+              <Button
+                className="w-fit rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50 max-xs:hidden"
+                form="subscription-form"
+              >
                 Subscribe
               </Button>
-            </fieldset>
+            </article>
 
-            <Button className="mt-2 w-full rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50 xs:hidden">
+            <Button
+              className="mt-2 w-full rounded-sm bg-slate-800 px-4 py-2 text-sm text-slate-50 xs:hidden"
+              form="subscription-form"
+            >
               Subscribe
             </Button>
-          </form>
+          </fieldset>
 
           <ul className="grid w-full grid-cols-6 gap-x-8 max-sm:mt-8 max-sm:divide-y max-sm:border-y lg:flex-1">
             <Mapper
