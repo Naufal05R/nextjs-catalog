@@ -773,6 +773,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
+  // TODO: Should optizing the way of fetching data using useSWR
   useEffect(() => {
     (async () => {
       try {
