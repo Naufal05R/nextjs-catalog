@@ -16,7 +16,7 @@ import { cn, countDiscount, formatPrice } from "@/lib/utils";
 import { Image, ImageComponentProps } from "@/components/server/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Product } from "@prisma/client";
+import { Product, Tag } from "@prisma/client";
 import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 import { ToggleButton } from "../client/Button";
@@ -34,23 +34,13 @@ interface ProductResult {
 interface DashbaordProductCardProps extends Product {
   collection: string;
   thumbnail: string;
-  tags: {
-    tag: {
-      title: string;
-      slug: string;
-    };
-  }[];
+  tags: Array<Tag>;
 }
 
 interface CatalogProductCardProps extends Product {
   category: string;
   imageProps: WithRequired<Partial<ImageComponentProps>, "src">;
-  tags: {
-    tag: {
-      title: string;
-      slug: string;
-    };
-  }[];
+  tags: Array<Tag>;
 }
 
 export const DashboardProductDisplay = async ({ isReady, collection }: ProductDisplay) => {
@@ -137,7 +127,7 @@ export const DashbaordProductCard = async ({
             {state} Origin
           </Badge>
 
-          <Mapper data={tags} render={({ tag }) => <Badge variant="secondary">{tag.title}</Badge>} />
+          <Mapper data={tags} render={({ title }) => <Badge variant="secondary">{title}</Badge>} />
         </ul>
       </CardContent>
 
@@ -286,9 +276,9 @@ export const CatalogProductCard = ({
           </Badge>
           <Mapper
             data={tags.slice(0, 5)}
-            render={({ tag }) => (
+            render={({ title }) => (
               <Badge variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
-                {tag.title}
+                {title}
               </Badge>
             )}
           />
@@ -356,22 +346,20 @@ export const SearchProductResult = async ({ query }: ProductResult) => {
         {
           tags: {
             some: {
-              tag: {
-                OR: [
-                  {
-                    title: {
-                      contains: query,
-                      mode: "insensitive",
-                    },
+              OR: [
+                {
+                  title: {
+                    contains: query,
+                    mode: "insensitive",
                   },
-                  {
-                    slug: {
-                      contains: query,
-                      mode: "insensitive",
-                    },
+                },
+                {
+                  slug: {
+                    contains: query,
+                    mode: "insensitive",
                   },
-                ],
-              },
+                },
+              ],
             },
           },
         },
