@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
 import { Image, Video } from "@/components/server/Media";
-import { Eye, EyeOff, GripVertical, ImageUp, Plus, Trash2, X } from "lucide-react";
+import { Eye, EyeOff, /* GripVertical, */ ImageUp, Plus, Trash2, X } from "lucide-react";
+// TODO: Should Implement draggable images feature
 
 import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
 import {
@@ -404,9 +405,9 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 
                 return (
                   <li className="flex w-full items-center gap-x-2 border p-2.5">
-                    <Button type="button" size="icon" variant="ghost">
+                    {/* <Button type="button" size="icon" variant="ghost">
                       <GripVertical className="text-slate-400" />
-                    </Button>
+                    </Button> */}
 
                     <Dialog
                       header={{
@@ -997,9 +998,9 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 
                 return (
                   <li className="flex w-full items-center gap-x-2 border p-2.5">
-                    <Button type="button" size="icon" variant="ghost">
+                    {/* <Button type="button" size="icon" variant="ghost">
                       <GripVertical className="text-slate-400" />
-                    </Button>
+                    </Button> */}
 
                     <Dialog
                       header={{
