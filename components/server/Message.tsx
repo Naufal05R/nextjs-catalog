@@ -15,13 +15,13 @@ export const InputFieldMessage = <T extends z.ZodIssue[], Z extends z.ZodSchema>
   name,
   ...props
 }: InputFieldMessageProps<T, Z>) => {
-  return (
-    typeof name === "string" &&
-    errors instanceof Array &&
-    !!errors?.length && (
-      <p {...props} className={cn("mt-1 text-xs text-rose-500", props.className)}>
-        {Array.from<T[number]>(errors).find(({ path }) => path.includes(name))?.message}
+  if (typeof name === "string" && errors instanceof Array && !!errors?.length) {
+    const message = Array.from<T[number]>(errors).find(({ path }) => path.includes(name))?.message;
+
+    return (
+      <p {...props} className={cn("text-xs text-rose-500", { "mt-1": message }, props.className)}>
+        {message}
       </p>
-    )
-  );
+    );
+  }
 };
