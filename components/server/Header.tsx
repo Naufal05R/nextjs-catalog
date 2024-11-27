@@ -2,13 +2,18 @@ import React from "react";
 import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
 
-import { Mail, Search, ShoppingBag } from "lucide-react";
+// TODO: Should implement Subscription Feature
+// TODO: Should implement Payment Feature
+// TODO: Should implement Change Language Feature
+// TODO: Should implement Change Currency Feature
+
+import { /* Mail, */ Search /* ShoppingBag */ } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { padding } from "@/lib/styles";
-import { Select } from "@/components/server/Select";
-import { languages, navigations } from "@/constants";
+// import { Select } from "@/components/server/Select";
+import { /* languages, */ navigations } from "@/constants";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { currencies } from "@/constants";
+// import { currencies } from "@/constants";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { NavClient } from "@/components/nav-client";
@@ -26,7 +31,7 @@ export const PublicHeader = async () => {
 
       <nav className={cn(padding.x, "grid grid-cols-12 items-center justify-center py-8 lg:gap-y-8")}>
         <Link href="/" className="col-span-4 flex flex-row items-center justify-start text-slate-500 max-lg:hidden">
-          <Mail className="mr-2.5" /> <span className="text-xs font-light">Get on the list</span>
+          {/* <Mail className="mr-2.5" /> <span className="text-xs font-light">Get on the list</span> */}
         </Link>
 
         <menu className="col-span-6 text-slate-500 max-lg:order-first lg:hidden">
@@ -38,28 +43,28 @@ export const PublicHeader = async () => {
         </Link>
 
         <menu className="col-span-6 flex flex-row items-center justify-end gap-4 text-slate-500 max-lg:-order-1 lg:col-span-4">
-          <Select
+          {/* <Select
             data={languages}
             label={["label"]}
             value={"key"}
             defaultValue="ID"
             classNames={{ trigger: "max-lg:hidden border-0" }}
-          />
-          <Select
+          /> */}
+          {/* <Select
             data={currencies}
             label={["key", "symbol"]}
             value={"key"}
             defaultValue="IDR"
             classNames={{ trigger: "max-lg:hidden border-0" }}
-          />
+          /> */}
           <Button asChild variant={null} size="icon" customize="icon" className="grid place-items-center">
             <Link href="/search">
               <Search className="size-6" />
             </Link>
           </Button>
-          <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
+          {/* <Button variant={null} size="icon" customize="icon" className="grid place-items-center">
             <ShoppingBag className="size-6" />
-          </Button>
+          </Button> */}
         </menu>
 
         <ul className="col-span-12 flex flex-row items-center justify-center max-lg:hidden">
