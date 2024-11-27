@@ -27,7 +27,7 @@ import {
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category, Media, News, Product } from "@prisma/client";
+import { Category, Media, News, Product, Tag } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -55,12 +55,7 @@ interface EditProductFormProps extends CreateProductFormProps {
       medias: Media[];
     } | null;
   } & {
-    tags: {
-      tag: {
-        title: string;
-        slug: string;
-      };
-    }[];
+    tags: Array<Tag>;
   };
 }
 
@@ -748,7 +743,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   const [errors, formAction, isPending] = useFormState(updateProduct, undefined);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
   const [selectedTag, setSelectedTag] = useState("");
-  const [tags, setTags] = useState(product.tags.map(({ tag }) => tag.title));
+  const [tags, setTags] = useState(product.tags.map(({ title }) => title));
   const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
