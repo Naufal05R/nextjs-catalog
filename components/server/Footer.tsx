@@ -15,22 +15,23 @@ import {
   Visa,
 } from "@/components/svg";
 
+// TODO: Should implement Email Subscription Feature
 // TODO: Should implement Change Language Feature
 // TODO: Should implement Change Currency Feature
 
-import { /* Dot, */ Mail } from "lucide-react";
+// import { /* Dot, */ /* Mail */ } from "lucide-react";
 import { /* currencies, */ /* footers, */ navigations } from "@/constants";
 // import { Select } from "./Select";
 // import { languages } from "@/constants";
 import Mapper from "./Mapper";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 
 const Footer = () => {
   return (
     <>
       <section className={cn(padding.x, "pb-4 pt-16")}>
         <div className="flex w-full flex-row flex-wrap items-center justify-between gap-4 py-12 sm:border-y lg:flex-nowrap lg:gap-8">
-          <fieldset className="w-full xs:w-3/4 lg:max-w-80">
+          {/* <fieldset className="w-full xs:w-3/4 lg:max-w-80">
             <form id="subscription-form" action=""></form>
 
             <h6 className="mb-2 text-lg">Get updates</h6>
@@ -60,7 +61,7 @@ const Footer = () => {
             >
               Subscribe
             </Button>
-          </fieldset>
+          </fieldset> */}
 
           <ul className="grid w-full grid-cols-6 gap-x-8 max-sm:mt-8 max-sm:divide-y max-sm:border-y lg:flex-1">
             <Mapper
@@ -68,7 +69,7 @@ const Footer = () => {
               render={({ label, href }) => (
                 <Link
                   href={href}
-                  className="col-span-6 py-4 text-sm max-sm:hover:text-slate-800/75 sm:col-span-3 sm:py-2 sm:hover:underline md:col-span-2"
+                  className="col-span-6 py-4 text-sm max-sm:hover:text-slate-800/75 sm:col-span-3 sm:py-2 sm:hover:underline md:col-span-3"
                 >
                   {label}
                 </Link>
