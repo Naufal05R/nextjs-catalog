@@ -30,20 +30,19 @@ export function NavMain() {
   const [state, formAction, isLoading] = useFormState(toggleFavoriteCollection, undefined);
   const [collections, setCollections] = useState<Array<Collection>>([]);
 
+  // TODO: Should optimize this way using useSWR
   useEffect(() => {
-    return () => {
-      (async () => {
-        const response = await fetch("/api/list/collection");
-        const { data: rawApiData } = await response.json();
-        const { success, error, data } = CollectionsSchema.safeParse(rawApiData);
+    (async () => {
+      const response = await fetch("/api/list/collection");
+      const { data: rawApiData } = await response.json();
+      const { success, error, data } = CollectionsSchema.safeParse(rawApiData);
 
-        if (success) {
-          setCollections(data);
-        } else {
-          handlingError(error);
-        }
-      })();
-    };
+      if (success) {
+        setCollections(data);
+      } else {
+        handlingError(error);
+      }
+    })();
   }, [state]);
 
   return (
