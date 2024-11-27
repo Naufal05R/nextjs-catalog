@@ -657,14 +657,15 @@ export function CreateNewsForm() {
       }
     }
 
-    await formAction(formData);
+    formAction(formData);
 
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">
-            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
+            {/* <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} /> */}
+            {JSON.stringify(state)}
           </code>
         </pre>
       ),
