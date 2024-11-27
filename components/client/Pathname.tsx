@@ -28,18 +28,17 @@ import { cn, readSlug } from "@/lib/utils";
 const Route = ({ title, href, className }: { title: string; href: string; className?: string }) => {
   const [collections, setCollections] = useState<Array<string>>([]);
 
+  // TODO: Should optizing the way of fetching data using useSWR
   useEffect(() => {
-    return () => {
-      (async () => {
-        const allCollections = await getAllCollection();
+    (async () => {
+      const allCollections = await getAllCollection();
 
-        if (allCollections) {
-          for (const { slug } of allCollections) {
-            setCollections((prev) => [...prev, slug]);
-          }
+      if (allCollections) {
+        for (const { slug } of allCollections) {
+          setCollections((prev) => [...prev, slug]);
         }
-      })();
-    };
+      }
+    })();
   }, []);
 
   switch (title) {
