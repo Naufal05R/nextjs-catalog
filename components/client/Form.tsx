@@ -608,12 +608,12 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 }
 
 export function CreateNewsForm() {
+  const [state, formAction, isLoading] = useFormState(createNews, undefined);
+
   const MARKDOWN = "**Hello,** world!" as const;
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(MARKDOWN);
-
-  const [state, formAction, isLoading] = useFormState(createNews, undefined);
 
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
@@ -676,7 +676,7 @@ export function CreateNewsForm() {
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
       <form id="create-news-form" action={actionHanlder} className="hidden" />
 
-      <fieldset className="col-span-12 grid grid-cols-4 gap-x-4">
+      <article className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
         <Label htmlFor="title" className="col-span-4 mb-4 lg:order-1 lg:col-span-1">
           <Input
@@ -700,9 +700,9 @@ export function CreateNewsForm() {
           />
           {/* <ErrorMessage name="description" /> */}
         </Label>
-      </fieldset>
+      </article>
 
-      <fieldset className="col-span-12">
+      <article className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">News Content</h6>
         <Label htmlFor="content">
           <RichText
@@ -724,15 +724,9 @@ export function CreateNewsForm() {
           />
           {/* <ErrorMessage name="description" /> */}
         </Label>
-      </fieldset>
+      </article>
 
-      <Button
-        type="submit"
-        // disabled={isPending}
-        className="col-span-12 mt-8 flex w-full rounded-none"
-        form="create-news-form"
-        size="lg"
-      >
+      <Button type="submit" className="col-span-12 mt-8 flex w-full rounded-none" form="create-news-form" size="lg">
         Save
       </Button>
     </fieldset>
