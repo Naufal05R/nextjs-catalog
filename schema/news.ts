@@ -40,9 +40,10 @@ export const NewsFormSchema = NewsSchema.pick({
 }).merge(
   z.object({
     thumbnail: z
-      .instanceof(File)
-      .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
-      .refine((file) => file && Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
+      .instanceof(File, { message: "Thumbnail must be a valid image." })
+      .refine((file) => file.size, { message: "Thumnail is required." })
+      .refine((file) => file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
+      .refine((file) => Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
         message: `Only "${ACCEPTED_IMAGE_EXTS.join('", "')}" formats are supported.`,
       }),
     content: z
@@ -53,8 +54,8 @@ export const NewsFormSchema = NewsSchema.pick({
       .array(
         z
           .instanceof(File)
-          .refine((file) => file && file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
-          .refine((file) => file && Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
+          .refine((file) => file.size <= MAX_FILE_SIZE, { message: "Max image size is 5MB." })
+          .refine((file) => Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type), {
             message: `Only "${ACCEPTED_IMAGE_EXTS.join('", "')}" formats are supported.`,
           }),
       )
