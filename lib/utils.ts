@@ -62,6 +62,10 @@ export function refineBlobStr(blobStr: "blob:" | (string & {})) {
   return blobStr.replace(/blob\:/, "blob\\:");
 }
 
+export const getNewsSrc = ({ slug, resource }: { slug: string; resource: "thumbnail" | "article" }) => {
+  return `${S3_ENDPOINT}/news/${slug}/${resource}`;
+};
+
 export const getMediaSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
   return `${S3_ENDPOINT}/${collection}/${product}/${name}`;
 };
