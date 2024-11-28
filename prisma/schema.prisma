@@ -13,33 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id              String         @id @default(cuid())
-  title           String         @unique @db.VarChar(64)
-  slug            String         @unique @db.VarChar(64)
-  state           String         @db.VarChar(64)
-  width           Float          @db.Real
-  height          Float          @db.Real
-  length          Float          @db.Real
-  weight          Float          @db.Real
-  color           String         @db.VarChar(64)
-  price           Int            @db.Integer
-  discount        Float?         @db.Real
-  description     String         @db.Text
-  tags            Tag[]
-  gallery         Gallery?
-  isReady         Boolean        @default(true)
-  isFavorite      Boolean        @default(false)
-  collectionId    String
-  collection      Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  categoryId      String
-  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  subcollectionId String?
-  subcollection   Subcollection? @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-}
-
 model Collection {
   id             String          @id @default(cuid())
   title          String          @unique @db.VarChar(16)
@@ -70,14 +43,38 @@ model Category {
   products    Product[]
 }
 
-model Media {
-  id        String  @id @default(cuid())
-  title     String  @unique @db.VarChar(128)
-  slug      String  @unique @db.VarChar(128)
-  name      String  @unique @db.VarChar(132)
-  order     Int     @db.SmallInt
-  galleryId String
-  gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+model Product {
+  id              String         @id @default(cuid())
+  title           String         @unique @db.VarChar(64)
+  slug            String         @unique @db.VarChar(64)
+  state           String         @db.VarChar(64)
+  width           Float          @db.Real
+  height          Float          @db.Real
+  length          Float          @db.Real
+  weight          Float          @db.Real
+  color           String         @db.VarChar(64)
+  price           Int            @db.Integer
+  discount        Float?         @db.Real
+  description     String         @db.Text
+  tags            Tag[]
+  gallery         Gallery?
+  isReady         Boolean        @default(true)
+  isFavorite      Boolean        @default(false)
+  collectionId    String
+  collection      Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcollectionId String?
+  subcollection   Subcollection? @relation(fields: [subcollectionId], references: [id], onDelete: SetNull)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Tag {
+  id       String    @id @default(cuid())
+  title    String    @unique @db.VarChar(64)
+  slug     String    @unique @db.VarChar(64)
+  products Product[]
 }
 
 model Gallery {
@@ -89,6 +86,16 @@ model Gallery {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
+model Media {
+  id        String  @id @default(cuid())
+  title     String  @unique @db.VarChar(128)
+  slug      String  @unique @db.VarChar(128)
+  name      String  @unique @db.VarChar(132)
+  order     Int     @db.SmallInt
+  galleryId String
+  gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+}
+
 model News {
   id          String   @id @default(cuid())
   title       String   @unique @db.VarChar(64)
@@ -97,11 +104,4 @@ model News {
   isRelevant  Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-model Tag {
-  id       String    @id @default(cuid())
-  title    String    @unique @db.VarChar(64)
-  slug     String    @unique @db.VarChar(64)
-  products Product[]
 }
