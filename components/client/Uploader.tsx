@@ -17,7 +17,7 @@ export const Uploader = ({ inputProps, options }: UploaderProps) => {
   });
 
   const DynamicUI = () => (
-    <div className="line-clamp-2 text-center">
+    <div className="line-clamp-2 h-[75px] text-center">
       {isDragActive ? (
         isDragAccept ? (
           <>
