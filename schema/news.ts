@@ -34,6 +34,7 @@ export const NewsSchema = z.object({
 });
 
 export const NewsFormSchema = NewsSchema.pick({
+  id: true,
   title: true,
   description: true,
   isRelevant: true,
@@ -48,7 +49,7 @@ export const NewsFormSchema = NewsSchema.pick({
       }),
     content: z
       .string()
-      .min(1024, { message: "Minimum content size is 1kb" })
+      .min(10, { message: "Minimum content size is 1kb" })
       .max(1048576, { message: "Maximum content size is 1mb" }),
     "images.file": z
       .array(
