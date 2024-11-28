@@ -26,6 +26,7 @@ import {
   getFileDetails,
   getFileMimeTypes,
   getMediaSrc,
+  getNewsSrc,
   handlingError,
   refineBlobStr,
   removeUnallowedChars,
@@ -678,7 +679,7 @@ export function CreateNewsForm() {
     if (!!acceptedFiles.length) {
       setFile(
         Array.from(acceptedFiles).filter((acceptedFile) =>
-          new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(acceptedFile.type),
+          new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(acceptedFile.type),
         )[0],
       );
     }
@@ -741,7 +742,7 @@ export function CreateNewsForm() {
             }}
             options={{
               onDrop,
-              accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
+              accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
             }}
           />
 
@@ -1274,7 +1275,8 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 }
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
-  const [state, formAction, isLoading] = useFormState(updateNews, news);
+  const [state, formAction, isLoading] = useFormState(updateNews, undefined);
+  const [file, setFile] = useState<File>();
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(text);
@@ -1306,8 +1308,12 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
   };
 
   const actionHanlder = async (formData: FormData) => {
+    if (file) formData.append("thumbnail", file);
+
+    formData.append("id", news.id);
+
     if (markdown === text) {
-      formAction(formData);
+      formData.append("content", text);
     } else {
       const [content, ids] = changeOriginalImgSouce();
 
@@ -1323,10 +1329,29 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
           formData.append("images.id", id);
         }
       }
-
-      formAction(formData);
     }
+
+    formAction(formData);
   };
+
+  const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
+    if (!!acceptedFiles.length) {
+      setFile(
+        Array.from(acceptedFiles).filter((acceptedFile) =>
+          new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(acceptedFile.type),
+        )[0],
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const articleSrc = getNewsSrc({ slug: news.slug, resource: "thumbnail" });
+      const blob = await fetch(articleSrc, { cache: "no-store" }).then((r) => r.blob());
+
+      if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));
+    })();
+  }, [news.slug]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
@@ -1361,6 +1386,64 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
             defaultValue={news.description}
           />
           <ErrorMessage name="description" />
+        </Label>
+      </article>
+
+      <article className="col-span-12 grid grid-cols-1 gap-x-4">
+        <h6 className="mb-1 text-lg font-medium lg:col-span-1">News Thumbnail</h6>
+        <Label htmlFor="thumbnail" className="relative mb-4 lg:order-1 lg:col-span-1">
+          <Uploader
+            hidden={!!file}
+            inputProps={{
+              name: "thumbnail",
+              form: "create-news-form",
+              onChange: (e) => {
+                const files = e.target.files;
+                if (files && !!files.length) {
+                  const [image] = files;
+                  if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
+                    setFile(image);
+                  } else {
+                    alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                  }
+                }
+              },
+            }}
+            options={{
+              onDrop,
+              accept: { [`${ACCEPTED_IMAGE_MIME_EXTS.join(",")}`]: [] },
+            }}
+          />
+
+          {file && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-1 top-1 z-30"
+                onClick={() => setFile(undefined)}
+              >
+                <X className="text-slate-400" />
+              </Button>
+              <Image
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                classNames={{
+                  fallback: {
+                    wrapper: "bg-white border rounded border-slate-200",
+                  },
+                  figure: "w-full aspect-video h-40 rounded hover:cursor-pointer",
+                  image: "object-contain p-px",
+                }}
+                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                  (e.target as HTMLElement).requestFullscreen()
+                }
+              />
+            </>
+          )}
+          <ErrorMessage name="thumbnail" />
         </Label>
       </article>
 
