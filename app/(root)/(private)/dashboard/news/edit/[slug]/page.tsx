@@ -1,8 +1,7 @@
 import { EditNewsForm } from "@/components/client/Form";
 import { getNews } from "@/lib/actions/news.action";
+import { getNewsSrc } from "@/lib/utils";
 import { notFound } from "next/navigation";
-
-const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
 
 export default async function DetailNewsPage({ params }: { params: { slug: string } }) {
   const news = await getNews({
@@ -12,7 +11,8 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
   if (!news) return notFound();
 
   const { title } = news;
-  const markdown = await fetch(`${S3_ENDPOINT}/news/${params.slug}/article`).then((r) => r.text());
+  const articleSrc = getNewsSrc({ slug: params.slug, resource: "article" });
+  const markdown = await fetch(articleSrc).then((r) => r.text());
 
   if (!news || !markdown) return notFound();
 
