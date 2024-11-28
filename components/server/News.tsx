@@ -7,6 +7,7 @@ import { News } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Archive, ArchiveRestore, FilePlus, Pencil, Trash2 } from "lucide-react";
+import { getNewsSrc } from "@/lib/utils";
 
 export const FrontEndNewsDisplay = async () => {
   const allNews = await getAllNews();
@@ -22,13 +23,14 @@ export const FrontEndNewsDisplay = async () => {
 
 export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
+  const src = getNewsSrc({ slug, resource: "thumbnail" });
 
   return (
     <Link href={`/news/${slug}`} className="group col-span-4">
       <article className="w-full overflow-hidden rounded bg-inherit group-hover:cursor-pointer">
         <Image
-          src={`/dummy_1.jpg`}
-          alt={`dummy_1`}
+          src={src}
+          alt={slug}
           fill
           sizes="25vw"
           classNames={{
