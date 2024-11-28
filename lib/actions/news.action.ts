@@ -48,7 +48,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { title, description, content } = data;
+    const { title, description, thumbnail, content } = data;
     let pathname = "";
 
     try {
@@ -57,6 +57,19 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
       let markdown = content;
 
       await prisma.$transaction(async (_prisma) => {
+        if (thumbnail) {
+          const { fileMime } = getFileMimeTypes(thumbnail.type);
+
+          const arrayBuffer = await thumbnail.arrayBuffer();
+          const objectStream = Buffer.from(arrayBuffer);
+
+          await createObject({
+            bucketName: APP_NAME,
+            objectName: `news/${slugify(title)}/thumbnail.${fileMime}`,
+            objectStream: objectStream,
+          });
+        }
+
         if (imagesFile && imagesId) {
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
@@ -74,13 +87,13 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
               markdown = markdown.replace(imagesId[index], `${S3_ENDPOINT}/${objectName}`);
             }
           }
-
-          await createObject({
-            bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/article.mdx`,
-            objectStream: markdown,
-          });
         }
+
+        await createObject({
+          bucketName: APP_NAME,
+          objectName: `news/${slugify(title)}/article.mdx`,
+          objectStream: markdown,
+        });
 
         await _prisma.news.create({
           data: {
