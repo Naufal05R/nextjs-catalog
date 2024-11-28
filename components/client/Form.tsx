@@ -14,7 +14,13 @@ import { Image, Video } from "@/components/server/Media";
 import { Eye, EyeOff, /* GripVertical, */ ImageUp, Plus, Trash2, X } from "lucide-react";
 // TODO: Should Implement draggable images feature
 
-import { ACCEPTED_MEDIA_MIME_TYPES, ACCEPTED_MEDIA_TYPES, MediaFormSchema } from "@/schema/media";
+import {
+  ACCEPTED_IMAGE_EXTS,
+  ACCEPTED_IMAGE_MIME_EXTS,
+  ACCEPTED_MEDIA_MIME_TYPES,
+  ACCEPTED_MEDIA_TYPES,
+  MediaFormSchema,
+} from "@/schema/media";
 import {
   cn,
   getFileDetails,
@@ -605,6 +611,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 
 export function CreateNewsForm() {
   const [errors, formAction, isLoading] = useFormState(createNews, undefined);
+  const [file, setFile] = useState<File>();
 
   const MARKDOWN = "**Hello,** world!" as const;
 
@@ -667,6 +674,16 @@ export function CreateNewsForm() {
     });
   };
 
+  const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
+    if (!!acceptedFiles.length) {
+      setFile(
+        Array.from(acceptedFiles).filter((acceptedFile) =>
+          new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(acceptedFile.type),
+        )[0],
+      );
+    }
+  }, []);
+
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => (
     <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />
   );
@@ -698,6 +715,78 @@ export function CreateNewsForm() {
             placeholder="Description"
           />
           <ErrorMessage name="description" />
+        </Label>
+      </article>
+
+      <article className="col-span-12 grid grid-cols-1 gap-x-4">
+        <h6 className="mb-1 text-lg font-medium lg:col-span-1">News Thumbnail</h6>
+        <Label htmlFor="thumbnail" className="mb-4 lg:order-1 lg:col-span-1">
+          {/* <Input
+            id="thumbnail"
+            form="create-news-form"
+            name="thumbnail"
+            className="hidden"
+            type="file"
+            accept={ACCEPTED_IMAGE_MIME_EXTS.join(",")}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                if (Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type)) {
+                  // setFiles((prevState) => {
+                  //   return prevState.map((state, index) => {
+                  //     if (index === mediaIndex) {
+                  //       return {
+                  //         ...state,
+                  //         title: file.name,
+                  //         media: file,
+                  //       };
+                  //     }
+                  //     return state;
+                  //   });
+                  // });
+                } else {
+                  alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                }
+              }
+            }}
+          /> */}
+
+          {file ? (
+            <Image
+              src={URL.createObjectURL(file)}
+              alt={file.name}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              classNames={{
+                figure: "w-full aspect-video h-40 rounded hover:cursor-pointer",
+                image: "object-contain",
+              }}
+              onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => (e.target as HTMLElement).requestFullscreen()}
+            />
+          ) : (
+            <Uploader
+              inputProps={{
+                form: "create-news-form",
+                multiple: true,
+                onChange: (e) => {
+                  const files = e.target.files;
+                  if (files && !!files.length) {
+                    const [image] = files;
+                    if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
+                      setFile(image);
+                    } else {
+                      alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                    }
+                  }
+                },
+              }}
+              options={{
+                onDrop,
+                accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
+              }}
+            />
+          )}
+          <ErrorMessage name="thumbnail" />
         </Label>
       </article>
 
