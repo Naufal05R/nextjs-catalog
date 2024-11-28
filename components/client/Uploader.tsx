@@ -9,9 +9,10 @@ import { useEffect } from "react";
 interface UploaderProps {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> & InputProps;
   options?: DropzoneOptions;
+  hidden?: boolean;
 }
 
-export const Uploader = ({ inputProps, options }: UploaderProps) => {
+export const Uploader = ({ inputProps, hidden, options }: UploaderProps) => {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, fileRejections, open } = useDropzone({
     ...options,
   });
@@ -74,6 +75,7 @@ export const Uploader = ({ inputProps, options }: UploaderProps) => {
         {
           "border-teal-300 bg-teal-50 text-teal-400": isDragActive && isDragAccept,
           "border-rose-300 bg-rose-50 text-rose-400": isDragActive && isDragReject,
+          hidden,
         },
       )}
     >
