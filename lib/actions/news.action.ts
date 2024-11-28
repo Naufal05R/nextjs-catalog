@@ -58,15 +58,16 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
       await prisma.$transaction(async (_prisma) => {
         if (thumbnail) {
-          const { fileMime } = getFileMimeTypes(thumbnail.type);
-
           const arrayBuffer = await thumbnail.arrayBuffer();
           const objectStream = Buffer.from(arrayBuffer);
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/thumbnail.${fileMime}`,
+            objectName: `news/${slugify(title)}/thumbnail`,
             objectStream: objectStream,
+            objectMetaData: {
+              "Content-Type": thumbnail.type,
+            },
           });
         }
 
@@ -91,8 +92,11 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
         await createObject({
           bucketName: APP_NAME,
-          objectName: `news/${slugify(title)}/article.mdx`,
+          objectName: `news/${slugify(title)}/article`,
           objectStream: markdown,
+          objectMetaData: {
+            "Content-Type": "text/markdown",
+          },
         });
 
         await _prisma.news.create({
@@ -150,7 +154,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/article.mdx`,
+            objectName: `news/${slugify(title)}/article`,
             objectStream: markdown,
           });
         }
