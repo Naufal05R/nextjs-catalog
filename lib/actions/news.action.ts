@@ -6,7 +6,7 @@ import { createObject, deleteObjects } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { News, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
@@ -45,7 +45,7 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
 };
 
 export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
-  const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
+  const { data, error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
   if (success) {
     const { title, description, thumbnail, content } = data;
@@ -120,12 +120,13 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
   }
 };
 
-export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormData) => {
-  if (prevState instanceof Array) return prevState;
+export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, formData: FormData) => {
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
+  console.log(initRawData(formData));
+
   if (success) {
-    const { title, description, thumbnail, content } = data;
+    const { id, title, description, thumbnail, content } = data;
     let pathname = "";
 
     try {
@@ -133,7 +134,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
       const imagesId = data["images.id"];
       let markdown = content;
 
-      const updatedNews = await prisma.$transaction(async (_prisma) => {
+      await prisma.$transaction(async (_prisma) => {
         if (thumbnail) {
           const arrayBuffer = await thumbnail.arrayBuffer();
           const objectStream = Buffer.from(arrayBuffer);
@@ -177,7 +178,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
         });
 
         const _news = await _prisma.news.update({
-          where: prevState,
+          where: { id },
           data: {
             title,
             slug: slugify(title),
@@ -189,9 +190,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${prevState.slug}`;
-
-      return updatedNews;
+      pathname = `/dashboard/news/detail/${slugify(title)}`;
     } catch (error) {
       handlingError(error);
     } finally {
