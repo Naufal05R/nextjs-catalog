@@ -125,7 +125,7 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { title, description, content } = data;
+    const { title, description, thumbnail, content } = data;
     let pathname = "";
 
     try {
@@ -134,6 +134,20 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
       let markdown = content;
 
       const updatedNews = await prisma.$transaction(async (_prisma) => {
+        if (thumbnail) {
+          const arrayBuffer = await thumbnail.arrayBuffer();
+          const objectStream = Buffer.from(arrayBuffer);
+
+          await createObject({
+            bucketName: APP_NAME,
+            objectName: `news/${slugify(title)}/thumbnail`,
+            objectStream: objectStream,
+            objectMetaData: {
+              "Content-Type": thumbnail.type,
+            },
+          });
+        }
+
         if (imagesFile && imagesId) {
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
@@ -151,13 +165,16 @@ export const updateNews = async (prevState: News | z.ZodIssue[], formData: FormD
               markdown = markdown.replace(imagesId[index], `${S3_ENDPOINT}/${objectName}`);
             }
           }
-
-          await createObject({
-            bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/article`,
-            objectStream: markdown,
-          });
         }
+
+        await createObject({
+          bucketName: APP_NAME,
+          objectName: `news/${slugify(title)}/article`,
+          objectStream: markdown,
+          objectMetaData: {
+            "Content-Type": "text/markdown",
+          },
+        });
 
         const _news = await _prisma.news.update({
           where: prevState,
