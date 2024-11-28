@@ -70,13 +70,14 @@ export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: b
 
 export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
+  const thumbnailSrc = getNewsSrc({ slug, resource: "thumbnail" });
 
   return (
     <Card className="group col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
       <CardHeader>
         <Image
-          src={`/dummy_1.jpg`}
-          alt={`dummy_1`}
+          src={thumbnailSrc}
+          alt={slug}
           fill
           sizes="25vw"
           classNames={{
