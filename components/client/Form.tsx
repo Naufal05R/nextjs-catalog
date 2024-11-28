@@ -720,42 +720,58 @@ export function CreateNewsForm() {
 
       <article className="col-span-12 grid grid-cols-1 gap-x-4">
         <h6 className="mb-1 text-lg font-medium lg:col-span-1">News Thumbnail</h6>
-        <Label htmlFor="thumbnail" className="mb-4 lg:order-1 lg:col-span-1">
-          {file ? (
-            <Image
-              src={URL.createObjectURL(file)}
-              alt={file.name}
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              classNames={{
-                figure: "w-full aspect-video h-40 rounded hover:cursor-pointer",
-                image: "object-contain",
-              }}
-              onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => (e.target as HTMLElement).requestFullscreen()}
-            />
-          ) : (
-            <Uploader
-              inputProps={{
-                name: "thumbnail",
-                form: "create-news-form",
-                multiple: true,
-                onChange: (e) => {
-                  const files = e.target.files;
-                  if (files && !!files.length) {
-                    const [image] = files;
-                    if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
-                      setFile(image);
-                    } else {
-                      alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
-                    }
+        <Label htmlFor="thumbnail" className="relative mb-4 lg:order-1 lg:col-span-1">
+          <Uploader
+            hidden={!!file}
+            inputProps={{
+              name: "thumbnail",
+              form: "create-news-form",
+              multiple: true,
+              onChange: (e) => {
+                const files = e.target.files;
+                if (files && !!files.length) {
+                  const [image] = files;
+                  if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
+                    setFile(image);
+                  } else {
+                    alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
                   }
-                },
-              }}
-              options={{
-                onDrop,
-                accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
-              }}
-            />
+                }
+              },
+            }}
+            options={{
+              onDrop,
+              accept: { [`${ACCEPTED_MEDIA_MIME_TYPES.join(",")}`]: [] },
+            }}
+          />
+
+          {file && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-1 top-1 z-30"
+                onClick={() => setFile(undefined)}
+              >
+                <X className="text-slate-400" />
+              </Button>
+              <Image
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                classNames={{
+                  fallback: {
+                    wrapper: "bg-white border rounded border-slate-200",
+                  },
+                  figure: "w-full aspect-video h-40 rounded hover:cursor-pointer",
+                  image: "object-contain p-px",
+                }}
+                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+                  (e.target as HTMLElement).requestFullscreen()
+                }
+              />
+            </>
           )}
           <ErrorMessage name="thumbnail" />
         </Label>
