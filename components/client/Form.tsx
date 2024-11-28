@@ -721,36 +721,6 @@ export function CreateNewsForm() {
       <article className="col-span-12 grid grid-cols-1 gap-x-4">
         <h6 className="mb-1 text-lg font-medium lg:col-span-1">News Thumbnail</h6>
         <Label htmlFor="thumbnail" className="mb-4 lg:order-1 lg:col-span-1">
-          {/* <Input
-            id="thumbnail"
-            form="create-news-form"
-            name="thumbnail"
-            className="hidden"
-            type="file"
-            accept={ACCEPTED_IMAGE_MIME_EXTS.join(",")}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                if (Array.from<string>(ACCEPTED_IMAGE_MIME_EXTS).includes(file.type)) {
-                  // setFiles((prevState) => {
-                  //   return prevState.map((state, index) => {
-                  //     if (index === mediaIndex) {
-                  //       return {
-                  //         ...state,
-                  //         title: file.name,
-                  //         media: file,
-                  //       };
-                  //     }
-                  //     return state;
-                  //   });
-                  // });
-                } else {
-                  alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
-                }
-              }
-            }}
-          /> */}
-
           {file ? (
             <Image
               src={URL.createObjectURL(file)}
@@ -766,6 +736,7 @@ export function CreateNewsForm() {
           ) : (
             <Uploader
               inputProps={{
+                name: "thumbnail",
                 form: "create-news-form",
                 multiple: true,
                 onChange: (e) => {
