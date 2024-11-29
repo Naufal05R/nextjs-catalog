@@ -5,6 +5,7 @@ import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { Collection, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 type GetAllCollectionProps = {
   where?: Prisma.CollectionWhereInput;
@@ -40,16 +41,16 @@ export const getCollection = async (params: GetAllCollectionProps | undefined = 
   }
 };
 
-export const createCollection = async (prevState: Collection | undefined, formData: FormData) => {
+export const createCollection = async (prevState: Collection | z.ZodIssue[] | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
   };
-  const validated = CollectionFormSchema.safeParse(raw);
+  const { success, data, error } = CollectionFormSchema.safeParse(raw);
 
-  if (validated.success) {
+  if (success) {
     try {
-      const { title, description } = validated.data;
+      const { title, description } = data;
       const newCollection = await prisma.collection.create({
         data: {
           title,
@@ -63,7 +64,7 @@ export const createCollection = async (prevState: Collection | undefined, formDa
       handlingError(error);
     }
   } else {
-    handlingError(validated.error);
+    return error.errors;
   }
 };
 
