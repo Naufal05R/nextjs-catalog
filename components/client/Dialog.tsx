@@ -24,14 +24,7 @@ import { InputFieldMessage } from "../server/Message";
 import { DataKeys } from "@/types/data";
 import { z } from "zod";
 import { CollectionFormSchema } from "@/schema/collection";
-
-interface DialogProps {
-  content: {
-    title: string;
-    description?: string;
-    element?: React.JSX.Element;
-  };
-}
+import { CategoryFormSchema } from "@/schema/category";
 
 interface CreateCollectionDialogProps {
   list?: Array<Collection>;
@@ -117,21 +110,25 @@ export const CreateCollectionDialog = ({ setList }: CreateCollectionDialogProps)
   );
 };
 
-interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof DialogRoot>, DialogProps {
+interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof DialogRoot> {
   trigger: React.ReactNode;
 }
 
 export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof DialogRoot>, CreateCategoryDialog>(
-  ({ trigger, content }, ref) => {
+  ({ trigger }, ref) => {
     const [open, setOpen] = useState(false);
-    const [category, formAction, isLoading] = useFormState(createCategory, "");
-    const [temporaryState, setTemporaryState] = useState<typeof category>("");
+    const [state, formAction, isLoading] = useFormState(createCategory, "");
+    const [temporaryState, setTemporaryState] = useState<string>("");
 
     useEffect(() => {
-      if (category) {
-        setTemporaryState(category);
+      if (state && !Array.isArray(state)) {
+        setTemporaryState(state);
       }
-    }, [category]);
+    }, [state]);
+
+    const ErrorMessage = <T extends DataKeys<z.infer<typeof CategoryFormSchema>>>({ name }: { name: T }) => {
+      return <InputFieldMessage schema={CategoryFormSchema} errors={state} name={name} className="" />;
+    };
 
     return (
       <DialogRoot
@@ -150,8 +147,8 @@ export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof Dia
             ""
           ) : (
             <DialogHeader>
-              <DialogTitle className="font-body">{content.title}</DialogTitle>
-              <DialogDescription>{content.description}</DialogDescription>
+              <DialogTitle className="font-body">Create New Category</DialogTitle>
+              <DialogDescription></DialogDescription>
             </DialogHeader>
           )}
           {temporaryState ? (
@@ -163,7 +160,26 @@ export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof Dia
               </h4>
             </div>
           ) : (
-            content.element
+            <fieldset disabled={isLoading} className="space-y-6 sm:space-y-4">
+              <article className="grid grid-cols-4 items-start gap-2 sm:gap-4">
+                <Label htmlFor="title" className="text-left max-sm:col-span-4 sm:py-[11px]">
+                  Title
+                </Label>
+                <div className="col-span-4 sm:col-span-3">
+                  <Input id="title" name="title" form="create-category-form" />
+                  <ErrorMessage name="title" />
+                </div>
+              </article>
+              <article className="grid grid-cols-4 items-start gap-2 sm:gap-4">
+                <Label htmlFor="description" className="text-left max-sm:col-span-4 sm:py-[11px]">
+                  Description
+                </Label>
+                <div className="col-span-4 sm:col-span-3">
+                  <Textarea rows={3} id="description" name="description" form="create-category-form" />
+                  <ErrorMessage name="description" />
+                </div>
+              </article>
+            </fieldset>
           )}
           {!temporaryState && (
             <DialogFooter>
