@@ -35,7 +35,7 @@ import {
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
-import { Category, Media, News, Product, Tag } from "@prisma/client";
+import { Category, Media, Prisma, Product, Tag } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
@@ -46,6 +46,7 @@ import { createNews, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 import { useSidebar } from "../ui/sidebar";
 import { NewsFormSchema } from "@/schema/news";
+import { extensionError } from "@/lib/utils/error";
 
 interface CreateProductFormProps {
   collection: string;
@@ -69,7 +70,9 @@ interface EditProductFormProps extends CreateProductFormProps {
 }
 
 interface EditNewsFormProps {
-  news: News;
+  news: Prisma.NewsGetPayload<{
+    include: { thumbnail: true };
+  }>;
   text: string;
 }
 
@@ -1281,6 +1284,10 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(text);
 
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news?.thumbnail?.exts);
+
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, news?.thumbnail?.exts));
+
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
 
@@ -1346,12 +1353,12 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   useEffect(() => {
     (async () => {
-      const articleSrc = getNewsSrc({ id: news.slug, resource: "thumbnail" });
-      const blob = await fetch(articleSrc, { cache: "no-store" }).then((r) => r.blob());
+      const thumbnailSrc = getNewsSrc({ id: news.slug, resource: "thumbnail", exts });
+      const blob = await fetch(thumbnailSrc).then((r) => r.blob());
 
       if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));
     })();
-  }, [news.slug]);
+  }, [news.slug, exts]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
