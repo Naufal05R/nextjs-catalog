@@ -1,6 +1,7 @@
 import { capitalize, slugify } from "@/lib/utils";
 import { z } from "zod";
 import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS, MAX_FILE_SIZE } from "./media";
+import { ThumbnailSchema } from "./thumbnail";
 
 export const NewsSchema = z.object({
   id: z.string().cuid(),
@@ -31,6 +32,7 @@ export const NewsSchema = z.object({
       message: "Description must be less than 255 characters",
     }),
   isRelevant: z.boolean().default(true),
+  thumbnail: ThumbnailSchema,
 });
 
 export const NewsFormSchema = NewsSchema.pick({
