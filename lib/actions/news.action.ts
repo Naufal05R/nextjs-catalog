@@ -36,6 +36,9 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   try {
     const news = await prisma.news.findFirst({
       where,
+      include: {
+        thumbnail: true,
+      },
     });
 
     return news;
