@@ -81,7 +81,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
         await createObject({
           bucketName: APP_NAME,
-          objectName: `news/${slugify(title)}/article`,
+          objectName: `news/${slugify(title)}/article.mdx`,
           objectStream: markdown,
           objectMetaData: {
             "Content-Type": "text/markdown",
