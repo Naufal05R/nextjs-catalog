@@ -6,7 +6,7 @@ const STORAGE_URL = process.env.STORAGE_URL ?? "";
 
 export const permata_1 = async () => {
   const name = "000_permata-1.jpeg";
-  const path = "batu/batu-crystal";
+  const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
     where: { id: "cm3ceev1t0005dr9f5dtcm651" },
@@ -32,7 +32,7 @@ export const permata_1 = async () => {
 
 export const permata_2 = async () => {
   const name = "001_permata-2.jpeg";
-  const path = "batu/batu-crystal";
+  const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
     where: { id: "cm3cf9uvb00032e6605eyic55" },
@@ -58,7 +58,7 @@ export const permata_2 = async () => {
 
 export const permata_3 = async () => {
   const name = "002_permata-3.jpeg";
-  const path = "batu/batu-crystal";
+  const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
     where: { id: "cm3cfc3ts00042e66z4yhlgqo" },
@@ -84,7 +84,7 @@ export const permata_3 = async () => {
 
 export const blue_star_sapphire_1 = async () => {
   const name = "000_blue-star-sapphire-1.jpeg";
-  const path = "cincin/cincin-surgawi";
+  const path = "cincin/cm3cerfco0002dgfuxcukhnko";
 
   await prisma.media.upsert({
     where: { id: "cm3cfn31j00052e66x5zqmqn5" },
@@ -110,7 +110,7 @@ export const blue_star_sapphire_1 = async () => {
 
 export const blue_star_sapphire_2 = async () => {
   const name = "001_blue-star-sapphire-2.jpeg";
-  const path = "cincin/cincin-surgawi";
+  const path = "cincin/cm3cerfco0002dgfuxcukhnko";
 
   await prisma.media.upsert({
     where: { id: "cm3cfnd8u00062e66au3qgzy9" },
@@ -136,7 +136,7 @@ export const blue_star_sapphire_2 = async () => {
 
 export const blue_star_sapphire_3 = async () => {
   const name = "002_blue-star-sapphire-3.jpeg";
-  const path = "cincin/cincin-surgawi";
+  const path = "cincin/cm3cerfco0002dgfuxcukhnko";
 
   await prisma.media.upsert({
     where: { id: "cm3cfnjmt00072e660qqi4gth" },
