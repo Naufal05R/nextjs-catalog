@@ -97,6 +97,7 @@ export const ProductSchema = z.object({
 });
 
 export const ProductFormSchema = ProductSchema.pick({
+  id: true,
   title: true,
   state: true,
   color: true,
