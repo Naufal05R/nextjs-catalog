@@ -1,8 +1,10 @@
 import { Image } from "@/components/server/Media";
 import { getNews } from "@/lib/actions/news.action";
 import { getNewsSrc } from "@/lib/utils";
+import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
+import { z } from "zod";
 
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
 
@@ -13,8 +15,15 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
 
   if (!news) return notFound();
 
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news.thumbnail?.exts);
+
+  if (!exts)
+    throw new Error(
+      `Error: unexpected extensions! Extension should be only be ${ACCEPTED_IMAGE_EXTS.join(", ")}. Extension ${news.thumbnail?.exts} is not currently supported!`,
+    );
+
   const { title, description, updatedAt } = news;
-  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail" });
+  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail", exts });
   const markdown = await fetch(`${S3_ENDPOINT}/news/${params.slug}/article`).then((r) => r.text());
 
   if (!news || !markdown) return notFound();
