@@ -16,6 +16,14 @@ import { CircleCheck } from "lucide-react";
 import { createCollection } from "@/lib/actions/collection.action";
 import { createCategory } from "@/lib/actions/category.action";
 import { Collection } from "@prisma/client";
+import { SidebarMenuSubButton } from "../ui/sidebar";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { InputFieldMessage } from "../server/Message";
+import { DataKeys } from "@/types/data";
+import { z } from "zod";
+import { CollectionFormSchema } from "@/schema/collection";
 
 interface DialogProps {
   content: {
@@ -25,26 +33,26 @@ interface DialogProps {
   };
 }
 
-interface CreateCollectionDialogProps extends DialogProps {
+interface CreateCollectionDialogProps {
   list?: Array<Collection>;
   setList?: React.Dispatch<React.SetStateAction<Array<Collection>>>;
-  trigger: {
-    title: string;
-    element: React.ElementType;
-  };
 }
 
-export const CreateCollectionDialog = ({ trigger, content, setList }: CreateCollectionDialogProps) => {
+export const CreateCollectionDialog = ({ setList }: CreateCollectionDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [collection, formAction, isLoading] = useFormState(createCollection, undefined);
+  const [state, formAction, isLoading] = useFormState(createCollection, undefined);
   const [temporaryState, setTemporaryState] = useState<string>();
 
   useEffect(() => {
-    if (collection) {
-      setTemporaryState(collection.title);
-      if (setList) setList((prevState) => [...prevState, collection]);
+    if (state && !Array.isArray(state)) {
+      setTemporaryState(state.title);
+      if (setList) setList((prevState) => [...prevState, state]);
     }
-  }, [collection, setList]);
+  }, [state, setList]);
+
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof CollectionFormSchema>>>({ name }: { name: T }) => {
+    return <InputFieldMessage schema={CollectionFormSchema} errors={state} name={name} className="" />;
+  };
 
   return (
     <DialogRoot
@@ -55,7 +63,7 @@ export const CreateCollectionDialog = ({ trigger, content, setList }: CreateColl
       }}
     >
       <DialogTrigger asChild className="hover:cursor-pointer">
-        <trigger.element>{trigger.title}</trigger.element>
+        <SidebarMenuSubButton>New Collections</SidebarMenuSubButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
         <form id="create-collection-form" action={formAction} />
@@ -63,8 +71,8 @@ export const CreateCollectionDialog = ({ trigger, content, setList }: CreateColl
           ""
         ) : (
           <DialogHeader>
-            <DialogTitle className="font-body">{content.title}</DialogTitle>
-            <DialogDescription>{content.description}</DialogDescription>
+            <DialogTitle className="font-body">Create New Collections</DialogTitle>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
         )}
         {temporaryState ? (
@@ -76,7 +84,26 @@ export const CreateCollectionDialog = ({ trigger, content, setList }: CreateColl
             </h4>
           </div>
         ) : (
-          content.element
+          <fieldset disabled={isLoading} className="space-y-6 sm:space-y-4">
+            <article className="grid grid-cols-4 items-start gap-2 sm:gap-4">
+              <Label htmlFor="Collections" className="text-left max-sm:col-span-4 sm:py-[11px]">
+                Title
+              </Label>
+              <div className="col-span-4 sm:col-span-3">
+                <Input id="Collections" name="title" form="create-collection-form" />
+                <ErrorMessage name="title" />
+              </div>
+            </article>
+            <article className="grid grid-cols-4 items-start gap-2 sm:gap-4">
+              <Label htmlFor="description" className="text-left max-sm:col-span-4 sm:py-[11px]">
+                Description
+              </Label>
+              <div className="col-span-4 sm:col-span-3">
+                <Textarea rows={3} id="description" name="description" form="create-collection-form" />
+                <ErrorMessage name="description" />
+              </div>
+            </article>
+          </fieldset>
         )}
         {!temporaryState && (
           <DialogFooter>
