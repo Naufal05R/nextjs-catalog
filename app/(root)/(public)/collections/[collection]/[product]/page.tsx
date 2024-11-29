@@ -26,17 +26,17 @@ const DetailProductPage = async ({ params }: { params: { collection: string; pro
 
   return (
     <>
-      <section className="grid grid-cols-12 gap-x-8 pt-8">
+      <section className="flex flex-col gap-8 pt-8 sm:flex-row">
         {product.gallery?.medias && (
           <CarouselDetail
             data={product.gallery.medias}
             productId={product.id}
             collection={params.collection}
-            classNames={{ root: "col-span-12 sm:col-span-6", dots: "basis-1/6" }}
+            classNames={{ root: "md:flex-1", dots: "basis-1/6" }}
           />
         )}
 
-        <article className="col-span-12 sm:col-span-6">
+        <article className="md:flex-1">
           <h4 className="mb-8 text-3xl font-medium uppercase">{product?.title}</h4>
 
           <dl className="grid flex-1 grid-cols-2 border-t">
