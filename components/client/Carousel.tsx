@@ -299,6 +299,8 @@ export const CarouselDetail = ({
         />
       }
       classNames={{
+        controllerPrev: "max-sm:flex",
+        controllerNext: "max-sm:flex",
         ...classNames,
       }}
     />
