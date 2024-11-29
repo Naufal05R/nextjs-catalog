@@ -76,8 +76,16 @@ export const getNewsSrc = ({
   return "";
 };
 
-export const getMediaSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
-  return `${S3_ENDPOINT}/${collection}/${product}/${name}`;
+export const getMediaSrc = ({
+  collection,
+  productId,
+  name,
+}: {
+  collection: string;
+  productId: string;
+  name: string;
+}) => {
+  return `${S3_ENDPOINT}/${collection}/${productId}/${name}`;
 };
 
 export function getFileMimeTypes(str: string) {
