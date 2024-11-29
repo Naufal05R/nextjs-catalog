@@ -832,7 +832,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         }
       });
 
-    formAction({ formData, collection, id: product.id });
+    formAction({ formData, collection });
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -861,7 +861,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
       try {
         const files = [];
         for (const { title, name, order } of defaultFiles) {
-          const src = getMediaSrc({ name, product: product.slug, collection });
+          const src = getMediaSrc({ name, productId: product.id, collection });
           const blob = await fetch(src).then((r) => r.blob());
           const media = new File([blob], name, { type: blob.type });
           files.push({ title, order, media });
