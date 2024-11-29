@@ -4,7 +4,7 @@ import { ACCEPTED_IMAGE_EXTS, ACCEPTED_IMAGE_MIME_EXTS, MAX_FILE_SIZE } from "./
 import { ThumbnailSchema } from "./thumbnail";
 
 export const NewsSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string().uuid(),
   title: z
     .string()
     .min(3, {
@@ -51,7 +51,7 @@ export const NewsFormSchema = NewsSchema.pick({
       }),
     content: z
       .string()
-      .min(10, { message: "Minimum content size is 1kb" })
+      .min(1024, { message: "Minimum content size is 1kb" })
       .max(1048576, { message: "Maximum content size is 1mb" }),
     "images.file": z
       .array(
