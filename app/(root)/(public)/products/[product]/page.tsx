@@ -2,9 +2,12 @@ import React from "react";
 import Link from "next/link";
 
 import { CarouselDetail } from "@/components/client/Carousel";
-import { Minus, Plus } from "lucide-react";
+
+// TODO: Should implement add to chart feature
+
+// import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
@@ -81,7 +84,7 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
 
             <CopyButton title="Share Link" />
 
-            <fieldset className="flex basis-5/6 items-center gap-2 overflow-visible">
+            {/* <fieldset className="flex basis-5/6 items-center gap-2 overflow-visible">
               <Button variant={"secondary"} className="text-slate-600 shadow-none">
                 <Minus />
               </Button>
@@ -99,7 +102,7 @@ const DetailProductPage = async ({ params }: { params: { product: string } }) =>
               <Button variant={"default"} className="w-full flex-1 shadow-none">
                 Buy Now
               </Button>
-            </div>
+            </div> */}
           </menu>
 
           <p className="mt-8 text-sm text-slate-600">
