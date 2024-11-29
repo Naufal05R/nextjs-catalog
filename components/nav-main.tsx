@@ -14,9 +14,6 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { CreateCollectionDialog } from "./client/Dialog";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { handlingError } from "@/lib/utils";
 import { toggleFavoriteCollection } from "@/lib/actions/collection.action";
 import { useEffect, useState } from "react";
@@ -92,36 +89,7 @@ export function NavMain() {
                   )}
                 />
                 <SidebarMenuSubItem>
-                  <CreateCollectionDialog
-                    list={collections}
-                    setList={setCollections}
-                    trigger={{ title: "New Collections", element: SidebarMenuSubButton }}
-                    content={{
-                      title: "Create New Collections",
-                      element: (
-                        <>
-                          <fieldset className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="Collections" className="text-left">
-                              Title
-                            </Label>
-                            <Input id="Collections" name="title" className="col-span-3" form="create-collection-form" />
-                          </fieldset>
-                          <fieldset className="grid grid-cols-4 items-start gap-4">
-                            <Label htmlFor="description" className="py-[11px] text-left">
-                              Description
-                            </Label>
-                            <Textarea
-                              rows={3}
-                              id="description"
-                              name="description"
-                              className="col-span-3"
-                              form="create-collection-form"
-                            />
-                          </fieldset>
-                        </>
-                      ),
-                    }}
-                  />
+                  <CreateCollectionDialog list={collections} setList={setCollections} />
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
             </CollapsibleContent>
