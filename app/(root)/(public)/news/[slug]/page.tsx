@@ -1,8 +1,11 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { z } from "zod";
+import { Image } from "@/components/server/Media";
 import { getNews } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { getNewsSrc } from "@/lib/utils";
-import { Image } from "@/components/server/Media";
+import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
+import { extensionError } from "@/lib/utils/error";
 
 export default async function DetailNewsPage({ params }: { params: { slug: string } }) {
   const news = await getNews({
@@ -11,9 +14,14 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
 
   if (!news) return notFound();
 
-  const { title, description, updatedAt } = news;
-  const articleSrc = getNewsSrc({ id: params.slug, resource: "article" });
-  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail" });
+  const { title, description, thumbnail, updatedAt } = news;
+
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+
+  const articleSrc = getNewsSrc({ id: params.slug, resource: "article", exts: "mdx" });
+  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail", exts });
   const markdown = await fetch(articleSrc).then((r) => r.text());
 
   return (
