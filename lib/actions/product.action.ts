@@ -165,35 +165,13 @@ export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
 ) => {
-  const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
+  const { success, data, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
   if (success) {
     const { medias, tags, ...product } = data;
     let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
-      for (const { title, order, media } of medias) {
-        if (media) {
-          const { fileMime } = getFileMimeTypes(media.type);
-          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
-          const previewFile = new File([media], fileName, { type: media.type });
-          const arrayBuffer = await previewFile.arrayBuffer();
-          const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
-          const objectParams: Parameters<typeof createObject>[0] = {
-            bucketName: APP_NAME,
-            objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
-            objectStream: imageBuffer,
-            objectMetaData: {
-              "Content-Type": media.type,
-              title,
-              order,
-            },
-          };
-
-          await createObject(objectParams);
-        }
-      }
-
       const files = medias
         .sort((a, b) => a.order - b.order)
         .map(({ title, order, media }) => {
@@ -240,13 +218,35 @@ export const createProduct = async (
               };
             }),
           });
+
+          return _product;
         } else throw new Error("Collection not found");
       });
 
+      for (const { title, order, media } of medias) {
+        if (media) {
+          const { fileMime } = getFileMimeTypes(media.type);
+          const fileName = `${padValue(order)}_${slugify(title)}.${fileMime}`;
+          const previewFile = new File([media], fileName, { type: media.type });
+          const arrayBuffer = await previewFile.arrayBuffer();
+          const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
+          const objectParams: Parameters<typeof createObject>[0] = {
+            bucketName: APP_NAME,
+            objectName: `${slugify(collection)}/${newProduct.id}/${fileName}`,
+            objectStream: imageBuffer,
+            objectMetaData: {
+              "Content-Type": media.type,
+              title,
+              order,
+            },
+          };
+
+          await createObject(objectParams);
+        }
+      }
+
       pathname = `/dashboard/products/${collection}`;
       revalidatePath("/", "layout");
-
-      return newProduct;
     } catch (error) {
       handlingError(error);
     } finally {
@@ -259,12 +259,12 @@ export const createProduct = async (
 
 export const updateProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
-  { formData, collection, id }: { formData: FormData; collection: string; id: string },
+  { formData, collection }: { formData: FormData; collection: string },
 ) => {
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
-    const { medias, tags, ...product } = data;
+    const { id, medias, tags, ...product } = data;
     let pathname: string = `/dashboard/products/${collection}/edit/${slugify(product.title)}`;
 
     try {
@@ -277,7 +277,7 @@ export const updateProduct = async (
           const imageBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
           const objectParams: Parameters<typeof createObject>[0] = {
             bucketName: APP_NAME,
-            objectName: `${slugify(collection)}/${slugify(product.title)}/${fileName}`,
+            objectName: `${slugify(collection)}/${id}/${fileName}`,
             objectStream: imageBuffer,
             objectMetaData: {
               "Content-Type": media.type,
@@ -324,7 +324,7 @@ export const updateProduct = async (
           });
 
           const _gallery = await _prisma.gallery.update({
-            where: { slug: slugify(product.title) },
+            where: { productId: id },
             data: {
               title: product.title,
               slug: slugify(product.title),
