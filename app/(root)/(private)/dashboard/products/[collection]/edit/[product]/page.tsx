@@ -14,7 +14,7 @@ export default async function EditProductPage({ params }: { params: { collection
 
   return (
     <section className="size-full p-4">
-      <h4 className="text-2xl font-semibold capitalize">Create new {params.collection} product</h4>
+      <h4 className="text-2xl font-semibold capitalize">Edit {selectedProduct.title} product</h4>
 
       <EditProductForm
         collection={params.collection}
