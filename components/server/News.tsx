@@ -3,11 +3,14 @@ import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { archiveNews, deleteNews, getAllNews, unarchiveNews } from "@/lib/actions/news.action";
 import { EmptyState, EmptyStateWithButton } from "./Empty";
-import { News } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Archive, ArchiveRestore, FilePlus, Pencil, Trash2 } from "lucide-react";
 import { getNewsSrc } from "@/lib/utils";
+import { z } from "zod";
+import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
+import { extensionError } from "@/lib/utils/error";
 
 export const FrontEndNewsDisplay = async () => {
   const allNews = await getAllNews();
@@ -21,9 +24,23 @@ export const FrontEndNewsDisplay = async () => {
   );
 };
 
-export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) => {
+export const FrontEndNewsCard = ({
+  title,
+  description,
+  slug,
+  thumbnail,
+  updatedAt,
+}: Prisma.NewsGetPayload<{
+  include: {
+    thumbnail: true;
+  };
+}>) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const src = getNewsSrc({ id: slug, resource: "thumbnail" });
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+
+  const src = getNewsSrc({ id: slug, resource: "thumbnail", exts });
 
   return (
     <Link href={`/news/${slug}`} className="group col-span-4">
@@ -68,9 +85,25 @@ export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: b
   );
 };
 
-export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, updatedAt }: News) => {
+export const BackEndNewsCard = ({
+  id,
+  title,
+  description,
+  slug,
+  thumbnail,
+  isRelevant,
+  updatedAt,
+}: Prisma.NewsGetPayload<{
+  include: {
+    thumbnail: true;
+  };
+}>) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const thumbnailSrc = getNewsSrc({ id: slug, resource: "thumbnail" });
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+
+  const thumbnailSrc = getNewsSrc({ id: slug, resource: "thumbnail", exts });
 
   return (
     <Card className="group col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">
