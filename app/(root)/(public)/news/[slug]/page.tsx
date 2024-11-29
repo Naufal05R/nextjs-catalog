@@ -12,16 +12,16 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
     where: params,
   });
 
-  if (!news) return notFound();
+  if (!news || !news.thumbnail) return notFound();
 
   const { title, description, thumbnail, updatedAt } = news;
 
-  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail.exts);
 
-  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail.exts));
 
-  const articleSrc = getNewsSrc({ id: params.slug, resource: "article", exts: "mdx" });
-  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail", exts });
+  const articleSrc = getNewsSrc({ newsId: news.id, resource: "article", exts: "mdx" });
+  const thumbnailSrc = getNewsSrc({ newsId: news.id, resource: "thumbnail", resourceId: news.thumbnail.id, exts });
   const markdown = await fetch(articleSrc).then((r) => r.text());
 
   return (

@@ -25,6 +25,7 @@ export const FrontEndNewsDisplay = async () => {
 };
 
 export const FrontEndNewsCard = ({
+  id,
   title,
   description,
   slug,
@@ -35,12 +36,14 @@ export const FrontEndNewsCard = ({
     thumbnail: true;
   };
 }>) => {
+  if (!thumbnail) throw new Error("News not found!");
+
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail.exts);
 
-  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail.exts));
 
-  const src = getNewsSrc({ id: slug, resource: "thumbnail", exts });
+  const src = getNewsSrc({ newsId: id, resource: "thumbnail", resourceId: thumbnail.id, exts });
 
   return (
     <Link href={`/news/${slug}`} className="group col-span-4">
@@ -98,12 +101,14 @@ export const BackEndNewsCard = ({
     thumbnail: true;
   };
 }>) => {
+  if (!thumbnail) throw new Error("News not found!");
+
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail?.exts);
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(thumbnail.exts);
 
-  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail?.exts));
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail.exts));
 
-  const thumbnailSrc = getNewsSrc({ id: slug, resource: "thumbnail", exts });
+  const thumbnailSrc = getNewsSrc({ newsId: id, resource: "thumbnail", resourceId: thumbnail.id, exts });
 
   return (
     <Card className="group col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">

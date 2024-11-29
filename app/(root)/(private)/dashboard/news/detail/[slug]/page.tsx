@@ -14,15 +14,20 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
     where: params,
   });
 
-  if (!news) return notFound();
+  if (!news || !news.thumbnail) return notFound();
 
-  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news.thumbnail?.exts);
+  const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news.thumbnail.exts);
 
-  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, news.thumbnail?.exts));
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, news.thumbnail.exts));
 
   const { title, description, updatedAt } = news;
-  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail", exts });
-  const markdown = await fetch(`${S3_ENDPOINT}/news/${params.slug}/article`).then((r) => r.text());
+  const thumbnailSrc = getNewsSrc({
+    newsId: news.id,
+    resource: "thumbnail",
+    resourceId: news.thumbnail.id,
+    exts,
+  });
+  const markdown = await fetch(`${S3_ENDPOINT}/news/${news.id}/article.mdx`).then((r) => r.text());
 
   if (!news || !markdown) return notFound();
 

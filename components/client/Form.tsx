@@ -1353,12 +1353,19 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   useEffect(() => {
     (async () => {
-      const thumbnailSrc = getNewsSrc({ id: news.slug, resource: "thumbnail", exts });
-      const blob = await fetch(thumbnailSrc).then((r) => r.blob());
+      if (news.thumbnail) {
+        const thumbnailSrc = getNewsSrc({
+          newsId: news.id,
+          resource: "thumbnail",
+          resourceId: news.thumbnail.id,
+          exts,
+        });
+        const blob = await fetch(thumbnailSrc).then((r) => r.blob());
 
-      if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));
+        if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));
+      }
     })();
-  }, [news.slug, exts]);
+  }, [news.slug, exts, news.id, news.thumbnail]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
