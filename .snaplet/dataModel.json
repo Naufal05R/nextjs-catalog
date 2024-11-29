@@ -622,6 +622,20 @@
           "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
+        },
+        {
+          "name": "Thumbnail",
+          "type": "Thumbnail",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "ThumbnailToNews",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
         }
       ],
       "uniqueConstraints": [
@@ -1239,6 +1253,89 @@
           "name": "Tag_title_key",
           "fields": [
             "title"
+          ],
+          "nullNotDistinct": false
+        }
+      ]
+    },
+    "Thumbnail": {
+      "id": "public.Thumbnail",
+      "schemaName": "public",
+      "tableName": "Thumbnail",
+      "fields": [
+        {
+          "id": "public.Thumbnail.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.Thumbnail.exts",
+          "name": "exts",
+          "columnName": "exts",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 8
+        },
+        {
+          "id": "public.Thumbnail.newsId",
+          "name": "newsId",
+          "columnName": "newsId",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "News",
+          "type": "News",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "ThumbnailToNews",
+          "relationFromFields": [
+            "newsId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "Thumbnail_pkey",
+          "fields": [
+            "id"
+          ],
+          "nullNotDistinct": false
+        },
+        {
+          "name": "Thumbnail_newsId_key",
+          "fields": [
+            "newsId"
           ],
           "nullNotDistinct": false
         }
