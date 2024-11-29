@@ -63,14 +63,17 @@ export function refineBlobStr(blobStr: "blob:" | (string & {})) {
 }
 
 export const getNewsSrc = ({
-  id,
+  newsId,
+  resourceId = "",
   resource,
   exts,
-}: { id: string } & (
-  | { resource: "thumbnail"; exts: (typeof ACCEPTED_IMAGE_EXTS)[number] }
-  | { resource: "article"; exts: "md" | "mdx" }
+}: { newsId: string } & (
+  | { resource: "thumbnail"; resourceId: string; exts: (typeof ACCEPTED_IMAGE_EXTS)[number] }
+  | { resource: "article"; resourceId?: undefined; exts: "md" | "mdx" }
 )) => {
-  return `${S3_ENDPOINT}/news/${id}/${resource}.${exts}`;
+  if (resource === "article") return `${S3_ENDPOINT}/news/${newsId}/${resource}.${exts}`;
+  if (resource === "thumbnail") return `${S3_ENDPOINT}/news/${newsId}/${resource}_${resourceId}.${exts}`;
+  return "";
 };
 
 export const getMediaSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
