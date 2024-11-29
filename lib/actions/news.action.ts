@@ -60,14 +60,24 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
     try {
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
+      const newsId = crypto.randomUUID();
       let markdown = content;
 
       await prisma.$transaction(async (_prisma) => {
+        await _prisma.news.create({
+          data: {
+            id: newsId,
+            title,
+            slug: slugify(title),
+            description,
+          },
+        });
+
         if (imagesFile && imagesId) {
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
               const { fileMime } = getFileMimeTypes(file.type);
-              const objectName = `news/${slugify(title)}/${imagesId[index]}.${fileMime}`;
+              const objectName = `news/${newsId}/${imagesId[index]}.${fileMime}`;
               const arrayBuffer = await file.arrayBuffer();
               const objectStream = Buffer.from(arrayBuffer);
               const objectParams = {
@@ -84,18 +94,10 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
         await createObject({
           bucketName: APP_NAME,
-          objectName: `news/${slugify(title)}/article.mdx`,
+          objectName: `news/${newsId}/article.mdx`,
           objectStream: markdown,
           objectMetaData: {
             "Content-Type": "text/markdown",
-          },
-        });
-
-        const news = await _prisma.news.create({
-          data: {
-            title,
-            slug: slugify(title),
-            description,
           },
         });
 
@@ -108,7 +110,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/thumbnail_${thumbnailId}.${fileMime}`,
+            objectName: `news/${newsId}/thumbnail_${thumbnailId}.${fileMime}`,
             objectStream: objectStream,
             objectMetaData: {
               "Content-Type": thumbnail.type,
@@ -118,7 +120,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
           await _prisma.thumbnail.create({
             data: {
               id: thumbnailId,
-              newsId: news.id,
+              newsId: newsId,
               exts: fileMime,
             },
           });
@@ -126,7 +128,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${slugify(title)}`;
+      pathname = `/dashboard/news/detail/${newsId}`;
     } catch (error) {
       handlingError(error);
     } finally {
@@ -140,10 +142,9 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, formData: FormData) => {
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
-  console.log(initRawData(formData));
-
   if (success) {
     const { id, title, description, thumbnail, content } = data;
+    const slug = slugify(title);
     let pathname = "";
 
     try {
@@ -152,13 +153,42 @@ export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, form
       let markdown = content;
 
       await prisma.$transaction(async (_prisma) => {
-        if (thumbnail) {
-          const arrayBuffer = await thumbnail.arrayBuffer();
+        await _prisma.news.update({
+          where: { id },
+          data: {
+            title,
+            slug: slug,
+            description,
+          },
+        });
+
+        const oldThumbnail = await _prisma.thumbnail.findUnique({ where: { newsId: id } });
+
+        if (thumbnail.name !== oldThumbnail?.id) {
+          const thumbnailId = crypto.randomUUID();
+          const { fileMime } = getFileMimeTypes(thumbnail.type);
+          const image = new File([thumbnail], thumbnailId, { type: thumbnail.type });
+          const arrayBuffer = await image.arrayBuffer();
           const objectStream = Buffer.from(arrayBuffer);
+
+          await _prisma.news.update({
+            where: { id },
+            data: {
+              thumbnail: {
+                delete: { id: oldThumbnail?.id },
+                create: {
+                  id: thumbnailId,
+                  exts: fileMime,
+                },
+              },
+            },
+          });
+
+          deleteObjects({ bucketName: APP_NAME, prefix: `news/${id}/thumbnail_` });
 
           await createObject({
             bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/thumbnail`,
+            objectName: `news/${id}/thumbnail_${thumbnailId}.${fileMime}`,
             objectStream: objectStream,
             objectMetaData: {
               "Content-Type": thumbnail.type,
@@ -170,7 +200,7 @@ export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, form
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
               const { fileMime } = getFileMimeTypes(file.type);
-              const objectName = `news/${slugify(title)}/${imagesId[index]}.${fileMime}`;
+              const objectName = `news/${id}/${imagesId[index]}.${fileMime}`;
               const arrayBuffer = await file.arrayBuffer();
               const objectStream = Buffer.from(arrayBuffer);
               const objectParams = {
@@ -187,27 +217,16 @@ export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, form
 
         await createObject({
           bucketName: APP_NAME,
-          objectName: `news/${slugify(title)}/article`,
+          objectName: `news/${id}/article.mdx`,
           objectStream: markdown,
           objectMetaData: {
             "Content-Type": "text/markdown",
           },
         });
-
-        const _news = await _prisma.news.update({
-          where: { id },
-          data: {
-            title,
-            slug: slugify(title),
-            description,
-          },
-        });
-
-        return _news;
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${slugify(title)}`;
+      pathname = `/dashboard/news/detail/${slug}`;
     } catch (error) {
       handlingError(error);
     } finally {
