@@ -30,16 +30,16 @@ export const getAllCategory = async () => {
   }
 };
 
-export const createCategory = async (prevState: string | undefined, formData: FormData) => {
+export const createCategory = async (prevState: string | z.ZodIssue[] | undefined, formData: FormData) => {
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
   };
-  const validated = CategoryFormSchema.safeParse(raw);
+  const { success, data, error } = CategoryFormSchema.safeParse(raw);
 
-  if (validated.success) {
+  if (success) {
     try {
-      const { title, description } = validated.data;
+      const { title, description } = data;
       const newCategory = await prisma.category.create({
         data: {
           title,
@@ -54,6 +54,6 @@ export const createCategory = async (prevState: string | undefined, formData: Fo
       handlingError(error);
     }
   } else {
-    handlingError(validated.error);
+    return error.errors;
   }
 };
