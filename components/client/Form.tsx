@@ -871,7 +871,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         handlingError(error);
       }
     })();
-  }, [collection, defaultFiles, product.slug]);
+  }, [collection, defaultFiles, product.id]);
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
