@@ -127,7 +127,7 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
       </picture>
 
       <figcaption className="mt-4 text-lg capitalize">{title}</figcaption>
-      <p className="mt-1 line-clamp-1 text-sm uppercase text-slate-500">{description}</p>
+      <p className="mt-1 line-clamp-1 h-5 text-sm uppercase text-slate-500">{description}</p>
     </Link>
   );
 };
