@@ -1346,7 +1346,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   useEffect(() => {
     (async () => {
-      const articleSrc = getNewsSrc({ slug: news.slug, resource: "thumbnail" });
+      const articleSrc = getNewsSrc({ id: news.slug, resource: "thumbnail" });
       const blob = await fetch(articleSrc, { cache: "no-store" }).then((r) => r.blob());
 
       if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));

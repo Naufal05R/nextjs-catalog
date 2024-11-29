@@ -23,7 +23,7 @@ export const FrontEndNewsDisplay = async () => {
 
 export const FrontEndNewsCard = ({ title, description, slug, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const src = getNewsSrc({ slug, resource: "thumbnail" });
+  const src = getNewsSrc({ id: slug, resource: "thumbnail" });
 
   return (
     <Link href={`/news/${slug}`} className="group col-span-4">
@@ -70,7 +70,7 @@ export const BackEndNewsDisplay = async ({ isRelevant = true }: { isRelevant?: b
 
 export const BackEndNewsCard = ({ id, title, description, slug, isRelevant, updatedAt }: News) => {
   const timestamp = new Date(updatedAt).toLocaleDateString();
-  const thumbnailSrc = getNewsSrc({ slug, resource: "thumbnail" });
+  const thumbnailSrc = getNewsSrc({ id: slug, resource: "thumbnail" });
 
   return (
     <Card className="group col-span-12 h-fit min-h-full overflow-hidden sm:col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-4">

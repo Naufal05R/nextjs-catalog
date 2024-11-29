@@ -14,7 +14,7 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
   if (!news) return notFound();
 
   const { title, description, updatedAt } = news;
-  const thumbnailSrc = getNewsSrc({ slug: params.slug, resource: "thumbnail" });
+  const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail" });
   const markdown = await fetch(`${S3_ENDPOINT}/news/${params.slug}/article`).then((r) => r.text());
 
   if (!news || !markdown) return notFound();
