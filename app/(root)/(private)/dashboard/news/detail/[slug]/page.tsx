@@ -1,6 +1,7 @@
 import { Image } from "@/components/server/Media";
 import { getNews } from "@/lib/actions/news.action";
 import { getNewsSrc } from "@/lib/utils";
+import { extensionError } from "@/lib/utils/error";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
@@ -17,10 +18,7 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
 
   const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news.thumbnail?.exts);
 
-  if (!exts)
-    throw new Error(
-      `Error: unexpected extensions! Extension should be only be ${ACCEPTED_IMAGE_EXTS.join(", ")}. Extension ${news.thumbnail?.exts} is not currently supported!`,
-    );
+  if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, news.thumbnail?.exts));
 
   const { title, description, updatedAt } = news;
   const thumbnailSrc = getNewsSrc({ id: params.slug, resource: "thumbnail", exts });
