@@ -24,8 +24,6 @@ import { Dataset } from "@/types/data";
 
 import { Check, ChevronsUpDown, LayoutList, PlusCircle } from "lucide-react";
 import { CreateCategoryDialog } from "@/components/client/Dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 interface ComboboxDropdownMenuProps extends React.ComponentPropsWithoutRef<typeof DropdownMenu> {
@@ -235,39 +233,14 @@ export const ComboboxDropdownCategory = React.forwardRef<
                 <CreateCategoryDialog
                   trigger={
                     <Button
-                      variant="ghost"
                       size="sm"
+                      variant="ghost"
                       className="w-full justify-start gap-2 rounded-none px-2 text-sm font-normal"
                     >
                       <PlusCircle className="mr-2" />
                       Create Category
                     </Button>
                   }
-                  content={{
-                    title: `Create New Category`,
-                    element: (
-                      <>
-                        <fieldset className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="title" className="text-left">
-                            Title
-                          </Label>
-                          <Input id="title" name="title" className="col-span-3" form="create-category-form" />
-                        </fieldset>
-                        <fieldset className="grid grid-cols-4 items-start gap-4">
-                          <Label htmlFor="description" className="py-[11px] text-left">
-                            Description
-                          </Label>
-                          <Textarea
-                            rows={3}
-                            id="description"
-                            name="description"
-                            className="col-span-3"
-                            form="create-category-form"
-                          />
-                        </fieldset>
-                      </>
-                    ),
-                  }}
                 />
               ),
             },
