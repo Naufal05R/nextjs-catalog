@@ -128,7 +128,7 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${newsId}`;
+      pathname = `/dashboard/news/detail/${slugify(title)}`;
     } catch (error) {
       handlingError(error);
     } finally {
