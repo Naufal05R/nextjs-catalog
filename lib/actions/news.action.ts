@@ -22,6 +22,9 @@ export const getAllNews = async (params: GetNewsProps | undefined = undefined) =
   try {
     const allNews = await prisma.news.findMany({
       where,
+      include: {
+        thumbnail: true,
+      },
     });
 
     return allNews;
