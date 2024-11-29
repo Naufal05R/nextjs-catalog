@@ -820,6 +820,8 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   const { open } = useSidebar();
 
   const actionHandler = async (formData: FormData) => {
+    formData.append("id", product.id);
+
     files
       .filter(({ media }) => !!media && new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(media.type))
       .sort((a, b) => a.order - b.order)
