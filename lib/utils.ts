@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Dataset } from "@/types/data";
-import { MediaFormSchema } from "@/schema/media";
+import { ACCEPTED_IMAGE_EXTS, MediaFormSchema } from "@/schema/media";
 
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
@@ -62,8 +62,15 @@ export function refineBlobStr(blobStr: "blob:" | (string & {})) {
   return blobStr.replace(/blob\:/, "blob\\:");
 }
 
-export const getNewsSrc = ({ slug, resource }: { slug: string; resource: "thumbnail" | "article" }) => {
-  return `${S3_ENDPOINT}/news/${slug}/${resource}`;
+export const getNewsSrc = ({
+  id,
+  resource,
+  exts,
+}: { id: string } & (
+  | { resource: "thumbnail"; exts: (typeof ACCEPTED_IMAGE_EXTS)[number] }
+  | { resource: "article"; exts: "md" | "mdx" }
+)) => {
+  return `${S3_ENDPOINT}/news/${id}/${resource}.${exts}`;
 };
 
 export const getMediaSrc = ({ collection, product, name }: { collection: string; product: string; name: string }) => {
