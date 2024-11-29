@@ -32,11 +32,11 @@ const DetailProductPage = async ({ params }: { params: { collection: string; pro
             data={product.gallery.medias}
             productId={product.id}
             collection={params.collection}
-            classNames={{ root: "col-span-6", dots: "basis-1/6" }}
+            classNames={{ root: "col-span-12 sm:col-span-6", dots: "basis-1/6" }}
           />
         )}
 
-        <article className="col-span-6">
+        <article className="col-span-12 sm:col-span-6">
           <h4 className="mb-8 text-3xl font-medium uppercase">{product?.title}</h4>
 
           <dl className="grid flex-1 grid-cols-2 border-t">
