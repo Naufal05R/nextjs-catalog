@@ -87,7 +87,7 @@ export const DashbaordProductCard = async ({
   collection,
   thumbnail,
 }: DashbaordProductCardProps) => {
-  const src = getMediaSrc({ collection, product: slug, name: thumbnail });
+  const src = getMediaSrc({ collection, productId: id, name: thumbnail });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
@@ -374,7 +374,7 @@ export const SearchProductResult = async ({ query }: ProductResult) => {
           data={allProducts}
           render={({ category, gallery, ...product }) => {
             const src = getMediaSrc({
-              product: product.slug,
+              productId: product.id,
               collection: product.collection.slug,
               name: gallery!.medias[0].name,
             });

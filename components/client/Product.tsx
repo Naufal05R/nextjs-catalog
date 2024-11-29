@@ -6,7 +6,7 @@ import { Product as ProductType } from "@prisma/client";
 import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 
-interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "discount"> {
+interface ProductProps extends Pick<ProductType, "id" | "title" | "slug" | "price" | "discount"> {
   thumbnail: string;
   collection: string;
   classNames?: {
@@ -14,10 +14,10 @@ interface ProductProps extends Pick<ProductType, "title" | "slug" | "price" | "d
   };
 }
 
-const Product = async ({ title, slug, price, discount, collection, thumbnail, classNames }: ProductProps) => {
+const Product = async ({ id, title, slug, price, discount, collection, thumbnail, classNames }: ProductProps) => {
   const { wrapper } = classNames ?? {};
 
-  const src = getMediaSrc({ collection, product: slug, name: thumbnail });
+  const src = getMediaSrc({ collection, productId: id, name: thumbnail });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (

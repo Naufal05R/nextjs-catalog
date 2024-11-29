@@ -44,7 +44,7 @@ export default async function CollectionPage({ params }: { params: { collection:
             data={allProducts}
             render={({ category, gallery, ...product }) => {
               const src = getMediaSrc({
-                product: product.slug,
+                productId: product.id,
                 collection: slug,
                 name: gallery!.medias[0].name,
               });

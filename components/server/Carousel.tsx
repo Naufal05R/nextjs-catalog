@@ -38,8 +38,8 @@ const DynamicCarousel = ({ variant, props }: DynamicCarouselProps) => {
   }
 
   if (variant === "detail") {
-    const { data, product, collection } = props;
-    return <CarouselDetail data={data} product={product} collection={collection} />;
+    const { data, productId, collection } = props;
+    return <CarouselDetail data={data} productId={productId} collection={collection} />;
   }
 };
 
@@ -63,7 +63,7 @@ export const DynamicCarouselThumbnail = async () => {
 
           <Image
             src={getMediaSrc({
-              product: selectedProduct.slug,
+              productId: selectedProduct.id,
               collection: selectedProduct.collection.slug,
               name: selectedProduct.gallery!.medias[0].name,
             })}

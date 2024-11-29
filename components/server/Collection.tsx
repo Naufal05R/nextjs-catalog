@@ -24,17 +24,17 @@ interface CollectionProps {
 }
 
 const CollectionPlaceholder = async ({
-  product,
+  productId,
   name,
   collection,
   index,
 }: {
-  product: string;
+  productId: string;
   name: string;
   collection: string;
   index: number;
 }) => {
-  const src = getMediaSrc({ product, name, collection });
+  const src = getMediaSrc({ productId, name, collection });
   const blurDataURL = await getDynamicBlurDataURL(src);
 
   return (
@@ -72,7 +72,7 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
       collectionId,
     },
     select: {
-      slug: true,
+      id: true,
       collection: {
         select: {
           slug: true,
@@ -110,12 +110,12 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
               );
             }
 
-            const { gallery, slug, collection } = products[pictureIndex];
+            const { id, gallery, collection } = products[pictureIndex];
 
             return (
               gallery && (
                 <CollectionPlaceholder
-                  product={slug}
+                  productId={id}
                   name={gallery.medias[0].name}
                   collection={collection.slug}
                   index={pictureIndex}

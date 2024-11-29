@@ -116,9 +116,9 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
       slidesElement={
         <Mapper
           data={data}
-          render={({ description, slug, gallery, collection }) => {
+          render={({ id, description, slug, gallery, collection }) => {
             const src = getMediaSrc({
-              product: slug,
+              productId: id,
               collection: collection.slug,
               name: gallery!.medias[0].name,
             });
@@ -193,7 +193,7 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
                 category={category.title}
                 imageProps={{
                   src: getMediaSrc({
-                    product: product.slug,
+                    productId: product.id,
                     collection: collection.slug,
                     name: gallery!.medias[0].name,
                   }),
@@ -209,12 +209,12 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
 
 export const CarouselDetail = ({
   data,
-  product,
+  productId,
   collection,
   classNames,
 }: {
   data: Array<Media>;
-  product: string;
+  productId: string;
   collection: string;
   classNames?: Pick<CarouselProps<Dataset>, "classNames">["classNames"];
 }) => {
@@ -229,7 +229,7 @@ export const CarouselDetail = ({
         <Mapper
           data={data}
           render={({ title, slug, name }) => {
-            const src = getMediaSrc({ product, collection, name });
+            const src = getMediaSrc({ productId, collection, name });
             const { fileExt } = getFileDetails(src);
 
             return (
@@ -266,7 +266,7 @@ export const CarouselDetail = ({
         <Mapper
           data={data}
           render={({ title, slug, name }, index) => {
-            const src = getMediaSrc({ product, collection, name });
+            const src = getMediaSrc({ productId, collection, name });
             const { fileExt } = getFileDetails(src);
 
             return (

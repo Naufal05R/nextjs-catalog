@@ -27,7 +27,7 @@ const DetailProductPage = async ({ params }: { params: { collection: string; pro
         {product.gallery?.medias && (
           <CarouselDetail
             data={product.gallery.medias}
-            product={params.product}
+            productId={product.id}
             collection={params.collection}
             classNames={{ root: "col-span-6", dots: "basis-1/6" }}
           />
