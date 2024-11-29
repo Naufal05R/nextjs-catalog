@@ -57,20 +57,6 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
       let markdown = content;
 
       await prisma.$transaction(async (_prisma) => {
-        if (thumbnail) {
-          const arrayBuffer = await thumbnail.arrayBuffer();
-          const objectStream = Buffer.from(arrayBuffer);
-
-          await createObject({
-            bucketName: APP_NAME,
-            objectName: `news/${slugify(title)}/thumbnail`,
-            objectStream: objectStream,
-            objectMetaData: {
-              "Content-Type": thumbnail.type,
-            },
-          });
-        }
-
         if (imagesFile && imagesId) {
           for (const [index, file] of imagesFile.entries()) {
             if (file) {
@@ -99,13 +85,38 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
           },
         });
 
-        await _prisma.news.create({
+        const news = await _prisma.news.create({
           data: {
             title,
             slug: slugify(title),
             description,
           },
         });
+
+        if (thumbnail) {
+          const thumbnailId = crypto.randomUUID();
+          const { fileMime } = getFileMimeTypes(thumbnail.type);
+          const image = new File([thumbnail], thumbnailId, { type: thumbnail.type });
+          const arrayBuffer = await image.arrayBuffer();
+          const objectStream = Buffer.from(arrayBuffer);
+
+          await createObject({
+            bucketName: APP_NAME,
+            objectName: `news/${slugify(title)}/thumbnail_${thumbnailId}.${fileMime}`,
+            objectStream: objectStream,
+            objectMetaData: {
+              "Content-Type": thumbnail.type,
+            },
+          });
+
+          await _prisma.thumbnail.create({
+            data: {
+              id: thumbnailId,
+              newsId: news.id,
+              exts: fileMime,
+            },
+          });
+        }
       });
 
       revalidatePath("/", "layout");
