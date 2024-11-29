@@ -22,14 +22,9 @@ export const CategorySchema = z.object({
       message: "Slug must be less than 15 characters",
     })
     .transform((val) => slugify(val)),
-  description: z
-    .string()
-    .min(7, {
-      message: "Description must be at least 7 characters",
-    })
-    .max(63, {
-      message: "Description must be less than 63 characters",
-    }),
+  description: z.string().max(63, {
+    message: "Description must be less than 63 characters",
+  }),
   products: z.array(ProductSchema.required()),
 });
 
