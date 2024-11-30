@@ -369,7 +369,8 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
             <Mapper
               data={tags}
               render={(tag) => (
-                <Badge variant="secondary" className="flex items-center gap-2">
+                // TODO: Should removing key props after issue fixed by nextjs or react
+                <Badge key={tag} variant="secondary" className="flex items-center gap-2">
                   {tag}
                   <Button
                     variant={null}
@@ -413,7 +414,8 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
                 const { fileName } = getFileDetails(title, true);
 
                 return (
-                  <li className="flex w-full items-center gap-x-2 border p-2.5">
+                  // TODO: Should removing key props after issue fixed by nextjs or react
+                  <li key={mediaIndex} className="flex w-full items-center gap-x-2 border p-2.5">
                     {/* <Button type="button" size="icon" variant="ghost">
                       <GripVertical className="text-slate-400" />
                     </Button> */}
@@ -1034,7 +1036,8 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
             <Mapper
               data={tags}
               render={(tag) => (
-                <Badge variant="secondary" className="flex items-center gap-2">
+                // TODO: Should removing key props after issue fixed by nextjs or react
+                <Badge key={tag} variant="secondary" className="flex items-center gap-2">
                   {tag}
                   <Button
                     variant={null}
@@ -1079,7 +1082,8 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
                 const { fileName } = getFileDetails(title, true);
 
                 return (
-                  <li className="flex w-full items-center gap-x-2 border p-2.5">
+                  // TODO: Should removing key props after issue fixed by nextjs or react
+                  <li key={mediaIndex} className="flex w-full items-center gap-x-2 border p-2.5">
                     {/* <Button type="button" size="icon" variant="ghost">
                       <GripVertical className="text-slate-400" />
                     </Button> */}
