@@ -14,7 +14,9 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
         </SidebarInset>
       </SignedIn>
       <SignedOut>
-        Not Authorized!
+        <section className="grid h-screen w-screen place-items-center">
+          <h4 className="text-4xl font-bold uppercase">Not Authorized!</h4>
+        </section>
       </SignedOut>
     </SidebarProvider>
   );
