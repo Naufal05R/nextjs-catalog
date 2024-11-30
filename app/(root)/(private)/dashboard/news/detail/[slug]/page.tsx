@@ -7,11 +7,17 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
+interface DetailNewsPageProps {
+  params: Promise<{ slug: string }>;
+}
+
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
 
-export default async function DetailNewsPage({ params }: { params: { slug: string } }) {
+export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
+  const { slug } = await params;
+
   const news = await getNews({
-    where: params,
+    where: { slug },
   });
 
   if (!news || !news.thumbnail) return notFound();
@@ -40,13 +46,7 @@ export default async function DetailNewsPage({ params }: { params: { slug: strin
       </p>
 
       <article className="leading-normal text-slate-800 [&_*]:list-inside [&_blockquote]:border-l-4 [&_blockquote]:bg-slate-100 [&_blockquote]:py-1 [&_blockquote]:pl-2.5 [&_blockquote]:text-base [&_blockquote]:text-slate-600 [&_h1]:text-4xl [&_h2]:text-2xl [&_h3]:text-xl [&_h4]:text-2xl [&_h5]:text-xl [&_h6]:text-lg [&_ol]:list-decimal [&_ul]:list-disc">
-        <Image
-          src={thumbnailSrc}
-          alt={params.slug}
-          fill
-          sizes="25vw"
-          classNames={{ figure: "w-full aspect-video mb-16" }}
-        />
+        <Image src={thumbnailSrc} alt={slug} fill sizes="25vw" classNames={{ figure: "w-full aspect-video mb-16" }} />
         <MDXRemote source={markdown} />
       </article>
     </section>
