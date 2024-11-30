@@ -2,9 +2,12 @@ import { Search } from "@/components/client/Search";
 import { SearchProductResult } from "@/components/server/Product";
 import { Suspense } from "react";
 
-export default function SearchPage({ searchParams }: { searchParams?: { query?: string; page?: number } }) {
-  const query = searchParams?.query || "";
-  // const currentPage = searchParams?.page || 1;
+interface SearchPageProps {
+  searchParams?: Promise<{ query?: string; page?: number }>;
+}
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const { /* page, */ query } = (await searchParams) ?? {};
 
   return (
     <section className="pt-8">
@@ -13,7 +16,7 @@ export default function SearchPage({ searchParams }: { searchParams?: { query?: 
       <Search />
 
       <Suspense fallback={<>loading . . .</>}>
-        <SearchProductResult query={query} currentPage={1} />
+        <SearchProductResult query={query ?? ""} currentPage={1} />
       </Suspense>
     </section>
   );
