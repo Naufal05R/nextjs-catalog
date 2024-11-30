@@ -16,15 +16,14 @@ import {
 import { CreateCollectionDialog } from "./client/Dialog";
 import { handlingError } from "@/lib/utils";
 import { toggleFavoriteCollection } from "@/lib/actions/collection.action";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { CollectionsSchema } from "@/schema/collection";
 import { Collection } from "@prisma/client";
 import Mapper from "./server/Mapper";
 import { Button } from "./ui/button";
-import { useFormState } from "react-dom";
 
 export function NavMain() {
-  const [state, formAction, isLoading] = useFormState(toggleFavoriteCollection, undefined);
+  const [state, formAction, isLoading] = useActionState(toggleFavoriteCollection, undefined);
   const [collections, setCollections] = useState<Array<Collection>>([]);
 
   // TODO: Should optimize this way using useSWR
