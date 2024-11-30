@@ -27,6 +27,18 @@ const nextConfig = {
     });
     return config;
   },
+
+  experimental: {
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          options: { babel: false },
+          as: "*.js",
+        },
+      },
+    },
+  },
 };
 
 const withMDX = createMDX();
