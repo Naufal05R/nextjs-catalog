@@ -96,10 +96,11 @@ export const PublicPathname = () => {
                 const href = `/${breadcrumbs.slice(0, index + 1).join("/")}`;
 
                 return (
-                  <>
+                  // TODO: Should replace code from (<React.Fragment key={index}></React.Fragment>) to regular (<></>) when bug fixed by react or nextjs
+                  <React.Fragment key={index}>
                     <BreadcrumbSeparator>/</BreadcrumbSeparator>
                     <Route title={breadcrumb} href={href} className="capitalize hover:text-rose-600" />
-                  </>
+                  </React.Fragment>
                 );
               }}
             />
@@ -119,6 +120,7 @@ export const PrivatePathname = () => {
     <Breadcrumb>
       <BreadcrumbList className="h-[52px] shrink overflow-hidden">
         {!!breadcrumbs.length && (
+          // TODO: Should replace code from (<React.Fragment key={index}></React.Fragment>) to regular (<></>) when bug fixed by react or nextjs
           <>
             {/* <BreadcrumbItem>
               <BreadcrumbLink href="/dashboard" className="py-4">
@@ -132,7 +134,7 @@ export const PrivatePathname = () => {
                 const href = `/${breadcrumbs.slice(0, index + 1).join("/")}`;
 
                 return (
-                  <div className="flex items-center gap-1.5 sm:gap-2.5">
+                  <div key={index} className="flex items-center gap-1.5 sm:gap-2.5">
                     <BreadcrumbSeparator hidden={!index}>/</BreadcrumbSeparator>
                     <Route title={breadcrumb} href={href} />
                   </div>
