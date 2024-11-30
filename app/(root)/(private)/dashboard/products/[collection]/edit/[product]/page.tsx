@@ -3,8 +3,14 @@ import { getAllCategory } from "@/lib/actions/category.action";
 import { getProduct } from "@/lib/actions/product.action";
 import { notFound } from "next/navigation";
 
-export default async function EditProductPage({ params }: { params: { collection: string; product: string } }) {
-  const selectedProduct = await getProduct({ where: { slug: params.product } });
+interface EditProductPageProps {
+  params: Promise<{ collection: string; product: string }>;
+}
+
+export default async function EditProductPage({ params }: EditProductPageProps) {
+  const { collection, product } = await params;
+
+  const selectedProduct = await getProduct({ where: { slug: product } });
 
   if (!selectedProduct) return notFound();
 
@@ -17,7 +23,7 @@ export default async function EditProductPage({ params }: { params: { collection
       <h4 className="text-2xl font-semibold capitalize">Edit {selectedProduct.title} product</h4>
 
       <EditProductForm
-        collection={params.collection}
+        collection={collection}
         categories={categories ?? []}
         product={selectedProduct}
         defaultFiles={defaultFiles}
