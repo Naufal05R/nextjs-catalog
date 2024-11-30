@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useActionState, useCallback, useEffect, useState } from "react";
 import Mapper from "@/components/server/Mapper";
 import { z } from "zod";
 
@@ -37,7 +37,6 @@ import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
 import { Category, Media, Prisma, Product, Tag } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
-import { useFormState } from "react-dom";
 import { InputFieldMessage } from "../server/Message";
 import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
@@ -177,7 +176,7 @@ export function ContactForm() {
 }
 
 export function CreateProductForm({ collection, categories }: CreateProductFormProps) {
-  const [errors, formAction, isLoading] = useFormState(createProduct, undefined);
+  const [errors, formAction, isLoading] = useActionState(createProduct, undefined);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState<Array<string>>([]);
@@ -614,7 +613,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 }
 
 export function CreateNewsForm() {
-  const [errors, formAction, isLoading] = useFormState(createNews, undefined);
+  const [errors, formAction, isLoading] = useActionState(createNews, undefined);
   const [file, setFile] = useState<File>();
 
   const MARKDOWN = "**Hello,** world!" as const;
@@ -813,7 +812,7 @@ export function CreateNewsForm() {
 }
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
-  const [errors, formAction, isLoading] = useFormState(updateProduct, undefined);
+  const [errors, formAction, isLoading] = useActionState(updateProduct, undefined);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
@@ -1280,7 +1279,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 }
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
-  const [state, formAction, isLoading] = useFormState(updateNews, undefined);
+  const [state, formAction, isLoading] = useActionState(updateNews, undefined);
   const [file, setFile] = useState<File>();
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
