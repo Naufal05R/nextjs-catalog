@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import Fade from "embla-carousel-fade";
-import Mapper from "@/components/server/Mapper";
 
 import { cn, getFileDetails } from "@/lib/utils";
 import { Media as MediaComponent } from "@/components/server/Media";
@@ -114,9 +113,9 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
         root: "aspect-video flex-1 max-md:aspect-video max-lg:aspect-[34/13]",
       }}
       slidesElement={
-        <Mapper
-          data={data}
-          render={({ id, description, slug, gallery, collection }) => {
+        // TODO: Should replace rendering collections method to the original Mapper component after bug fixed by react or nextjs
+        <>
+          {data.map(({ id, description, slug, gallery, collection }) => {
             const src = getMediaSrc({
               productId: id,
               collection: collection.slug,
@@ -125,7 +124,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
             const { fileExt } = getFileDetails(src);
 
             return (
-              <CarouselItem>
+              <CarouselItem key={id}>
                 <Link
                   href={`/products/${slug}`}
                   draggable={false}
@@ -162,16 +161,16 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
                 </Link>
               </CarouselItem>
             );
-          }}
-        />
+          })}
+        </>
       }
       dotsElement={
-        <Mapper
-          data={data}
-          render={(_, index) => (
-            <CarouselDot index={index} className={cn("aspect-square basis-3 rounded-full border-2 text-xl")} />
-          )}
-        />
+        // TODO: Should replace rendering collections method to the original Mapper component after bug fixed by react or nextjs
+        <>
+          {data.map(({ id }, index) => (
+            <CarouselDot key={id} index={index} className={cn("aspect-square basis-3 rounded-full border-2 text-xl")} />
+          ))}
+        </>
       }
     />
   );
@@ -184,10 +183,10 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
       opts={{ align: "start", breakpoints: {} }}
       showControllers
       slidesElement={
-        <Mapper
-          data={data}
-          render={({ category, gallery, collection, ...product }) => (
-            <CarouselItem responsiveArgs={["xs:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
+        // TODO: Should replace rendering collections method to the original Mapper component after bug fixed by react or nextjs
+        <>
+          {data.map(({ category, gallery, collection, ...product }) => (
+            <CarouselItem key={product.id} responsiveArgs={["xs:basis-1/2", "md:basis-1/3", "xl:basis-1/4"]}>
               <CatalogProductCard
                 {...product}
                 category={category.title}
@@ -200,8 +199,8 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
                 }}
               />
             </CarouselItem>
-          )}
-        />
+          ))}
+        </>
       }
     />
   );
@@ -226,14 +225,14 @@ export const CarouselDetail = ({
       placement="inside"
       showControllers
       slidesElement={
-        <Mapper
-          data={data}
-          render={({ title, slug, name }) => {
+        // TODO: Should replace rendering collections method to the original Mapper component after bug fixed by react or nextjs
+        <>
+          {data.map(({ id, title, slug, name }) => {
             const src = getMediaSrc({ productId, collection, name });
             const { fileExt } = getFileDetails(src);
 
             return (
-              <CarouselItem>
+              <CarouselItem key={id}>
                 <MediaComponent
                   fileExt={fileExt}
                   imageProps={{
@@ -259,18 +258,22 @@ export const CarouselDetail = ({
                 />
               </CarouselItem>
             );
-          }}
-        />
+          })}
+        </>
       }
       dotsElement={
-        <Mapper
-          data={data}
-          render={({ title, slug, name }, index) => {
+        // TODO: Should replace rendering collections method to the original Mapper component after bug fixed by react or nextjs
+        <>
+          {data.map(({ id, title, slug, name }, index) => {
             const src = getMediaSrc({ productId, collection, name });
             const { fileExt } = getFileDetails(src);
 
             return (
-              <CarouselDot index={index} className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}>
+              <CarouselDot
+                key={id}
+                index={index}
+                className={cn("aspect-square basis-9 border text-xl", classNames?.dots)}
+              >
                 <MediaComponent
                   fileExt={fileExt}
                   imageProps={{
@@ -295,8 +298,8 @@ export const CarouselDetail = ({
                 />
               </CarouselDot>
             );
-          }}
-        />
+          })}
+        </>
       }
       classNames={{
         controllerPrev: "max-sm:flex",
