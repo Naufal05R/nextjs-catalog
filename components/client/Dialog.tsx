@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog as DialogRoot,
@@ -33,7 +32,7 @@ interface CreateCollectionDialogProps {
 
 export const CreateCollectionDialog = ({ setList }: CreateCollectionDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [state, formAction, isLoading] = useFormState(createCollection, undefined);
+  const [state, formAction, isLoading] = useActionState(createCollection, undefined);
   const [temporaryState, setTemporaryState] = useState<string>();
 
   useEffect(() => {
@@ -117,7 +116,7 @@ interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof Dia
 export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof DialogRoot>, CreateCategoryDialog>(
   ({ trigger }, ref) => {
     const [open, setOpen] = useState(false);
-    const [state, formAction, isLoading] = useFormState(createCategory, "");
+    const [state, formAction, isLoading] = useActionState(createCategory, "");
     const [temporaryState, setTemporaryState] = useState<string>("");
 
     useEffect(() => {
