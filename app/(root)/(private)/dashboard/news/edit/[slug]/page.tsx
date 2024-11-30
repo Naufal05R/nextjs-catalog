@@ -3,9 +3,15 @@ import { getNews } from "@/lib/actions/news.action";
 import { getNewsSrc } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
-export default async function DetailNewsPage({ params }: { params: { slug: string } }) {
+interface DetailNewsPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
+  const { slug } = await params;
+
   const news = await getNews({
-    where: params,
+    where: { slug },
   });
 
   if (!news) return notFound();
