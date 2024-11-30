@@ -6,10 +6,16 @@ import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 
-export default async function CollectionPage({ params }: { params: { collection: string } }) {
+interface CollectionPageProps {
+  params: Promise<{ collection: string }>;
+}
+
+export default async function CollectionPage({ params }: CollectionPageProps) {
+  const { collection } = await params;
+
   const { id, title, slug, description } = await getCollection({
     where: {
-      slug: params.collection,
+      slug: collection,
     },
   }).then((collection) => {
     if (collection) {
