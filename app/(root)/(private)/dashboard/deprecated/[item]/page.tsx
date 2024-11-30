@@ -3,13 +3,15 @@ import DeprecatedNews from "@/components/page/DeprecatedNews";
 import { notFound } from "next/navigation";
 
 interface DeprecatedItemPageProps {
-  params: {
+  params: Promise<{
     item: "products" | "news";
-  };
+  }>;
 }
 
-export default function DeprecatedItemPage({ params }: DeprecatedItemPageProps) {
-  switch (params.item) {
+export default async function DeprecatedItemPage({ params }: DeprecatedItemPageProps) {
+  const { item } = await params;
+
+  switch (item) {
     case "products":
       return <DeprecatedProducts />;
     case "news":
