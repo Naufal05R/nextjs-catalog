@@ -275,9 +275,11 @@ export const CatalogProductCard = ({
             {category}
           </Badge>
           <Mapper
-            data={tags.slice(0, 5)}
+            // TODO: Should simplifying back data right after bug fixed by nextjs or react
+            data={Array.from(new Set(tags)).slice(0, 5)}
             render={({ title }) => (
-              <Badge variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
+              // TODO: Should removing key props right after bug fixed by nextjs or react
+              <Badge key={title} variant="secondary" className="bg-slate-200/60 text-slate-800 hover:bg-slate-200/40">
                 {title}
               </Badge>
             )}
