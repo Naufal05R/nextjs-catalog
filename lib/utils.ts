@@ -50,6 +50,10 @@ export function cleanExtraSpaces(str: string) {
   return str.trim().replace(/\s+/g, " ");
 }
 
+export function generateRoute(links: string[], end: number = 0) {
+  return `/${links.slice(0, Math.min(end, links.length - 1)).join("/")}`;
+}
+
 export function removeUnwantedChars(str: string) {
   return str.replace(/[^a-zA-Z0-9\-\_\s]/g, "");
 }
