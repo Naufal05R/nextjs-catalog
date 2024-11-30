@@ -1,9 +1,15 @@
 import { DashboardProductDisplay } from "@/components/server/Product";
 
-export default function ProductsByCollectionPage({ params }: { params: { collection: string } }) {
+interface ProductsByCollectionPageProps {
+  params: Promise<{ collection: string }>;
+}
+
+export default async function ProductsByCollectionPage({ params }: ProductsByCollectionPageProps) {
+  const { collection } = await params
+
   return (
     <section className="grid size-full place-items-start">
-      <DashboardProductDisplay isReady collection={params.collection} />
+      <DashboardProductDisplay isReady collection={collection} />
     </section>
   );
 }
