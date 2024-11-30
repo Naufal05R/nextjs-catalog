@@ -6,7 +6,7 @@
     "seed": "npx tsx lib/seed.ts"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -23,7 +23,7 @@
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@mdxeditor/editor": "^3.17.4",
-    "@next/mdx": "^14.2.18",
+    "@next/mdx": "15.0.3",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.1",
@@ -44,15 +44,14 @@
     "cmdk": "^1.0.0",
     "embla-carousel-fade": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.462.0",
     "minio": "^8.0.2",
-    "next": "14.2.15",
+    "next": "15.0.3",
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-dropzone": "^14.3.5",
-    "react-hook-form": "^7.53.1",
     "sharp": "^0.33.5",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.3",
@@ -65,11 +64,11 @@
     "@snaplet/seed": "^0.98.0",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.15",
+    "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "postcss": "^8",
@@ -79,5 +78,9 @@
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }
