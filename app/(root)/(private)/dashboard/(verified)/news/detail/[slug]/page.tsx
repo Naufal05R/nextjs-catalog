@@ -1,5 +1,5 @@
 import { Image } from "@/components/server/Media";
-import { getNews } from "@/lib/actions/news.action";
+import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { getNewsSrc } from "@/lib/utils";
 import { extensionError } from "@/lib/utils/error";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
@@ -10,8 +10,6 @@ import { z } from "zod";
 interface DetailNewsPageProps {
   params: Promise<{ slug: string }>;
 }
-
-const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT;
 
 export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   const { slug } = await params;
@@ -33,7 +31,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
     resourceId: news.thumbnail.id,
     exts,
   });
-  const markdown = await fetch(`${S3_ENDPOINT}/news/${news.id}/article.mdx`).then((r) => r.text());
+  const markdown = await getNewsArticle(news.id);
 
   if (!news || !markdown) return notFound();
 
