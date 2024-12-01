@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getNewsSrc } from "@/lib/utils";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
-import { extensionError } from "@/lib/utils/error";
+import { extensionError, resourceError } from "@/lib/utils/error";
 
 interface DetailNewsPageProps {
   params: Promise<{ slug: string }>;
@@ -29,7 +29,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   const thumbnailSrc = getNewsSrc({ newsId: news.id, resource: "thumbnail", resourceId: news.thumbnail.id, exts });
   const markdown = await getNewsArticle(news.id);
 
-  if (!markdown) return notFound();
+  if (!markdown) throw new Error(resourceError("article"));
 
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-col">
