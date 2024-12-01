@@ -6,6 +6,7 @@ import { prisma } from "../prisma";
 import { Collection, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { auth } from "@clerk/nextjs/server";
 
 type GetAllCollectionProps = {
   where?: Prisma.CollectionWhereInput;
@@ -42,6 +43,12 @@ export const getCollection = async (params: GetAllCollectionProps | undefined = 
 };
 
 export const createCollection = async (prevState: Collection | z.ZodIssue[] | undefined, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to add new collection!");
+  }
+
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
@@ -69,6 +76,12 @@ export const createCollection = async (prevState: Collection | z.ZodIssue[] | un
 };
 
 export const toggleFavoriteCollection = async (prevState: Collection | undefined, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to favorite collection!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
