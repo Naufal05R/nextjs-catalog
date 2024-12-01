@@ -1,7 +1,7 @@
 import { Image } from "@/components/server/Media";
 import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { getNewsSrc } from "@/lib/utils";
-import { extensionError } from "@/lib/utils/error";
+import { extensionError, resourceError } from "@/lib/utils/error";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
@@ -33,7 +33,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   });
   const markdown = await getNewsArticle(news.id);
 
-  if (!news || !markdown) return notFound();
+  if (!markdown) throw new Error(resourceError("article"));
 
   return (
     <section className="mx-auto size-full max-w-5xl p-4">
