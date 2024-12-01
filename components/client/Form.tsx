@@ -46,6 +46,7 @@ import { Uploader } from "./Uploader";
 import { useSidebar } from "../ui/sidebar";
 import { NewsFormSchema } from "@/schema/news";
 import { extensionError } from "@/lib/utils/error";
+import { useSignIn } from "@clerk/nextjs";
 
 interface CreateProductFormProps {
   collection: string;
@@ -176,17 +177,30 @@ export function ContactForm() {
 }
 
 export function SignInForm() {
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [credential, setCredential] = useState<{ username: string; password: string }>({
+    username: "",
+    password: "",
+  });
+
   return (
     <fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-inherit p-4 shadow-lg">
       <form action="" />
       <h2 className="mb-8 text-xl uppercase">Legenda Permata</h2>
       <Label className="flex flex-col gap-2">
         Username
-        <Input />
+        <Input
+          value={credential.username}
+          onChange={(e) => setCredential({ ...credential, username: e.target.value })}
+        />
       </Label>
       <Label className="flex flex-col gap-2">
         Password
-        <Input />
+        <Input
+          type="password"
+          value={credential.password}
+          onChange={(e) => setCredential({ ...credential, password: e.target.value })}
+        />
       </Label>
       <Button className="mt-8 w-full">Sign In</Button>
     </fieldset>
