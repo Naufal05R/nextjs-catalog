@@ -27,7 +27,6 @@ import {
   cn,
   getFileDetails,
   getFileMimeTypes,
-  getNewsSrc,
   handlingError,
   refineBlobStr,
   removeUnallowedChars,
