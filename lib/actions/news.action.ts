@@ -1,7 +1,7 @@
 "use server";
 
 import { NewsFormSchema } from "@/schema/news";
-import { getFileMimeTypes, handlingError, initRawData, slugify } from "../utils";
+import { getFileMimeTypes, getNewsSrc, handlingError, initRawData, slugify } from "../utils";
 import { createObject, deleteObjects } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
@@ -49,6 +49,13 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   } catch (error) {
     handlingError(error);
   }
+};
+
+export const getNewsArticle = async (id: string) => {
+  const articleSrc = getNewsSrc({ newsId: id, resource: "article", exts: "mdx" });
+  const markdown = await fetch(articleSrc).then((r) => r.text());
+
+  return { markdown };
 };
 
 export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
