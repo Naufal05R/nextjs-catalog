@@ -2,6 +2,8 @@
 
 import React, { useActionState, useCallback, useEffect, useState } from "react";
 import Mapper from "@/components/server/Mapper";
+import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
+import { ClerkAPIError } from "@clerk/types";
 import { z } from "zod";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -47,6 +49,7 @@ import { useSidebar } from "../ui/sidebar";
 import { NewsFormSchema } from "@/schema/news";
 import { extensionError } from "@/lib/utils/error";
 import { useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface CreateProductFormProps {
   collection: string;
@@ -177,19 +180,52 @@ export function ContactForm() {
 }
 
 export function SignInForm() {
+  const router = useRouter();
   const { isLoaded, signIn, setActive } = useSignIn();
+  const [errors, setErrors] = React.useState<ClerkAPIError[]>();
   const [credential, setCredential] = useState<{ username: string; password: string }>({
     username: "",
     password: "",
   });
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setErrors(() => undefined);
+
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: credential.username,
+        password: credential.password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.push("/dashboard");
+      } else {
+        window.alert(signInAttempt);
+      }
+    } catch (error) {
+      if (isClerkAPIResponseError(error)) {
+        setErrors(error.errors);
+      } else {
+        handlingError(error);
+      }
+    }
+  };
+
   return (
     <fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-inherit p-4 shadow-lg">
-      <form action="" />
+      <form id="sign-in-form" onSubmit={handleSubmit} />
       <h2 className="mb-8 text-xl uppercase">Legenda Permata</h2>
       <Label className="flex flex-col gap-2">
         Username
         <Input
+          form="sign-in-form"
           value={credential.username}
           onChange={(e) => setCredential({ ...credential, username: e.target.value })}
         />
@@ -197,12 +233,23 @@ export function SignInForm() {
       <Label className="flex flex-col gap-2">
         Password
         <Input
+          form="sign-in-form"
           type="password"
           value={credential.password}
           onChange={(e) => setCredential({ ...credential, password: e.target.value })}
         />
       </Label>
-      <Button className="mt-8 w-full">Sign In</Button>
+      <Button form="sign-in-form" className="mt-8 w-full">
+        Sign In
+      </Button>
+
+      {errors && (
+        <ul>
+          {errors.map((el, index) => (
+            <li key={index}>{el.longMessage}</li>
+          ))}
+        </ul>
+      )}
     </fieldset>
   );
 }
