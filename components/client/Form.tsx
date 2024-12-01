@@ -219,7 +219,7 @@ export function SignInForm() {
   };
 
   return (
-    <fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-inherit p-4 shadow-lg">
+    <fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-inherit p-4 shadow-lg" disabled={!isLoaded}>
       <form id="sign-in-form" onSubmit={handleSubmit} />
       <h2 className="mb-8 text-xl uppercase">Legenda Permata</h2>
       <Label className="flex flex-col gap-2">
@@ -243,13 +243,7 @@ export function SignInForm() {
         Sign In
       </Button>
 
-      {errors && (
-        <ul>
-          {errors.map((el, index) => (
-            <li key={index}>{el.longMessage}</li>
-          ))}
-        </ul>
-      )}
+      {errors && <p className="text-xs text-rose-500">Authorization process failed!</p>}
     </fieldset>
   );
 }
