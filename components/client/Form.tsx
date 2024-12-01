@@ -50,6 +50,7 @@ import { extensionError } from "@/lib/utils/error";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useMedia } from "@/hooks/use-media";
+import { useThumbnail } from "@/hooks/use-thumbnail";
 
 interface CreateProductFormProps {
   collection: string;
@@ -1336,7 +1337,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 }
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
-  const [state, formAction, isLoading] = useActionState(updateNews, undefined);
+  const [state, formAction, isPending] = useActionState(updateNews, undefined);
   const [file, setFile] = useState<File>();
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
@@ -1409,28 +1410,21 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     }
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if (news.thumbnail) {
-        const thumbnailSrc = getNewsSrc({
-          newsId: news.id,
-          resource: "thumbnail",
-          resourceId: news.thumbnail.id,
-          exts,
-        });
-        const blob = await fetch(thumbnailSrc).then((r) => r.blob());
+  const { thumbnail, error, isLoading } = useThumbnail({ newsId: news.id, resourceId: news.thumbnail!.id ?? "", exts });
 
-        if (blob) setFile(new File([blob], "thumbnail", { type: blob.type }));
-      }
-    })();
-  }, [news.slug, exts, news.id, news.thumbnail]);
+  useEffect(() => {
+    if (thumbnail) setFile(thumbnail);
+  }, [thumbnail]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
   };
 
   return (
-    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
+    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isPending}>
       <form id="edit-news-form" action={actionHanlder} className="hidden" />
 
       <article className="col-span-12 grid grid-cols-4 gap-x-4">
