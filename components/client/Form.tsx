@@ -27,7 +27,6 @@ import {
   cn,
   getFileDetails,
   getFileMimeTypes,
-  getMediaSrc,
   getNewsSrc,
   handlingError,
   refineBlobStr,
@@ -50,6 +49,7 @@ import { NewsFormSchema } from "@/schema/news";
 import { extensionError } from "@/lib/utils/error";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useMedia } from "@/hooks/use-media";
 
 interface CreateProductFormProps {
   collection: string;
@@ -876,8 +876,8 @@ export function CreateNewsForm() {
 }
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
-  const [errors, formAction, isLoading] = useActionState(updateProduct, undefined);
-  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
+  const [errors, formAction, isPending] = useActionState(updateProduct, undefined);
+  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
   const { open } = useSidebar();
@@ -918,26 +918,17 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
-  // TODO: Should optizing the way of fetching data using useSWR
+  const { medias, error, isLoading } = useMedia({ defaultFiles, collection, productId: product.id });
+
   useEffect(() => {
-    (async () => {
-      try {
-        const files = [];
-        for (const { title, name, order } of defaultFiles) {
-          const src = getMediaSrc({ name, productId: product.id, collection });
-          const blob = await fetch(src).then((r) => r.blob());
-          const media = new File([blob], name, { type: blob.type });
-          files.push({ title, order, media });
-        }
-        setFiles(files);
-      } catch (error) {
-        handlingError(error);
-      }
-    })();
-  }, [collection, defaultFiles, product.id]);
+    if (medias) setFiles(medias);
+  }, [medias]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
 
   return (
-    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
+    <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isPending}>
       <form id="create-product-form" action={actionHandler} className="hidden" />
 
       <article className="col-span-12">
