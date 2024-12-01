@@ -9,6 +9,7 @@ import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { MAX_ITEM_PER_PAGE } from "@/constants";
+import { auth } from "@clerk/nextjs/server";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
@@ -165,6 +166,12 @@ export const createProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
 ) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to add new product!");
+  }
+
   const { success, data, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
   if (success) {
@@ -261,6 +268,12 @@ export const updateProduct = async (
   prevstate: string[] | z.ZodIssue[] | void,
   { formData, collection }: { formData: FormData; collection: string },
 ) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to update product!");
+  }
+
   const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
   if (success) {
@@ -368,6 +381,12 @@ export const updateProduct = async (
 };
 
 export const toggleFavoriteProduct = async (prevState: string | undefined, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to change favorite product!");
+  }
+
   const id = formData.get("id") as string;
   const min = 3 as const;
   const max = 7 as const;
@@ -409,6 +428,12 @@ export const toggleFavoriteProduct = async (prevState: string | undefined, formD
 };
 
 export const archiveProduct = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to archive product!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
@@ -430,6 +455,12 @@ export const archiveProduct = async (formData: FormData) => {
 };
 
 export const unarchiveProduct = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to unarchive product!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
@@ -451,6 +482,12 @@ export const unarchiveProduct = async (formData: FormData) => {
 };
 
 export const deleteProduct = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to delete product!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
