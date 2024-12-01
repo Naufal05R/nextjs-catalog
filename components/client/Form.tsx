@@ -175,6 +175,24 @@ export function ContactForm() {
   );
 }
 
+export function SignInForm() {
+  return (
+    <fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-inherit p-4 shadow-lg">
+      <form action="" />
+      <h2 className="mb-8 text-xl uppercase">Legenda Permata</h2>
+      <Label className="flex flex-col gap-2">
+        Username
+        <Input />
+      </Label>
+      <Label className="flex flex-col gap-2">
+        Password
+        <Input />
+      </Label>
+      <Button className="mt-8 w-full">Sign In</Button>
+    </fieldset>
+  );
+}
+
 export function CreateProductForm({ collection, categories }: CreateProductFormProps) {
   const [errors, formAction, isLoading] = useActionState(createProduct, undefined);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
