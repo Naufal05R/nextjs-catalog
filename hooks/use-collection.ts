@@ -3,9 +3,7 @@ import { Collection } from "@prisma/client";
 import useSWR from "swr";
 
 export function useCollection() {
-  const { data, error, isLoading } = useSWR<Collection[], unknown>("/api/list/collection", fetcher);
-
-  console.log("data: ", data);
+  const { data, error, isLoading } = useSWR<Collection[], unknown>("/api/list/collection", fetcher.json);
 
   return {
     collections: data,
