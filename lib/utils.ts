@@ -11,7 +11,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+export const fetcher = {
+  json: (url: string) => fetch(url).then((res) => res.json()),
+  blob: (url: string) => fetch(url).then((res) => res.blob()),
+};
 
 export function capitalize(str: string, lower = false) {
   return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
