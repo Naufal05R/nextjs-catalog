@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { auth } from "@clerk/nextjs/server";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -51,6 +52,12 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
 };
 
 export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to add news!");
+  }
+
   const { data, error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
   if (success) {
@@ -140,6 +147,12 @@ export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: 
 };
 
 export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to update news!");
+  }
+
   const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
   if (success) {
@@ -238,6 +251,12 @@ export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, form
 };
 
 export const archiveNews = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to archive news!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
@@ -259,6 +278,12 @@ export const archiveNews = async (formData: FormData) => {
 };
 
 export const unarchiveNews = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to unarchive news!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
@@ -280,6 +305,12 @@ export const unarchiveNews = async (formData: FormData) => {
 };
 
 export const deleteNews = async (formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to delete news!");
+  }
+
   const id = formData.get("id") as string;
 
   if (id) {
