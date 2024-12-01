@@ -5,6 +5,7 @@ import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 
 export const getCategory = async (identifier: string, field: keyof z.infer<typeof CategorySchema>) => {
   try {
@@ -31,6 +32,12 @@ export const getAllCategory = async () => {
 };
 
 export const createCategory = async (prevState: string | z.ZodIssue[] | undefined, formData: FormData) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("You must be authorized to add new category!");
+  }
+
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
