@@ -1,4 +1,4 @@
-import { getNewsSrc } from "@/lib/utils";
+import { getNewsArticle } from "@/lib/actions/news.action";
 
 interface Props {
   params: Promise<{
@@ -10,10 +10,9 @@ export const GET = async ({ params }: Props) => {
   try {
     const { id } = await params;
 
-    const articleSrc = getNewsSrc({ newsId: id, resource: "article", exts: "mdx" });
-    const markdown = await fetch(articleSrc).then((r) => r.text());
+    const markdown = await getNewsArticle(id);
 
-    return Response.json({ markdown }, { status: 200 });
+    return Response.json(markdown, { status: 200 });
   } catch (error) {
     return Response.json(error);
   }
