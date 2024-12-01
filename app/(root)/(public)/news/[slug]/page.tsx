@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Image } from "@/components/server/Media";
-import { getNews } from "@/lib/actions/news.action";
+import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getNewsSrc } from "@/lib/utils";
@@ -26,9 +26,10 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
 
   if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail.exts));
 
-  const articleSrc = getNewsSrc({ newsId: news.id, resource: "article", exts: "mdx" });
   const thumbnailSrc = getNewsSrc({ newsId: news.id, resource: "thumbnail", resourceId: news.thumbnail.id, exts });
-  const markdown = await fetch(articleSrc).then((r) => r.text());
+  const markdown = await getNewsArticle(news.id);
+
+  if (!markdown) return notFound();
 
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-col">
