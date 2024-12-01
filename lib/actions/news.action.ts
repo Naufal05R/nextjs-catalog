@@ -52,10 +52,14 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
 };
 
 export const getNewsArticle = async (id: string) => {
-  const articleSrc = getNewsSrc({ newsId: id, resource: "article", exts: "mdx" });
-  const markdown = await fetch(articleSrc).then((r) => r.text());
+  try {
+    const articleSrc = getNewsSrc({ newsId: id, resource: "article", exts: "mdx" });
+    const markdown = await fetch(articleSrc).then((r) => r.text());
 
-  return { markdown };
+    return markdown;
+  } catch (error) {
+    handlingError(error);
+  }
 };
 
 export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
