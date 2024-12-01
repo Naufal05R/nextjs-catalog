@@ -1,6 +1,5 @@
 import { EditNewsForm } from "@/components/client/Form";
-import { getNews } from "@/lib/actions/news.action";
-import { getNewsSrc } from "@/lib/utils";
+import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
 
 interface DetailNewsPageProps {
@@ -17,8 +16,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   if (!news) return notFound();
 
   const { title } = news;
-  const articleSrc = getNewsSrc({ newsId: news.id, resource: "article", exts: "mdx" });
-  const markdown = await fetch(articleSrc).then((r) => r.text());
+  const markdown = await getNewsArticle(news.id);
 
   if (!news || !markdown) return notFound();
 
