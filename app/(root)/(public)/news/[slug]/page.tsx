@@ -27,7 +27,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, thumbnail.exts));
 
   const thumbnailSrc = getNewsSrc({ newsId: news.id, resource: "thumbnail", resourceId: news.thumbnail.id, exts });
-  const markdown = await getNewsArticle(news.id);
+  const markdown = await getNewsArticle(news.slug);
 
   if (!markdown) throw new Error(resourceError("article"));
 
