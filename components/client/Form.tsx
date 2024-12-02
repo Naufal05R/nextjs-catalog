@@ -28,6 +28,7 @@ import {
   getFileDetails,
   getFileMimeTypes,
   handlingError,
+  initRawData,
   refineBlobStr,
   removeUnallowedChars,
   removeUnwantedChars,
@@ -134,9 +135,15 @@ export function GuestbookForm() {
 
 export function ContactForm() {
   const [state, formAction, isPending] = useActionState(createContactMessage, undefined);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
   const actionHanlder = async (formData: FormData) => {
-    formAction(formData);
+    const { success, error } = ContactFormSchema.safeParse(initRawData(formData));
+    if (success) {
+      formAction(formData);
+    } else {
+      setErrors(error.errors);
+    }
   };
 
   useEffect(() => {
@@ -148,7 +155,7 @@ export function ContactForm() {
   }, [state]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof ContactFormSchema>>>({ name }: { name: T }) => {
-    return <InputFieldMessage schema={ContactFormSchema} errors={state} name={name} />;
+    return <InputFieldMessage schema={ContactFormSchema} errors={errors} name={name} />;
   };
 
   return (
