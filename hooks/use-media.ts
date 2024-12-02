@@ -1,5 +1,3 @@
-"use client";
-
 import { getMediaSrc } from "@/lib/utils";
 import useSWR from "swr";
 
