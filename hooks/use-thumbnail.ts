@@ -1,25 +1,13 @@
-import { getNewsSrc } from "@/lib/utils";
+import { ThumbnailIdentifier } from "@/types/thumbnail";
 import useSWR from "swr";
 
-interface UseThumbnailProps {
-  newsId: string;
-  resourceId: string;
-  exts: "jpeg" | "jpg" | "png" | "webp";
-}
-
-export function useThumbnail({ newsId, resourceId, exts }: UseThumbnailProps) {
+export function useThumbnail({ newsId, resourceId, exts }: ThumbnailIdentifier) {
   const {
     data: thumbnail,
     error,
     isLoading,
-  } = useSWR({}, async () => {
-    const thumbnailSrc = getNewsSrc({
-      newsId,
-      resource: "thumbnail",
-      resourceId,
-      exts,
-    });
-    const blob = await fetch(thumbnailSrc).then((r) => r.blob());
+  } = useSWR<File>(`/api/item/news/${newsId}/thumbnail/${resourceId}?exts=${exts}`, async (key: string) => {
+    const blob = await fetch(key).then((r) => r.blob());
     return new File([blob], "thumbnail", { type: blob.type });
   });
 
