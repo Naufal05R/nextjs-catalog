@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Img, Link, Section, Tailwind } from "@react-email/components";
+import { Img, Link, Tailwind } from "@react-email/components";
 
 interface EmailTemplateProps {
   name: string;
@@ -10,7 +10,7 @@ interface EmailTemplateProps {
 
 export const ContactEmail: React.FC<Readonly<EmailTemplateProps>> = ({ name, email, phone, message }) => (
   <Tailwind>
-    <Section className="flex size-full flex-col text-left">
+    <section className="flex size-full flex-col text-left">
       <h2 className="mb-8 mt-0 bg-slate-100 p-8 text-center text-5xl font-black uppercase">LEGENDA PERMATA</h2>
 
       <article className="p-8">
@@ -32,6 +32,6 @@ export const ContactEmail: React.FC<Readonly<EmailTemplateProps>> = ({ name, ema
           <p className="m-0 text-slate-600">{email}</p>
         </blockquote>
       </article>
-    </Section>
+    </section>
   </Tailwind>
 );
