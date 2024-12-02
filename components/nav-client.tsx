@@ -71,7 +71,8 @@ export function NavClient({ side, title, description }: NavClientProps) {
               <Mapper
                 data={navigations}
                 render={({ label, href }) => (
-                  <Button asChild variant="ghost" className="justify-start" onClick={() => setOpen(false)}>
+                  // TODO: Should remove key after bug fixed by nextjs or react
+                  <Button key={href} asChild variant="ghost" className="justify-start" onClick={() => setOpen(false)}>
                     <Link href={href} className="px-4 py-2 font-light">
                       {label}
                     </Link>
