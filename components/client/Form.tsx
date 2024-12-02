@@ -918,7 +918,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
-  const { medias, error, isLoading } = useMedia({ defaultFiles, collection, productId: product.id });
+  const { medias, error, isLoading } = useMedia({ defaultFiles, product: product.slug });
 
   useEffect(() => {
     if (medias) setFiles(medias);
