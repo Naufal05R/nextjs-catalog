@@ -51,6 +51,7 @@ import { useRouter } from "next/navigation";
 import { useMedia } from "@/hooks/use-media";
 import { useThumbnail } from "@/hooks/use-thumbnail";
 import { createContactMessage } from "@/lib/actions/contact.action";
+import { ContactFormSchema } from "@/schema/contact";
 
 interface CreateProductFormProps {
   collection: string;
@@ -146,20 +147,27 @@ export function ContactForm() {
     }
   }, [state]);
 
+  const ErrorMessage = <T extends DataKeys<z.infer<typeof ContactFormSchema>>>({ name }: { name: T }) => {
+    return <InputFieldMessage schema={ContactFormSchema} errors={state} name={name} />;
+  };
+
   return (
-    <fieldset className="mt-8 flex w-full flex-col space-y-4 text-right" disabled={isPending}>
+    <fieldset className="mt-8 flex w-full flex-col space-y-4" disabled={isPending}>
       <form id="contact-form" action={actionHanlder} className="hidden" />
 
       <Label htmlFor="name" form="contact-form">
         <Input id="name" name="name" className="rounded-none shadow-none" placeholder="Name" form="contact-form" />
+        <ErrorMessage name="name" />
       </Label>
 
       <Label htmlFor="email" form="contact-form">
         <Input id="email" name="email" className="rounded-none shadow-none" placeholder="Email" form="contact-form" />
+        <ErrorMessage name="email" />
       </Label>
 
       <Label htmlFor="phone" form="contact-form">
         <Input id="phone" name="phone" className="rounded-none shadow-none" placeholder="Phone" form="contact-form" />
+        <ErrorMessage name="phone" />
       </Label>
 
       <Label htmlFor="message" form="contact-form">
@@ -172,6 +180,7 @@ export function ContactForm() {
           cols={30}
           rows={10}
         />
+        <ErrorMessage name="message" />
       </Label>
 
       <Button type="submit" className="ml-auto rounded-none" form="contact-form">
