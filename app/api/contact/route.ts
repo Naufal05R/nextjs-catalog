@@ -1,20 +1,29 @@
 import { ContactEmail } from "@/components/mail/Contact";
-import { resend } from "@/lib/resend";
+import { ContactFormSchema } from "@/schema/contact";
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    const { data, error } = await resend.emails.send({
-      from: "Developer <support@naufalrabbani.com>",
-      to: ["delivered@resend.dev" /* "tantraahmad7@gmail.com" */],
-      subject: "Masuk ke ta?",
-      react: ContactEmail({ name: "John", email: "john@doe.com", phone: "+1234567890", message: "Hello, world!" }),
-    });
+    const rawData = await request.json();
+    const { success, data: information, error } = ContactFormSchema.safeParse(rawData);
 
-    if (error) {
-      return Response.json({ error }, { status: 500 });
+    if (success) {
+      const { data, error } = await resend.emails.send({
+        from: "Acme <onboarding@resend.dev>",
+        to: ["delivered@resend.dev", "tantraahmad7@gmail.com"],
+        subject: "Masuk ke ta",
+        react: ContactEmail(information),
+      });
+
+      if (error) {
+        return Response.json({ error }, { status: 500 });
+      }
+
+      return Response.json(data);
+    } else {
+      return Response.json(error);
     }
-
-    return Response.json(data);
   } catch (error) {
     return Response.json({ error }, { status: 500 });
   }
