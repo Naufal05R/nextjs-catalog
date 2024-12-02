@@ -2,7 +2,7 @@
 
 import { ProductFormSchema } from "@/schema/product";
 import { prisma } from "../prisma";
-import { getFileMimeTypes, handlingError, initRawData, padValue, slugify } from "../utils";
+import { getFileMimeTypes, getMediaSrc, handlingError, initRawData, padValue, slugify } from "../utils";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { createObject, deleteObjects } from "../service";
@@ -87,6 +87,31 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
     });
 
     return product;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
+export const getProductMedias = async ({
+  defaultFiles,
+  productId,
+  collection,
+}: {
+  defaultFiles: { title: string; name: string; order: number }[];
+  productId: string;
+  collection: string;
+}) => {
+  try {
+    const medias = await Promise.all(
+      defaultFiles.map(async ({ title, name, order }) => {
+        const src = getMediaSrc({ name, productId, collection });
+        const blob = await fetch(src).then((r) => r.blob());
+        const media = new File([blob], name, { type: blob.type });
+        return { title, order, media };
+      }),
+    );
+
+    return medias;
   } catch (error) {
     handlingError(error);
   }
