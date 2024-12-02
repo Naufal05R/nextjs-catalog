@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { MAX_ITEM_PER_PAGE } from "@/constants";
 import { auth } from "@clerk/nextjs/server";
+import { MediaDefaultSchema } from "@/schema/media";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
@@ -92,12 +93,25 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
   }
 };
 
+export const getProductMedia = async ({ slug, name }: { slug: string; name: string }) => {
+  try {
+    const product = await getProduct({ where: { slug } });
+    if (!product) throw new Error("Couldn't find product!");
+    const mediaSrc = getMediaSrc({ name, productId: product.id, collection: product.collection.slug });
+    const media = await fetch(mediaSrc).then((r) => r.blob());
+
+    return media;
+  } catch (error) {
+    handlingError(error);
+  }
+};
+
 export const getProductMedias = async ({
   defaultFiles,
   productId,
   collection,
 }: {
-  defaultFiles: { title: string; name: string; order: number }[];
+  defaultFiles: z.infer<typeof MediaDefaultSchema>;
   productId: string;
   collection: string;
 }) => {
