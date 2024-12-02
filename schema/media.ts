@@ -57,3 +57,11 @@ export const MediaFormSchema = MediaSchema.pick({
   order: true,
   media: true,
 });
+
+export const MediaDefaultSchema = z.array(
+  MediaSchema.pick({
+    title: true,
+    name: true,
+    order: true,
+  }),
+);
