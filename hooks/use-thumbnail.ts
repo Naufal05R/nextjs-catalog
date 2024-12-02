@@ -1,3 +1,4 @@
+import { fetcher } from "@/lib/utils";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import useSWR from "swr";
 
@@ -7,7 +8,7 @@ export function useThumbnail({ news, exts }: { news: string; exts: (typeof ACCEP
     error,
     isLoading,
   } = useSWR<File>(`/api/item/news/${news}/thumbnail?exts=${exts}`, async (url: string) => {
-    const blob = await fetch(url).then((r) => r.blob());
+    const blob = await fetcher.blob(url);
     return new File([blob], "thumbnail", { type: blob.type });
   });
 
