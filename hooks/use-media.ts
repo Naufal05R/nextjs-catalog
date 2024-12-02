@@ -1,5 +1,7 @@
-import { getMediaSrc } from "@/lib/utils";
+import { fetcher } from "@/lib/utils";
+import { MediaFormSchema } from "@/schema/media";
 import useSWR from "swr";
+import { z } from "zod";
 
 interface DefaultFiles {
   title: string;
@@ -10,23 +12,23 @@ interface DefaultFiles {
 
 interface UseMediaProps {
   defaultFiles: DefaultFiles[];
-  collection: string;
-  productId: string;
+  product: string;
 }
 
-export function useMedia({ defaultFiles, productId, collection }: UseMediaProps) {
-  const fetchMedia = async ({ productId, collection }: { productId: string; collection: string }) => {
-    return await Promise.all(
+export function useMedia({ defaultFiles, product }: UseMediaProps) {
+  const {
+    data: medias,
+    error,
+    isLoading,
+  } = useSWR<z.infer<typeof MediaFormSchema>[], unknown>({ defaultFiles, product }, () => {
+    return Promise.all(
       defaultFiles.map(async ({ title, name, order }) => {
-        const src = getMediaSrc({ name, productId, collection });
-        const blob = await fetch(src).then((r) => r.blob());
+        const blob = await fetcher.blob(`/api/item/product/${product}/media/${name}`);
         const media = new File([blob], name, { type: blob.type });
         return { title, order, media };
       }),
     );
-  };
-
-  const { data: medias, error, isLoading } = useSWR({ productId, collection }, fetchMedia);
+  });
 
   return { medias, error, isLoading };
 }
