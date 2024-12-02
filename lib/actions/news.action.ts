@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
-import { ThumbnailIdentifier } from "@/types/thumbnail";
+import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -52,24 +52,44 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   }
 };
 
-export const getNewsThumbnail = async ({ newsId, resourceId, exts }: ThumbnailIdentifier) => {
-  const thumbnailSrc = getNewsSrc({
-    newsId,
-    resource: "thumbnail",
-    resourceId,
-    exts,
-  });
-  const blob = await fetch(thumbnailSrc, {
-    headers: {
-      "Content-Type": `image/${exts}`,
-    },
-  }).then((r) => r.blob());
-  return new File([blob], "thumbnail", { type: blob.type });
+export const getNewsThumbnail = async ({
+  news,
+  exts,
+}: {
+  news: string;
+  exts: (typeof ACCEPTED_IMAGE_EXTS)[number];
+}) => {
+  try {
+    const selectedNews = await getNews({
+      where: { slug: news },
+    });
+
+    if (!selectedNews || !selectedNews.thumbnail) throw new Error("Couldn't find the news!");
+
+    const thumbnailSrc = getNewsSrc({
+      newsId: selectedNews.id,
+      resourceId: selectedNews.thumbnail.id,
+      resource: "thumbnail",
+      exts,
+    });
+    const blob = await fetch(thumbnailSrc, {
+      headers: {
+        "Content-Type": `image/${exts}`,
+      },
+    }).then((r) => r.blob());
+    return new File([blob], "thumbnail", { type: blob.type });
+  } catch (error) {
+    handlingError(error);
+  }
 };
 
-export const getNewsArticle = async (id: string) => {
+export const getNewsArticle = async (slug: string) => {
   try {
-    const articleSrc = getNewsSrc({ newsId: id, resource: "article", exts: "mdx" });
+    const selectedNews = await getNews({ where: { slug } });
+
+    if (!selectedNews) throw new Error("Couldn't find news!");
+
+    const articleSrc = getNewsSrc({ newsId: selectedNews.id, resource: "article", exts: "mdx" });
     const markdown = await fetch(articleSrc).then((r) => r.text());
 
     return markdown;
