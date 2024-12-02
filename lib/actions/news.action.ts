@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
+import { ThumbnailIdentifier } from "@/types/thumbnail";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -49,6 +50,21 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   } catch (error) {
     handlingError(error);
   }
+};
+
+export const getNewsThumbnail = async ({ newsId, resourceId, exts }: ThumbnailIdentifier) => {
+  const thumbnailSrc = getNewsSrc({
+    newsId,
+    resource: "thumbnail",
+    resourceId,
+    exts,
+  });
+  const blob = await fetch(thumbnailSrc, {
+    headers: {
+      "Content-Type": `image/${exts}`,
+    },
+  }).then((r) => r.blob());
+  return new File([blob], "thumbnail", { type: blob.type });
 };
 
 export const getNewsArticle = async (id: string) => {
