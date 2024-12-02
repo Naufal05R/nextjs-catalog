@@ -106,31 +106,6 @@ export const getProductMedia = async ({ slug, name }: { slug: string; name: stri
   }
 };
 
-export const getProductMedias = async ({
-  defaultFiles,
-  productId,
-  collection,
-}: {
-  defaultFiles: z.infer<typeof MediaDefaultSchema>;
-  productId: string;
-  collection: string;
-}) => {
-  try {
-    const medias = await Promise.all(
-      defaultFiles.map(async ({ title, name, order }) => {
-        const src = getMediaSrc({ name, productId, collection });
-        const blob = await fetch(src).then((r) => r.blob());
-        const media = new File([blob], name, { type: blob.type });
-        return { title, order, media };
-      }),
-    );
-
-    return medias;
-  } catch (error) {
-    handlingError(error);
-  }
-};
-
 export const getProductPages = async ({ query, currentPage }: ProductResult) => {
   try {
     const totalAnimals = await prisma.product.count({
