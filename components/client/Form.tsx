@@ -50,6 +50,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useMedia } from "@/hooks/use-media";
 import { useThumbnail } from "@/hooks/use-thumbnail";
+import { createContactMessage } from "@/lib/actions/contact.action";
 
 interface CreateProductFormProps {
   collection: string;
@@ -131,21 +132,14 @@ export function GuestbookForm() {
 }
 
 export function ContactForm() {
+  const [, formAction, isPending] = useActionState(createContactMessage, undefined);
+
   const actionHanlder = async (formData: FormData) => {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
-            <Mapper data={Array.from(formData.entries())} render={([key, value]) => `${key}: ${value}\n`} />
-          </code>
-        </pre>
-      ),
-    });
+    formAction(formData);
   };
 
   return (
-    <article className="mt-8 flex w-full flex-col space-y-4 text-right">
+    <fieldset className="mt-8 flex w-full flex-col space-y-4 text-right" disabled={isPending}>
       <form id="contact-form" action={actionHanlder} className="hidden" />
 
       <Label htmlFor="name" form="contact-form">
@@ -175,7 +169,7 @@ export function ContactForm() {
       <Button type="submit" className="ml-auto rounded-none" form="contact-form">
         Send
       </Button>
-    </article>
+    </fieldset>
   );
 }
 
