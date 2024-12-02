@@ -10,7 +10,6 @@ import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { MAX_ITEM_PER_PAGE } from "@/constants";
 import { auth } from "@clerk/nextjs/server";
-import { MediaDefaultSchema } from "@/schema/media";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
