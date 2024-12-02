@@ -31,7 +31,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
     resourceId: news.thumbnail.id,
     exts,
   });
-  const markdown = await getNewsArticle(news.id);
+  const markdown = await getNewsArticle(news.slug);
 
   if (!markdown) throw new Error(resourceError("article"));
 
