@@ -7,7 +7,7 @@ export async function POST() {
       from: "Developer <support@naufalrabbani.com>",
       to: ["delivered@resend.dev" /* "tantraahmad7@gmail.com" */],
       subject: "Masuk ke ta?",
-      react: ContactEmail({ firstName: "John" }),
+      react: ContactEmail({ name: "John", email: "john@doe.com", phone: "+1234567890", message: "Hello, world!" }),
     });
 
     if (error) {
