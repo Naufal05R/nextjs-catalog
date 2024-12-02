@@ -1409,7 +1409,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     }
   }, []);
 
-  const { thumbnail, error, isLoading } = useThumbnail({ newsId: news.id, resourceId: news.thumbnail!.id ?? "", exts });
+  const { thumbnail, error, isLoading } = useThumbnail({ news: news.slug, exts });
 
   useEffect(() => {
     if (thumbnail) setFile(thumbnail);
