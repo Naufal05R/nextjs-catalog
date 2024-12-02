@@ -12,7 +12,7 @@ export const createContactMessage = async (prevState: string | ZodIssue[] | unde
   if (success) {
     const { data, error } = await resend.emails.send({
       from: "Developer <support@naufalrabbani.com>",
-      to: ["delivered@resend.dev" /* "tantraahmad7@gmail.com" */],
+      to: ["delivered@resend.dev", "tantraahmad7@gmail.com"],
       subject: "Masuk ke ta?",
       react: ContactEmail(information),
     });
