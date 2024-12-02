@@ -16,7 +16,7 @@ export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
   if (!news) return notFound();
 
   const { title } = news;
-  const markdown = await getNewsArticle(news.id);
+  const markdown = await getNewsArticle(news.slug);
 
   if (!news || !markdown) return notFound();
 
