@@ -132,11 +132,19 @@ export function GuestbookForm() {
 }
 
 export function ContactForm() {
-  const [, formAction, isPending] = useActionState(createContactMessage, undefined);
+  const [state, formAction, isPending] = useActionState(createContactMessage, undefined);
 
   const actionHanlder = async (formData: FormData) => {
     formAction(formData);
   };
+
+  useEffect(() => {
+    const matcher = new RegExp(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+
+    if (typeof state === "string" && matcher.test(state)) {
+      alert("Successfully sending message!");
+    }
+  }, [state]);
 
   return (
     <fieldset className="mt-8 flex w-full flex-col space-y-4 text-right" disabled={isPending}>
