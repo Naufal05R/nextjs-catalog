@@ -29,7 +29,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   try {
     const slug = (await params).product;
-    const product = await getProduct({ where: slug });
+    const product = await getProduct({ where: { slug } });
 
     if (!product)
       return {
