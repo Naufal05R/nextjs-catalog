@@ -54,9 +54,15 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 collection: slug,
                 name: gallery!.medias[0].name,
               });
+
               return (
                 <li className="col-span-3">
-                  <CatalogProductCard {...product} category={category.title} imageProps={{ src }} />
+                  <CatalogProductCard
+                    {...product}
+                    prefix={`/collections/${slug}`}
+                    category={category.title}
+                    imageProps={{ src }}
+                  />
                 </li>
               );
             }}
