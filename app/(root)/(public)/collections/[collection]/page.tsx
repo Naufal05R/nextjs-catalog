@@ -6,12 +6,41 @@ import { getMediaSrc, handlingError } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 import { Collection } from "@prisma/client";
+import { Metadata, ResolvingMetadata } from "next";
 
 interface CollectionPageProps {
   params: Promise<{ collection: string }>;
 }
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
+
+export async function generateMetadata({ params }: CollectionPageProps, parent: ResolvingMetadata): Promise<Metadata> {
+  const notFoundMetadata: Metadata = {
+    title: "Collection not found!",
+    description: "Couldn't serve page for not existing product",
+  };
+
+  try {
+    const slug = (await params).collection;
+    const collection = await getCollection({ where: { slug } });
+
+    if (!collection) return notFoundMetadata;
+
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+      title: collection.title,
+      openGraph: {
+        title: collection.title,
+        description: collection.description,
+        images: [...previousImages],
+      },
+    };
+  } catch (error) {
+    handlingError(error);
+    return notFoundMetadata;
+  }
+}
 
 export async function generateStaticParams() {
   try {
