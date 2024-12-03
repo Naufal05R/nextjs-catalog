@@ -27,15 +27,16 @@ export async function generateMetadata(
   { params }: DetailProductPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const notFoundMetadata = {
+    title: "Product not found!",
+    description: "Couldn't serve page for not existing product",
+  };
+
   try {
     const slug = (await params).product;
     const product = await getProduct({ where: { slug } });
 
-    if (!product)
-      return {
-        title: "Product not found!",
-        description: "Couldn't serve page for not existing product",
-      };
+    if (!product) return notFoundMetadata;
 
     const previousImages = (await parent).openGraph?.images || [];
 
@@ -49,10 +50,7 @@ export async function generateMetadata(
     };
   } catch (error) {
     handlingError(error);
-    return {
-      title: "Product not found!",
-      description: "Couldn't serve page for not existing product",
-    };
+    return notFoundMetadata;
   }
 }
 
