@@ -67,9 +67,9 @@ const Route = ({ title, href, className }: { title: string; href: string; classN
     default:
       return (
         <BreadcrumbItem>
-          <BreadcrumbLink href={href} className={cn("py-4", className)}>
+          <Link href={href} className={cn("py-4", className)}>
             {readSlug(title)}
-          </BreadcrumbLink>
+          </Link>
         </BreadcrumbItem>
       );
   }
@@ -86,8 +86,8 @@ export const PublicPathname = () => {
         {!!breadcrumbs.length && (
           <>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="py-4 hover:text-rose-600">
-                Home
+              <BreadcrumbLink asChild className="py-4 hover:text-rose-600">
+                <Link href="/">Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
 
