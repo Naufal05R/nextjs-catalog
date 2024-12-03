@@ -3,6 +3,19 @@ import createMDX from "@next/mdx";
 const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
+  rewrites: async () => {
+    return [
+      {
+        source: "/products",
+        destination: "/collections",
+      },
+      {
+        source: "/collections/:path*/products",
+        destination: "/collections/:path*",
+      },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {
