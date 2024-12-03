@@ -10,8 +10,8 @@ const nextConfig = {
         destination: "/collections",
       },
       {
-        source: "/collections/:path*/products",
-        destination: "/collections/:path*",
+        source: "/collections/:collection*/products",
+        destination: "/collections/:collection*",
       },
     ];
   },
