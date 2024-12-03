@@ -1,5 +1,11 @@
 import { Image } from "@/components/server/Media";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "About our story behind Legenda Permata",
+};
 
 const AboutUsPage = () => {
   return (
