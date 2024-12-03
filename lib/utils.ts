@@ -56,7 +56,7 @@ export function cleanExtraSpaces(str: string) {
 }
 
 export function generateRoute(links: string[], end: number = 0) {
-  return `/${links.slice(0, Math.min(end, links.length - 1)).join("/")}`;
+  return `/${links.slice(0, Math.min(end, links.length)).join("/")}`;
 }
 
 export function removeUnwantedChars(str: string) {
