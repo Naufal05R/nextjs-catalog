@@ -11,11 +11,67 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, handlingError } from "@/lib/utils";
 import { CopyButton } from "@/components/client/Button";
+import { Metadata, ResolvingMetadata } from "next";
+import { getProduct } from "@/lib/actions/product.action";
+import { Product } from "@prisma/client";
 
 interface DetailProductPageProps {
   params: Promise<{ collection: string; product: string }>;
+}
+
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
+
+export async function generateMetadata(
+  { params }: DetailProductPageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  try {
+    const slug = (await params).product;
+    const product = await getProduct({ where: { slug } });
+
+    if (!product)
+      return {
+        title: "Product not found!",
+        description: "Couldn't serve page for not existing product",
+      };
+
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+      title: product.title,
+      openGraph: {
+        title: product.title,
+        description: product.description,
+        images: [...previousImages],
+      },
+    };
+  } catch (error) {
+    handlingError(error);
+    return {
+      title: "Product not found!",
+      description: "Couldn't serve page for not existing product",
+    };
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/list/product`);
+
+    if (!response.ok) throw new Error(`Fetching product failed: ${response.statusText}`);
+
+    const products: Product[] = await response.json();
+
+    if (!Array.isArray(products)) throw new Error(`Received invalid data format: ${typeof products}`);
+    if (!!products.length) return [];
+
+    return products.map(({ slug }) => ({ slug }));
+  } catch (error) {
+    handlingError(error);
+    return [];
+  }
 }
 
 const DetailProductPage = async ({ params }: DetailProductPageProps) => {
