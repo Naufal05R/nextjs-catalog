@@ -9,6 +9,7 @@ interface SearchPageProps {
 
 export const metadata: Metadata = {
   title: "Search",
+  description: "Search everything in our store",
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
