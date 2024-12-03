@@ -1,4 +1,10 @@
 import { DynamicCollections } from "@/components/server/Collection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collections",
+  description: "Find our product by collections",
+};
 
 export default function CollectionsPage() {
   return (
