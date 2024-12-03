@@ -54,7 +54,8 @@ const Route = ({ title, href, className }: { title: string; href: string; classN
               <Mapper
                 data={collections}
                 render={(collection) => (
-                  <Link href={`/${title}/${collection}`}>
+                  // TODO: Should remove key bug fixed by nextjs or react
+                  <Link key={collection} href={`/${title}/${collection}`}>
                     <DropdownMenuItem>{readSlug(collection)}</DropdownMenuItem>
                   </Link>
                 )}
