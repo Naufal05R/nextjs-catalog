@@ -3,12 +3,33 @@ import { Image } from "@/components/server/Media";
 import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getNewsSrc } from "@/lib/utils";
+import { getNewsSrc, handlingError } from "@/lib/utils";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { extensionError, resourceError } from "@/lib/utils/error";
+import { News } from "@prisma/client";
 
 interface DetailNewsPageProps {
   params: Promise<{ slug: string }>;
+}
+
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
+
+export async function generateStaticParams() {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/list/news`);
+
+    if (!response.ok) throw new Error(`Fetching news failed: ${response.statusText}`);
+
+    const news: News[] = await response.json();
+
+    if (!Array.isArray(news)) throw new Error(`Received invalid data format: ${typeof news}`);
+    if (!!news.length) return [];
+
+    return news.map(({ slug }) => ({ slug }));
+  } catch (error) {
+    handlingError(error);
+    return [];
+  }
 }
 
 export default async function DetailNewsPage({ params }: DetailNewsPageProps) {
