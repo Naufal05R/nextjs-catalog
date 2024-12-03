@@ -7,12 +7,41 @@ import { getNewsSrc, handlingError } from "@/lib/utils";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { extensionError, resourceError } from "@/lib/utils/error";
 import { News } from "@prisma/client";
+import { Metadata, ResolvingMetadata } from "next";
 
 interface DetailNewsPageProps {
   params: Promise<{ slug: string }>;
 }
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
+
+export async function generateMetadata({ params }: DetailNewsPageProps, parent: ResolvingMetadata): Promise<Metadata> {
+  const notFoundMetadata = {
+    title: "News not found!",
+    description: "Couldn't serve page for not existing news",
+  };
+
+  try {
+    const { slug } = await params;
+    const news = await getNews({ where: { slug } });
+
+    if (!news) return notFoundMetadata;
+
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+      title: news.title,
+      openGraph: {
+        title: news.title,
+        description: news.description,
+        images: [...previousImages],
+      },
+    };
+  } catch (error) {
+    handlingError(error);
+    return notFoundMetadata;
+  }
+}
 
 export async function generateStaticParams() {
   try {
