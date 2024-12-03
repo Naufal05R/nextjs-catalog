@@ -38,6 +38,7 @@ interface DashbaordProductCardProps extends Product {
 }
 
 interface CatalogProductCardProps extends Product {
+  prefix?: string;
   category: string;
   imageProps: WithRequired<Partial<ImageComponentProps>, "src">;
   tags: Array<Tag>;
@@ -234,6 +235,7 @@ export const CatalogProductCard = ({
   tags,
   description,
   category,
+  prefix,
   price,
   discount,
   imageProps,
@@ -242,7 +244,7 @@ export const CatalogProductCard = ({
 
   return (
     <Link
-      href={`/products/${slug}`}
+      href={`${prefix ?? ""}/products/${slug}`}
       draggable={false}
       className="group flex select-none flex-col rounded-md p-4 transition-shadow duration-300 card-shadow"
     >
