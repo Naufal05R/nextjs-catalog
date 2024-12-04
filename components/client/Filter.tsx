@@ -15,9 +15,10 @@ export const Filter = ({ field, data }: FilterProps) => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
+  const params = new URLSearchParams(searchParams);
+  const selected = params.get(field);
 
+  const handleSearch = useDebouncedCallback((term: string) => {
     params.set("page", "1");
     if (term) {
       params.set(field, term);
@@ -34,7 +35,7 @@ export const Filter = ({ field, data }: FilterProps) => {
       side="bottom"
       value={"slug"}
       label={["title"]}
-      defaultValue={searchParams.get(field)}
+      defaultValue={selected}
       onValueChange={(value) => handleSearch(value)}
       placeholder={`Filter by ${readSlug(field)}`}
       classNames={{
