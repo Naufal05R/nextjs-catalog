@@ -2,7 +2,7 @@ import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
 import { getCollection } from "@/lib/actions/collection.action";
-import { getMediaSrc, handlingError } from "@/lib/utils";
+import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 import { Collection } from "@prisma/client";
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: CollectionPageProps, parent: 
       },
     };
   } catch (error) {
-    handlingError(error);
+    console.error(error);
     return notFoundMetadata;
   }
 }
