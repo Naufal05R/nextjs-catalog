@@ -46,11 +46,11 @@ export async function generateStaticParams() {
   try {
     const response = await fetch(`${SERVER_URL}/api/list/collection`);
 
-    if (!response.ok) throw new Error(`Fetching product failed: ${response.statusText}`);
+    if (!response.ok) return [`Fetching product failed: ${response.statusText}`];
 
     const collections: Collection[] = await response.json();
 
-    if (!Array.isArray(collections)) throw new Error(`Received invalid data format: ${typeof collections}`);
+    if (!Array.isArray(collections)) return [`Received invalid data format: ${typeof collections}`];
     if (!!collections.length) return [];
 
     return collections.map(({ slug }) => ({ slug }));
