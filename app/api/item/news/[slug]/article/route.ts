@@ -4,7 +4,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const GET = async ({ params }: Props) => {
+export const GET = async (request: Request, { params }: Props) => {
   try {
     const { slug } = await params;
 
