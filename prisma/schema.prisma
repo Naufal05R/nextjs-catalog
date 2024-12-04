@@ -41,6 +41,8 @@ model Category {
   slug        String    @unique @db.VarChar(16)
   description String    @db.VarChar(64)
   products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
