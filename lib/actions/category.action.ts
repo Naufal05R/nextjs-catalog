@@ -1,31 +1,44 @@
 "use server";
 
-import { CategoryFormSchema, CategorySchema } from "@/schema/category";
+import { CategoryFormSchema } from "@/schema/category";
 import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
+import { Prisma } from "@prisma/client";
 
-export const getCategory = async (identifier: string, field: keyof z.infer<typeof CategorySchema>) => {
+type GetAllCategoryProps = {
+  where?: Prisma.CategoryWhereInput;
+};
+
+export const getAllCategory = async (params: GetAllCategoryProps | undefined = undefined) => {
+  const { where } = params ?? {};
   try {
-    const category = await prisma.collection.findFirst({
-      where: {
-        [field]: identifier,
+    const allCategories = await prisma.category.findMany({
+      where,
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
-    return category;
+    return allCategories;
   } catch (error) {
     handlingError(error);
   }
 };
 
-export const getAllCategory = async () => {
+export const getCategory = async (params: GetAllCategoryProps | undefined = undefined) => {
+  const { where } = params ?? {};
   try {
-    const allCategories = await prisma.category.findMany();
+    const category = await prisma.category.findFirst({
+      where,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-    return allCategories;
+    return category;
   } catch (error) {
     handlingError(error);
   }
