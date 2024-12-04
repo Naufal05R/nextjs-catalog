@@ -1,18 +1,15 @@
 import Mapper from "@/components/server/Mapper";
 import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
-import { getCollection } from "@/lib/actions/collection.action";
+import { getAllCollection, getCollection } from "@/lib/actions/collection.action";
 import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
-import { Collection } from "@prisma/client";
 import { Metadata, ResolvingMetadata } from "next";
 
 interface CollectionPageProps {
   params: Promise<{ collection: string }>;
 }
-
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
 
 export async function generateMetadata({ params }: CollectionPageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const notFoundMetadata: Metadata = {
@@ -44,13 +41,9 @@ export async function generateMetadata({ params }: CollectionPageProps, parent: 
 
 export async function generateStaticParams() {
   try {
-    const response = await fetch(`${SERVER_URL}/api/list/collection`);
+    const collections = await getAllCollection();
 
-    if (!response.ok) throw new Error(`Fetching product failed: ${response.statusText}`);
-
-    const collections: Collection[] = await response.json();
-
-    if (!Array.isArray(collections)) throw new Error(`Received invalid data format: ${typeof collections}`);
+    if (!collections) throw new Error(`Failed to get collections: ${typeof collections}`);
     if (!!collections.length) return [];
 
     return collections.map(({ slug }) => ({ slug }));
