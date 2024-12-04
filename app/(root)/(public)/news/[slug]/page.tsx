@@ -3,7 +3,7 @@ import { Image } from "@/components/server/Media";
 import { getNews, getNewsArticle } from "@/lib/actions/news.action";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getNewsSrc, handlingError } from "@/lib/utils";
+import { getNewsSrc } from "@/lib/utils";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { extensionError, resourceError } from "@/lib/utils/error";
 import { News } from "@prisma/client";
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: DetailNewsPageProps, parent: 
       },
     };
   } catch (error) {
-    handlingError(error);
+    console.error(error);
     return notFoundMetadata;
   }
 }
@@ -56,7 +56,7 @@ export async function generateStaticParams() {
 
     return news.map(({ slug }) => ({ slug }));
   } catch (error) {
-    handlingError(error);
+    console.error(error);
     return [];
   }
 }
