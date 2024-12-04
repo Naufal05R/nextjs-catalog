@@ -18,6 +18,7 @@ interface SelectProps<T extends Dataset, V extends keyof T[number]> {
   value: V;
   label: Array<keyof T[number]>;
   side?: "bottom" | "top" | "right" | "left";
+  onValueChange?: (e: string) => void;
   defaultValue?: T[number][NoInfer<V>];
   placeholder?: string;
   classNames?: {
@@ -32,6 +33,7 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
   value,
   label,
   side,
+  onValueChange,
   defaultValue,
   placeholder,
   classNames,
@@ -43,7 +45,10 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
       .trim();
 
   return (
-    <SelectRoot defaultValue={typeof defaultValue === "string" ? defaultValue : undefined}>
+    <SelectRoot
+      defaultValue={typeof defaultValue === "string" ? defaultValue : undefined}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger
         className={cn("w-fit text-slate-500 shadow-none focus:ring-0", classNames?.trigger)}
         icon={<ChevronDown className="ml-2.5 size-4" />}
@@ -54,8 +59,9 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
         <SelectGroup>
           <Mapper
             data={data}
-            render={(item) => (
+            render={(item, index) => (
               <SelectItem
+                key={index}
                 value={`${item[value]}`}
                 className={cn("text-slate-400 focus:text-slate-800", classNames?.item)}
               >
