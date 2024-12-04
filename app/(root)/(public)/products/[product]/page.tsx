@@ -14,14 +14,11 @@ import { Whatsapp } from "@/components/svg";
 import { formatPrice } from "@/lib/utils";
 import { CopyButton } from "@/components/client/Button";
 import { Metadata, ResolvingMetadata } from "next";
-import { getProduct } from "@/lib/actions/product.action";
-import { Product } from "@prisma/client";
+import { getAllProduct, getProduct } from "@/lib/actions/product.action";
 
 interface DetailProductPageProps {
   params: Promise<{ product: string }>;
 }
-
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
 
 export async function generateMetadata(
   { params }: DetailProductPageProps,
@@ -56,13 +53,9 @@ export async function generateMetadata(
 
 export async function generateStaticParams() {
   try {
-    const response = await fetch(`${SERVER_URL}/api/list/product`);
+    const products = await getAllProduct();
 
-    if (!response.ok) throw new Error(`Fetching product failed: ${response.statusText}`);
-
-    const products: Product[] = await response.json();
-
-    if (!Array.isArray(products)) throw new Error(`Received invalid data format: ${typeof products}`);
+    if (!products) throw new Error(`Failed to get products: ${typeof products}`);
     if (!!products.length) return [];
 
     return products.map(({ slug }) => ({ slug }));
