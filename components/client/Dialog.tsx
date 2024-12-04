@@ -59,14 +59,10 @@ export const CreateCollectionDialog = ({ setList }: CreateCollectionDialogProps)
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
         <form id="create-collection-form" action={formAction} />
-        {temporaryState ? (
-          ""
-        ) : (
-          <DialogHeader>
-            <DialogTitle className="font-body">Create New Collections</DialogTitle>
-            <DialogDescription></DialogDescription>
-          </DialogHeader>
-        )}
+        <DialogHeader>
+          <DialogTitle className="font-body">{!temporaryState && "Create New Collections"}</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
         {temporaryState ? (
           <div className="flex flex-col items-center justify-center gap-8">
             <CircleCheck size={64} className="text-blue-600" />
@@ -142,14 +138,10 @@ export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof Dia
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" closeButton={!temporaryState}>
           <form id="create-category-form" action={formAction} />
-          {temporaryState ? (
-            ""
-          ) : (
-            <DialogHeader>
-              <DialogTitle className="font-body">Create New Category</DialogTitle>
-              <DialogDescription></DialogDescription>
-            </DialogHeader>
-          )}
+          <DialogHeader>
+            <DialogTitle className="font-body">{!temporaryState && "Create New Category"}</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
           {temporaryState ? (
             <div className="flex flex-col items-center justify-center gap-8">
               <CircleCheck size={64} className="text-blue-600" />
