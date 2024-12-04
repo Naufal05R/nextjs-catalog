@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import Mapper from "./Mapper";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { Dataset } from "@/types/data";
 
 interface SelectProps<T extends Dataset, V extends keyof T[number]> {
@@ -46,7 +46,11 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
 
   return (
     <SelectRoot
-      defaultValue={typeof defaultValue === "string" ? defaultValue : undefined}
+      defaultValue={
+        typeof defaultValue === "string" && data.find(({ slug }) => slug === slugify(defaultValue))
+          ? defaultValue
+          : undefined
+      }
       onValueChange={onValueChange}
     >
       <SelectTrigger
