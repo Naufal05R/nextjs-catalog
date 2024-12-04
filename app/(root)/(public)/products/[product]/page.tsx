@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Whatsapp } from "@/components/svg";
-import { formatPrice, handlingError } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { CopyButton } from "@/components/client/Button";
 import { Metadata, ResolvingMetadata } from "next";
 import { getProduct } from "@/lib/actions/product.action";
@@ -49,7 +49,7 @@ export async function generateMetadata(
       },
     };
   } catch (error) {
-    handlingError(error);
+    console.error(error);
     return notFoundMetadata;
   }
 }
@@ -67,7 +67,7 @@ export async function generateStaticParams() {
 
     return products.map(({ slug }) => ({ slug }));
   } catch (error) {
-    handlingError(error);
+    console.error(error);
     return [];
   }
 }
