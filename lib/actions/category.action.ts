@@ -9,13 +9,13 @@ import { auth } from "@clerk/nextjs/server";
 
 export const getCategory = async (identifier: string, field: keyof z.infer<typeof CategorySchema>) => {
   try {
-    const collection = await prisma.collection.findFirst({
+    const category = await prisma.collection.findFirst({
       where: {
         [field]: identifier,
       },
     });
 
-    return collection;
+    return category;
   } catch (error) {
     handlingError(error);
   }
