@@ -1,11 +1,11 @@
 import Mapper from "@/components/server/Mapper";
-import { Select } from "@/components/server/Select";
 import { collections } from "@/constants";
 import { getAllCollection, getCollection } from "@/lib/actions/collection.action";
 import { getMediaSrc } from "@/lib/utils";
 import { getAllProduct } from "@/lib/actions/product.action";
 import { CatalogProductCard } from "@/components/server/Product";
 import { Metadata, ResolvingMetadata } from "next";
+import { Filter } from "@/components/client/Filter";
 
 interface CollectionPageProps {
   params: Promise<{ collection: string }>;
@@ -75,17 +75,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       <h4 className="mb-4 text-3xl capitalize">{title}</h4>
       <p className="mb-8 text-sm text-slate-500">{description}</p>
 
-      <Select
-        data={collections}
-        side="bottom"
-        value={"title"}
-        label={["title"]}
-        placeholder="Filter Collection"
-        classNames={{
-          trigger: "w-48 card-shadow transition-shadow duration-300 border-transparent",
-          content: "card-shadow transition-shadow duration-300 border-transparent",
-        }}
-      />
+      <Filter field="category" data={collections} />
 
       <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
         {!!allProducts?.length && (
