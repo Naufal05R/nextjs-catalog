@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 import {
   Select as SelectRoot,
@@ -14,10 +14,13 @@ import { cn, slugify } from "@/lib/utils";
 import { Dataset } from "@/types/data";
 
 interface SelectProps<T extends Dataset, V extends keyof T[number]> {
+  all?: boolean;
   data: T;
   value: V;
   label: Array<keyof T[number]>;
   side?: "bottom" | "top" | "right" | "left";
+  selected?: string;
+  setSelected?: React.Dispatch<React.SetStateAction<string>>;
   onValueChange?: (e: string) => void;
   defaultValue?: T[number][NoInfer<V>];
   placeholder?: string;
@@ -29,10 +32,12 @@ interface SelectProps<T extends Dataset, V extends keyof T[number]> {
 }
 
 export function Select<T extends Dataset, V extends keyof T[number]>({
+  all,
   data,
   value,
   label,
   side,
+  selected,
   onValueChange,
   defaultValue,
   placeholder,
@@ -51,6 +56,7 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
           ? defaultValue
           : undefined
       }
+      value={selected}
       onValueChange={onValueChange}
       disabled={!data.length}
     >
@@ -62,13 +68,18 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
       </SelectTrigger>
       <SelectContent side={side} className={cn("shadow-none", classNames?.content)}>
         <SelectGroup>
+          {all && (
+            <SelectItem value={"none"} className={cn("text-slate-500 focus:text-slate-800", classNames?.item)}>
+              All
+            </SelectItem>
+          )}
           <Mapper
             data={data}
             render={(item, index) => (
               <SelectItem
                 key={index}
                 value={`${item[value]}`}
-                className={cn("text-slate-400 focus:text-slate-800", classNames?.item)}
+                className={cn("text-slate-500 focus:text-slate-800", classNames?.item)}
               >
                 {printValue(item)}
               </SelectItem>
