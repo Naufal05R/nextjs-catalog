@@ -18,10 +18,13 @@ export const Filter = ({ field, data }: FilterProps) => {
   const params = new URLSearchParams(searchParams);
   const selected = params.get(field);
 
-  const handleSearch = useDebouncedCallback((term: string) => {
+  const handleSearch = useDebouncedCallback((term: "none" | (string & {})) => {
     params.set("page", "1");
     if (term) {
       params.set(field, term);
+      if (term === "none") {
+        params.delete(field);
+      }
     } else {
       params.delete(field);
     }
