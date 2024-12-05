@@ -112,7 +112,7 @@ export const ClearButton = ({ ...props }: ButtonProps) => {
             <Trash2 />
           </Button>
         </TooltipTrigger>
-        <TooltipContent sideOffset={16}>
+        <TooltipContent sideOffset={16} className="bg-white font-[450] text-slate-500">
           <p>Clear Filter</p>
         </TooltipContent>
       </Tooltip>
