@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
 import { Select } from "../server/Select";
 import { readSlug } from "@/lib/utils";
 import { ClearButton } from "./Button";
@@ -21,12 +20,12 @@ export const Filter = ({ field, data }: FilterProps) => {
   const selected = params.get(field);
   const [value, setValue] = useState(selected);
 
-  const handleFilter = useDebouncedCallback((term: "none" | (string & {})) => {
+  const handleFilter = (filter: "none" | (string & {})) => {
     params.set("page", "1");
-    if (term && term !== "none") {
-      params.set(field, term);
-      setValue(term);
-    } else if (term === "none") {
+    if (filter && filter !== "none") {
+      params.set(field, filter);
+      setValue(filter);
+    } else if (filter === "none") {
       setValue("");
       params.delete(field);
     } else {
@@ -34,7 +33,7 @@ export const Filter = ({ field, data }: FilterProps) => {
     }
 
     replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  };
 
   return (
     <div className="flex items-center gap-4">
