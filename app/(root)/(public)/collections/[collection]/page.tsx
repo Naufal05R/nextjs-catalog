@@ -1,14 +1,12 @@
-import Mapper from "@/components/server/Mapper";
-import { collections } from "@/constants";
 import { getAllCollection, getCollection } from "@/lib/actions/collection.action";
-import { getMediaSrc } from "@/lib/utils";
-import { getAllProduct } from "@/lib/actions/product.action";
-import { CatalogProductCard } from "@/components/server/Product";
+import { CatalogProductDisplay } from "@/components/server/Product";
 import { Metadata, ResolvingMetadata } from "next";
 import { Filter } from "@/components/client/Filter";
+import { getAllCategory } from "@/lib/actions/category.action";
 
 interface CollectionPageProps {
   params: Promise<{ collection: string }>;
+  searchParams: Promise<{ category: string }>;
 }
 
 export async function generateMetadata({ params }: CollectionPageProps, parent: ResolvingMetadata): Promise<Metadata> {
@@ -53,10 +51,16 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function CollectionPage({ params }: CollectionPageProps) {
-  const { collection } = await params;
+const SelectCategory = async () => {
+  const categories = await getAllCategory();
+  return <Filter field="category" data={categories ?? []} />;
+};
 
-  const { id, title, slug, description } = await getCollection({
+export default async function CollectionPage({ params, searchParams }: CollectionPageProps) {
+  const { collection } = await params;
+  const { category } = await searchParams;
+
+  const { title, description } = await getCollection({
     where: {
       slug: collection,
     },
@@ -68,40 +72,14 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     }
   });
 
-  const allProducts = await getAllProduct({ where: { collectionId: id } });
-
   return (
     <section className="pt-8">
       <h4 className="mb-4 text-3xl capitalize">{title}</h4>
       <p className="mb-8 text-sm text-slate-500">{description}</p>
 
-      <Filter field="category" data={collections} />
+      <SelectCategory />
 
-      <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
-        {!!allProducts?.length && (
-          <Mapper
-            data={allProducts}
-            render={({ category, gallery, ...product }) => {
-              const src = getMediaSrc({
-                productId: product.id,
-                collection: slug,
-                name: gallery!.medias[0].name,
-              });
-
-              return (
-                <li className="col-span-3">
-                  <CatalogProductCard
-                    {...product}
-                    prefix={`/collections/${slug}`}
-                    category={category.title}
-                    imageProps={{ src }}
-                  />
-                </li>
-              );
-            }}
-          />
-        )}
-      </ul>
+      <CatalogProductDisplay category={category} collection={collection} />
     </section>
   );
 }
