@@ -2,10 +2,12 @@
 
 import React, { useActionState, useEffect, useState } from "react";
 import { Button, ButtonProps } from "../ui/button";
-import { Copy, CopyCheck, LucideProps } from "lucide-react";
+import { Copy, CopyCheck, LucideProps, Trash2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { toast as sonner } from "sonner";
+import { Tooltip, TooltipContent, TooltipProvider } from "../ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -91,5 +93,29 @@ export const ToggleButton = ({ icon, toggleAction, identifier, ...props }: Toggl
       />
       {icon}
     </Button>
+  );
+};
+
+export const ClearButton = ({ ...props }: ButtonProps) => {
+  return (
+    <TooltipProvider>
+      <Tooltip delayDuration={100}>
+        <TooltipTrigger asChild>
+          <Button
+            {...props}
+            variant={null}
+            className={cn(
+              "aspect-square border-transparent text-slate-500 transition-shadow duration-300 card-shadow",
+              props.className,
+            )}
+          >
+            <Trash2 />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent sideOffset={16}>
+          <p>Clear Filter</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
