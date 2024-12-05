@@ -4,6 +4,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { Select } from "../server/Select";
 import { readSlug } from "@/lib/utils";
+import { ClearButton } from "./Button";
+import { useState } from "react";
 
 interface FilterProps {
   field: "category" | (string & {});
@@ -17,14 +19,16 @@ export const Filter = ({ field, data }: FilterProps) => {
 
   const params = new URLSearchParams(searchParams);
   const selected = params.get(field);
+  const [value, setValue] = useState(selected);
 
-  const handleSearch = useDebouncedCallback((term: "none" | (string & {})) => {
+  const handleFilter = useDebouncedCallback((term: "none" | (string & {})) => {
     params.set("page", "1");
-    if (term) {
+    if (term && term !== "none") {
       params.set(field, term);
-      if (term === "none") {
-        params.delete(field);
-      }
+      setValue(term);
+    } else if (term === "none") {
+      setValue("");
+      params.delete(field);
     } else {
       params.delete(field);
     }
@@ -33,18 +37,23 @@ export const Filter = ({ field, data }: FilterProps) => {
   }, 300);
 
   return (
-    <Select
-      data={data}
-      side="bottom"
-      value={"slug"}
-      label={["title"]}
-      defaultValue={selected}
-      onValueChange={(value) => handleSearch(value)}
-      placeholder={`Filter by ${readSlug(field)}`}
-      classNames={{
-        trigger: "w-48 card-shadow transition-shadow duration-300 border-transparent",
-        content: "card-shadow transition-shadow duration-300 border-transparent",
-      }}
-    />
+    <div className="flex items-center gap-4">
+      <Select
+        all
+        data={data}
+        side="bottom"
+        value={"slug"}
+        label={["title"]}
+        selected={value ?? ""}
+        onValueChange={(value) => handleFilter(value)}
+        placeholder={`Filter by ${readSlug(field)}`}
+        classNames={{
+          trigger: "w-48 card-shadow transition-shadow duration-300 border-transparent",
+          content: "card-shadow transition-shadow duration-300 border-transparent",
+        }}
+      />
+
+      <ClearButton onClick={() => handleFilter("none")} />
+    </div>
   );
 };
