@@ -52,6 +52,7 @@ export function Select<T extends Dataset, V extends keyof T[number]>({
           : undefined
       }
       onValueChange={onValueChange}
+      disabled={!data.length}
     >
       <SelectTrigger
         className={cn("w-fit text-slate-500 shadow-none focus:ring-0", classNames?.trigger)}
