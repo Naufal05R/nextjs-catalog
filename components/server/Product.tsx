@@ -20,6 +20,7 @@ import { Product, Tag } from "@prisma/client";
 import { getMediaSrc } from "@/lib/utils";
 import { getDynamicBlurDataURL } from "@/lib/actions/image.action";
 import { ToggleButton } from "../client/Button";
+import { getCollection } from "@/lib/actions/collection.action";
 
 interface ProductDisplay {
   isReady: boolean;
@@ -225,6 +226,47 @@ export const CreateProductCard = ({ collection }: { collection?: string }) => {
         </Link>
       )}
     </Card>
+  );
+};
+
+export const CatalogProductDisplay = async ({ collection, category }: { collection: string; category: string }) => {
+  const selectedCollection = await getCollection({ where: { slug: collection } });
+
+  if (!selectedCollection) throw new Error("Invalid collection!");
+
+  const products = await getAllProduct({
+    where: { collection: { slug: collection }, category: { slug: category } },
+  });
+
+  return (
+    <div className="mt-8">
+      {!!products?.length ? (
+        <ul className="grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
+          <Mapper
+            data={products}
+            render={({ category, gallery, ...product }) => {
+              const src = getMediaSrc({
+                productId: product.id,
+                collection: selectedCollection.slug,
+                name: gallery!.medias[0].name,
+              });
+              return (
+                <li className="col-span-3">
+                  <CatalogProductCard
+                    {...product}
+                    prefix={`/collections/${selectedCollection.slug}`}
+                    category={category.title}
+                    imageProps={{ src }}
+                  />
+                </li>
+              );
+            }}
+          />
+        </ul>
+      ) : (
+        <EmptyState title={`There's no ${category}'s product`} />
+      )}
+    </div>
   );
 };
 
