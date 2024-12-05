@@ -11,7 +11,7 @@ import {
 import Mapper from "./Mapper";
 import { ChevronDown } from "lucide-react";
 import { cn, slugify } from "@/lib/utils";
-import { Dataset } from "@/types/data";
+import { Data, Dataset } from "@/types/data";
 
 interface SelectProps<T extends Dataset, V extends keyof T[number]> {
   all?: boolean;
@@ -31,7 +31,7 @@ interface SelectProps<T extends Dataset, V extends keyof T[number]> {
   };
 }
 
-export function Select<T extends Dataset, V extends keyof T[number]>({
+export function Select<T extends Dataset<Data>, V extends keyof T[number]>({
   all,
   data,
   value,
