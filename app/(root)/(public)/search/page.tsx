@@ -21,7 +21,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       <Search />
 
-      <Suspense fallback={<>loading . . .</>}>
+      <Suspense
+        fallback={
+          <ul className="mt-8 grid grid-cols-3 gap-x-4 gap-y-8 xs:grid-cols-6 md:grid-cols-9 xl:grid-cols-12">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div key={i} className="col-span-3 aspect-[3/4] rounded bg-slate-200" />
+            ))}
+          </ul>
+        }
+      >
         <SearchProductResult query={query ?? ""} currentPage={1} />
       </Suspense>
     </section>
