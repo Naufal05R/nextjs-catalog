@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { Archive, Gem, Newspaper, PanelLeft, Radio } from "lucide-react";
+import { Archive, Gem, Newspaper, PanelLeft /* Radio */ } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -33,11 +33,11 @@ const initialNavigations = {
       url: "/dashboard/news",
       icon: Newspaper,
     },
-    {
-      name: "Broadcast",
-      url: "/dashboard",
-      icon: Radio,
-    },
+    // {
+    //   name: "Broadcast",
+    //   url: "/dashboard",
+    //   icon: Radio,
+    // },
     {
       name: "Products",
       url: "/dashboard/deprecated/products",
