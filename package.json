@@ -16,7 +16,13 @@
     "local:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
     "local:migrate:reset": "dotenv -e .env.local -- npx prisma migrate reset",
     "local:studio": "dotenv -e .env.local -- npx prisma studio",
-    "postlocal:migrate:dev": "dotenv -e .env.local -- npx @snaplet/seed sync"
+    "postlocal:migrate:dev": "dotenv -e .env.local -- npx @snaplet/seed sync",
+    "demo:seed": "prisma db seed",
+    "demo:generate": "prisma generate",
+    "demo:migrate:dev": "prisma migrate dev",
+    "demo:migrate:reset": "prisma migrate reset",
+    "demo:studio": "prisma studio",
+    "postdemo:migrate:dev": "@snaplet/seed sync"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.5.1",
