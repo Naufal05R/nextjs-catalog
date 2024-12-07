@@ -2,11 +2,11 @@ import * as Minio from "minio";
 import internal from "stream";
 import { handlingError } from "./utils";
 
-const SERVER_HOST: string = process.env.MINIO_SERVER_HOST || "";
-const SERVER_PORT: number = parseInt(process.env.MINIO_SERVER_PORT || "");
-const SECURE_URL: boolean = process.env.MINIO_SECURE_URL === "true";
-const ACCESS_KEY: string = process.env.MINIO_ACCESS_KEY || "";
-const SECRET_KEY: string = process.env.MINIO_SECRET_KEY || "";
+const SERVER_HOST = process.env.MINIO_SERVER_HOST || "";
+const SERVER_PORT = process.env.MINIO_SERVER_PORT ? parseInt(process.env.MINIO_SERVER_PORT) : undefined;
+const SECURE_URL = process.env.MINIO_SECURE_URL === "true";
+const ACCESS_KEY = process.env.MINIO_ACCESS_KEY || "";
+const SECRET_KEY = process.env.MINIO_SECRET_KEY || "";
 
 const minioClient = new Minio.Client({
   endPoint: SERVER_HOST,
