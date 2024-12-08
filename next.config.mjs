@@ -1,7 +1,23 @@
 import createMDX from "@next/mdx";
+
+const SERVER_HOST = process.env.MINIO_SERVER_HOST || "";
+const SERVER_PORT = process.env.MINIO_SERVER_PORT
+const NETWORK_PROTOCOL = process.env.MINIO_NETWORK_PROTOCOL;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: NETWORK_PROTOCOL,
+        hostname: SERVER_HOST,
+        port: SERVER_PORT,
+        pathname: "/nextjs-catalog/**",
+      },
+    ],
+  },
 
   rewrites: async () => {
     return [
@@ -14,17 +30,6 @@ const nextConfig = {
         destination: "/collections/:collection*",
       },
     ];
-  },
-
-  images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "9000",
-        pathname: "/nextjs-catalog/**",
-      },
-    ],
   },
 
   webpack: (config, options) => {
