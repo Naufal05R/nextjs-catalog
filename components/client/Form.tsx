@@ -706,7 +706,8 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 }
 
 export function CreateNewsForm() {
-  const [errors, formAction, isLoading] = useActionState(createNews, undefined);
+  const [state, formAction, isLoading] = useActionState(createNews, undefined);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
   const [file, setFile] = useState<File>();
 
   const MARKDOWN = "**Hello,** world!" as const;
@@ -756,7 +757,13 @@ export function CreateNewsForm() {
       }
     }
 
-    formAction(formData);
+    const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+
+    if (success) {
+      formAction(formData);
+    } else {
+      setErrors(error.errors);
+    }
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -772,6 +779,12 @@ export function CreateNewsForm() {
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => (
     <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />
   );
+
+  useEffect(() => {
+    if (state instanceof Array) {
+      setErrors(state);
+    }
+  }, [state]);
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
