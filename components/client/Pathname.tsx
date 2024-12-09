@@ -125,13 +125,13 @@ export const PrivatePathname = () => {
         {!!breadcrumbs.length && (
           // TODO: Should replace code from (<React.Fragment key={index}></React.Fragment>) to regular (<></>) when bug fixed by react or nextjs
           <>
-            {/* <BreadcrumbItem>
+            <BreadcrumbItem>
               <BreadcrumbLink href="/dashboard" className="py-4">
                 Dashboard
               </BreadcrumbLink>
-            </BreadcrumbItem> */}
+            </BreadcrumbItem>
 
-            <Mapper
+            {/* <Mapper
               data={breadcrumbs}
               render={(breadcrumb, index) => {
                 return (
@@ -141,7 +141,7 @@ export const PrivatePathname = () => {
                   </div>
                 );
               }}
-            />
+            /> */}
           </>
         )}
       </BreadcrumbList>
