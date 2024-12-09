@@ -390,6 +390,18 @@ export const SearchProductResult = async ({ query }: ProductResult) => {
           },
         },
         {
+          category: {
+            title: {
+              contains: query,
+              mode: "insensitive",
+            },
+            slug: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
           tags: {
             some: {
               OR: [
