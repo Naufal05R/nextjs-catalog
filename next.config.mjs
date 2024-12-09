@@ -47,6 +47,9 @@ const nextConfig = {
   },
 
   experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
     turbo: {
       rules: {
         "*.svg": {
