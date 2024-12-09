@@ -93,7 +93,7 @@ const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMe
         >
           <Mapper
             data={element.content}
-            render={({ group, separator, element }) => {
+            render={({ group, separator, element }, index) => {
               const Group = (children: React.ReactNode, Element: typeof DropdownMenuGroup) => (
                 <Element className={classNames?.menu?.group}>{children}</Element>
               );
@@ -133,10 +133,11 @@ const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMe
               };
 
               return (
-                <>
+                // TODO: Should remove unused key when bug fixed by react or nextjs
+                <React.Fragment key={index}>
                   {group ? Group(Switcher(), DropdownMenuGroup) : Switcher()}
                   {separator && <Separator className={classNames?.separator} />}
-                </>
+                </React.Fragment>
               );
             }}
           />
