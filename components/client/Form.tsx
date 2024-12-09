@@ -1368,6 +1368,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
   const [state, formAction, isPending] = useActionState(updateNews, undefined);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
   const [file, setFile] = useState<File>();
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
@@ -1427,7 +1428,13 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
       }
     }
 
-    formAction(formData);
+    const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+
+    if (success) {
+      formAction(formData);
+    } else {
+      setErrors(error.errors);
+    }
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -1446,11 +1453,17 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     if (thumbnail) setFile(thumbnail);
   }, [thumbnail]);
 
+  useEffect(() => {
+    if (state instanceof Array) {
+      setErrors(state);
+    }
+  }, [state]);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
-    return <InputFieldMessage schema={NewsFormSchema} errors={state instanceof Array ? state : []} name={name} />;
+    return <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />;
   };
 
   return (
