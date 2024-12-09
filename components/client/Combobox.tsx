@@ -207,7 +207,9 @@ export const ComboboxDropdownCategory = React.forwardRef<
                         <Mapper
                           data={data}
                           render={({ title, id }) => (
+                            // TODO: Should remove unused key when bug fixed by nextjs or react
                             <CommandItem
+                              key={id}
                               value={title}
                               onSelect={() => {
                                 setSelected(id);
