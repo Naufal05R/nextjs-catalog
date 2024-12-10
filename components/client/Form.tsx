@@ -920,7 +920,8 @@ export function CreateNewsForm() {
 }
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
-  const [errors, formAction, isPending] = useActionState(updateProduct, undefined);
+  const [state, formAction, isPending] = useActionState(updateProduct, undefined);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
@@ -939,7 +940,13 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
         }
       });
 
-    formAction({ formData, collection });
+    const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+
+    if (success) {
+      formAction({ formData, collection });
+    } else {
+      setErrors(error.errors);
+    }
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -967,6 +974,12 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
   useEffect(() => {
     if (medias) setFiles(medias);
   }, [medias]);
+
+  useEffect(() => {
+    if (state instanceof Array) {
+      setErrors(state);
+    }
+  }, [state]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
