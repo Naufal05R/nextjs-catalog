@@ -267,7 +267,8 @@ export function SignInForm() {
 }
 
 export function CreateProductForm({ collection, categories }: CreateProductFormProps) {
-  const [errors, formAction, isLoading] = useActionState(createProduct, undefined);
+  const [state, formAction, isLoading] = useActionState(createProduct, undefined);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState<Array<string>>([]);
@@ -284,7 +285,13 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
         }
       });
 
-    formAction({ formData, collection });
+    const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+
+    if (success) {
+      formAction({ formData, collection });
+    } else {
+      setErrors(error.errors);
+    }
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -306,6 +313,12 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
   const ErrorMessage = <T extends DataKeys<z.infer<typeof ProductFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
+
+  useEffect(() => {
+    if (state instanceof Array) {
+      setErrors(state);
+    }
+  }, [state]);
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
