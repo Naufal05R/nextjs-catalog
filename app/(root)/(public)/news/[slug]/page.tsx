@@ -45,7 +45,6 @@ export async function generateStaticParams() {
     const allNews = await getAllNews();
 
     if (!allNews) throw new Error(`Failed to get news: ${typeof allNews}`);
-    if (!!allNews.length) return [];
 
     return allNews.map(({ slug }) => ({ slug }));
   } catch (error) {
