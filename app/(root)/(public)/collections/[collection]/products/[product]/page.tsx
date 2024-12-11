@@ -56,9 +56,8 @@ export async function generateStaticParams() {
     const products = await getAllProduct();
 
     if (!products) throw new Error(`Failed to get products: ${typeof products}`);
-    if (!!products.length) return [];
 
-    return products.map(({ slug }) => ({ slug }));
+    return products.map(({ slug, collection }) => ({ collection: collection.slug, product: slug }));
   } catch (error) {
     console.error(error);
     return [];
