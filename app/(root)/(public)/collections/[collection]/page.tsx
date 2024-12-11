@@ -1,4 +1,4 @@
-import { getAllCollection, getCollection } from "@/lib/actions/collection.action";
+import { getCollection } from "@/lib/actions/collection.action";
 import { CatalogProductDisplay } from "@/components/server/Product";
 import { Metadata, ResolvingMetadata } from "next";
 import { Filter } from "@/components/client/Filter";
@@ -21,33 +21,19 @@ export async function generateMetadata({ params }: CollectionPageProps, parent: 
 
     if (!collection) return notFoundMetadata;
 
-    const previousImages = (await parent).openGraph?.images || [];
+    const { openGraph } = await parent;
 
     return {
       title: collection.title,
       openGraph: {
         title: collection.title,
         description: collection.description,
-        images: [...previousImages],
+        images: [...(openGraph?.images ?? [])],
       },
     };
   } catch (error) {
     console.error(error);
     return notFoundMetadata;
-  }
-}
-
-export async function generateStaticParams() {
-  try {
-    const collections = await getAllCollection();
-
-    if (!collections) throw new Error(`Failed to get collections: ${typeof collections}`);
-    if (!!collections.length) return [];
-
-    return collections.map(({ slug }) => ({ slug }));
-  } catch (error) {
-    console.error(error);
-    return [];
   }
 }
 
