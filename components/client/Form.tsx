@@ -909,6 +909,8 @@ export function CreateNewsForm() {
             }}
           />
           <ErrorMessage name="content" />
+          <ErrorMessage name="images.file" />
+          <ErrorMessage name="images.id" />
         </Label>
       </article>
 
@@ -1603,6 +1605,8 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
             }}
           />
           <ErrorMessage name="content" />
+          <ErrorMessage name="images.file" />
+          <ErrorMessage name="images.id" />
         </Label>
       </article>
 
