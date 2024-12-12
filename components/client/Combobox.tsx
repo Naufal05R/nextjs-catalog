@@ -200,7 +200,7 @@ export const ComboboxDropdownCategory = React.forwardRef<
               ),
               content: (
                 <Command>
-                  <CommandInput placeholder="Search language..." />
+                  <CommandInput placeholder="Search category..." />
                   <CommandList>
                     <CommandEmpty>No language found.</CommandEmpty>
                     <CommandGroup>
