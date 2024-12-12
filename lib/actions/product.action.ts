@@ -175,10 +175,7 @@ export const getProductPages = async ({ query, currentPage }: ProductResult) => 
   }
 };
 
-export const createProduct = async (
-  prevstate: string[] | z.ZodIssue[] | void,
-  { formData, collection }: { formData: FormData; collection: string },
-) => {
+export const createProduct = async ({ formData, collection }: { formData: FormData; collection: string }) => {
   const { userId } = await auth();
 
   if (!userId) {
@@ -266,12 +263,12 @@ export const createProduct = async (
       }
 
       pathname = `/dashboard/products/${collection}`;
-      revalidatePath("/", "layout");
     } catch (error) {
       handlingError(error);
-    } finally {
-      redirect(pathname);
     }
+
+    revalidatePath("/", "layout");
+    redirect(pathname);
   } else {
     return error.errors;
   }
