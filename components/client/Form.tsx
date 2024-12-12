@@ -267,14 +267,17 @@ export function SignInForm() {
 }
 
 export function CreateProductForm({ collection, categories }: CreateProductFormProps) {
-  const [state, formAction, isLoading] = useActionState(createProduct, undefined);
-  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
+  const [{ errors, isLoading }, setStatus] = useState<{ errors?: z.ZodIssue[]; isLoading?: boolean }>({});
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState<Array<string>>([]);
   const { open } = useSidebar();
 
-  const actionHandler = async (formData: FormData) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus((prevState) => ({ ...prevState, isLoading: true }));
+    const formData = new FormData(event.currentTarget);
+
     files
       .filter(({ media }) => !!media && new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(media.type))
       .sort((a, b) => a.order - b.order)
@@ -288,10 +291,12 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
     const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      formAction({ formData, collection });
+      await createProduct({ formData, collection });
     } else {
-      setErrors(error.errors);
+      setStatus(() => ({ errors: error.errors }));
     }
+
+    setStatus((prevState) => ({ ...prevState, isLoading: false }));
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -314,15 +319,9 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
-  useEffect(() => {
-    if (state instanceof Array) {
-      setErrors(state);
-    }
-  }, [state]);
-
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
-      <form id="create-product-form" action={actionHandler} className="hidden" />
+      <form id="create-product-form" onSubmit={submitHandler} className="hidden" />
 
       <article className="col-span-12">
         <h6 className="mb-1 line-clamp-1 text-lg font-medium">Product Title</h6>
