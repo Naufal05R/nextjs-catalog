@@ -134,7 +134,7 @@ const DetailProductPage = async ({ params }: DetailProductPageProps) => {
               </Link>
             </Button>
 
-            <CopyButton title="Share Link" />
+            <CopyButton title="Copy Link" />
 
             {/* <fieldset className="flex basis-5/6 items-center gap-2 overflow-visible">
               <Button variant={"secondary"} className="text-slate-600 shadow-none">
