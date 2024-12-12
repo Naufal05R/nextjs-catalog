@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -25,6 +26,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const { signOut } = useClerk();
+  const { push } = useRouter();
 
   return (
     <SidebarMenu>
@@ -66,7 +68,13 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem className="focus:bg-rose-50" onClick={() => signOut({ redirectUrl: "/" })}>
+            <DropdownMenuItem
+              className="focus:bg-rose-50"
+              onClick={() => {
+                signOut({ redirectUrl: "/" });
+                push("/");
+              }}
+            >
               <LogOut className="text-rose-500" />
               <span className="text-rose-500">Log out</span>
             </DropdownMenuItem>
