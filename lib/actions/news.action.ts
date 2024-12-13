@@ -98,7 +98,7 @@ export const getNewsArticle = async (slug: string) => {
   }
 };
 
-export const createNews = async (prevState: z.ZodIssue[] | undefined, formData: FormData) => {
+export const createNews = async (formData: FormData) => {
   const { userId } = await auth();
 
   if (!userId) {
