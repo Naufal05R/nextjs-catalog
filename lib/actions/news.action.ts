@@ -193,7 +193,7 @@ export const createNews = async (formData: FormData) => {
   }
 };
 
-export const updateNews = async (prevstate: string[] | z.ZodIssue[] | void, formData: FormData) => {
+export const updateNews = async (formData: FormData) => {
   const { userId } = await auth();
 
   if (!userId) {
