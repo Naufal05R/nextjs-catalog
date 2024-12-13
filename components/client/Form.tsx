@@ -33,7 +33,7 @@ import {
   removeUnallowedChars,
   removeUnwantedChars,
 } from "@/lib/utils";
-import { createProduct, updateProduct } from "@/lib/actions/product.action";
+import { createProduct, getProductMedia, updateProduct } from "@/lib/actions/product.action";
 import { ComboboxDropdownCategory } from "./Combobox";
 import { Dialog } from "@/components/server/Dialog";
 import { Category, Media, Prisma, Product, Tag } from "@prisma/client";
@@ -59,12 +59,6 @@ interface CreateProductFormProps {
 }
 
 interface EditProductFormProps extends CreateProductFormProps {
-  defaultFiles: Array<{
-    title: string;
-    name: string;
-    order: number;
-    media: File | null;
-  }>;
   product: Product & {
     gallery: {
       medias: Media[];
@@ -919,9 +913,9 @@ export function CreateNewsForm() {
   );
 }
 
-export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
+export function EditProductForm({ product, collection, categories }: EditProductFormProps) {
   const [{ errors, isPending }, setStatus] = useState<{ errors?: z.ZodIssue[]; isPending?: boolean }>({});
-  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
+  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
   const { open } = useSidebar();
@@ -974,8 +968,20 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
+  useEffect(() => {
+    (async () => {
+      const defaultFiles = await Promise.all(
+        product.gallery!.medias.map(async ({ title, name, order }) => {
+          const blob = await getProductMedia({ slug: product.slug, name });
+          if (!blob) throw new Error("Media not found!");
+          const media = new File([blob], name, { type: blob.type });
+          return { title, name, order, media };
+        }),
+      );
+
+      setFiles(defaultFiles);
+    })();
+  }, [product.gallery, product.slug]);
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isPending}>
