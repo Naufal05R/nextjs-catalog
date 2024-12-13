@@ -49,7 +49,6 @@ import { NewsFormSchema } from "@/schema/news";
 import { extensionError } from "@/lib/utils/error";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useMedia } from "@/hooks/use-media";
 import { useThumbnail } from "@/hooks/use-thumbnail";
 import { createContactMessage } from "@/lib/actions/contact.action";
 import { ContactFormSchema } from "@/schema/contact";
@@ -921,14 +920,17 @@ export function CreateNewsForm() {
 }
 
 export function EditProductForm({ defaultFiles, product, collection, categories }: EditProductFormProps) {
-  const [state, formAction, isPending] = useActionState(updateProduct, undefined);
-  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
-  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
+  const [{ errors, isPending }, setStatus] = useState<{ errors?: z.ZodIssue[]; isPending?: boolean }>({});
+  const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>(defaultFiles);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
   const { open } = useSidebar();
 
-  const actionHandler = async (formData: FormData) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus((prevState) => ({ ...prevState, isPending: true }));
+    const formData = new FormData(event.currentTarget);
+
     formData.append("id", product.id);
 
     files
@@ -944,10 +946,12 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      formAction({ formData, collection });
+      await updateProduct(undefined, { formData, collection });
     } else {
-      setErrors(error.errors);
+      setStatus(() => ({ errors: error.errors }));
     }
+
+    setStatus((prevState) => ({ ...prevState, isPending: false }));
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -970,24 +974,12 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     return <InputFieldMessage schema={ProductFormSchema} errors={errors} name={name} />;
   };
 
-  const { medias, error, isLoading } = useMedia({ defaultFiles, product: product.slug });
-
-  useEffect(() => {
-    if (medias) setFiles(medias);
-  }, [medias]);
-
-  useEffect(() => {
-    if (state instanceof Array) {
-      setErrors(state);
-    }
-  }, [state]);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isPending}>
-      <form id="create-product-form" action={actionHandler} className="hidden" />
+      <form id="create-product-form" onSubmit={submitHandler} className="hidden" />
 
       <article className="col-span-12">
         <h6 className="mb-1 text-lg font-medium">Product Title</h6>
