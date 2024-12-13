@@ -1458,7 +1458,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      await updateNews(undefined, formData);
+      await updateNews(formData);
     } else {
       setStatus({ errors: error.errors });
     }
