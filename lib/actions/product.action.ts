@@ -3,7 +3,6 @@
 import { ProductFormSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { getFileMimeTypes, getMediaSrc, handlingError, initRawData, padValue, slugify } from "../utils";
-import { z } from "zod";
 import { redirect } from "next/navigation";
 import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
