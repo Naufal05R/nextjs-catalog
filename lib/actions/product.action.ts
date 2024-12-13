@@ -274,10 +274,7 @@ export const createProduct = async ({ formData, collection }: { formData: FormDa
   }
 };
 
-export const updateProduct = async (
-  prevstate: string[] | z.ZodIssue[] | void,
-  { formData, collection }: { formData: FormData; collection: string },
-) => {
+export const updateProduct = async ({ formData, collection }: { formData: FormData; collection: string }) => {
   const { userId } = await auth();
 
   if (!userId) {
