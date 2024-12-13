@@ -946,7 +946,7 @@ export function EditProductForm({ defaultFiles, product, collection, categories 
     const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      await updateProduct(undefined, { formData, collection });
+      await updateProduct({ formData, collection });
     } else {
       setStatus(() => ({ errors: error.errors }));
     }
