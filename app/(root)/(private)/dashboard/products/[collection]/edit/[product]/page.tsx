@@ -1,6 +1,6 @@
 import { EditProductForm } from "@/components/client/Form";
 import { getAllCategory } from "@/lib/actions/category.action";
-import { getProduct } from "@/lib/actions/product.action";
+import { getProduct, getProductMedia } from "@/lib/actions/product.action";
 import { notFound } from "next/navigation";
 
 interface EditProductPageProps {
@@ -15,8 +15,15 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   if (!selectedProduct) return notFound();
 
   const categories = await getAllCategory();
-  const defaultFiles =
-    selectedProduct.gallery?.medias.map(({ title, name, order }) => ({ title, name, order, media: null })) ?? [];
+
+  const defaultFiles = await Promise.all(
+    selectedProduct.gallery!.medias.map(async ({ title, name, order }) => {
+      const blob = await getProductMedia({ slug: product, name });
+      if (!blob) throw new Error("Media not found!");
+      const media = new File([blob], name, { type: blob.type });
+      return { title, name, order, media };
+    }),
+  );
 
   return (
     <section className="size-full p-4">
