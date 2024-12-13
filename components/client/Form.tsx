@@ -42,14 +42,13 @@ import { InputFieldMessage } from "../server/Message";
 import { ProductFormSchema } from "@/schema/product";
 import { DataKeys } from "@/types/data";
 import { RichText } from "./Editor";
-import { createNews, updateNews } from "@/lib/actions/news.action";
+import { createNews, getNewsThumbnail, updateNews } from "@/lib/actions/news.action";
 import { Uploader } from "./Uploader";
 import { useSidebar } from "../ui/sidebar";
 import { NewsFormSchema } from "@/schema/news";
 import { extensionError } from "@/lib/utils/error";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useThumbnail } from "@/hooks/use-thumbnail";
 import { createContactMessage } from "@/lib/actions/contact.action";
 import { ContactFormSchema } from "@/schema/contact";
 
@@ -1476,14 +1475,12 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     }
   }, []);
 
-  const { thumbnail, error, isLoading } = useThumbnail({ news: news.slug, exts });
-
   useEffect(() => {
-    if (thumbnail) setFile(thumbnail);
-  }, [thumbnail]);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
+    (async () => {
+      const thumbnail = await getNewsThumbnail({ news: news.slug, exts });
+      if (thumbnail) setFile(new File([thumbnail], "thumbnail", { type: thumbnail.type }));
+    })();
+  }, [news.slug, exts]);
 
   const ErrorMessage = <T extends DataKeys<z.infer<typeof NewsFormSchema>>>({ name }: { name: T }) => {
     return <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />;
