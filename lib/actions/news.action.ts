@@ -7,7 +7,6 @@ import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
-import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 
