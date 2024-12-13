@@ -745,7 +745,7 @@ export function CreateNewsForm() {
     }
   };
 
-  const actionHanlder = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus((prevState) => ({ ...prevState, isLoading: true }));
     const formData = new FormData(event.currentTarget);
@@ -792,7 +792,7 @@ export function CreateNewsForm() {
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
-      <form id="create-news-form" onSubmit={actionHanlder} className="hidden" />
+      <form id="create-news-form" onSubmit={submitHandler} className="hidden" />
 
       <article className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
@@ -1391,8 +1391,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
 }
 
 export function EditNewsForm({ news, text }: EditNewsFormProps) {
-  const [state, formAction, isPending] = useActionState(updateNews, undefined);
-  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
+  const [{ errors, isPending }, setStatus] = useState<{ errors?: z.ZodIssue[]; isPending?: boolean }>({});
   const [file, setFile] = useState<File>();
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
@@ -1428,7 +1427,11 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     }
   };
 
-  const actionHanlder = async (formData: FormData) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus((prevState) => ({ ...prevState, isPending: true }));
+    const formData = new FormData(event.currentTarget);
+
     if (file) formData.append("thumbnail", file);
 
     formData.append("id", news.id);
@@ -1455,10 +1458,12 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      formAction(formData);
+      await updateNews(undefined, formData);
     } else {
-      setErrors(error.errors);
+      setStatus({ errors: error.errors });
     }
+
+    setStatus((prevState) => ({ ...prevState, isPending: false }));
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -1477,12 +1482,6 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     if (thumbnail) setFile(thumbnail);
   }, [thumbnail]);
 
-  useEffect(() => {
-    if (state instanceof Array) {
-      setErrors(state);
-    }
-  }, [state]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading contents: {error instanceof Error ? error.message : JSON.stringify(error)}</div>;
 
@@ -1492,7 +1491,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isPending}>
-      <form id="edit-news-form" action={actionHanlder} className="hidden" />
+      <form id="edit-news-form" onSubmit={submitHandler} className="hidden" />
 
       <article className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
