@@ -95,7 +95,7 @@ export const getProduct = async (params: GetAllProductProps | undefined = undefi
 export const getProductMedia = async ({ slug, name }: { slug: string; name: string }) => {
   try {
     const product = await getProduct({ where: { slug } });
-    if (!product) throw new Error("Couldn't find product!");
+    if (!product) throw new Error("Failed to get product media. Couldn't find product!");
     const mediaSrc = getMediaSrc({ name, productId: product.id, collection: product.collection.slug });
     const media = await fetch(mediaSrc).then((r) => r.blob());
 
