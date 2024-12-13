@@ -74,9 +74,10 @@ export const getNewsThumbnail = async ({
     const blob = await fetch(thumbnailSrc, {
       headers: {
         "Content-Type": `image/${exts}`,
+        "Content-Disposition": `attachment; filename="thumbnail.${exts}"`,
       },
     }).then((r) => r.blob());
-    return new File([blob], "thumbnail", { type: blob.type });
+    return blob;
   } catch (error) {
     handlingError(error);
   }
