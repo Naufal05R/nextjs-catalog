@@ -711,8 +711,7 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
 }
 
 export function CreateNewsForm() {
-  const [state, formAction, isLoading] = useActionState(createNews, undefined);
-  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
+  const [{ errors, isLoading }, setStatus] = useState<{ errors?: z.ZodIssue[]; isLoading?: boolean }>({});
   const [file, setFile] = useState<File>();
 
   const MARKDOWN = "**Hello,** world!" as const;
@@ -746,7 +745,11 @@ export function CreateNewsForm() {
     }
   };
 
-  const actionHanlder = async (formData: FormData) => {
+  const actionHanlder = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus((prevState) => ({ ...prevState, isLoading: true }));
+    const formData = new FormData(event.currentTarget);
+
     const [content, ids] = changeOriginalImgSouce();
 
     formData.append("content", content);
@@ -765,10 +768,12 @@ export function CreateNewsForm() {
     const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      formAction(formData);
+      await createNews(formData);
     } else {
-      setErrors(error.errors);
+      setStatus({ errors: error.errors });
     }
+
+    setStatus((prevState) => ({ ...prevState, isLoading: false }));
   };
 
   const onDrop = useCallback<(files: Array<File>) => void>((acceptedFiles) => {
@@ -785,15 +790,9 @@ export function CreateNewsForm() {
     <InputFieldMessage schema={NewsFormSchema} errors={errors} name={name} />
   );
 
-  useEffect(() => {
-    if (state instanceof Array) {
-      setErrors(state);
-    }
-  }, [state]);
-
   return (
     <fieldset className="mt-8 grid w-full grid-cols-12 gap-4" disabled={isLoading}>
-      <form id="create-news-form" action={actionHanlder} className="hidden" />
+      <form id="create-news-form" onSubmit={actionHanlder} className="hidden" />
 
       <article className="col-span-12 grid grid-cols-4 gap-x-4">
         <h6 className="col-span-4 mb-1 text-lg font-medium lg:col-span-1">News Title</h6>
