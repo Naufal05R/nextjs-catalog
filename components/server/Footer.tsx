@@ -2,22 +2,24 @@ import React from "react";
 import Link from "next/link";
 import { padding } from "@/lib/styles";
 import { cn } from "@/lib/utils";
-import {
-  AmericanExpress,
-  DinersClub,
-  Discover,
-  JCB,
-  Maestro,
-  Mastercard,
-  PayPal,
-  UnionPay,
-  Venmo,
-  Visa,
-} from "@/components/svg";
 
+// TODO: Should implement Payment Gateway Feature
 // TODO: Should implement Email Subscription Feature
 // TODO: Should implement Change Language Feature
 // TODO: Should implement Change Currency Feature
+
+// import {
+//   AmericanExpress,
+//   DinersClub,
+//   Discover,
+//   JCB,
+//   Maestro,
+//   Mastercard,
+//   PayPal,
+//   UnionPay,
+//   Venmo,
+//   Visa,
+// } from "@/components/svg";
 
 // import { /* Dot, */ /* Mail */ } from "lucide-react";
 import { /* currencies, */ /* footers, */ navigations } from "@/constants";
@@ -100,7 +102,7 @@ const Footer = () => {
           </Link> */}
         </blockquote>
 
-        <ul className="col-span-12 flex flex-row flex-wrap items-center gap-2 md:col-span-8 md:justify-end">
+        {/* <ul className="col-span-12 flex flex-row flex-wrap items-center gap-2 md:col-span-8 md:justify-end">
           {[AmericanExpress, DinersClub, Discover, JCB, Maestro, Mastercard, PayPal, UnionPay, Venmo, Visa].map(
             (Icon, index) => (
               <li key={index}>
@@ -108,7 +110,7 @@ const Footer = () => {
               </li>
             ),
           )}
-        </ul>
+        </ul> */}
       </footer>
     </>
   );
