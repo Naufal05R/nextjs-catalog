@@ -1,12 +1,21 @@
 import { Prisma } from "@prisma/client";
 
+const uniqueViolation = (fields: string) => `There is a unique constraint violation: ${fields} must be a unique value.`;
+
 const handlingKnownErrors = (error: Prisma.PrismaClientKnownRequestError) => {
   if (error.code === "P2002") {
     if (error.meta?.target instanceof Array) {
-      const fields = error.meta?.target.filter((field) => typeof field === "string").join(", ");
-      return `There is a unique constraint violation: ${fields} must be a unique value.`;
+      const fields = [
+        ...new Set(
+          error.meta.target
+            .filter((field) => typeof field === "string")
+            .map((field) => (field === "slug" ? "title" : field)),
+        ),
+      ].join(", ");
+
+      return uniqueViolation(fields);
     } else {
-      return `There is a unique constraint violation: One or more fields must be a unique value.`;
+      return uniqueViolation("One or more fields");
     }
   } else {
     console.dir(error.meta, { depth: null });
