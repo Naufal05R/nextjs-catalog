@@ -23,6 +23,9 @@ export const getAllNews = async (params: GetNewsProps | undefined = undefined) =
   try {
     const allNews = await prisma.news.findMany({
       where,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         thumbnail: true,
       },
@@ -40,6 +43,9 @@ export const getNews = async (params: GetNewsProps | undefined = undefined) => {
   try {
     const news = await prisma.news.findFirst({
       where,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         thumbnail: true,
       },
