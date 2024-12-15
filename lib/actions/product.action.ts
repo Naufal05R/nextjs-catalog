@@ -3,7 +3,6 @@
 import { ProductFormSchema } from "@/schema/product";
 import { prisma } from "../prisma";
 import { getFileMimeTypes, getMediaSrc, handlingError, initRawData, padValue, slugify } from "../utils";
-import { redirect } from "next/navigation";
 import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
@@ -282,7 +281,6 @@ export const updateProduct = async ({ formData, collection }: { formData: FormDa
 
   if (success) {
     const { id, medias, tags, ...product } = data;
-    let pathname: string = `/dashboard/products/${collection}/edit/${slugify(product.title)}`;
 
     try {
       for (const { title, order, media } of medias) {
@@ -370,14 +368,10 @@ export const updateProduct = async ({ formData, collection }: { formData: FormDa
         } else throw new Error("Collection not found");
       });
 
-      pathname = `/dashboard/products/${collection}`;
       revalidatePath("/", "layout");
-
       return newProduct;
     } catch (error) {
-      handlingError(error);
-    } finally {
-      redirect(pathname);
+      return handlingPrismaErrors(error);
     }
   } else {
     return error.errors;
