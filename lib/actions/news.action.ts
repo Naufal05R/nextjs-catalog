@@ -5,7 +5,6 @@ import { getFileMimeTypes, getNewsSrc, handlingError, initRawData, slugify } fro
 import { createObject, deleteObjects } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
@@ -110,7 +109,6 @@ export const createNews = async (formData: FormData) => {
 
   if (success) {
     const { title, description, thumbnail, content } = data;
-    let pathname = "";
 
     try {
       const imagesFile = data["images.file"];
@@ -185,12 +183,9 @@ export const createNews = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${slugify(title)}`;
       return news;
     } catch (error) {
       return handlingPrismaErrors(error);
-    } finally {
-      redirect(pathname);
     }
   } else {
     return error.errors;
@@ -209,15 +204,14 @@ export const updateNews = async (formData: FormData) => {
   if (success) {
     const { id, title, description, thumbnail, content } = data;
     const slug = slugify(title);
-    let pathname = "";
 
     try {
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
       let markdown = content;
 
-      await prisma.$transaction(async (_prisma) => {
-        await _prisma.news.update({
+      const news = await prisma.$transaction(async (_prisma) => {
+        const _news = await _prisma.news.update({
           where: { id },
           data: {
             title,
@@ -287,14 +281,14 @@ export const updateNews = async (formData: FormData) => {
             "Content-Type": "text/markdown",
           },
         });
+
+        return _news;
       });
 
       revalidatePath("/", "layout");
-      pathname = `/dashboard/news/detail/${slug}`;
+      return news;
     } catch (error) {
-      handlingError(error);
-    } finally {
-      redirect(pathname);
+      return handlingPrismaErrors(error);
     }
   } else {
     return error.errors;
