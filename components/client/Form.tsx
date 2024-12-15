@@ -1469,7 +1469,12 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
 
     if (success) {
       const result = await updateNews(formData);
-      if (typeof result === "string") alert(result);
+      if (typeof result === "string")
+        toast({
+          title: "Failed to create news!",
+          description: result,
+          variant: "destructive",
+        });
       if (typeof result === "object" && !Array.isArray(result)) push(`/dashboard/news/detail/${result.slug}`);
     } else {
       setStatus({ errors: error.errors });
