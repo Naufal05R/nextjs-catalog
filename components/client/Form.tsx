@@ -621,9 +621,15 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
                                     });
                                   });
                                 } else {
-                                  alert(
-                                    `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
-                                  );
+                                  toast({
+                                    title: `Invalid File ${file.name}!`,
+                                    description: (
+                                      <p>
+                                        Allowed files: <strong>{ACCEPTED_MEDIA_TYPES.join(", ")}</strong>
+                                      </p>
+                                    ),
+                                    variant: "destructive",
+                                  });
                                 }
                               }
                             }}
@@ -677,7 +683,15 @@ export function CreateProductForm({ collection, categories }: CreateProductFormP
                         if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
                           return true;
                         } else {
-                          alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                          toast({
+                            title: `Invalid File ${file.name}!`,
+                            description: (
+                              <p>
+                                Allowed files: <strong>{ACCEPTED_MEDIA_TYPES.join(", ")}</strong>
+                              </p>
+                            ),
+                            variant: "destructive",
+                          });
                           return false;
                         }
                       })
@@ -843,7 +857,15 @@ export function CreateNewsForm() {
                   if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
                     setFile(image);
                   } else {
-                    alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                    toast({
+                      title: `Invalid File ${image.name}!`,
+                      description: (
+                        <p>
+                          Allowed files: <strong>{ACCEPTED_IMAGE_EXTS.join(", ")}</strong>
+                        </p>
+                      ),
+                      variant: "destructive",
+                    });
                   }
                 }
               },
@@ -1310,9 +1332,15 @@ export function EditProductForm({ product, collection, categories }: EditProduct
                                     });
                                   });
                                 } else {
-                                  alert(
-                                    `Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`,
-                                  );
+                                  toast({
+                                    title: `Invalid File ${file.name}!`,
+                                    description: (
+                                      <p>
+                                        Allowed files: <strong>{ACCEPTED_MEDIA_TYPES.join(", ")}</strong>
+                                      </p>
+                                    ),
+                                    variant: "destructive",
+                                  });
                                 }
                               }
                             }}
@@ -1366,7 +1394,15 @@ export function EditProductForm({ product, collection, categories }: EditProduct
                         if (new Set<string>(ACCEPTED_MEDIA_MIME_TYPES).has(file.type)) {
                           return true;
                         } else {
-                          alert(`Invalid File ${file.name}! Allowed files: \n${ACCEPTED_MEDIA_TYPES.join(", ")}`);
+                          toast({
+                            title: `Invalid File ${file.name}!`,
+                            description: (
+                              <p>
+                                Allowed files: <strong>{ACCEPTED_MEDIA_TYPES.join(", ")}</strong>
+                              </p>
+                            ),
+                            variant: "destructive",
+                          });
                           return false;
                         }
                       })
@@ -1550,7 +1586,15 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
                   if (new Set<string>(ACCEPTED_IMAGE_MIME_EXTS).has(image.type)) {
                     setFile(image);
                   } else {
-                    alert(`Invalid File ${image.name}! Allowed files: \n${ACCEPTED_IMAGE_EXTS.join(", ")}`);
+                    toast({
+                      title: `Invalid File ${image.name}!`,
+                      description: (
+                        <p>
+                          Allowed files: <strong>{ACCEPTED_IMAGE_EXTS.join(", ")}</strong>
+                        </p>
+                      ),
+                      variant: "destructive",
+                    });
                   }
                 }
               },
