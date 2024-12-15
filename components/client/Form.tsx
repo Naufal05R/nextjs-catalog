@@ -1522,7 +1522,7 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
       const result = await updateNews(formData);
       if (typeof result === "string")
         toast({
-          title: "Failed to create news!",
+          title: "Failed to update news!",
           description: result,
           variant: "destructive",
         });
