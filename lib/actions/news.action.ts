@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
+import { handlingPrismaErrors } from "../prisma/error";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -184,7 +185,7 @@ export const createNews = async (formData: FormData) => {
       revalidatePath("/", "layout");
       pathname = `/dashboard/news/detail/${slugify(title)}`;
     } catch (error) {
-      handlingError(error);
+      return handlingPrismaErrors(error);
     } finally {
       redirect(pathname);
     }
