@@ -186,7 +186,6 @@ export const createProduct = async ({ formData, collection }: { formData: FormDa
 
   if (success) {
     const { medias, tags, ...product } = data;
-    let pathname: string = `/dashboard/products/${collection}/add`;
 
     try {
       const files = medias
@@ -262,13 +261,11 @@ export const createProduct = async ({ formData, collection }: { formData: FormDa
         }
       }
 
-      pathname = `/dashboard/products/${collection}`;
+      revalidatePath("/", "layout");
+      return newProduct;
     } catch (error) {
       return handlingPrismaErrors(error);
     }
-
-    revalidatePath("/", "layout");
-    redirect(pathname);
   } else {
     return error.errors;
   }
