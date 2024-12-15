@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { MAX_ITEM_PER_PAGE } from "@/constants";
 import { auth } from "@clerk/nextjs/server";
+import { handlingPrismaErrors } from "../prisma/error";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
@@ -263,7 +264,7 @@ export const createProduct = async ({ formData, collection }: { formData: FormDa
 
       pathname = `/dashboard/products/${collection}`;
     } catch (error) {
-      handlingError(error);
+      return handlingPrismaErrors(error);
     }
 
     revalidatePath("/", "layout");
