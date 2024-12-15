@@ -118,8 +118,8 @@ export const createNews = async (formData: FormData) => {
       const newsId = crypto.randomUUID();
       let markdown = content;
 
-      await prisma.$transaction(async (_prisma) => {
-        await _prisma.news.create({
+      const news = await prisma.$transaction(async (_prisma) => {
+        const _news = await _prisma.news.create({
           data: {
             id: newsId,
             title,
@@ -180,10 +180,13 @@ export const createNews = async (formData: FormData) => {
             },
           });
         }
+
+        return _news;
       });
 
       revalidatePath("/", "layout");
       pathname = `/dashboard/news/detail/${slugify(title)}`;
+      return news;
     } catch (error) {
       return handlingPrismaErrors(error);
     } finally {
