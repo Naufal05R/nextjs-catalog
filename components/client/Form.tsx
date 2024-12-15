@@ -713,10 +713,12 @@ export function CreateNewsForm() {
   const [{ errors, isLoading }, setStatus] = useState<{ errors?: z.ZodIssue[]; isLoading?: boolean }>({});
   const [file, setFile] = useState<File>();
 
-  const MARKDOWN = "**Hello,** world!" as const;
+  const MARKDOWN = "**Your article's** here!" as const;
 
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(MARKDOWN);
+
+  const { push } = useRouter();
 
   const changeOriginalImgSouce = (): [string] | [string, Array<`image_${string}`>] => {
     const getId = (): `image_${string}` => `image_${crypto.randomUUID()}`;
@@ -767,7 +769,9 @@ export function CreateNewsForm() {
     const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      await createNews(formData);
+      const result = await createNews(formData);
+      if (typeof result === "string") alert(result);
+      if (typeof result === "object" && !Array.isArray(result)) push(`/dashboard/news/detail/${result.slug}`);
     } else {
       setStatus({ errors: error.errors });
     }
