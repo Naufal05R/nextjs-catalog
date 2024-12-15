@@ -954,6 +954,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
   const [files, setFiles] = useState<Required<Array<z.infer<typeof MediaFormSchema>>>>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState(product.tags.map(({ title }) => title));
+  const { push } = useRouter();
   const { open } = useSidebar();
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -976,7 +977,14 @@ export function EditProductForm({ product, collection, categories }: EditProduct
     const { success, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      await updateProduct({ formData, collection });
+      const result = await updateProduct({ formData, collection });
+      if (typeof result === "string")
+        toast({
+          title: "Failed to update product!",
+          description: result,
+          variant: "destructive",
+        });
+      if (typeof result === "object" && !Array.isArray(result)) push(`/dashboard/products/${collection}`);
     } else {
       setStatus(() => ({ errors: error.errors }));
     }
@@ -1196,7 +1204,7 @@ export function EditProductForm({ product, collection, categories }: EditProduct
               )}
             />
           </ul>
-          <ErrorMessage name="description" />
+          <ErrorMessage name="tags" />
         </Label>
       </article>
 
