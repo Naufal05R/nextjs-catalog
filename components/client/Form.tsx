@@ -140,9 +140,8 @@ export function ContactForm() {
 
   useEffect(() => {
     const matcher = new RegExp(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
-
     if (typeof state === "string" && matcher.test(state)) {
-      alert("Successfully sending message!");
+      toast({ title: "Success!", description: "Successfully sending message." });
     }
   }, [state]);
 
