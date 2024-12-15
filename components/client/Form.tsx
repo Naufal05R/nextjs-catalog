@@ -1400,6 +1400,8 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
   const [blobUrls, setBlobUrls] = useState<Array<string>>([]);
   const [markdown, setMarkdown] = useState<string>(text);
 
+  const { push } = useRouter();
+
   const { data: exts } = z.enum(ACCEPTED_IMAGE_EXTS).safeParse(news?.thumbnail?.exts);
 
   if (!exts) throw new Error(extensionError(ACCEPTED_IMAGE_EXTS, news?.thumbnail?.exts));
@@ -1461,7 +1463,9 @@ export function EditNewsForm({ news, text }: EditNewsFormProps) {
     const { error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
     if (success) {
-      await updateNews(formData);
+      const result = await updateNews(formData);
+      if (typeof result === "string") alert(result);
+      if (typeof result === "object" && !Array.isArray(result)) push(`/dashboard/news/detail/${result.slug}`);
     } else {
       setStatus({ errors: error.errors });
     }
