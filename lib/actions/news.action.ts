@@ -312,7 +312,7 @@ export const archiveNews = async (formData: FormData) => {
       revalidatePath("/", "layout");
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
 
@@ -335,7 +335,7 @@ export const unarchiveNews = async (formData: FormData) => {
       revalidatePath("/", "layout");
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
 
@@ -375,6 +375,6 @@ export const deleteNews = async (formData: FormData) => {
       }
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
