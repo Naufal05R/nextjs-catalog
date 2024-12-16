@@ -432,7 +432,7 @@ export const archiveProduct = async (formData: FormData) => {
       revalidatePath("/", "layout");
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
 
@@ -455,7 +455,7 @@ export const unarchiveProduct = async (formData: FormData) => {
       revalidatePath("/", "layout");
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
 
@@ -500,6 +500,6 @@ export const deleteProduct = async (formData: FormData) => {
       }
     }
   } catch (error) {
-    return serviceError(error);
+    console.error(serviceError(error));
   }
 };
