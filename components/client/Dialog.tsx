@@ -38,7 +38,7 @@ export const CreateCollectionDialog = ({ setList }: CreateCollectionDialogProps)
   useEffect(() => {
     if (typeof state === "object" && !Array.isArray(state)) {
       setTemporaryState(state.title);
-      if (setList) setList((prevState) => [...prevState, state]);
+      if (setList) setList((prevState) => [state, ...prevState]);
     }
   }, [state, setList]);
 
