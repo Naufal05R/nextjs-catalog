@@ -6,9 +6,7 @@ import { createObject, deleteObjects } from "../service";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
-import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
-import { handlingPrismaErrors } from "../prisma/error";
 import { checkSecurityIssue } from "./error.action";
 import { serviceError } from "../utils/error";
 
@@ -197,19 +195,15 @@ export const createNews = async (formData: FormData) => {
 };
 
 export const updateNews = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to update news!");
-  }
+    const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
 
-  const { data, error, success } = NewsFormSchema.safeParse(initRawData(formData));
+    if (success) {
+      const { id, title, description, thumbnail, content } = data;
+      const slug = slugify(title);
 
-  if (success) {
-    const { id, title, description, thumbnail, content } = data;
-    const slug = slugify(title);
-
-    try {
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
       let markdown = content;
@@ -291,25 +285,21 @@ export const updateNews = async (formData: FormData) => {
 
       revalidatePath("/", "layout");
       return news;
-    } catch (error) {
-      return handlingPrismaErrors(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const archiveNews = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to archive news!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       await prisma.news.update({
         where: {
           id,
@@ -320,23 +310,19 @@ export const archiveNews = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const unarchiveNews = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to unarchive news!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       await prisma.news.update({
         where: {
           id,
@@ -347,23 +333,19 @@ export const unarchiveNews = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const deleteNews = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to delete news!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       const selectedNews = await prisma.news.findUnique({
         where: {
           id,
@@ -391,8 +373,8 @@ export const deleteNews = async (formData: FormData) => {
       } else {
         throw new Error("News not found!");
       }
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
