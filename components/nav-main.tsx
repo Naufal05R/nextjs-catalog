@@ -23,6 +23,7 @@ import { Collection } from "@prisma/client";
 
 function NavMainSub() {
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [isSelecting, setIsSelecting] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -50,16 +51,22 @@ function NavMainSub() {
                 size="icon"
                 className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full shadow-none hover:bg-transparent disabled:opacity-100"
                 form={`toggle-favorite-collection-${id}`}
-                disabled={isFavorite}
+                disabled={isFavorite || !!isSelecting}
               >
                 <form
                   id={`toggle-favorite-collection-${id}`}
-                  action={async (formData: FormData) => {
+                  onSubmit={async (event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                    const formData = new FormData(event.currentTarget);
+                    setIsSelecting(id);
+
                     try {
                       const updatedCollection = await toggleFavoriteCollection(undefined, formData);
                       if (typeof updatedCollection === "object") setCollections((await getAllCollection()) ?? []);
                     } catch (error) {
                       handlingError(error);
+                    } finally {
+                      setIsSelecting("");
                     }
                   }}
                   className="hidden"
@@ -72,7 +79,18 @@ function NavMainSub() {
                   form={`toggle-favorite-collection-${id}`}
                   readOnly
                 />
-                <Star fill={isFavorite ? "#f59e0b" : "transparent"} className="text-amber-500" />
+                <Star
+                  fill={
+                    isSelecting
+                      ? isSelecting === id
+                        ? "#f59e0b"
+                        : "transparent"
+                      : isFavorite
+                        ? "#f59e0b"
+                        : "transparent"
+                  }
+                  className="text-amber-500"
+                />
               </Button>
             </SidebarMenuSubItem>
           )}
