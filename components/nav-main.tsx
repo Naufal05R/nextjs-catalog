@@ -15,16 +15,22 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { CreateCollectionDialog } from "./client/Dialog";
-import { toggleFavoriteCollection } from "@/lib/actions/collection.action";
+import { getAllCollection, toggleFavoriteCollection } from "@/lib/actions/collection.action";
 import { Button } from "./ui/button";
 import { handlingError } from "@/lib/utils";
-import { useCollection } from "@/hooks/use-collection";
+import { useEffect, useState } from "react";
+import { Collection } from "@prisma/client";
 
 function NavMainSub() {
-  const { collections, error, refresh, isLoading } = useCollection();
+  const [collections, setCollections] = useState<Collection[]>([]);
 
-  if (!collections) return;
-  if (error) handlingError(error);
+  useEffect(() => {
+    (async () => {
+      setCollections((await getAllCollection()) ?? []);
+    })();
+  }, []);
+
+  if (!collections.length) return;
 
   return (
     <SidebarMenuSub>
@@ -44,14 +50,14 @@ function NavMainSub() {
                 size="icon"
                 className="ml-2 mr-[-0.5px] grid size-4 place-items-center rounded-full shadow-none hover:bg-transparent disabled:opacity-100"
                 form={`toggle-favorite-collection-${id}`}
-                disabled={isLoading || isFavorite}
+                disabled={isFavorite}
               >
                 <form
                   id={`toggle-favorite-collection-${id}`}
                   action={async (formData: FormData) => {
                     try {
-                      await toggleFavoriteCollection(undefined, formData);
-                      refresh();
+                      const updatedCollection = await toggleFavoriteCollection(undefined, formData);
+                      if (typeof updatedCollection === "object") setCollections((await getAllCollection()) ?? []);
                     } catch (error) {
                       handlingError(error);
                     }
@@ -74,7 +80,7 @@ function NavMainSub() {
       )}
 
       <SidebarMenuSubItem>
-        <CreateCollectionDialog />
+        <CreateCollectionDialog list={collections} setList={setCollections} />
       </SidebarMenuSubItem>
     </SidebarMenuSub>
   );
