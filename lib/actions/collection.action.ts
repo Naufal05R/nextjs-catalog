@@ -6,7 +6,6 @@ import { prisma } from "../prisma";
 import { Collection, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { auth } from "@clerk/nextjs/server";
 import { checkSecurityIssue } from "./error.action";
 import { serviceError } from "../utils/error";
 
@@ -70,16 +69,12 @@ export const createCollection = async (prevState: Collection | z.ZodIssue[] | un
 };
 
 export const toggleFavoriteCollection = async (prevState: Collection | undefined, formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to favorite collection!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       const collection = await prisma.$transaction(async (_prisma) => {
         await _prisma.collection.updateMany({
           where: {
@@ -103,8 +98,8 @@ export const toggleFavoriteCollection = async (prevState: Collection | undefined
       revalidatePath("/", "layout");
 
       return collection;
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
