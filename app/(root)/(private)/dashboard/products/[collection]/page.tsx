@@ -5,7 +5,7 @@ interface ProductsByCollectionPageProps {
 }
 
 export default async function ProductsByCollectionPage({ params }: ProductsByCollectionPageProps) {
-  const { collection } = await params
+  const { collection } = await params;
 
   return (
     <section className="grid size-full place-items-start">
