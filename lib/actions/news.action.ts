@@ -10,6 +10,7 @@ import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { handlingPrismaErrors } from "../prisma/error";
 import { checkSecurityIssue } from "./error.action";
+import { serviceError } from "../utils/error";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -191,7 +192,7 @@ export const createNews = async (formData: FormData) => {
       return error.errors;
     }
   } catch (error) {
-    return typeof error === "string" ? error : handlingPrismaErrors(error);
+    return serviceError(error);
   }
 };
 
