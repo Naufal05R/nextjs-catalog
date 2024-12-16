@@ -9,6 +9,7 @@ import { Prisma } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { ACCEPTED_IMAGE_EXTS } from "@/schema/media";
 import { handlingPrismaErrors } from "../prisma/error";
+import { checkSecurityIssue } from "./error.action";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const S3_ENDPOINT = process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "";
@@ -105,18 +106,14 @@ export const getNewsArticle = async (slug: string) => {
 };
 
 export const createNews = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to add news!");
-  }
+    const { data, error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
-  const { data, error, success } = NewsFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+    if (success) {
+      const { title, description, thumbnail, content } = data;
 
-  if (success) {
-    const { title, description, thumbnail, content } = data;
-
-    try {
       const imagesFile = data["images.file"];
       const imagesId = data["images.id"];
       const newsId = crypto.randomUUID();
@@ -190,11 +187,11 @@ export const createNews = async (formData: FormData) => {
 
       revalidatePath("/", "layout");
       return news;
-    } catch (error) {
-      return handlingPrismaErrors(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return typeof error === "string" ? error : handlingPrismaErrors(error);
   }
 };
 
