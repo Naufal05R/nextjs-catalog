@@ -134,14 +134,14 @@ export const BackEndNewsCard = ({
       </CardContent>
 
       <CardFooter className="mt-auto gap-4">
-        <Button className="flex-1" form="archive-news">
-          <form id="archive-news" action={isRelevant ? archiveNews : unarchiveNews} className="hidden" />
-          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="archive-news" />
+        <Button className="flex-1" form={`archive-news-${id}`}>
+          <form id={`archive-news-${id}`} action={isRelevant ? archiveNews : unarchiveNews} className="hidden" />
+          <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form={`archive-news-${id}`} />
           {isRelevant ? <Archive /> : <ArchiveRestore />}
           {isRelevant ? "Archive" : "Unarchive"}
         </Button>
 
-        <Button asChild={isRelevant} className="flex-1" form="delete-news">
+        <Button asChild={isRelevant} className="flex-1" form={`delete-news-${id}`}>
           {isRelevant ? (
             <Link href={`/dashboard/news/edit/${slug}`}>
               <Pencil />
@@ -149,8 +149,8 @@ export const BackEndNewsCard = ({
             </Link>
           ) : (
             <>
-              <form id="delete-news" action={deleteNews} className="hidden" />
-              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form="delete-news" />
+              <form id={`delete-news-${id}`} action={deleteNews} className="hidden" />
+              <input type="hidden" className="hidden" name="id" defaultValue={id} readOnly form={`delete-news-${id}`} />
               <Trash2 />
               Delete
             </>
