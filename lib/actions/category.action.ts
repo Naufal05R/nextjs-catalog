@@ -5,8 +5,9 @@ import { handlingError, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { auth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
+import { checkSecurityIssue } from "./error.action";
+import { serviceError } from "../utils/error";
 
 type GetAllCategoryProps = {
   where?: Prisma.CategoryWhereInput;
@@ -45,20 +46,16 @@ export const getCategory = async (params: GetAllCategoryProps | undefined = unde
 };
 
 export const createCategory = async (prevState: string | z.ZodIssue[] | undefined, formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to add new category!");
-  }
+    const raw = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+    };
+    const { success, data, error } = CategoryFormSchema.safeParse(raw);
 
-  const raw = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-  };
-  const { success, data, error } = CategoryFormSchema.safeParse(raw);
-
-  if (success) {
-    try {
+    if (success) {
       const { title, description } = data;
       const newCategory = await prisma.category.create({
         data: {
@@ -68,12 +65,12 @@ export const createCategory = async (prevState: string | z.ZodIssue[] | undefine
         },
       });
 
-      revalidatePath("/dashboard/");
+      revalidatePath("/", "layout");
       return newCategory.title;
-    } catch (error) {
-      handlingError(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return serviceError(error);
   }
 };
