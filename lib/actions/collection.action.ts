@@ -1,12 +1,14 @@
 "use server";
 
 import { CollectionFormSchema } from "@/schema/collection";
-import { handlingError, slugify } from "../utils";
+import { handlingError, initRawData, slugify } from "../utils";
 import { prisma } from "../prisma";
 import { Collection, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
+import { checkSecurityIssue } from "./error.action";
+import { serviceError } from "../utils/error";
 
 type GetAllCollectionProps = {
   where?: Prisma.CollectionWhereInput;
@@ -43,20 +45,12 @@ export const getCollection = async (params: GetAllCollectionProps | undefined = 
 };
 
 export const createCollection = async (prevState: Collection | z.ZodIssue[] | undefined, formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to add new collection!");
-  }
+    const { success, data, error } = CollectionFormSchema.safeParse(initRawData(formData));
 
-  const raw = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-  };
-  const { success, data, error } = CollectionFormSchema.safeParse(raw);
-
-  if (success) {
-    try {
+    if (success) {
       const { title, description } = data;
       const newCollection = await prisma.collection.create({
         data: {
@@ -67,11 +61,11 @@ export const createCollection = async (prevState: Collection | z.ZodIssue[] | un
       });
 
       return newCollection;
-    } catch (error) {
-      handlingError(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
