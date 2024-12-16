@@ -43,7 +43,7 @@ export const getCollection = async (params: GetAllCollectionProps | undefined = 
   }
 };
 
-export const createCollection = async (prevState: Collection | z.ZodIssue[] | undefined, formData: FormData) => {
+export const createCollection = async (prevState: Collection | string | z.ZodIssue[] | undefined, formData: FormData) => {
   try {
     await checkSecurityIssue();
 
