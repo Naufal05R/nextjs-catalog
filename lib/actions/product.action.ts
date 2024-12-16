@@ -7,8 +7,8 @@ import { createObject, deleteObjects } from "../service";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { MAX_ITEM_PER_PAGE } from "@/constants";
-import { auth } from "@clerk/nextjs/server";
-import { handlingPrismaErrors } from "../prisma/error";
+import { checkSecurityIssue } from "./error.action";
+import { serviceError } from "../utils/error";
 
 type GetAllProductProps = {
   where?: Prisma.ProductWhereInput;
@@ -175,18 +175,14 @@ export const getProductPages = async ({ query, currentPage }: ProductResult) => 
 };
 
 export const createProduct = async ({ formData, collection }: { formData: FormData; collection: string }) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to add new product!");
-  }
+    const { success, data, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
 
-  const { success, data, error } = ProductFormSchema.omit({ id: true }).safeParse(initRawData(formData));
+    if (success) {
+      const { medias, tags, ...product } = data;
 
-  if (success) {
-    const { medias, tags, ...product } = data;
-
-    try {
       const files = medias
         .sort((a, b) => a.order - b.order)
         .map(({ title, order, media }) => {
@@ -262,27 +258,23 @@ export const createProduct = async ({ formData, collection }: { formData: FormDa
 
       revalidatePath("/", "layout");
       return newProduct;
-    } catch (error) {
-      return handlingPrismaErrors(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const updateProduct = async ({ formData, collection }: { formData: FormData; collection: string }) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to update product!");
-  }
+    const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
 
-  const { success, data, error } = ProductFormSchema.safeParse(initRawData(formData));
+    if (success) {
+      const { id, medias, tags, ...product } = data;
 
-  if (success) {
-    const { id, medias, tags, ...product } = data;
-
-    try {
       for (const { title, order, media } of medias) {
         if (media) {
           const { fileMime } = getFileMimeTypes(media.type);
@@ -370,27 +362,23 @@ export const updateProduct = async ({ formData, collection }: { formData: FormDa
 
       revalidatePath("/", "layout");
       return newProduct;
-    } catch (error) {
-      return handlingPrismaErrors(error);
+    } else {
+      return error.errors;
     }
-  } else {
-    return error.errors;
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const toggleFavoriteProduct = async (prevState: string | undefined, formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to change favorite product!");
-  }
+    const id = formData.get("id") as string;
+    const min = 3 as const;
+    const max = 7 as const;
 
-  const id = formData.get("id") as string;
-  const min = 3 as const;
-  const max = 7 as const;
-
-  if (id) {
-    try {
+    if (id) {
       const message = await prisma.$transaction(async (_prisma) => {
         const totalFavoriteProduct = await _prisma.product.count({
           where: {
@@ -419,23 +407,19 @@ export const toggleFavoriteProduct = async (prevState: string | undefined, formD
       revalidatePath("/", "layout");
 
       return message;
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const archiveProduct = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to archive product!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       await prisma.product.update({
         where: {
           id,
@@ -446,23 +430,19 @@ export const archiveProduct = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const unarchiveProduct = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to unarchive product!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       await prisma.product.update({
         where: {
           id,
@@ -473,23 +453,19 @@ export const unarchiveProduct = async (formData: FormData) => {
       });
 
       revalidatePath("/", "layout");
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
 
 export const deleteProduct = async (formData: FormData) => {
-  const { userId } = await auth();
+  try {
+    await checkSecurityIssue();
 
-  if (!userId) {
-    throw new Error("You must be authorized to delete product!");
-  }
+    const id = formData.get("id") as string;
 
-  const id = formData.get("id") as string;
-
-  if (id) {
-    try {
+    if (id) {
       const selectedProduct = await prisma.product.findUnique({
         where: {
           id,
@@ -522,8 +498,8 @@ export const deleteProduct = async (formData: FormData) => {
       } else {
         throw new Error("Product not found!");
       }
-    } catch (error) {
-      handlingError(error);
     }
+  } catch (error) {
+    return serviceError(error);
   }
 };
