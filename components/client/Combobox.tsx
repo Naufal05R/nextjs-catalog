@@ -60,7 +60,7 @@ interface ComboboxDropdownMenuProps extends React.ComponentPropsWithoutRef<typeo
   };
 }
 
-const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMenu>, ComboboxDropdownMenuProps>(
+const ComboboxDropdownMenu = React.forwardRef<React.ElementRef<typeof DropdownMenuTrigger>, ComboboxDropdownMenuProps>(
   ({ element, classNames }, ref) => {
     const [open, setOpen] = React.useState(false);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 540);
@@ -156,7 +156,7 @@ interface ComboboxDropdownCategoryProps<T extends Dataset> extends React.Compone
 }
 
 export const ComboboxDropdownCategory = React.forwardRef<
-  React.ElementRef<typeof DropdownMenu>,
+  React.ElementRef<typeof ComboboxDropdownMenu>,
   ComboboxDropdownCategoryProps<Array<Category>>
 >(({ data, form, defaultSelected }, ref) => {
   const [selected, setSelected] = useState<string | undefined>(defaultSelected);
