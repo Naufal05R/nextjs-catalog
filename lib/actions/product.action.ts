@@ -357,6 +357,8 @@ export const updateProduct = async ({ formData, collection }: { formData: FormDa
               },
             });
           }
+
+          return _product;
         } else throw new Error("Collection not found");
       });
 
