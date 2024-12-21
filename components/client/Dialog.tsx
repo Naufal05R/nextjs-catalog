@@ -109,7 +109,7 @@ interface CreateCategoryDialog extends React.ComponentPropsWithoutRef<typeof Dia
   trigger: React.ReactNode;
 }
 
-export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof DialogRoot>, CreateCategoryDialog>(
+export const CreateCategoryDialog = React.forwardRef<React.ElementRef<typeof DialogTrigger>, CreateCategoryDialog>(
   ({ trigger }, ref) => {
     const [open, setOpen] = useState(false);
     const [state, formAction, isLoading] = useActionState(createCategory, "");
