@@ -14,7 +14,7 @@ export const createContactMessage = async (prevState: string | ZodIssue[] | unde
       from: "Developer <support@naufalrabbani.com>",
       to: ["delivered@resend.dev", "tantraahmad7@gmail.com"],
       subject: "Masuk ke ta?",
-      react: ContactEmail(information),
+      react: await ContactEmail(information),
     });
 
     if (error) {
