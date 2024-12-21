@@ -13,7 +13,7 @@ export async function POST(request: Request) {
         from: "Acme <onboarding@resend.dev>",
         to: ["delivered@resend.dev", "tantraahmad7@gmail.com"],
         subject: "Masuk ke ta",
-        react: ContactEmail(information),
+        react: await ContactEmail(information),
       });
 
       if (error) {
