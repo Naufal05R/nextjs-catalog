@@ -213,7 +213,7 @@ export const updateNews = async (formData: FormData) => {
           where: { id },
           data: {
             title,
-            slug: slug,
+            slug,
             description,
           },
         });
