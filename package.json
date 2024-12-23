@@ -51,7 +51,7 @@
     "cmdk": "^1.0.0",
     "embla-carousel-fade": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
-    "lucide-react": "^0.468.0",
+    "lucide-react": "^0.469.0",
     "minio": "^8.0.2",
     "next": "^15.1.0",
     "next-mdx-remote": "^5.0.0",
