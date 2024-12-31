@@ -68,7 +68,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@snaplet/copycat": "^5.1.0",
+    "@snaplet/copycat": "^5.1.1",
     "@snaplet/seed": "^0.98.0",
     "@svgr/webpack": "^8.1.0",
     "@types/mdx": "^2.0.13",
