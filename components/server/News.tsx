@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Mapper from "./Mapper";
-import { Image } from "./Media";
+import Mapper from "@/components/server/Mapper";
+import { Image } from "@/components/server/Media";
 import { archiveNews, deleteNews, getAllNews, unarchiveNews } from "@/lib/actions/news.action";
-import { EmptyState, EmptyStateWithButton } from "./Empty";
+import { EmptyState, EmptyStateWithButton } from "@/components/server/Empty";
 import { Prisma } from "@prisma/client";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Archive, ArchiveRestore, FilePlus, Pencil, Trash2 } from "lucide-react";
 import { getNewsSrc } from "@/lib/utils";
 import { z } from "zod";
