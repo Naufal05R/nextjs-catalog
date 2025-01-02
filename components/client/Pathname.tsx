@@ -28,7 +28,6 @@ import { cn, generateRoute, readSlug } from "@/lib/utils";
 const Route = ({ title, href, className }: { title: string; href: string; className?: string }) => {
   const [collections, setCollections] = useState<Array<string>>([]);
 
-  // TODO: Should optizing the way of fetching data using useSWR
   useEffect(() => {
     (async () => {
       const allCollections = await getAllCollection();
