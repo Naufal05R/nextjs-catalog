@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Mapper from "@/components/server/Mapper";
 import { DynamicCollections } from "@/components/server/Collection";
-import { ChevronRight, Mail, Star } from "lucide-react";
+import { ChevronRight, /* Mail, */ Star } from "lucide-react";
 import { testimonials } from "@/constants";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { DynamicCarouselFeatured, DynamicCarouselThumbnail } from "@/components/server/Carousel";
 
 export default function Home() {
