@@ -74,7 +74,7 @@ export default function Home() {
         <DynamicCarouselFeatured />
       </section>
 
-      <section className="mt-16 w-full bg-slate-200 p-8">
+      {/* <section className="mt-16 w-full bg-slate-200 p-8">
         <h4 className="mb-4 text-lg">Join our mailing list</h4>
         <p className="mb-2.5 text-sm font-light">
           Get updates on exclusive offers, new arrivals, and discounts delivered straight to your inbox.
@@ -101,7 +101,7 @@ export default function Home() {
             Submit
           </Button>
         </form>
-      </section>
+      </section> */}
     </>
   );
 }
