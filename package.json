@@ -25,13 +25,13 @@
     "postdemo:migrate:dev": "@snaplet/seed sync"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.9.6",
+    "@clerk/nextjs": "^6.9.9",
     "@hookform/resolvers": "^3.10.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@mdxeditor/editor": "^3.20.0",
     "@next/mdx": "^15.1.4",
-    "@prisma/client": "^6.2.0",
+    "@prisma/client": "^6.2.1",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-collapsible": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
@@ -73,20 +73,20 @@
     "@svgr/webpack": "^8.1.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20.17.12",
-    "@types/react": "^19.0.3",
-    "@types/react-dom": "^19.0.2",
+    "@types/react": "^19.0.5",
+    "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.17.0",
+    "eslint": "^9.18.0",
     "eslint-config-next": "^15.1.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "prisma": "^6.2.0",
-    "react-email": "^3.0.5",
+    "prisma": "^6.2.1",
+    "react-email": "^3.0.6",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }
