@@ -19,7 +19,7 @@ export const getAllCollection = async (params: GetAllCollectionProps | undefined
     const allCollections = await prisma.collection.findMany({
       where,
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
 
