@@ -35,6 +35,7 @@ yarn-error.log*
 # seed config
 seed.config.ts
 seed.ts
+/.snaplet
 
 # typescript
 *.tsbuildinfo
