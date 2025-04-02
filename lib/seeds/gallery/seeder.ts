@@ -27,5 +27,20 @@ export const cincin_surgawi = async () => {
     },
   });
 
-  console.log('Seeding Gallery "Batu Crystal" success!');
+  console.log('Seeding Gallery "Cincin Surgawi" success!');
+};
+
+export const kalung_keabadian = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm901a4ce00032e684d6pz8ue" },
+    update: {},
+    create: {
+      id: "cm901a4ce00032e684d6pz8ue",
+      title: "Kalung Keabadian",
+      slug: "kalung-keabadian",
+      productId: "cm8zzj7fb00002e68gubmouwg",
+    },
+  });
+
+  console.log('Seeding Gallery "Kalung Keabadian" success!');
 };
