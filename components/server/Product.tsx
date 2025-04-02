@@ -264,7 +264,7 @@ export const CatalogProductDisplay = async ({ collection, category }: { collecti
           />
         </ul>
       ) : (
-        <EmptyState title={`There's no ${category}'s ${collection}`} />
+        <EmptyState title={`There's no ${category ?? "product"}'s ${collection}`} />
       )}
     </div>
   );
