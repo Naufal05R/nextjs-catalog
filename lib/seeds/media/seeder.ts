@@ -159,3 +159,81 @@ export const blue_star_sapphire_3 = async () => {
 
   console.log('Seeding Media "Blue Star Sapphire 3" success!');
 };
+
+export const emerald_pendant_1 = async () => {
+  const name = "000_emerald-pendant-1.jpeg";
+  const path = "lainnya/cm8zzj7fb00002e68gubmouwg";
+
+  await prisma.media.upsert({
+    where: { id: "cm90187w900022e68j8gf8qf5" },
+    update: {},
+    create: {
+      id: "cm90187w900022e68j8gf8qf5",
+      title: "Emerald Pendant 1",
+      slug: "emerald-pendant-1",
+      name,
+      order: 0,
+      galleryId: "cm901a4ce00032e684d6pz8ue",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Pendant 1" success!');
+};
+
+export const emerald_pendant_2 = async () => {
+  const name = "001_emerald-pendant-2.jpeg";
+  const path = "lainnya/cm8zzj7fb00002e68gubmouwg";
+
+  await prisma.media.upsert({
+    where: { id: "cm901hp8a00042e68g5iovb1t" },
+    update: {},
+    create: {
+      id: "cm901hp8a00042e68g5iovb1t",
+      title: "Emerald Pendant 2",
+      slug: "emerald-pendant-2",
+      name,
+      order: 0,
+      galleryId: "cm901a4ce00032e684d6pz8ue",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Pendant 2" success!');
+};
+
+export const emerald_pendant_3 = async () => {
+  const name = "002_emerald-pendant-3.jpeg";
+  const path = "lainnya/cm8zzj7fb00002e68gubmouwg";
+
+  await prisma.media.upsert({
+    where: { id: "cm901irdl00052e68ksu298c4" },
+    update: {},
+    create: {
+      id: "cm901irdl00052e68ksu298c4",
+      title: "Emerald Pendant 3",
+      slug: "emerald-pendant-3",
+      name,
+      order: 0,
+      galleryId: "cm901a4ce00032e684d6pz8ue",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Pendant 3" success!');
+};
