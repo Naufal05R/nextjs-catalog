@@ -9,6 +9,7 @@ import {
   aquamarine_loose_stone_1,
   aquamarine_loose_stone_2,
   aquamarine_loose_stone_3,
+  alexandrite_loose_stone_1,
 } from "./seeder";
 
 export default async function seeder() {
@@ -16,6 +17,7 @@ export default async function seeder() {
     await aquamarine_loose_stone_1();
     await aquamarine_loose_stone_2();
     await aquamarine_loose_stone_3();
+    await alexandrite_loose_stone_1();
     await blue_star_sapphire_1();
     await blue_star_sapphire_2();
     await blue_star_sapphire_3();
