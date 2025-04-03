@@ -19,11 +19,38 @@ export const aquamarine_loose_stone = async () => {
       isFavorite: true,
       description: "Ini adalah Batu Lepas Aquamarine. Berwarna biru laut yang terang. Indah, bersinar dan berkilau",
       collectionId: "cm32yk6pa000fvlqxco3648rv",
-      categoryId: "cm35mv1h500001z47i1pvnvnp",
+      categoryId: "cm919z0y400012e68wu5jczxq",
     },
   });
 
   console.log('Seeding Product "Batu Lepas Aquamarine" success!');
+};
+
+export const alexandrite_loose_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm91h5eku00052e68p7coijs4" },
+    update: {},
+    create: {
+      id: "cm91h5eku00052e68p7coijs4",
+      title: "Batu Lepas Alexandrite",
+      slug: "batu-lepas-aquamarine",
+      color: "Hijau kebiruan hingga merah keunguan",
+      state: "Sri Lanka",
+      width: 12,
+      height: 10,
+      length: 9,
+      weight: 22,
+      price: 1250000,
+      discount: 11.5,
+      isFavorite: true,
+      description:
+        "Ini adalah Batu Lepas Alexandrite. Menghasilkan warna biru keunguan di siang hari dan ungu kemerahan di malam hari.",
+      collectionId: "cm32yk6pa000fvlqxco3648rv",
+      categoryId: "cm91bwp4o00032e68g0mml66x",
+    },
+  });
+
+  console.log('Seeding Product "Batu Lepas Alexandrite" success!');
 };
 
 export const cincin_surgawi = async () => {
