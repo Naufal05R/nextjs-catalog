@@ -15,6 +15,21 @@ export const aquamarine_loose_stone = async () => {
   console.log('Seeding Gallery "Batu Lepas Aquamarine" success!');
 };
 
+export const alexandrite_loose_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm91hn1vx00072e68qceo43o0" },
+    update: {},
+    create: {
+      id: "cm91hn1vx00072e68qceo43o0",
+      title: "Batu Lepas Alexandrite",
+      slug: "batu-lepas-alexandrite",
+      productId: "cm91h5eku00052e68p7coijs4",
+    },
+  });
+
+  console.log('Seeding Gallery "Batu Lepas Alexandrite" success!');
+};
+
 export const cincin_surgawi = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm3cerfcq0004dgfumzio2iyj" },
