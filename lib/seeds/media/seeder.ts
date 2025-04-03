@@ -82,6 +82,32 @@ export const aquamarine_loose_stone_3 = async () => {
   console.log('Seeding Media "Aquamarine Loose Stone 3" success!');
 };
 
+export const alexandrite_loose_stone_1 = async () => {
+  const name = "000_alexandrite-loose-stone-1.jpeg";
+  const path = "batu/cm91h5eku00052e68p7coijs4";
+
+  await prisma.media.upsert({
+    where: { id: "cm91hih3o00062e68lbn2whiy" },
+    update: {},
+    create: {
+      id: "cm91hih3o00062e68lbn2whiy",
+      title: "Alexandrite Loose Stone 1",
+      slug: "alexandrite-loose-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm91hn1vx00072e68qceo43o0",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Alexandrite Loose Stone 1" success!');
+};
+
 export const blue_star_sapphire_1 = async () => {
   const name = "000_blue-star-sapphire-1.jpeg";
   const path = "cincin/cm3cerfco0002dgfuxcukhnko";
