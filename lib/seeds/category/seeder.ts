@@ -59,3 +59,18 @@ export const emerald = async () => {
 
   console.log('Seeding Category "Emerald" success!');
 };
+
+export const aquamarine = async () => {
+  await prisma.category.upsert({
+    where: { id: "cm919z0y400012e68wu5jczxq" },
+    update: {},
+    create: {
+      id: "cm919z0y400012e68wu5jczxq",
+      title: "Aquamarine",
+      slug: "aquamarine",
+      description: "Aquamarine Category",
+    },
+  });
+
+  console.log('Seeding Category "Aquamarine" success!');
+};
