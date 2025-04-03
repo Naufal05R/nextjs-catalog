@@ -30,19 +30,19 @@ export const ruby = async () => {
   console.log('Seeding Category "Ruby" success!');
 };
 
-export const crystal = async () => {
+export const diamond = async () => {
   await prisma.category.upsert({
     where: { id: "cm35mv1h500001z47i1pvnvnp" },
     update: {},
     create: {
       id: "cm35mv1h500001z47i1pvnvnp",
-      title: "Crystal",
-      slug: "crystal",
-      description: "Crystal Category",
+      title: "Diamond",
+      slug: "diamond",
+      description: "Diamond Category",
     },
   });
 
-  console.log('Seeding Category "Crystal" success!');
+  console.log('Seeding Category "Diamond" success!');
 };
 
 export const emerald = async () => {
