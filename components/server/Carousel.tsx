@@ -4,6 +4,7 @@ import { getAllProduct } from "@/lib/actions/product.action";
 import Mapper from "./Mapper";
 import { Image } from "./Media";
 import { getMediaSrc } from "@/lib/utils";
+import Link from "next/link";
 
 interface DynamicCarouselBaseProps {
   variant: "thumbnail" | "featured" | "detail";
@@ -61,17 +62,22 @@ export const DynamicCarouselThumbnail = async () => {
             }}
           />
 
-          <Image
-            src={getMediaSrc({
-              productId: selectedProduct.id,
-              collection: selectedProduct.collection.slug,
-              name: selectedProduct.gallery!.medias[0].name,
-            })}
-            alt={selectedProduct.slug}
-            fill
-            sizes="25vw"
-            classNames={{ figure: "min-h-full rounded max-lg:hidden shrink-0 basis-1/3" }}
-          />
+          <Link
+            href={`/products/${selectedProduct.slug}`}
+            className="min-h-full shrink-0 basis-1/3 overflow-hidden rounded max-lg:hidden"
+          >
+            <Image
+              src={getMediaSrc({
+                productId: selectedProduct.id,
+                collection: selectedProduct.collection.slug,
+                name: selectedProduct.gallery!.medias[0].name,
+              })}
+              alt={selectedProduct.slug}
+              fill
+              sizes="25vw"
+              classNames={{ figure: "size-full" }}
+            />
+          </Link>
         </>
       )
     );
