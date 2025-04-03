@@ -15,9 +15,9 @@ datasource db {
 
 model Collection {
   id             String          @id @default(cuid())
-  title          String          @unique @db.VarChar(16)
-  slug           String          @unique @db.VarChar(16)
-  description    String          @db.VarChar(64)
+  title          String          @unique
+  slug           String          @unique
+  description    String
   isFavorite     Boolean         @default(false)
   products       Product[]
   subcollections Subcollection[]
@@ -27,9 +27,9 @@ model Collection {
 
 model Subcollection {
   id           String     @id @default(cuid())
-  title        String     @unique @db.VarChar(32)
-  slug         String     @unique @db.VarChar(32)
-  description  String     @db.VarChar(64)
+  title        String     @unique
+  slug         String     @unique
+  description  String
   products     Product[]
   collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
@@ -37,9 +37,9 @@ model Subcollection {
 
 model Category {
   id          String    @id @default(cuid())
-  title       String    @unique @db.VarChar(16)
-  slug        String    @unique @db.VarChar(16)
-  description String    @db.VarChar(64)
+  title       String    @unique
+  slug        String    @unique
+  description String
   products    Product[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -47,14 +47,14 @@ model Category {
 
 model Product {
   id              String         @id @default(cuid())
-  title           String         @unique @db.VarChar(64)
-  slug            String         @unique @db.VarChar(64)
-  state           String         @db.VarChar(64)
+  title           String         @unique
+  slug            String         @unique
+  state           String
   width           Float          @db.Real
   height          Float          @db.Real
   length          Float          @db.Real
   weight          Float          @db.Real
-  color           String         @db.VarChar(64)
+  color           String
   price           Int            @db.Integer
   discount        Float?         @db.Real
   description     String         @db.Text
@@ -74,15 +74,15 @@ model Product {
 
 model Tag {
   id       String    @id @default(cuid())
-  title    String    @unique @db.VarChar(64)
-  slug     String    @unique @db.VarChar(64)
+  title    String    @unique
+  slug     String    @unique
   products Product[]
 }
 
 model Gallery {
   id        String  @id @default(cuid())
-  title     String  @unique @db.VarChar(16)
-  slug      String  @unique @db.VarChar(16)
+  title     String  @unique
+  slug      String  @unique
   medias    Media[]
   productId String  @unique
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -90,9 +90,9 @@ model Gallery {
 
 model Media {
   id        String  @id @default(cuid())
-  title     String  @unique @db.VarChar(128)
-  slug      String  @unique @db.VarChar(128)
-  name      String  @unique @db.VarChar(132)
+  title     String  @unique
+  slug      String  @unique
+  name      String  @unique
   order     Int     @db.SmallInt
   galleryId String
   gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
@@ -100,9 +100,9 @@ model Media {
 
 model News {
   id          String     @id @default(cuid())
-  title       String     @unique @db.VarChar(64)
-  slug        String     @unique @db.VarChar(64)
-  description String     @db.VarChar(256)
+  title       String     @unique
+  slug        String     @unique
+  description String
   thumbnail   Thumbnail?
   isRelevant  Boolean    @default(true)
   createdAt   DateTime   @default(now())
@@ -111,7 +111,7 @@ model News {
 
 model Thumbnail {
   id     String @id @default(uuid())
-  exts   String @db.VarChar(8)
+  exts   String
   newsId String @unique
   news   News   @relation(fields: [newsId], references: [id], onDelete: Cascade)
 }
