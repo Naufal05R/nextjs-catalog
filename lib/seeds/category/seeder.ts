@@ -89,3 +89,18 @@ export const alexandrite = async () => {
 
   console.log('Seeding Category "Alexandrite" success!');
 };
+
+export const amethyst = async () => {
+  await prisma.category.upsert({
+    where: { id: "cm91ey3s800042e68zztbz36d" },
+    update: {},
+    create: {
+      id: "cm91ey3s800042e68zztbz36d",
+      title: "Amethyst",
+      slug: "amethyst",
+      description: "Amethyst Category",
+    },
+  });
+
+  console.log('Seeding Category "Amethyst" success!');
+};
