@@ -1,9 +1,9 @@
 -- CreateTable
 CREATE TABLE "Collection" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(16) NOT NULL,
-    "slug" VARCHAR(16) NOT NULL,
-    "description" VARCHAR(64) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "isFavorite" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -14,9 +14,9 @@ CREATE TABLE "Collection" (
 -- CreateTable
 CREATE TABLE "Subcollection" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(32) NOT NULL,
-    "slug" VARCHAR(32) NOT NULL,
-    "description" VARCHAR(64) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "collectionId" TEXT NOT NULL,
 
     CONSTRAINT "Subcollection_pkey" PRIMARY KEY ("id")
@@ -25,9 +25,9 @@ CREATE TABLE "Subcollection" (
 -- CreateTable
 CREATE TABLE "Category" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(16) NOT NULL,
-    "slug" VARCHAR(16) NOT NULL,
-    "description" VARCHAR(64) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -37,14 +37,14 @@ CREATE TABLE "Category" (
 -- CreateTable
 CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(64) NOT NULL,
-    "slug" VARCHAR(64) NOT NULL,
-    "state" VARCHAR(64) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
     "width" REAL NOT NULL,
     "height" REAL NOT NULL,
     "length" REAL NOT NULL,
     "weight" REAL NOT NULL,
-    "color" VARCHAR(64) NOT NULL,
+    "color" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
     "discount" REAL,
     "description" TEXT NOT NULL,
@@ -62,8 +62,8 @@ CREATE TABLE "Product" (
 -- CreateTable
 CREATE TABLE "Tag" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(64) NOT NULL,
-    "slug" VARCHAR(64) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
@@ -71,8 +71,8 @@ CREATE TABLE "Tag" (
 -- CreateTable
 CREATE TABLE "Gallery" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(16) NOT NULL,
-    "slug" VARCHAR(16) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
 
     CONSTRAINT "Gallery_pkey" PRIMARY KEY ("id")
@@ -81,9 +81,9 @@ CREATE TABLE "Gallery" (
 -- CreateTable
 CREATE TABLE "Media" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(128) NOT NULL,
-    "slug" VARCHAR(128) NOT NULL,
-    "name" VARCHAR(132) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "order" SMALLINT NOT NULL,
     "galleryId" TEXT NOT NULL,
 
@@ -93,9 +93,9 @@ CREATE TABLE "Media" (
 -- CreateTable
 CREATE TABLE "News" (
     "id" TEXT NOT NULL,
-    "title" VARCHAR(64) NOT NULL,
-    "slug" VARCHAR(64) NOT NULL,
-    "description" VARCHAR(256) NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "isRelevant" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE "News" (
 -- CreateTable
 CREATE TABLE "Thumbnail" (
     "id" TEXT NOT NULL,
-    "exts" VARCHAR(8) NOT NULL,
+    "exts" TEXT NOT NULL,
     "newsId" TEXT NOT NULL,
 
     CONSTRAINT "Thumbnail_pkey" PRIMARY KEY ("id")
