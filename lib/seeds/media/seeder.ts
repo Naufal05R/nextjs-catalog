@@ -4,8 +4,8 @@ import { uploadObject } from "@/lib/service";
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "";
 const STORAGE_URL = process.env.STORAGE_URL ?? "";
 
-export const permata_1 = async () => {
-  const name = "000_permata-1.jpeg";
+export const aquamarine_loose_stone_1 = async () => {
+  const name = "000_aquamarine-loose-stone-1.jpeg";
   const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
@@ -13,8 +13,8 @@ export const permata_1 = async () => {
     update: {},
     create: {
       id: "cm3ceev1t0005dr9f5dtcm651",
-      title: "Permata 1",
-      slug: "permata-1",
+      title: "Aquamarine Loose Stone 1",
+      slug: "aquamarine-loose-stone-1",
       name,
       order: 0,
       galleryId: "cm3ceev1s0004dr9f0a1eazdw",
@@ -27,11 +27,11 @@ export const permata_1 = async () => {
     filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
-  console.log('Seeding Media "Permata 1" success!');
+  console.log('Seeding Media "Aquamarine Loose Stone 1" success!');
 };
 
-export const permata_2 = async () => {
-  const name = "001_permata-2.jpeg";
+export const aquamarine_loose_stone_2 = async () => {
+  const name = "001_aquamarine-loose-stone-2.jpeg";
   const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
@@ -39,8 +39,8 @@ export const permata_2 = async () => {
     update: {},
     create: {
       id: "cm3cf9uvb00032e6605eyic55",
-      title: "Permata 2",
-      slug: "permata-2",
+      title: "Aquamarine Loose Stone 2",
+      slug: "aquamarine-loose-stone-2",
       name,
       order: 1,
       galleryId: "cm3ceev1s0004dr9f0a1eazdw",
@@ -53,11 +53,11 @@ export const permata_2 = async () => {
     filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
-  console.log('Seeding Media "Permata 2" success!');
+  console.log('Seeding Media "Aquamarine Loose Stone 2" success!');
 };
 
-export const permata_3 = async () => {
-  const name = "002_permata-3.jpeg";
+export const aquamarine_loose_stone_3 = async () => {
+  const name = "002_aquamarine-loose-stone-3.jpeg";
   const path = "batu/cm3ceev1q0002dr9fdnrukttj";
 
   await prisma.media.upsert({
@@ -65,8 +65,8 @@ export const permata_3 = async () => {
     update: {},
     create: {
       id: "cm3cfc3ts00042e66z4yhlgqo",
-      title: "Permata 3",
-      slug: "permata-3",
+      title: "Aquamarine Loose Stone 3",
+      slug: "aquamarine-loose-stone-3",
       name,
       order: 2,
       galleryId: "cm3ceev1s0004dr9f0a1eazdw",
@@ -79,7 +79,7 @@ export const permata_3 = async () => {
     filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
-  console.log('Seeding Media "Permata 3" success!');
+  console.log('Seeding Media "Aquamarine Loose Stone 3" success!');
 };
 
 export const blue_star_sapphire_1 = async () => {
