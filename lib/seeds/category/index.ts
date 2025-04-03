@@ -1,5 +1,5 @@
 import { handlingError } from "@/lib/utils";
-import { diamond, emerald, ruby, sapphire } from "./seeder";
+import { aquamarine, diamond, emerald, ruby, sapphire } from "./seeder";
 
 export default async function seeder() {
   try {
@@ -7,6 +7,7 @@ export default async function seeder() {
     await ruby();
     await diamond();
     await emerald();
+    await aquamarine();
 
     console.log("Seeding Category success!");
   } catch (error) {
