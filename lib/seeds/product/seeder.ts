@@ -33,7 +33,7 @@ export const alexandrite_loose_stone = async () => {
     create: {
       id: "cm91h5eku00052e68p7coijs4",
       title: "Batu Lepas Alexandrite",
-      slug: "batu-lepas-aquamarine",
+      slug: "batu-lepas-alexandrite",
       color: "Hijau kebiruan hingga merah keunguan",
       state: "Sri Lanka",
       width: 12,
