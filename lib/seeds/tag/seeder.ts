@@ -16,6 +16,9 @@ export const shine = async () => {
           {
             id: "cm3cerfco0002dgfuxcukhnko",
           },
+          {
+            id: "cm91h5eku00052e68p7coijs4",
+          },
         ],
       },
     },
@@ -39,6 +42,9 @@ export const sparkle = async () => {
           },
           {
             id: "cm8zzj7fb00002e68gubmouwg",
+          },
+          {
+            id: "cm91h5eku00052e68p7coijs4",
           },
         ],
       },
