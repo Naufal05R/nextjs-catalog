@@ -1,15 +1,15 @@
 import { prisma } from "@/lib/prisma";
 
-export const batu_crystal = async () => {
+export const aquamarine_loose_stone = async () => {
   await prisma.product.upsert({
     where: { id: "cm3ceev1q0002dr9fdnrukttj" },
     update: {},
     create: {
       id: "cm3ceev1q0002dr9fdnrukttj",
-      title: "Batu Crystal",
-      slug: "batu-crystal",
-      color: "Seamless White",
-      state: "Kalimalang",
+      title: "Batu Lepas Aquamarine",
+      slug: "batu-lepas-aquamarine",
+      color: "Biru Terang",
+      state: "Laut Merah",
       width: 12,
       height: 10,
       length: 9,
@@ -17,13 +17,13 @@ export const batu_crystal = async () => {
       price: 1250000,
       discount: 11.5,
       isFavorite: true,
-      description: "This is Batu Crystal product coming from Batu collection",
+      description: "Ini adalah Batu Lepas Aquamarine. Berwarna biru laut yang terang. Indah, bersinar dan berkilau",
       collectionId: "cm32yk6pa000fvlqxco3648rv",
       categoryId: "cm35mv1h500001z47i1pvnvnp",
     },
   });
 
-  console.log('Seeding Product "Batu Crystal" success!');
+  console.log('Seeding Product "Batu Lepas Aquamarine" success!');
 };
 
 export const cincin_surgawi = async () => {
