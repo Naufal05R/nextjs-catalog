@@ -1,18 +1,18 @@
 import { prisma } from "@/lib/prisma";
 
-export const batu_crystal = async () => {
+export const aquamarine_loose_stone = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm3ceev1s0004dr9f0a1eazdw" },
     update: {},
     create: {
       id: "cm3ceev1s0004dr9f0a1eazdw",
-      title: "Batu Crystal",
-      slug: "batu-crystal",
+      title: "Batu Lepas Aquamarine",
+      slug: "batu-lepas-aquamarine",
       productId: "cm3ceev1q0002dr9fdnrukttj",
     },
   });
 
-  console.log('Seeding Gallery "Batu Crystal" success!');
+  console.log('Seeding Gallery "Batu Lepas Aquamarine" success!');
 };
 
 export const cincin_surgawi = async () => {
