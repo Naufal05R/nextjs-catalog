@@ -6,13 +6,13 @@ export const sapphire = async () => {
     update: {},
     create: {
       id: "cm32ooxry0002gk847mqzh1to",
-      title: "Shappire",
+      title: "Sapphire",
       slug: "sapphire",
       description: "Sapphire Category",
     },
   });
 
-  console.log('Seeding Category "Shappire" success!');
+  console.log('Seeding Category "Sapphire" success!');
 };
 
 export const ruby = async () => {
@@ -73,4 +73,19 @@ export const aquamarine = async () => {
   });
 
   console.log('Seeding Category "Aquamarine" success!');
+};
+
+export const alexandrite = async () => {
+  await prisma.category.upsert({
+    where: { id: "cm91bwp4o00032e68g0mml66x" },
+    update: {},
+    create: {
+      id: "cm91bwp4o00032e68g0mml66x",
+      title: "Alexandrite",
+      slug: "alexandrite",
+      description: "Alexandrite Category",
+    },
+  });
+
+  console.log('Seeding Category "Alexandrite" success!');
 };
