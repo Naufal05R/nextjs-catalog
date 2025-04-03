@@ -1,11 +1,11 @@
 import { handlingError } from "@/lib/utils";
-import { crystal, emerald, ruby, sapphire } from "./seeder";
+import { diamond, emerald, ruby, sapphire } from "./seeder";
 
 export default async function seeder() {
   try {
     await sapphire();
     await ruby();
-    await crystal();
+    await diamond();
     await emerald();
 
     console.log("Seeding Category success!");
