@@ -51,10 +51,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${playfair_display.variable} ${outfit.variable} bg-slate-50 antialiased`}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${playfair_display.variable} ${outfit.variable} bg-slate-50 antialiased`}>
+        <ClerkProvider>{children}</ClerkProvider>
+      </body>
+    </html>
   );
 }
