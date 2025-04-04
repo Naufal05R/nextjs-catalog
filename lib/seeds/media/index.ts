@@ -16,6 +16,8 @@ import {
   ruby_loose_stone_2,
   ruby_loose_stone_3,
   sapphire_loose_stone_1,
+  sapphire_loose_stone_2,
+  sapphire_loose_stone_3,
 } from "./seeder";
 
 export default async function seeder() {
@@ -30,6 +32,8 @@ export default async function seeder() {
     await ruby_loose_stone_2();
     await ruby_loose_stone_3();
     await sapphire_loose_stone_1();
+    await sapphire_loose_stone_2();
+    await sapphire_loose_stone_3();
     await blue_star_sapphire_1();
     await blue_star_sapphire_2();
     await blue_star_sapphire_3();
