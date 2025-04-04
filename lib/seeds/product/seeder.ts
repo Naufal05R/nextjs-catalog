@@ -105,6 +105,32 @@ export const sapphire_loose_stone = async () => {
   console.log('Seeding Product "Batu Lepas Sapphire" success!');
 };
 
+export const emerald_loose_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm924c8o1000k2e68egm45tl7" },
+    update: {},
+    create: {
+      id: "cm924c8o1000k2e68egm45tl7",
+      title: "Batu Lepas Emerald",
+      slug: "batu-lepas-emerald",
+      color: "Hijau giok kegelapan",
+      state: "Colombia",
+      width: 11.5,
+      height: 6,
+      length: 9.5,
+      weight: 16,
+      price: 1450000,
+      discount: 5,
+      isFavorite: false,
+      description: "Ini adalah Batu Lepas Emerald. Berwarna Hijau giok dengan kilau kegelapan yang estetik.",
+      collectionId: "cm32yk6pa000fvlqxco3648rv",
+      categoryId: "cm39i13s00000la8wdjqbz726",
+    },
+  });
+
+  console.log('Seeding Product "Batu Lepas Emerald" success!');
+};
+
 export const cincin_surgawi = async () => {
   await prisma.product.upsert({
     where: { id: "cm3cerfco0002dgfuxcukhnko" },
