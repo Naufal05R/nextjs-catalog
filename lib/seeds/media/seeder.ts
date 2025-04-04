@@ -264,6 +264,32 @@ export const sapphire_loose_stone_1 = async () => {
   console.log('Seeding Media "Sapphire Loose Stone 1" success!');
 };
 
+export const sapphire_loose_stone_2 = async () => {
+  const name = "001_sapphire-loose-stone-2.jpeg";
+  const path = "batu/cm9229i80000d2e68hiwplhkp";
+
+  await prisma.media.upsert({
+    where: { id: "cm922wnte000g2e68h9s880ql" },
+    update: {},
+    create: {
+      id: "cm922wnte000g2e68h9s880ql",
+      title: "Sapphire Loose Stone 2",
+      slug: "sapphire-loose-stone-2",
+      name,
+      order: 1,
+      galleryId: "cm922p0c8000e2e68dpsz7cmr",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Sapphire Loose Stone 2" success!');
+};
+
 export const blue_star_sapphire_1 = async () => {
   const name = "000_blue-star-sapphire-1.jpeg";
   const path = "cincin/cm3cerfco0002dgfuxcukhnko";
