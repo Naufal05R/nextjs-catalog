@@ -120,7 +120,7 @@ export const alexandrite_loose_stone_2 = async () => {
       title: "Alexandrite Loose Stone 2",
       slug: "alexandrite-loose-stone-2",
       name,
-      order: 0,
+      order: 1,
       galleryId: "cm91hn1vx00072e68qceo43o0",
     },
   });
@@ -146,7 +146,7 @@ export const alexandrite_loose_stone_3 = async () => {
       title: "Alexandrite Loose Stone 3",
       slug: "alexandrite-loose-stone-3",
       name,
-      order: 0,
+      order: 2,
       galleryId: "cm91hn1vx00072e68qceo43o0",
     },
   });
