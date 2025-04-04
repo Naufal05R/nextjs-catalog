@@ -68,7 +68,7 @@ export const emerald_loose_stone = async () => {
       id: "cm924gfsl000l2e68blkiimsl",
       title: "Batu Lepas Emerald",
       slug: "batu-lepas-emerald",
-      productId: "cm924c8o1000k2e68egm45tl7",
+      productId: "cm923cvb9000j2e68ld476bdg",
     },
   });
 
