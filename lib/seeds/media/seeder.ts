@@ -198,7 +198,7 @@ export const ruby_loose_stone_2 = async () => {
       title: "Ruby Loose Stone 2",
       slug: "ruby-loose-stone-2",
       name,
-      order: 0,
+      order: 1,
       galleryId: "cm920xaue00022e68pt7qk0fx",
     },
   });
@@ -210,6 +210,32 @@ export const ruby_loose_stone_2 = async () => {
   });
 
   console.log('Seeding Media "Ruby Loose Stone 2" success!');
+};
+
+export const ruby_loose_stone_3 = async () => {
+  const name = "002_ruby-loose-stone-3.jpeg";
+  const path = "batu/cm920swb900012e68i2shpqgg";
+
+  await prisma.media.upsert({
+    where: { id: "cm921lstw000c2e68hwsr906o" },
+    update: {},
+    create: {
+      id: "cm921lstw000c2e68hwsr906o",
+      title: "Ruby Loose Stone 3",
+      slug: "ruby-loose-stone-3",
+      name,
+      order: 2,
+      galleryId: "cm920xaue00022e68pt7qk0fx",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Ruby Loose Stone 3" success!');
 };
 
 export const blue_star_sapphire_1 = async () => {
