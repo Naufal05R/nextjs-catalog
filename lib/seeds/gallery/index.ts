@@ -3,6 +3,7 @@ import {
   alexandrite_loose_stone,
   aquamarine_loose_stone,
   cincin_surgawi,
+  emerald_loose_stone,
   kalung_keabadian,
   ruby_loose_stone,
   sapphire_loose_stone,
@@ -14,6 +15,7 @@ export default async function seeder() {
     await alexandrite_loose_stone();
     await ruby_loose_stone();
     await sapphire_loose_stone();
+    await emerald_loose_stone();
     await cincin_surgawi();
     await kalung_keabadian();
 
