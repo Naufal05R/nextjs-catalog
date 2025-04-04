@@ -60,6 +60,21 @@ export const sapphire_loose_stone = async () => {
   console.log('Seeding Gallery "Batu Lepas Sapphire" success!');
 };
 
+export const emerald_loose_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm924gfsl000l2e68blkiimsl" },
+    update: {},
+    create: {
+      id: "cm924gfsl000l2e68blkiimsl",
+      title: "Batu Lepas Emerald",
+      slug: "batu-lepas-emerald",
+      productId: "cm924c8o1000k2e68egm45tl7",
+    },
+  });
+
+  console.log('Seeding Gallery "Batu Lepas Emerald" success!');
+};
+
 export const cincin_surgawi = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm3cerfcq0004dgfumzio2iyj" },
