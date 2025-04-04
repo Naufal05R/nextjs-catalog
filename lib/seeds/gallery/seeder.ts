@@ -30,6 +30,21 @@ export const alexandrite_loose_stone = async () => {
   console.log('Seeding Gallery "Batu Lepas Alexandrite" success!');
 };
 
+export const ruby_loose_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm920xaue00022e68pt7qk0fx" },
+    update: {},
+    create: {
+      id: "cm920xaue00022e68pt7qk0fx",
+      title: "Batu Lepas Ruby",
+      slug: "batu-lepas-ruby",
+      productId: "cm920swb900012e68i2shpqgg",
+    },
+  });
+
+  console.log('Seeding Gallery "Batu Lepas Ruby" success!');
+};
+
 export const cincin_surgawi = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm3cerfcq0004dgfumzio2iyj" },
