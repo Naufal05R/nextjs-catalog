@@ -62,7 +62,7 @@ export const ruby_loose_stone = async () => {
       title: "Batu Lepas Ruby",
       slug: "batu-lepas-ruby",
       color: "Merah marun terang",
-      state: "Sri Lanka",
+      state: "Burma",
       width: 10,
       height: 10,
       length: 10,
@@ -77,6 +77,32 @@ export const ruby_loose_stone = async () => {
   });
 
   console.log('Seeding Product "Batu Lepas Ruby" success!');
+};
+
+export const sapphire_loose_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm9229i80000d2e68hiwplhkp" },
+    update: {},
+    create: {
+      id: "cm9229i80000d2e68hiwplhkp",
+      title: "Batu Lepas Sapphire",
+      slug: "batu-lepas-sapphire",
+      color: "Biru Laut Terang",
+      state: "Sri Lanka",
+      width: 12,
+      height: 7,
+      length: 10,
+      weight: 18,
+      price: 1200000,
+      discount: 7,
+      isFavorite: true,
+      description: "Ini adalah Batu Lepas Sapphire. Berwarna biru laut terang dengan kilau yang mempesona.",
+      collectionId: "cm32yk6pa000fvlqxco3648rv",
+      categoryId: "cm32ooxry0002gk847mqzh1to",
+    },
+  });
+
+  console.log('Seeding Product "Batu Lepas Sapphire" success!');
 };
 
 export const cincin_surgawi = async () => {
