@@ -107,10 +107,10 @@ export const sapphire_loose_stone = async () => {
 
 export const emerald_loose_stone = async () => {
   await prisma.product.upsert({
-    where: { id: "cm924c8o1000k2e68egm45tl7" },
+    where: { id: "cm923cvb9000j2e68ld476bdg" },
     update: {},
     create: {
-      id: "cm924c8o1000k2e68egm45tl7",
+      id: "cm923cvb9000j2e68ld476bdg",
       title: "Batu Lepas Emerald",
       slug: "batu-lepas-emerald",
       color: "Hijau giok kegelapan",
