@@ -53,6 +53,32 @@ export const alexandrite_loose_stone = async () => {
   console.log('Seeding Product "Batu Lepas Alexandrite" success!');
 };
 
+export const ruby_loose_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm920swb900012e68i2shpqgg" },
+    update: {},
+    create: {
+      id: "cm920swb900012e68i2shpqgg",
+      title: "Batu Lepas Ruby",
+      slug: "batu-lepas-ruby",
+      color: "Merah marun terang",
+      state: "Sri Lanka",
+      width: 10,
+      height: 10,
+      length: 10,
+      weight: 20,
+      price: 1000000,
+      discount: 10,
+      isFavorite: true,
+      description: "Ini adalah Batu Lepas Ruby. Berwarna merah marun terang dengan kilau yang sangat menarik.",
+      collectionId: "cm32yk6pa000fvlqxco3648rv",
+      categoryId: "cm32ot82q0003gk84owcim11u",
+    },
+  });
+
+  console.log('Seeding Product "Batu Lepas Ruby" success!');
+};
+
 export const cincin_surgawi = async () => {
   await prisma.product.upsert({
     where: { id: "cm3cerfco0002dgfuxcukhnko" },
