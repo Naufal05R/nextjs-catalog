@@ -19,6 +19,9 @@ export const shine = async () => {
           {
             id: "cm91h5eku00052e68p7coijs4",
           },
+          {
+            id: "cm9229i80000d2e68hiwplhkp",
+          },
         ],
       },
     },
