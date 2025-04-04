@@ -316,6 +316,84 @@ export const sapphire_loose_stone_3 = async () => {
   console.log('Seeding Media "Sapphire Loose Stone 3" success!');
 };
 
+export const emerald_loose_stone_1 = async () => {
+  const name = "000_emerald-loose-stone-1.jpeg";
+  const path = "batu/cm923cvb9000j2e68ld476bdg";
+
+  await prisma.media.upsert({
+    where: { id: "cm924k4vv000n2e68ccjfx55h" },
+    update: {},
+    create: {
+      id: "cm924k4vv000n2e68ccjfx55h",
+      title: "Emerald Loose Stone 1",
+      slug: "emerald-loose-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm924gfsl000l2e68blkiimsl",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Loose Stone 1" success!');
+};
+
+export const emerald_loose_stone_2 = async () => {
+  const name = "001_emerald-loose-stone-2.jpeg";
+  const path = "batu/cm923cvb9000j2e68ld476bdg";
+
+  await prisma.media.upsert({
+    where: { id: "cm924li1d000o2e68r64ex274" },
+    update: {},
+    create: {
+      id: "cm924li1d000o2e68r64ex274",
+      title: "Emerald Loose Stone 2",
+      slug: "emerald-loose-stone-2",
+      name,
+      order: 1,
+      galleryId: "cm924gfsl000l2e68blkiimsl",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Loose Stone 2" success!');
+};
+
+export const emerald_loose_stone_3 = async () => {
+  const name = "002_emerald-loose-stone-3.jpeg";
+  const path = "batu/cm923cvb9000j2e68ld476bdg";
+
+  await prisma.media.upsert({
+    where: { id: "cm924m8ey000p2e68f6jeva02" },
+    update: {},
+    create: {
+      id: "cm924m8ey000p2e68f6jeva02",
+      title: "Emerald Loose Stone 3",
+      slug: "emerald-loose-stone-3",
+      name,
+      order: 2,
+      galleryId: "cm924gfsl000l2e68blkiimsl",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Emerald Loose Stone 3" success!');
+};
+
 export const blue_star_sapphire_1 = async () => {
   const name = "000_blue-star-sapphire-1.jpeg";
   const path = "cincin/cm3cerfco0002dgfuxcukhnko";
