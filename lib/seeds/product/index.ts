@@ -6,6 +6,7 @@ import {
   alexandrite_loose_stone,
   ruby_loose_stone,
   sapphire_loose_stone,
+  emerald_loose_stone,
 } from "./seeder";
 
 export default async function seeder() {
@@ -14,6 +15,7 @@ export default async function seeder() {
     await alexandrite_loose_stone();
     await ruby_loose_stone();
     await sapphire_loose_stone();
+    await emerald_loose_stone();
     await cincin_surgawi();
     await kalung_keabadian();
 
