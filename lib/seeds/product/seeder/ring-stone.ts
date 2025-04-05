@@ -1,31 +1,29 @@
 import { prisma } from "@/lib/prisma";
 
-const cincin_surgawi = async () => {
+const ruby_ring_stone = async () => {
   await prisma.product.upsert({
     where: { id: "cm3cerfco0002dgfuxcukhnko" },
     update: {},
     create: {
       id: "cm3cerfco0002dgfuxcukhnko",
-      title: "Cincin Surgawi",
-      slug: "cincin-surgawi",
-      color: "Midnight Blue",
-      state: "Majapahit",
+      title: "Cincin Batu Ruby",
+      slug: "cincin-batu-ruby",
+      color: "Merah Darah",
+      state: "Burma",
       width: 12,
-      height: 10,
-      length: 9.5,
-      weight: 24,
-      price: 1250000,
-      discount: 12,
+      height: 8,
+      length: 12,
+      weight: 20,
+      price: 1000000,
+      discount: 11,
       isFavorite: true,
-      description: "This is Cincin Kehidupan product coming from Cincin collection",
+      description: "Cincin Batu Ruby ini memiliki warna merah darah yang sangat cantik dan elegan.",
       collectionId: "cm2x7wgop0000w6g9yk4wa4yv",
-      categoryId: "cm32ooxry0002gk847mqzh1to",
+      categoryId: "cm32ot82q0003gk84owcim11u",
     },
   });
 
-  console.log('Seeding Product "Batu Crystal" success!');
+  console.log('Seeding Product "Cincin Batu Ruby" success!');
 };
 
-export default {
-  cincin_surgawi,
-};
+export default { ruby_ring_stone };
