@@ -602,6 +602,32 @@ export const amethyst_ring_stone_2 = async () => {
   console.log('Seeding Media "Amethyst Ring Stone 2" success!');
 };
 
+export const aquamarine_bracelet_stone_1 = async () => {
+  const name = "000_aquamarine-bracelet-stone-1.jpeg";
+  const path = "lainnya/cm93m4nwy000e2e686n52aakj";
+
+  await prisma.media.upsert({
+    where: { id: "cm93s25o2000k2e688sssgi0x" },
+    update: {},
+    create: {
+      id: "cm93s25o2000k2e688sssgi0x",
+      title: "Aquamarine Bracelet Stone 1",
+      slug: "aquamarine-bracelet-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm93rwrum000h2e686q2l9s1g",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Aquamarine Bracelet Stone 1" success!');
+};
+
 export const emerald_pendant_stone_1 = async () => {
   const name = "000_emerald-pendant-stone-1.jpeg";
   const path = "lainnya/cm8zzj7fb00002e68gubmouwg";
