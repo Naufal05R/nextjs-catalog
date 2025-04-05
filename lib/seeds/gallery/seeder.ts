@@ -75,19 +75,19 @@ export const emerald_loose_stone = async () => {
   console.log('Seeding Gallery "Batu Lepas Emerald" success!');
 };
 
-export const cincin_surgawi = async () => {
+export const ruby_ring_stone = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm3cerfcq0004dgfumzio2iyj" },
     update: {},
     create: {
       id: "cm3cerfcq0004dgfumzio2iyj",
-      title: "Cincin Surgawi",
-      slug: "cincin-surgawi",
+      title: "Cincin Batu Ruby",
+      slug: "cincin-batu-ruby",
       productId: "cm3cerfco0002dgfuxcukhnko",
     },
   });
 
-  console.log('Seeding Gallery "Cincin Surgawi" success!');
+  console.log('Seeding Gallery "Cincin Batu Ruby" success!');
 };
 
 export const kalung_keabadian = async () => {
