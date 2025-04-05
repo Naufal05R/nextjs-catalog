@@ -135,6 +135,21 @@ export const amethyst_ring_stone = async () => {
   console.log('Seeding Gallery "Cincin Batu Amethyst" success!');
 };
 
+export const aquamarine_bracelet_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm93rwrum000h2e686q2l9s1g" },
+    update: {},
+    create: {
+      id: "cm93rwrum000h2e686q2l9s1g",
+      title: "Gelang Batu Aquamarine",
+      slug: "gelang-batu-aquamarine",
+      productId: "cm93m4nwy000e2e686n52aakj",
+    },
+  });
+
+  console.log('Seeding Gallery "Gelang Batu Aquamarine" success!');
+};
+
 export const emerald_pendant_stone = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm901a4ce00032e684d6pz8ue" },
@@ -147,5 +162,5 @@ export const emerald_pendant_stone = async () => {
     },
   });
 
-  console.log('Seeding Gallery "Kalung Keabadian" success!');
+  console.log('Seeding Gallery "Liontin Batu Emerald" success!');
 };
