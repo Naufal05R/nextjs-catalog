@@ -653,3 +653,29 @@ export const emerald_pendant_stone_1 = async () => {
 
   console.log('Seeding Media "Emerald Pendant Stone 1" success!');
 };
+
+export const ruby_earrings_stone_1 = async () => {
+  const name = "000_ruby-earrings-stone-1.jpeg";
+  const path = "lainnya/cm93mdfg3000f2e68tvgi0xu3";
+
+  await prisma.media.upsert({
+    where: { id: "cm93s6s9j000l2e6849fid85n" },
+    update: {},
+    create: {
+      id: "cm93s6s9j000l2e6849fid85n",
+      title: "Ruby Earrings Stone 1",
+      slug: "ruby-earrings-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm93rysxw000i2e688kzhmrdf",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Ruby Earrings Stone 1" success!');
+};
