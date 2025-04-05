@@ -24,6 +24,7 @@ import {
   emerald_ring_stone_2,
   sapphire_ring_stone_1,
   sapphire_ring_stone_2,
+  amethyst_ring_stone_1,
 } from "./seeder";
 
 export default async function seeder() {
@@ -49,6 +50,7 @@ export default async function seeder() {
     await emerald_ring_stone_2();
     await sapphire_ring_stone_1();
     await sapphire_ring_stone_2();
+    await amethyst_ring_stone_1();
     await emerald_pendant_1();
     await emerald_pendant_2();
     await emerald_pendant_3();
