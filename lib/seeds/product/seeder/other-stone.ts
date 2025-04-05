@@ -78,4 +78,30 @@ const ruby_earrings_stone = async () => {
   console.log('Seeding Product "Anting Batu Ruby" success!');
 };
 
-export default { emerald_pendant_stone, aquamarine_bracelet_stone, ruby_earrings_stone };
+const sapphire_brooch_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm93mk5zq000g2e685gv2gmox" },
+    update: {},
+    create: {
+      id: "cm93mk5zq000g2e685gv2gmox",
+      title: "Bros Batu Sapphire",
+      slug: "bros-batu-sapphire",
+      color: "Biru Laut Tua",
+      state: "Madagascar",
+      width: 12,
+      height: 6,
+      length: 10,
+      weight: 16,
+      price: 1400000,
+      discount: 5,
+      isFavorite: false,
+      description: "Bros Batu Sapphire ini memiliki warna biru laut tua dengan kesan yang dalam.",
+      collectionId: "cm9015slt00012e68snz7ksb2",
+      categoryId: "cm32ooxry0002gk847mqzh1to",
+    },
+  });
+
+  console.log('Seeding Product "Bros Batu Sapphire" success!');
+};
+
+export default { emerald_pendant_stone, aquamarine_bracelet_stone, ruby_earrings_stone, sapphire_brooch_stone };
