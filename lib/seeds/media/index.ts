@@ -21,6 +21,7 @@ import {
   emerald_loose_stone_2,
   emerald_loose_stone_3,
   emerald_ring_stone_1,
+  emerald_ring_stone_2,
 } from "./seeder";
 
 export default async function seeder() {
@@ -43,6 +44,7 @@ export default async function seeder() {
     await ruby_ring_stone_1();
     await ruby_ring_stone_2();
     await emerald_ring_stone_1();
+    await emerald_ring_stone_2();
     await emerald_pendant_1();
     await emerald_pendant_2();
     await emerald_pendant_3();
