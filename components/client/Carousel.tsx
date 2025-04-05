@@ -119,7 +119,7 @@ export const CarouselThumbnail = ({ data }: { data: NonNullable<Awaited<ReturnTy
             const src = getMediaSrc({
               productId: id,
               collection: collection.slug,
-              name: gallery!.medias[0].name,
+              name: gallery?.medias[0].name ?? "",
             });
             const { fileExt } = getFileDetails(src);
 
@@ -194,7 +194,7 @@ export const CarouselFeatured = ({ data }: { data: NonNullable<Awaited<ReturnTyp
                   src: getMediaSrc({
                     productId: product.id,
                     collection: collection.slug,
-                    name: gallery!.medias[0].name,
+                    name: gallery?.medias[0].name ?? "",
                   }),
                 }}
               />
