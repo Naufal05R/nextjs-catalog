@@ -394,8 +394,8 @@ export const emerald_loose_stone_3 = async () => {
   console.log('Seeding Media "Emerald Loose Stone 3" success!');
 };
 
-export const blue_star_sapphire_1 = async () => {
-  const name = "000_blue-star-sapphire-1.jpeg";
+export const ruby_ring_stone_1 = async () => {
+  const name = "000_ruby-ring-stone-1.jpeg";
   const path = "cincin/cm3cerfco0002dgfuxcukhnko";
 
   await prisma.media.upsert({
@@ -403,8 +403,8 @@ export const blue_star_sapphire_1 = async () => {
     update: {},
     create: {
       id: "cm3cfn31j00052e66x5zqmqn5",
-      title: "Blue Star Sapphire 1",
-      slug: "blue-star-sapphire-1",
+      title: "Ruby Ring Stone 1",
+      slug: "ruby-ring-stone-1",
       name,
       order: 0,
       galleryId: "cm3cerfcq0004dgfumzio2iyj",
@@ -417,7 +417,7 @@ export const blue_star_sapphire_1 = async () => {
     filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
-  console.log('Seeding Media "Blue Star Sapphire 1" success!');
+  console.log('Seeding Media "Ruby Ring Stone 1" success!');
 };
 
 export const blue_star_sapphire_2 = async () => {
@@ -444,32 +444,6 @@ export const blue_star_sapphire_2 = async () => {
   });
 
   console.log('Seeding Media "Blue Star Sapphire 2" success!');
-};
-
-export const blue_star_sapphire_3 = async () => {
-  const name = "002_blue-star-sapphire-3.jpeg";
-  const path = "cincin/cm3cerfco0002dgfuxcukhnko";
-
-  await prisma.media.upsert({
-    where: { id: "cm3cfnjmt00072e660qqi4gth" },
-    update: {},
-    create: {
-      id: "cm3cfnjmt00072e660qqi4gth",
-      title: "Blue Star Sapphire 3",
-      slug: "blue-star-sapphire-3",
-      name,
-      order: 0,
-      galleryId: "cm3cerfcq0004dgfumzio2iyj",
-    },
-  });
-
-  await uploadObject({
-    bucketName: APP_NAME,
-    objectName: `${path}/${name}`,
-    filePath: `${STORAGE_URL}/${path}/${name}`,
-  });
-
-  console.log('Seeding Media "Blue Star Sapphire 3" success!');
 };
 
 export const emerald_pendant_1 = async () => {
