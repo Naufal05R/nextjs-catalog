@@ -56,7 +56,7 @@ export const DashboardProductDisplay = async ({ isReady, collection }: ProductDi
           return (
             !!gallery &&
             !!gallery.medias.length && (
-              <DashbaordProductCard {...product} collection={slug} thumbnail={gallery.medias[0].name} />
+              <DashbaordProductCard {...product} collection={slug} thumbnail={gallery.medias[0]?.name ?? ""} />
             )
           );
         }}
@@ -248,7 +248,7 @@ export const CatalogProductDisplay = async ({ collection, category }: { collecti
               const src = getMediaSrc({
                 productId: product.id,
                 collection: selectedCollection.slug,
-                name: gallery?.medias[0].name ?? "",
+                name: gallery?.medias[0]?.name ?? "",
               });
               return (
                 <li className="col-span-3">
@@ -434,7 +434,7 @@ export const SearchProductResult = async ({ query }: ProductResult) => {
             const src = getMediaSrc({
               productId: product.id,
               collection: product.collection.slug,
-              name: gallery?.medias[0].name ?? "",
+              name: gallery?.medias[0]?.name ?? "",
             });
             return (
               <li className="col-span-3">
