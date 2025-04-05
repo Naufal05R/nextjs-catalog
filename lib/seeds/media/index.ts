@@ -2,9 +2,7 @@ import { handlingError } from "@/lib/utils";
 import {
   ruby_ring_stone_1,
   ruby_ring_stone_2,
-  emerald_pendant_1,
-  emerald_pendant_2,
-  emerald_pendant_3,
+  emerald_pendant_stone_1,
   aquamarine_loose_stone_1,
   aquamarine_loose_stone_2,
   aquamarine_loose_stone_3,
@@ -53,9 +51,7 @@ export default async function seeder() {
     await sapphire_ring_stone_2();
     await amethyst_ring_stone_1();
     await amethyst_ring_stone_2();
-    await emerald_pendant_1();
-    await emerald_pendant_2();
-    await emerald_pendant_3();
+    await emerald_pendant_stone_1();
 
     console.log("Seeding Media success!");
   } catch (error) {
