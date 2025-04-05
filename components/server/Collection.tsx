@@ -116,7 +116,7 @@ const Collection = async ({ title, description, href, classNames }: CollectionPr
               gallery && (
                 <CollectionPlaceholder
                   productId={id}
-                  name={gallery.medias[0].name}
+                  name={gallery.medias[0]?.name ?? ""}
                   collection={collection.slug}
                   index={pictureIndex}
                 />
