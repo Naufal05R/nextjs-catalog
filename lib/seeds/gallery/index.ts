@@ -2,7 +2,7 @@ import { handlingError } from "@/lib/utils";
 import {
   alexandrite_loose_stone,
   aquamarine_loose_stone,
-  cincin_surgawi,
+  ruby_ring_stone,
   emerald_loose_stone,
   kalung_keabadian,
   ruby_loose_stone,
@@ -16,7 +16,7 @@ export default async function seeder() {
     await ruby_loose_stone();
     await sapphire_loose_stone();
     await emerald_loose_stone();
-    await cincin_surgawi();
+    await ruby_ring_stone();
     await kalung_keabadian();
 
     console.log("Seeding Gallery success!");
