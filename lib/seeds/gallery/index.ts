@@ -12,6 +12,7 @@ import {
   amethyst_ring_stone,
   aquamarine_bracelet_stone,
   ruby_earrings_stone,
+  sapphire_brooch_stone,
 } from "./seeder";
 
 export default async function seeder() {
@@ -28,6 +29,7 @@ export default async function seeder() {
     await aquamarine_bracelet_stone();
     await emerald_pendant_stone();
     await ruby_earrings_stone();
+    await sapphire_brooch_stone();
 
     console.log("Seeding Gallery success!");
   } catch (error) {
