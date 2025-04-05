@@ -179,3 +179,18 @@ export const ruby_earrings_stone = async () => {
 
   console.log('Seeding Gallery "Anting Batu Ruby" success!');
 };
+
+export const sapphire_brooch_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm93rzoh2000j2e68ok2lgdrr" },
+    update: {},
+    create: {
+      id: "cm93rzoh2000j2e68ok2lgdrr",
+      title: "Bros Batu Sapphire",
+      slug: "bros-batu-sapphire",
+      productId: "cm93mk5zq000g2e685gv2gmox",
+    },
+  });
+
+  console.log('Seeding Gallery "Bros Batu Sapphire" success!');
+};
