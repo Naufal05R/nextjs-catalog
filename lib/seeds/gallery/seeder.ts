@@ -135,14 +135,14 @@ export const amethyst_ring_stone = async () => {
   console.log('Seeding Gallery "Cincin Batu Amethyst" success!');
 };
 
-export const kalung_keabadian = async () => {
+export const emerald_pendant_stone = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm901a4ce00032e684d6pz8ue" },
     update: {},
     create: {
       id: "cm901a4ce00032e684d6pz8ue",
-      title: "Kalung Keabadian",
-      slug: "kalung-keabadian",
+      title: "Liontin Batu Emerald",
+      slug: "liontin-batu-emerald",
       productId: "cm8zzj7fb00002e68gubmouwg",
     },
   });
