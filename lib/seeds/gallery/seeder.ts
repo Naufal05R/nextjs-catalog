@@ -105,6 +105,21 @@ export const emerald_ring_stone = async () => {
   console.log('Seeding Gallery "Cincin Batu Emerald" success!');
 };
 
+export const sapphire_ring_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm93knibb00062e681r22146p" },
+    update: {},
+    create: {
+      id: "cm93knibb00062e681r22146p",
+      title: "Cincin Batu Sapphire",
+      slug: "cincin-batu-sapphire",
+      productId: "cm93jjd8100032e68mkc77xme",
+    },
+  });
+
+  console.log('Seeding Gallery "Cincin Batu Sapphire" success!');
+};
+
 export const kalung_keabadian = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm901a4ce00032e684d6pz8ue" },
