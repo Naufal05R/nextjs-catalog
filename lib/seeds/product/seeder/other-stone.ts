@@ -52,4 +52,30 @@ const emerald_pendant_stone = async () => {
   console.log('Seeding Product "Liontin Batu Emerald" success!');
 };
 
-export default { emerald_pendant_stone, aquamarine_bracelet_stone };
+const ruby_earrings_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm93mdfg3000f2e68tvgi0xu3" },
+    update: {},
+    create: {
+      id: "cm93mdfg3000f2e68tvgi0xu3",
+      title: "Anting Batu Ruby",
+      slug: "anting-batu-ruby",
+      color: "Merah Darah",
+      state: "Burma",
+      width: 8,
+      height: 8,
+      length: 12,
+      weight: 24,
+      price: 2150000,
+      discount: 7.5,
+      isFavorite: false,
+      description: "Anting Batu Ruby ini memiliki warna merah darah yang tampak anggun dan elegan.",
+      collectionId: "cm9015slt00012e68snz7ksb2",
+      categoryId: "cm32ot82q0003gk84owcim11u",
+    },
+  });
+
+  console.log('Seeding Product "Anting Batu Ruby" success!');
+};
+
+export default { emerald_pendant_stone, aquamarine_bracelet_stone, ruby_earrings_stone };
