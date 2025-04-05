@@ -26,4 +26,30 @@ const ruby_ring_stone = async () => {
   console.log('Seeding Product "Cincin Batu Ruby" success!');
 };
 
-export default { ruby_ring_stone };
+const emerald_ring_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm93j2gzt00022e68tpvc9ll2" },
+    update: {},
+    create: {
+      id: "cm93j2gzt00022e68tpvc9ll2",
+      title: "Cincin Batu Emerald",
+      slug: "cincin-batu-emerald",
+      color: "Hijau lumut",
+      state: "Brazil",
+      width: 12,
+      height: 10,
+      length: 12,
+      weight: 19,
+      price: 1100000,
+      discount: 10,
+      isFavorite: true,
+      description: "Cincin Batu Emerald ini memiliki warna hijau lumut yang sangat indah dan estetik.",
+      collectionId: "cm2x7wgop0000w6g9yk4wa4yv",
+      categoryId: "cm39i13s00000la8wdjqbz726",
+    },
+  });
+
+  console.log('Seeding Product "Cincin Batu Emerald" success!');
+};
+
+export default { ruby_ring_stone, emerald_ring_stone };
