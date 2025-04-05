@@ -90,6 +90,21 @@ export const ruby_ring_stone = async () => {
   console.log('Seeding Gallery "Cincin Batu Ruby" success!');
 };
 
+export const emerald_ring_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm93kddo700052e68fxn32j9r" },
+    update: {},
+    create: {
+      id: "cm93kddo700052e68fxn32j9r",
+      title: "Cincin Batu Emerald",
+      slug: "cincin-batu-emerald",
+      productId: "cm93j2gzt00022e68tpvc9ll2",
+    },
+  });
+
+  console.log('Seeding Gallery "Cincin Batu Emerald" success!');
+};
+
 export const kalung_keabadian = async () => {
   await prisma.gallery.upsert({
     where: { id: "cm901a4ce00032e684d6pz8ue" },
