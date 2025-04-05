@@ -25,6 +25,7 @@ import {
   amethyst_ring_stone_1,
   amethyst_ring_stone_2,
   aquamarine_bracelet_stone_1,
+  ruby_earrings_stone_1,
 } from "./seeder";
 
 export default async function seeder() {
@@ -54,6 +55,7 @@ export default async function seeder() {
     await amethyst_ring_stone_2();
     await aquamarine_bracelet_stone_1();
     await emerald_pendant_stone_1();
+    await ruby_earrings_stone_1();
 
     console.log("Seeding Media success!");
   } catch (error) {
