@@ -1,23 +1,15 @@
 import { handlingError } from "@/lib/utils";
-import {
-  aquamarine_loose_stone,
-  kalung_keabadian,
-  cincin_surgawi,
-  alexandrite_loose_stone,
-  ruby_loose_stone,
-  sapphire_loose_stone,
-  emerald_loose_stone,
-} from "./seeder";
+import { loose_stone, other_stone, ring_stone } from "./seeder/index";
+
+const executeSeeder = async (seeders: Record<string, () => Promise<void>>) => {
+  for (const key in seeders) await seeders[key]();
+};
 
 export default async function seeder() {
   try {
-    await aquamarine_loose_stone();
-    await alexandrite_loose_stone();
-    await ruby_loose_stone();
-    await sapphire_loose_stone();
-    await emerald_loose_stone();
-    await cincin_surgawi();
-    await kalung_keabadian();
+    await executeSeeder(loose_stone);
+    await executeSeeder(ring_stone);
+    await executeSeeder(other_stone);
 
     console.log("Seeding Product success!");
   } catch (error) {
