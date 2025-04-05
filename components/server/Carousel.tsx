@@ -70,7 +70,7 @@ export const DynamicCarouselThumbnail = async () => {
               src={getMediaSrc({
                 productId: selectedProduct.id,
                 collection: selectedProduct.collection.slug,
-                name: selectedProduct.gallery?.medias[0].name ?? "",
+                name: selectedProduct.gallery?.medias[0]?.name ?? "",
               })}
               alt={selectedProduct.slug}
               fill
