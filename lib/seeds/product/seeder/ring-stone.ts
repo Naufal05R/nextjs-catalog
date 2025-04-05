@@ -78,4 +78,30 @@ const sapphire_ring_stone = async () => {
   console.log('Seeding Product "Cincin Batu Sapphire" success!');
 };
 
-export default { ruby_ring_stone, emerald_ring_stone, sapphire_ring_stone };
+const amethyst_ring_stone = async () => {
+  await prisma.product.upsert({
+    where: { id: "cm93jlm4n00042e68n7uf57k9" },
+    update: {},
+    create: {
+      id: "cm93jlm4n00042e68n7uf57k9",
+      title: "Cincin Batu Amethyst",
+      slug: "cincin-batu-amethyst",
+      color: "Biru Laut",
+      state: "Indonesia",
+      width: 10,
+      height: 8,
+      length: 12,
+      weight: 16,
+      price: 1000000,
+      discount: 10,
+      isFavorite: false,
+      description: "Cincin Batu Amethyst ini memiliki warna ungu yang sangat cantik dan memukau.",
+      collectionId: "cm2x7wgop0000w6g9yk4wa4yv",
+      categoryId: "cm91ey3s800042e68zztbz36d",
+    },
+  });
+
+  console.log('Seeding Product "Cincin Batu Amethyst" success!');
+};
+
+export default { ruby_ring_stone, emerald_ring_stone, sapphire_ring_stone, amethyst_ring_stone };
