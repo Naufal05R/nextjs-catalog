@@ -9,6 +9,7 @@ import {
   ruby_ring_stone,
   emerald_ring_stone,
   sapphire_ring_stone,
+  amethyst_ring_stone,
 } from "./seeder";
 
 export default async function seeder() {
@@ -21,6 +22,7 @@ export default async function seeder() {
     await ruby_ring_stone();
     await emerald_ring_stone();
     await sapphire_ring_stone();
+    await amethyst_ring_stone();
     await kalung_keabadian();
 
     console.log("Seeding Gallery success!");
