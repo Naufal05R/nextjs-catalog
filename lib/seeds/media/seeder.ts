@@ -550,6 +550,32 @@ export const sapphire_ring_stone_2 = async () => {
   console.log('Seeding Media "Sapphire Ring Stone 2" success!');
 };
 
+export const amethyst_ring_stone_1 = async () => {
+  const name = "000_amethyst-ring-stone-1.jpeg";
+  const path = "cincin/cm93jlm4n00042e68n7uf57k9";
+
+  await prisma.media.upsert({
+    where: { id: "cm93lm9lt000c2e68mkh6kqnh" },
+    update: {},
+    create: {
+      id: "cm93lm9lt000c2e68mkh6kqnh",
+      title: "Amethyst Ring Stone 1",
+      slug: "amethyst-ring-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm93kpi9r00072e68i6joxrrx",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Amethyst Ring Stone 1" success!');
+};
+
 export const emerald_pendant_1 = async () => {
   const name = "000_emerald-pendant-1.jpeg";
   const path = "lainnya/cm8zzj7fb00002e68gubmouwg";
