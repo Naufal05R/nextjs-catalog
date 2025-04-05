@@ -164,3 +164,18 @@ export const emerald_pendant_stone = async () => {
 
   console.log('Seeding Gallery "Liontin Batu Emerald" success!');
 };
+
+export const ruby_earrings_stone = async () => {
+  await prisma.gallery.upsert({
+    where: { id: "cm93rysxw000i2e688kzhmrdf" },
+    update: {},
+    create: {
+      id: "cm93rysxw000i2e688kzhmrdf",
+      title: "Anting Batu Ruby",
+      slug: "anting-batu-ruby",
+      productId: "cm93mdfg3000f2e68tvgi0xu3",
+    },
+  });
+
+  console.log('Seeding Gallery "Anting Batu Ruby" success!');
+};
