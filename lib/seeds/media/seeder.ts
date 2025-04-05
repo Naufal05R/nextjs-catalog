@@ -420,8 +420,8 @@ export const ruby_ring_stone_1 = async () => {
   console.log('Seeding Media "Ruby Ring Stone 1" success!');
 };
 
-export const blue_star_sapphire_2 = async () => {
-  const name = "001_blue-star-sapphire-2.jpeg";
+export const ruby_ring_stone_2 = async () => {
+  const name = "001_ruby-ring-stone-2.jpeg";
   const path = "cincin/cm3cerfco0002dgfuxcukhnko";
 
   await prisma.media.upsert({
@@ -429,10 +429,10 @@ export const blue_star_sapphire_2 = async () => {
     update: {},
     create: {
       id: "cm3cfnd8u00062e66au3qgzy9",
-      title: "Blue Star Sapphire 2",
-      slug: "blue-star-sapphire-2",
+      title: "Ruby Ring Stone 2",
+      slug: "ruby-ring-stone-2",
       name,
-      order: 0,
+      order: 1,
       galleryId: "cm3cerfcq0004dgfumzio2iyj",
     },
   });
@@ -443,7 +443,7 @@ export const blue_star_sapphire_2 = async () => {
     filePath: `${STORAGE_URL}/${path}/${name}`,
   });
 
-  console.log('Seeding Media "Blue Star Sapphire 2" success!');
+  console.log('Seeding Media "Ruby Ring Stone 2" success!');
 };
 
 export const emerald_pendant_1 = async () => {
