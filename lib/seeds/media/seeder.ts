@@ -679,3 +679,29 @@ export const ruby_earrings_stone_1 = async () => {
 
   console.log('Seeding Media "Ruby Earrings Stone 1" success!');
 };
+
+export const sapphire_brooch_stone_1 = async () => {
+  const name = "000_sapphire-brooch-stone-1.jpeg";
+  const path = "lainnya/cm93mk5zq000g2e685gv2gmox";
+
+  await prisma.media.upsert({
+    where: { id: "cm93s8yno000m2e687f8tx07f" },
+    update: {},
+    create: {
+      id: "cm93s8yno000m2e687f8tx07f",
+      title: "Sapphire Brooch Stone 1",
+      slug: "sapphire-brooch-stone-1",
+      name,
+      order: 0,
+      galleryId: "cm93rzoh2000j2e68ok2lgdrr",
+    },
+  });
+
+  await uploadObject({
+    bucketName: APP_NAME,
+    objectName: `${path}/${name}`,
+    filePath: `${STORAGE_URL}/${path}/${name}`,
+  });
+
+  console.log('Seeding Media "Sapphire Brooch Stone 1" success!');
+};
