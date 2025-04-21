@@ -1,7 +1,7 @@
 import createMDX from "@next/mdx";
 
 const SERVER_HOST = process.env.MINIO_SERVER_HOST || "";
-const SERVER_PORT = process.env.MINIO_SERVER_PORT
+const SERVER_PORT = process.env.MINIO_SERVER_PORT;
 const NETWORK_PROTOCOL = process.env.MINIO_NETWORK_PROTOCOL;
 
 /** @type {import('next').NextConfig} */
@@ -9,6 +9,7 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   images: {
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: NETWORK_PROTOCOL,
@@ -48,7 +49,7 @@ const nextConfig = {
 
   experimental: {
     serverActions: {
-      bodySizeLimit: '10mb',
+      bodySizeLimit: "10mb",
     },
     turbo: {
       rules: {
@@ -59,6 +60,19 @@ const nextConfig = {
         },
       },
     },
+  },
+  async headers() {
+    return [
+      {
+        source: "/_next/image",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
   },
 };
 
